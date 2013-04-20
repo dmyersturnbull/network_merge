@@ -1,0 +1,21 @@
+Structure-based network alignment
+Copyright 2013 Douglas Myers-Turnbull
+This project was written for BIMM 185 at UC San Diego.
+
+This software uses Biojava (http://biojava.org/wiki/Main_Page), which is
+distributed under the GNU LGPL.
+
+Parsing of PSI-MI XML data sources is provided by the Human Proteome
+Organization Proteomics Standard Initiative (http://www.psidev.info/). The code
+is distributed under the Apache License.
+
+This software uses a graph API provided by JGraphT (http://jgrapht.org/), which
+is distributed under the GNU LGPL.
+
+This software relies heavily on both Junit (http://junit.org/) and Mockito
+(http://code.google.com/p/mockito/) for testing. Junit is distributed under the
+Common Public License. Mockito is distributed under the MIT License.
+
+This software uses the Apache Commons (http://commons.apache.org/) and log4J
+(http://logging.apache.org/log4j/), which are distributed under the Apache
+License.
