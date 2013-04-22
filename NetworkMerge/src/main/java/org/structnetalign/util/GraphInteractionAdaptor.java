@@ -11,8 +11,32 @@
  * specific language governing permissions and limitations under the License.
  * @author dmyersturnbull
  */
-package org.structnetalign;
+package org.structnetalign.util;
 
-public interface InteractionNetwork {
+import java.io.File;
 
+import org.structnetalign.CleverGraph;
+
+import psidev.psi.mi.xml.model.EntrySet;
+import psidev.psi.mi.xml.model.Interaction;
+import edu.uci.ics.jung.graph.UndirectedGraph;
+
+public class GraphInteractionAdaptor {
+
+	public static UndirectedGraph<String,Interaction> toGraph(EntrySet entrySet) {
+		return null;
+	}
+	
+	public static void modifyProbabilites(EntrySet entrySet, CleverGraph graph) {
+		
+	}
+	
+	public static EntrySet readNetwork(File file) {
+		return null;
+	}
+	
+	public static void writeNetwork(EntrySet entrySet, File file) {
+		
+	}
+	
 }

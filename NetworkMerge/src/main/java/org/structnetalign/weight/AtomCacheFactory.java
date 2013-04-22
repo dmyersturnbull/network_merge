@@ -1,0 +1,55 @@
+/**
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE
+ * file distributed with this work for additional information regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
+ * @author dmyersturnbull
+ */
+package org.structnetalign.weight;
+
+import org.biojava.bio.structure.align.util.AtomCache;
+import org.biojava.bio.structure.scop.BerkeleyScopInstallation;
+import org.biojava.bio.structure.scop.ScopDatabase;
+import org.biojava.bio.structure.scop.ScopFactory;
+
+public class AtomCacheFactory {
+
+	private static AtomCache cache;
+	
+	private static volatile boolean berkeleySet = false;
+	
+	private static ScopDatabase setBerkeleyScop(AtomCache cache) {
+		berkeleySet = true;
+		ScopDatabase scop = ScopFactory.getSCOP();
+		if (!scop.getClass().getName().equals(BerkeleyScopInstallation.class.getName())) {
+			ScopFactory.setScopDatabase(new BerkeleyScopInstallation());
+		}
+		return ScopFactory.getSCOP();
+	}
+
+	public static AtomCache getCache() {
+		if (cache == null) setCache();
+		return cache;
+	}
+
+	public static void setCache() {
+		setCache(new AtomCache());
+	}
+	public static void setCache(String pdbDir) {
+		setCache(new AtomCache(pdbDir, false));
+	}
+	
+	public static void setCache(AtomCache cache) {
+		if (!berkeleySet) setBerkeleyScop(cache);
+		AtomCacheFactory.cache = cache;
+	}
+	
+	
+	
+}

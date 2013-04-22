@@ -9,8 +9,8 @@ Parsing of PSI-MI XML data sources is provided by the Human Proteome
 Organization Proteomics Standard Initiative (http://www.psidev.info/). The code
 is distributed under the Apache License.
 
-This software uses a graph API provided by JGraphT (http://jgrapht.org/), which
-is distributed under the GNU LGPL.
+This software uses a graph API provided by Jung (http://jung.sourceforge.net),
+which is distributed under the BSD license.
 
 This software relies heavily on both Junit (http://junit.org/) and Mockito
 (http://code.google.com/p/mockito/) for testing. Junit is distributed under the
