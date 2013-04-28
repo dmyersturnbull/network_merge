@@ -1,0 +1,116 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{tikz}
+\usepackage{color}
+\definecolor{red}{rgb}{1,0,0}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{\node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+
+\renewcommand{\labelitemi}{$-$}
+\title{\textbf{Struct-net-align}}
+\date{currently a very rough incoherent and partially incorrect sketch}
+\begin{document}
+
+\maketitle
+
+\section*{Introduction}
+Using structure to improve a noisy PPI network.
+
+\section*{Algorithm}
+
+\subsection*{Definitions}
+
+Let $G = (V,Int(G) \cup Hom(G))$ be a network whose vertices represent domains.\\\\
+Let $Int(G)$ is a set of edges indicating interactions.\\\\
+Let $Int(v)$ for any vertex $v \in Int(G)$ is the set of edges in $Int(G)$ that are incident to $v$. Also define $Hom(v)$ in the same way.\\\\
+$Hom(G)$ is a set of edges indicating homology (similarity) between vertices.\\\\
+An edge $e \in Int(G)$ is associated with a probability $Prob(e)$.\\\\
+An edge $(a,b) \in Hom(G)$ is associated with a score denoted $s((a,b))$ ranging from $0$ to $\infty$. Any edge with score $s \geq 1$ is defined as significant.\\\\
+Let $\rho(a,b)$ denote the score of the most specific homology relation $r$ identified between nodes $a$ and $b$. For example, if $a$ and $b$ are from the same SCOP fold but not the same SCOP superfamily, $\rho(a,b)$ will be given by this relation.\\\\
+Let $\alpha(a,b)$ denote the weighted score of an alignment that has been performed between vertices $a$ and $b$.\\\\
+Let $\iota(v)$ denote the number of edges $(v, v'\,\!)$ in $Int(G)$, $\forall \: v \in V$, and let $\eta(v)$ denote the number of edges $(v, v'\,\!)$ in $Hom(G)$, $\forall \: v \in V$.\\\\
+Let $\iota^* = \displaystyle \max_{v \in V}\{\iota(v)\}$, $\eta^* = \displaystyle \max_{v \in V}\{\eta(v)\}$.
+\subsection*{Overview}
+
+The algorithm consists of three major steps.\\\\
+Given an interaction network $G=(V,Int(G))$, build a network $G'\,\! = (V,Int(G'\,\!) \cup Hom(G'\,\!))$ by using any available information (e.g. homology databases or alignment) to add edges to $Hom(G'\,\!)$ and to increase the weights of those edges. At the end of this process, remove any edge from $Hom(G'\,\!)$ with  weight less than $1$.\\\\
+Second, generate a network $G'\,\!'\,\! = (V, Int(G'\,\!'\,\!)$ by using edges in $Hom(G'\,\!)$ to update edge weights (probabilities) in $Int(G)$.\\\\
+Third, define a equivalence relation between vertices, $H$, such that $H(u) \equiv H(v)$ iff $v$ is reachable from $v$ by traversing $Hom(G'\,\!)$. Generate a network $G'\,\!'\,\!'\,\! = (V'\,\!, Int(G'\,\!'\,\!'\,\!) \cup Hom(G'\,\!'\,\!'\,\!))$ by merging nodes contained in cliques of $(V,Hom(G'\,\!'\,\!))$ in which every vertex in the clique is associated with the same set of interaction edges in $(V, Int(G'\,\!'\,\!))$, with respect to the equivalence relation $H$.
+
+\subsection*{Algorithm}
+
+\begin{enumerate}
+\item Parse network.
+\item For every pair of vertices $(a,b)$, add an edge $(a,b)$ to $Hom(G)$, with label $\rho(a,b)$.
+\item For every pair of vertices $(a,b)$ (optionally: not joined by an edge in $Hom(G)$), align $a$ against $b$ and add an edge to $Hom(G)$, with label $\alpha(a,b)$.
+\item For every edge $e \in G$ such that $s(e) < 1$, remove $e$.
+\item For every edge $x=(u,v) \in Int(G)$:
+\begin{enumerate}
+\item Run BFS on $(V, Hom(G))$ from $u$ and $v$ concurrently.
+\item Set $P := 0$.
+\item For every edge $y=(s,t) \in Int(G)$ such that $s$ is reachable from $u$ and $t$ is reachable from $v$:
+\item Let $\epsilon_x := Prob(i,j) \cdot \exp \left( \displaystyle \sum_{\pi, \rho} \sum_{i,j} \log S(\pi_i, \rho_i)) \right)$, where $\pi$ is a path from $u$ to $s$ and $\rho$ is a path from $v$ to $t$
+\item Let $P := P + \epsilon_x$
+\item Let $x = x + \epsilon_x - P$ FIXME
+\end{enumerate}
+\item Discard every vertex $v$ such that $\iota(v) = 0$ and remove every edge incident to $v$.
+\item Run Bron--Kerbosch's algorithm on $G'\,\!_i$ to enumerate cliques $C = \{ c_1$ \ldots $c_x \}$, for all cliques of size $\gamma(C_j) > 1$.
+\item Partition $C$ into sets $D = d_1 \ldots d_z$ such that $\forall \; v \in d_i, u \in d_j$, $Int(v) \neq Int(u)$, $\forall \; i,j$, and $Int_H(v) = Int_H(u) \; \forall u,v \in d_i \; \forall i$.
+\item For each $d \in D$, merge every vertex in $d$ in the reference graph $G$.
+\item Output resulting network. The network should contain no homology edges.
+\end{enumerate}
+
+\subsection*{Defining homology by relations}
+
+\subsection*{Defining homology by alignment}
+
+\subsection*{Using homology to score interactions}
+
+Define
+\(
+R_{i,j} = 
+\left\{ \begin{array}{ll}
+0 & i=0 \vee j=0\\
+Q(v_i)Q(v_j)Prob(v_i,v_j) - \displaystyle \sum_{k < i} R_{i,j} & \text{otherwise}
+\end{array} \right.
+\)\\
+Define
+\(
+Q_i(j) = 
+\left\{ \begin{array}{ll}
+0 & i=0\\
+\displaystyle \sum_{k < i} \sum_j Q_k(j) S(v_{k,j}, v_{k,i}) & \text{otherwise}
+\end{array} \right.
+\)\\
+
+\subsection*{Merging equivalent domains}
+
+To merge, we require:
+\begin{enumerate}
+\item Two subgraphs $G_1$, $G_2$ of $G'\,\!'\,\!$ with edges in $Int(G'\,\!)$
+\item $\exists \: H \subseteq Hom(G)$ s.t. $H$ defines an isomorphism between $G_1$ and $G_2$ (TODO: rigor).
+\end{enumerate}
+Unfortunately, \textsc{Max-Clique} is \textsc{NP-Hard}. However, we can bound the time-complexity of a naive algorithm (such as Bron--Kerbosch) in terms of the maximum number of homology edges of any vertex in $G$. Let $\gamma$ be the maximal clique size in $Hom(G)$. Then $\gamma^* \leq \eta^*$.\\\\
+We can readily solve \textsc{Max-Clique}$(G)$ in $\mathcal O(|V|^{\eta^*}(\eta^*)^3)$ time by enumerating all $|V|^{\gamma}$ subgraphs of size $\gamma$ for every $\gamma = 1, 2, \ldots, \eta^*$.\\\\
+Note that a subset of $Hom(G'\,\!'\,\!)$ nearly defines an isomorphism between two subgraphs of $(V'\,\!, Int(G'\,\!'\,\!))$ For a pair $(u,v)$ where $(u,v) \in Hom(G'\,\!)$, $Int(u)$ may not exactly equal $Int(v)$, but $Int(u) / H = Int(v) / H$, where $Int(u) / H$ is some kind of factor graph in the algebraic sense that I'll need to define (look up factor group or quotient ring).
+
+\subsection*{Extending to PPIs}
+
+\subsection*{Scoring of interactions}
+
+\subsection*{Implementation}
+
+\section*{Results}
+
+\subsection*{Overview}
+
+\subsection*{Accuracy}
+
+\subsection*{Speed}
+
+\section*{Appendix 1. Formal proofs}
+
+\end{document}
