@@ -13,20 +13,30 @@
  */
 package org.structnetalign.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
+import org.junit.Before;
 import org.junit.Test;
 
 
 public class MartinIdentifierMappingTest {
 
-	@Test
-	public void test() {
-		MartinIdentifierMapping mapping = new MartinIdentifierMapping();
-		String pdb = mapping.uniProtToPdb("P00720");
-		assertEquals("111l_A", pdb);
-		String scop = mapping.uniProtToScop("P00720");
-		assertEquals("", scop);
+	private MartinIdentifierMapping mapping;
+	
+	@Before
+	public void setUp() {
+		mapping = new MartinIdentifierMapping();
 	}
 	
+	@Test
+	public void testPdbId() {
+		String pdb = mapping.uniProtToPdb("P00720");
+		assertEquals("102l_A", pdb);
+	}
+
+	@Test
+	public void testScopId() {
+		String scop = mapping.uniProtToScop("P00720");
+		assertEquals("d102la_", scop);
+	}
 }

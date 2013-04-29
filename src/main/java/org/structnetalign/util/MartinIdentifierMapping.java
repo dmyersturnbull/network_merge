@@ -31,17 +31,31 @@ import org.biojava.bio.structure.scop.ScopFactory;
  */
 public class MartinIdentifierMapping implements IdentifierMapping {
 
-	private Map<String,String> uniProtToPdb;
+	private Map<String,String> pdbIds;
+	private Map<String,Character> chainIds;
+
 
 	MartinIdentifierMapping() {
 		try {
-			uniProtToPdb = new HashMap<String,String>();
+			pdbIds = new HashMap<String,String>();
+			chainIds = new HashMap<String,Character>();
 			File file = new File("src/main/resources/mappings/martin_pdb_uniprot_chain_map.lst");
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			String line = "";
 			while ((line = br.readLine()) != null) {
-				String[] parts = line.split("\\w");
-				uniProtToPdb.put(parts[2], parts[0] + "_" + parts[1]);
+				if (line.isEmpty()) continue;
+				String[] parts = line.split("\\s+");
+				if (parts.length != 3 || line.contains("?")) {
+//					System.err.println(line);
+					continue;
+				}
+				if (pdbIds.containsKey(parts[2])) {
+//					System.out.println("Already contains " + parts[2]);
+					continue;
+				}
+				pdbIds.put(parts[2], parts[0]);
+				if (parts[1].length() != 1) continue;
+				chainIds.put(parts[2], parts[1].charAt(0));
 			}
 			br.close();
 		} catch (IOException e) {
@@ -51,16 +65,22 @@ public class MartinIdentifierMapping implements IdentifierMapping {
 
 	@Override
 	public String uniProtToPdb(String uniProtId) {
-		return uniProtToPdb.get(uniProtId);
+		return pdbIds.get(uniProtId) + "_" + chainIds.get(uniProtId);
 	}
 
 	@Override
 	public String uniProtToScop(String uniProtId) {
-		final String pdb = uniProtToPdb.get(uniProtId);
+		final String pdb = pdbIds.get(uniProtId);
+		final char chain = chainIds.get(uniProtId);
 		ScopDatabase scop = ScopFactory.getSCOP(ScopFactory.VERSION_1_75B);
 		List<ScopDomain> domains = scop.getDomainsForPDB(pdb);
-		if (domains.size() != 1) return null; // doesn't work for multi-chain or if there's no domain
-		return domains.get(0).getScopId();
+		for (ScopDomain domain : domains) {
+			List<String> ranges = domain.getRanges();
+			if (ranges.get(0).charAt(0) == chain) {
+				return domain.getScopId();
+			}
+		}
+		return null;
 	}
 
 }
