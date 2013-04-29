@@ -47,20 +47,23 @@ Third, define a equivalence relation between vertices, $H$, such that $H(u) \equ
 \item For every pair of vertices $(a,b)$, add an edge $(a,b)$ to $Hom(G)$, with label $\rho(a,b)$.
 \item For every pair of vertices $(a,b)$ (optionally: not joined by an edge in $Hom(G)$), align $a$ against $b$ and add an edge to $Hom(G)$, with label $\alpha(a,b)$.
 \item For every edge $e \in G$ such that $s(e) < 1$, remove $e$.
-\item For every edge $x=(u,v) \in Int(G)$:
+\item For every edge $(u,v) \in Int(G)$:
 \begin{enumerate}
-\item Run BFS on $(V, Hom(G))$ from $u$ and $v$ concurrently.
-\item Set $P := 0$.
-\item For every edge $y=(s,t) \in Int(G)$ such that $s$ is reachable from $u$ and $t$ is reachable from $v$:
-\item Let $\epsilon_x := Prob(i,j) \cdot \exp \left( \displaystyle \sum_{\pi, \rho} \sum_{i,j} \log S(\pi_i, \rho_i)) \right)$, where $\pi$ is a path from $u$ to $s$ and $\rho$ is a path from $v$ to $t$
-\item Let $P := P + \epsilon_x$
-\item Let $x = x + \epsilon_x - P$ FIXME
+\item Let $P=0$ and $I=\emptyset$, and let $X_a = Y_a = 0 \; \forall \; a \in V$.
+\item Run DFS on $(V, Hom(G))$ from $u$ and $v$ concurrently to generate vertex labellings $X$ and $Y$, respectively. During traversal, when an already-traversed vertex $o$ is encountered, visit $o$ but don't traverse further.
+\item For both $Q=X$ and $Q=Y$, when visiting a vertex $b$ via edge $e$:
+\begin{enumerate}
+\item If $Q_b=0$, let $Q_b := 1$.
+\item Let $P := P + \log S(e)$.
+\item Let $Q_b := Q_b - exp(P)$.
+\end{enumerate}
+\item For every edge $(x,y) \in Int(G)$ such that $X_x \neq 0$ and $Y_y \neq 0$, let $Prob((u,v)) := Prob((u,v)) + X_x Y_y Prob((x,y))$.
 \end{enumerate}
 \item Discard every vertex $v$ such that $\iota(v) = 0$ and remove every edge incident to $v$.
-\item Run Bron--Kerbosch's algorithm on $G'\,\!_i$ to enumerate cliques $C = \{ c_1$ \ldots $c_x \}$, for all cliques of size $\gamma(C_j) > 1$.
+\item Run Bron--Kerbosch's algorithm on $G_i$ to enumerate all maximal cliques $C = \{ c_1$ \ldots $c_x \}$, for clique sizes $\gamma(C_j) > 1 \; \forall j$.
 \item Partition $C$ into sets $D = d_1 \ldots d_z$ such that $\forall \; v \in d_i, u \in d_j$, $Int(v) \neq Int(u)$, $\forall \; i,j$, and $Int_H(v) = Int_H(u) \; \forall u,v \in d_i \; \forall i$.
-\item For each $d \in D$, merge every vertex in $d$ in the reference graph $G$.
-\item Output resulting network. The network should contain no homology edges.
+\item For each $d \in D$, merge by edge contraction every vertex in $d$, modifying the reference graph $G$.
+\item Output the network $(V, Int(G))$.
 \end{enumerate}
 
 \subsection*{Defining homology by relations}
@@ -71,20 +74,23 @@ Third, define a equivalence relation between vertices, $H$, such that $H(u) \equ
 
 Define
 \(
-R_{i,j} = 
+R_{i,j}^{(u,v)} = 
 \left\{ \begin{array}{ll}
 0 & i=0 \vee j=0\\
-Q(v_i)Q(v_j)Prob(v_i,v_j) - \displaystyle \sum_{k < i} R_{i,j} & \text{otherwise}
+Q^{(u,v)}(v_i)Q^{(u,v)}(v_j)Prob(v_i,v_j) - \displaystyle \sum_{k < i \; \vee \; k < j} R_{i,j} & \text{otherwise}
 \end{array} \right.
 \)\\
 Define
 \(
-Q_i(j) = 
+Q_v(i)^{(u,v)} = 
 \left\{ \begin{array}{ll}
-0 & i=0\\
-\displaystyle \sum_{k < i} \sum_j Q_k(j) S(v_{k,j}, v_{k,i}) & \text{otherwise}
+0 & v=0\\
+1 - \displaystyle \prod_{j < i} Q_v^{(u,v)}(j) - S(\pi^{(i)}) & \exists \; \pi^{(i)}=u,e_1,v_1,e_2,v_2 \ldots, e_k,v_k, v\\
+0 & \text{otherwise}
 \end{array} \right.
 \)\\
+Then we update the probability of an interaction $(u,v)$ with:\\
+$Prob((u,v))'\,\! = Prob((u,v)) + \displaystyle \sum_{i,j} R_{i,j}^{(u,v)}$
 
 \subsection*{Merging equivalent domains}
 
@@ -95,11 +101,12 @@ To merge, we require:
 \end{enumerate}
 Unfortunately, \textsc{Max-Clique} is \textsc{NP-Hard}. However, we can bound the time-complexity of a naive algorithm (such as Bron--Kerbosch) in terms of the maximum number of homology edges of any vertex in $G$. Let $\gamma$ be the maximal clique size in $Hom(G)$. Then $\gamma^* \leq \eta^*$.\\\\
 We can readily solve \textsc{Max-Clique}$(G)$ in $\mathcal O(|V|^{\eta^*}(\eta^*)^3)$ time by enumerating all $|V|^{\gamma}$ subgraphs of size $\gamma$ for every $\gamma = 1, 2, \ldots, \eta^*$.\\\\
-Note that a subset of $Hom(G'\,\!'\,\!)$ nearly defines an isomorphism between two subgraphs of $(V'\,\!, Int(G'\,\!'\,\!))$ For a pair $(u,v)$ where $(u,v) \in Hom(G'\,\!)$, $Int(u)$ may not exactly equal $Int(v)$, but $Int(u) / H = Int(v) / H$, where $Int(u) / H$ is some kind of factor graph in the algebraic sense that I'll need to define (look up factor group or quotient ring).
+Note that a subset of $Hom(G'\,\!'\,\!)$ nearly defines an isomorphism between two subgraphs of $(V'\,\!, Int(G'\,\!'\,\!))$ For a pair $(u,v)$ where $(u,v) \in Hom(G'\,\!)$, $Int(u)$ may not exactly equal $Int(v)$, but $Int(u) / H = Int(v) / H$, where $Int(u) / H$ is some kind of factor graph in the algebraic sense that I'll need to define (look up factor group or quotient ring).\\\\
+Once we have a (maximal) clique $C$, we need to find which vertices in $C$ share interactions. This results in a partitioning of $C$ into disjoint subgraphs $D$. We can then merge every vertex in each $D_i$ by edge contraction.
 
 \subsection*{Extending to PPIs}
 
-\subsection*{Scoring of interactions}
+\subsection*{Initial scoring of interactions}
 
 \subsection*{Implementation}
 
