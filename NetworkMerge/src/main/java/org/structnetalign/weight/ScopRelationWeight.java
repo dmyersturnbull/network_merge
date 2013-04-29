@@ -13,6 +13,8 @@
  */
 package org.structnetalign.weight;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +22,7 @@ import org.biojava.bio.structure.scop.ScopCategory;
 import org.biojava.bio.structure.scop.ScopDatabase;
 import org.biojava.bio.structure.scop.ScopDomain;
 import org.biojava.bio.structure.scop.ScopFactory;
-import org.structnetalign.util.IdentifierMapping;
+import org.structnetalign.util.IdentifierMappingFactory;
 
 
 public class ScopRelationWeight implements RelationWeight {
@@ -34,8 +36,8 @@ public class ScopRelationWeight implements RelationWeight {
 		DEFAULT_WEIGHTS.put(ScopCategory.Superfamily, 0.6);
 		DEFAULT_WEIGHTS.put(ScopCategory.Family, 1.0);
 		DEFAULT_WEIGHTS.put(ScopCategory.Domain, 1.4);
-		DEFAULT_WEIGHTS.put(ScopCategory.Px, 1.5);
-		DEFAULT_WEIGHTS.put(ScopCategory.Species, 1.5);
+		DEFAULT_WEIGHTS.put(ScopCategory.Px, 1.6);
+		DEFAULT_WEIGHTS.put(ScopCategory.Species, 1.7);
 	}
 	
 	public ScopRelationWeight(Map<ScopCategory,Double> weights) {
@@ -44,17 +46,27 @@ public class ScopRelationWeight implements RelationWeight {
 	
 	@Override
 	public double assignWeight(String uniProtId1, String uniProtId2) {
-		final String scopId1 = IdentifierMapping.uniProtToScop(uniProtId1);
-		final String scopId2 = IdentifierMapping.uniProtToScop(uniProtId2);
+		
+		final String scopId1 = IdentifierMappingFactory.getMapping().uniProtToScop(uniProtId1);
+		final String scopId2 = IdentifierMappingFactory.getMapping().uniProtToScop(uniProtId2);
+		
+		if (scopId1 == null || scopId2 == null) return 0.0; // this is okay
+		
 		final ScopDatabase scop = ScopFactory.getSCOP();
 		final ScopDomain domain1 = scop.getDomainByScopID(scopId1);
 		final ScopDomain domain2 = scop.getDomainByScopID(scopId2);
-		for (ScopCategory category : ScopCategory.values()) {
+		
+		// we need to iterate in reverse order (most specific first)
+		ScopCategory[] categories = ScopCategory.values();
+		Collections.reverse(Arrays.asList(categories));
+		for (ScopCategory category : categories) {
 			int categoryId1 = sunIdOfCategory(domain1, category);
 			int categoryId2 = sunIdOfCategory(domain2, category);
 			if (categoryId1 == categoryId2) return weights.get(category);
 		}
+		
 		return 0.0;
+		
 	}
 
 	private static int sunIdOfCategory(ScopDomain domain, ScopCategory category) {

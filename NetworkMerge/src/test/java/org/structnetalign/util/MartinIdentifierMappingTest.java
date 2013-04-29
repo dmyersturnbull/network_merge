@@ -13,11 +13,20 @@
  */
 package org.structnetalign.util;
 
+import static org.junit.Assert.*;
 
-public interface IdentifierMapping {
+import org.junit.Test;
 
-	String uniProtToPdb(String uniProtId);
 
-	String uniProtToScop(String uniProtId);
+public class MartinIdentifierMappingTest {
 
+	@Test
+	public void test() {
+		MartinIdentifierMapping mapping = new MartinIdentifierMapping();
+		String pdb = mapping.uniProtToPdb("P00720");
+		assertEquals("111l_A", pdb);
+		String scop = mapping.uniProtToScop("P00720");
+		assertEquals("", scop);
+	}
+	
 }

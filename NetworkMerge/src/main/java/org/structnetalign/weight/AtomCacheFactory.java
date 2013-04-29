@@ -14,25 +14,11 @@
 package org.structnetalign.weight;
 
 import org.biojava.bio.structure.align.util.AtomCache;
-import org.biojava.bio.structure.scop.BerkeleyScopInstallation;
-import org.biojava.bio.structure.scop.ScopDatabase;
-import org.biojava.bio.structure.scop.ScopFactory;
 
 public class AtomCacheFactory {
 
 	private static AtomCache cache;
 	
-	private static volatile boolean berkeleySet = false;
-	
-	private static ScopDatabase setBerkeleyScop(AtomCache cache) {
-		berkeleySet = true;
-		ScopDatabase scop = ScopFactory.getSCOP();
-		if (!scop.getClass().getName().equals(BerkeleyScopInstallation.class.getName())) {
-			ScopFactory.setScopDatabase(new BerkeleyScopInstallation());
-		}
-		return ScopFactory.getSCOP();
-	}
-
 	public static AtomCache getCache() {
 		if (cache == null) setCache();
 		return cache;
@@ -46,10 +32,7 @@ public class AtomCacheFactory {
 	}
 	
 	public static void setCache(AtomCache cache) {
-		if (!berkeleySet) setBerkeleyScop(cache);
 		AtomCacheFactory.cache = cache;
 	}
-	
-	
 	
 }

@@ -30,16 +30,6 @@
 </repositories>
   <dependencies>
 	<dependency>
-		<groupId>org.biojava</groupId>
-		<artifactId>biojava3-structure</artifactId>
-		<version>3.0.6-SNAPSHOT</version>
-	</dependency>
-	<dependency>
-		<groupId>org.biojava</groupId>
-		<artifactId>biojava3-alignment</artifactId>
-		<version>3.0.6-SNAPSHOT</version>
-	</dependency>
-	<dependency>
 		<groupId>junit</groupId>
 		<artifactId>junit</artifactId>
 		<version>4.7</version>
@@ -83,6 +73,11 @@
 		<groupId>net.sf.jung</groupId>
 		<artifactId>jung-graph-impl</artifactId>
 		<version>2.0.1</version>
+	</dependency>
+	<dependency>
+		<groupId>org.biojava</groupId>
+		<artifactId>biojava3-structure</artifactId>
+		<version>3.0.6-SNAPSHOT</version>
 	</dependency>
   </dependencies>
   <scm>

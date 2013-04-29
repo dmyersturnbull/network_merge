@@ -13,11 +13,16 @@
  */
 package org.structnetalign.util;
 
+public class IdentifierMappingFactory {
 
-public interface IdentifierMapping {
+	private static IdentifierMapping mapping = new MartinIdentifierMapping();
+	
+	public static IdentifierMapping getMapping() {
+		return mapping;
+	}
 
-	String uniProtToPdb(String uniProtId);
-
-	String uniProtToScop(String uniProtId);
+	public static void setMapping(IdentifierMapping mapping) {
+		IdentifierMappingFactory.mapping = mapping;
+	}
 
 }

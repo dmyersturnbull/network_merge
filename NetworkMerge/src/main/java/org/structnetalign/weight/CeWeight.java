@@ -25,6 +25,7 @@ import org.biojava.bio.structure.align.model.AFPChain;
 import org.biojava.bio.structure.align.util.AFPChainScorer;
 import org.biojava.bio.structure.align.util.AtomCache;
 import org.structnetalign.util.IdentifierMapping;
+import org.structnetalign.util.IdentifierMappingFactory;
 
 public class CeWeight implements AlignmentWeight {
 
@@ -79,9 +80,9 @@ public class CeWeight implements AlignmentWeight {
 
 	@Override
 	public double assignWeight(String uniProtId1, String uniProtId2) throws WeightException {
-		final String scopId1 = IdentifierMapping.uniProtToScop(uniProtId1);
+		final String scopId1 = IdentifierMappingFactory.getMapping().uniProtToPdb(uniProtId1);
 		if (scopId1 == null) throw new WeightException("Could not find SCOP id for " + uniProtId1);
-		final String scopId2 = IdentifierMapping.uniProtToScop(uniProtId2);
+		final String scopId2 = IdentifierMappingFactory.getMapping().uniProtToPdb(uniProtId2);
 		if (scopId2 == null) throw new WeightException("Could not find SCOP id for " + uniProtId2);
 		AFPChain afpChain;
 		try {
