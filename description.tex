@@ -73,22 +73,8 @@ Third, define a equivalence relation between vertices, $H$, such that $H(u) \equ
 \subsection*{Using homology to score interactions}
 
 Define
-\(
-R_{i,j}^{(u,v)} = 
-\left\{ \begin{array}{ll}
-0 & i=0 \vee j=0\\
-Q^{(u,v)}(v_i)Q^{(u,v)}(v_j)Prob(v_i,v_j) - \displaystyle \sum_{k < i \; \vee \; k < j} R_{i,j} & \text{otherwise}
-\end{array} \right.
-\)\\
-Define
-\(
-Q_v(i)^{(u,v)} = 
-\left\{ \begin{array}{ll}
-0 & v=0\\
-1 - \displaystyle \prod_{j < i} Q_v^{(u,v)}(j) - S(\pi^{(i)}) & \exists \; \pi^{(i)}=u,e_1,v_1,e_2,v_2 \ldots, e_k,v_k, v\\
-0 & \text{otherwise}
-\end{array} \right.
-\)\\
+$R_{i,j}^{(u,v)} = Prob(u,v) \left(1 - \displaystyle \prod_\pi Q_{u,i} - \prod_\pi Q_{v,j} + \prod_\pi Q_{u,i} \cdot \prod_\pi Q_{v,j} \right)$\\
+Define $Q_{a,b} = \displaystyle \prod_{\text{paths } \pi \text{ from a to b}} \prod_{i} (1 - S(\pi_i))$\\
 Then we update the probability of an interaction $(u,v)$ with:\\
 $Prob((u,v))'\,\! = Prob((u,v)) + \displaystyle \sum_{i,j} R_{i,j}^{(u,v)}$
 
