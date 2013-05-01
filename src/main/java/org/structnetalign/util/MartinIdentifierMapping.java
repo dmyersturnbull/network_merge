@@ -26,8 +26,11 @@ import org.biojava.bio.structure.scop.ScopDomain;
 import org.biojava.bio.structure.scop.ScopFactory;
 
 /**
+ * Uses the chain-level mapping from Andrew C.R. Martin at <a href="http://www.bioinf.org.uk/pdbsws/">the Martin Lab</a>.
+ * See <a href="http://bioinformatics.oxfordjournals.org/content/21/23/4297.long">the paper</a> for more.
  * Perhaps the simplest mapping, but multi-chain domains are a problem.
  * @author dmyersturnbull
+ *
  */
 public class MartinIdentifierMapping implements IdentifierMapping {
 
