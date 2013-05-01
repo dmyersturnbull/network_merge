@@ -17,7 +17,10 @@
 \maketitle
 
 \section*{Introduction}
-Using structure to improve a noisy PPI network.
+The idea is to use protein structural information to improve a noisy PPI network. The method would typically be applied after a more cononical, sequence- or network-structure- based, heuristic network alignment or degeneracy minimization algorithm.\\\\
+The method uses the Structural Classification of Proteins (SCOP) and structural alignment based on Combinatorial Extension to introduce edges in the graph that indicate homology.\\\\
+It then uses this information to update the probability of interactions that are shared between homologous proteins. Finally, it collapses degenerate vertices via edge contraction, where degeneracy is decided by the presence of a clique whose members share interactions.\\\\
+Clique-finding is performed naively via the Bron--Kerbosch algorithm because edges indicating homology are drawn relatively conservatively, resulting in a sparse graph.
 
 \section*{Algorithm}
 
@@ -42,33 +45,48 @@ Third, define a equivalence relation between vertices, $H$, such that $H(u) \equ
 
 \subsection*{Algorithm}
 
+Pre- and post-processing steps are not included in the formal description but are listed below.\\\\
+\newpage
+StructNetAlign($G$, $\tau$, $\varsigma$, $\xi$):
+
 \begin{enumerate}
 \item Parse network.
 \item For every pair of vertices $(a,b)$, add an edge $(a,b)$ to $Hom(G)$, with label $\rho(a,b)$.
 \item For every pair of vertices $(a,b)$ (optionally: not joined by an edge in $Hom(G)$), align $a$ against $b$ and add an edge to $Hom(G)$, with label $\alpha(a,b)$.
-\item For every edge $e \in G$ such that $s(e) < 1$, remove $e$.
+\item For every edge $e \in G$ such that $S(e) < \tau$, remove $e$.
 \item For every edge $(u,v) \in Int(G)$:
 \begin{enumerate}
-\item Let $P=0$ and $I=\emptyset$, and let $X_a = Y_a = 0 \; \forall \; a \in V$.
-\item Run DFS on $(V, Hom(G))$ from $u$ and $v$ concurrently to generate vertex labellings $X$ and $Y$, respectively. During traversal, when an already-traversed vertex $o$ is encountered, visit $o$ but don't traverse further.
-\item For both $Q=X$ and $Q=Y$, when visiting a vertex $b$ via edge $e$:
+\item Let $I=\emptyset$, and let $Q_a = 0, X_a = Y_a = 0 \; \forall \; a \in V$.
+\item Run breadth-first search on $(V, Hom(G))$ from $u$ and $v$ concurrently to generate vertex labellings $X$ and $Y$, respectively. Visit an already-visited vertex, then stop there. Stop after reaching $\xi$ depth.
+\item For both $R=X$ and $R=Y$, when visiting a vertex $b$ via edge $e$:
 \begin{enumerate}
-\item If $Q_b=0$, let $Q_b := 1$.
-\item Let $P := P + \log S(e)$.
-\item Let $Q_b := Q_b - exp(P)$.
+\item If $R_b=0$, let $R_b := 1$.
+\item Let $Q := Q + \log S(e)$.
+\item Let $R_b := R_b - exp(Q)$.
 \end{enumerate}
-\item For every edge $(x,y) \in Int(G)$ such that $X_x \neq 0$ and $Y_y \neq 0$, let $Prob((u,v)) := Prob((u,v)) + X_x Y_y Prob((x,y))$.
+\item For every edge $(x,y) \in Int(G)$ such $X_x \neq 0$ and $Y_y \neq 0$, let $Prob((u,v)) := Prob((u,v)) + 1 - X_x Y_y Prob((x,y))$.
 \end{enumerate}
 \item Discard every vertex $v$ such that $\iota(v) = 0$ and remove every edge incident to $v$.
-\item Run Bron--Kerbosch's algorithm on $G_i$ to enumerate all maximal cliques $C = \{ c_1$ \ldots $c_x \}$, for clique sizes $\gamma(C_j) > 1 \; \forall j$.
+\item For every edge $e \in G$ such that $S(e) < \varsigma$, remove $e$.
+\item Run the Bron--Kerbosch algorithm on $G_i$ to enumerate all maximal cliques $C = \{ c_1$ \ldots $c_x \}$, for clique sizes $\gamma(C_j) > 1 \; \forall j$.
 \item Partition $C$ into sets $D = d_1 \ldots d_z$ such that $\forall \; v \in d_i, u \in d_j$, $Int(v) \neq Int(u)$, $\forall \; i,j$, and $Int_H(v) = Int_H(u) \; \forall u,v \in d_i \; \forall i$.
 \item For each $d \in D$, merge by edge contraction every vertex in $d$, modifying the reference graph $G$.
 \item Output the network $(V, Int(G))$.
 \end{enumerate}
 
+\subsection*{Secondary steps}
+\begin{enumerate}[a)]
+\item The algorithm should is run seperately for each connected component of a network.
+\item If edge weights for interactions in the network are binary or otherwise determined to be unreliable, the interactions are scored.
+\end{enumerate}
+
 \subsection*{Defining homology by relations}
 
+The input DIP network consists of a list interactions occuring between two polypeptide chains, where the chains are described by UniProt Ids. In cases where the PDB contains at least one structure for that chain, a PDB Id and is found for that UniProt Id. From that, a SCOP domain corresponding to the PDB Id and chain are found. This selection process is problematic for multi-chain domains, which are ignored for this step. Scores ($\rho$) are assigned by using the most specific SCOP relationship found.
+
 \subsection*{Defining homology by alignment}
+
+In cases where homology is not established by SCOP relationships, homology can be derived by structural alignment using Combinatorial Extension.
 
 \subsection*{Using homology to score interactions}
 
@@ -89,8 +107,6 @@ Unfortunately, \textsc{Max-Clique} is \textsc{NP-Hard}. However, we can bound th
 We can readily solve \textsc{Max-Clique}$(G)$ in $\mathcal O(|V|^{\eta^*}(\eta^*)^3)$ time by enumerating all $|V|^{\gamma}$ subgraphs of size $\gamma$ for every $\gamma = 1, 2, \ldots, \eta^*$.\\\\
 Note that a subset of $Hom(G'\,\!'\,\!)$ nearly defines an isomorphism between two subgraphs of $(V'\,\!, Int(G'\,\!'\,\!))$ For a pair $(u,v)$ where $(u,v) \in Hom(G'\,\!)$, $Int(u)$ may not exactly equal $Int(v)$, but $Int(u) / H = Int(v) / H$, where $Int(u) / H$ is some kind of factor graph in the algebraic sense that I'll need to define (look up factor group or quotient ring).\\\\
 Once we have a (maximal) clique $C$, we need to find which vertices in $C$ share interactions. This results in a partitioning of $C$ into disjoint subgraphs $D$. We can then merge every vertex in each $D_i$ by edge contraction.
-
-\subsection*{Extending to PPIs}
 
 \subsection*{Initial scoring of interactions}
 
