@@ -20,17 +20,17 @@ import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 
 public class CleverGraph {
 
-	public Collection<String> getVertices() {
+	public Collection<Integer> getVertices() {
 		return homology.getVertices();
 	}
-	public boolean addVertex(String arg0) {
-		return homology.addVertex(arg0);
+	public boolean addVertex(int vertex) {
+		return homology.addVertex(vertex);
 	}
-	public boolean containsVertex(String arg0) {
-		return homology.containsVertex(arg0);
+	public boolean containsVertex(int vertex) {
+		return homology.containsVertex(vertex);
 	}
-	public boolean removeVertex(String arg0) {
-		return homology.removeVertex(arg0);
+	public boolean removeVertex(int vertex) {
+		return homology.removeVertex(vertex);
 	}
 	public int getVertexCount() {
 		return homology.getVertexCount();
@@ -40,64 +40,64 @@ public class CleverGraph {
 	}
 	
 	
-	public boolean isHomologous(String vertex1, String vertex2) {
+	public boolean isHomologous(int vertex1, int vertex2) {
 		return homology.isNeighbor(vertex1, vertex2);
 	}
-	public boolean addHomologies(Homology edge, Collection<? extends String> vertices) {
+	public boolean addHomologies(HomologyEdge edge, Collection<? extends Integer> vertices) {
 		return homology.addEdge(edge, vertices);
 	}
-	public boolean addEdge(Homology edge, String vertex1, String vertex2) {
+	public boolean addEdge(HomologyEdge edge, int vertex1, int vertex2) {
 		return homology.addEdge(edge, vertex1, vertex2);
 	}
-	public int homologyDegree(String vertex) {
+	public int homologyDegree(int vertex) {
 		return homology.degree(vertex);
 	}
-	public Collection<Homology> getHomologies(String vertex) {
+	public Collection<HomologyEdge> getHomologies(int vertex) {
 		return homology.getIncidentEdges(vertex);
 	}
-	public Collection<String> getHomologyNeighbors(String vertex) {
+	public Collection<Integer> getHomologyNeighbors(int vertex) {
 		return homology.getNeighbors(vertex);
 	}
-	public boolean removeHomology(Homology edge) {
+	public boolean removeHomology(HomologyEdge edge) {
 		return homology.removeEdge(edge);
 	}
 
-	public boolean isInteracting(String vertex1, String vertex2) {
+	public boolean isInteracting(int vertex1, int vertex2) {
 		return interaction.isNeighbor(vertex1, vertex2);
 	}
-	public boolean addInteraction(Interaction edge, String vertex1, String vertex2) {
+	public boolean addInteraction(InteractionEdge edge, int vertex1, int vertex2) {
 		return interaction.addEdge(edge, vertex1, vertex2);
 	}
-	public boolean addInteractions(Interaction arg0, Collection<? extends String> arg1) {
+	public boolean addInteractions(InteractionEdge arg0, Collection<? extends Integer> arg1) {
 		return interaction.addEdge(arg0, arg1);
 	}
-	public int interactionDegree(String vertex) {
+	public int interactionDegree(int vertex) {
 		return interaction.degree(vertex);
 	}
-	public Collection<Interaction> getInteractions(String vertex) {
+	public Collection<InteractionEdge> getInteractions(int vertex) {
 		return interaction.getIncidentEdges(vertex);
 	}
-	public Collection<String> getInteractionNeighbors(String vertex) {
+	public Collection<Integer> getInteractionNeighbors(int vertex) {
 		return interaction.getNeighbors(vertex);
 	}
-	public boolean removeInteraction(Interaction edge) {
+	public boolean removeInteraction(InteractionEdge edge) {
 		return interaction.removeEdge(edge);
 	}
 
-	private final UndirectedGraph<String,Interaction> interaction;
+	private final UndirectedGraph<Integer,InteractionEdge> interaction;
 
-	private final UndirectedGraph<String,Homology> homology;
+	private final UndirectedGraph<Integer,HomologyEdge> homology;
 
 	public CleverGraph() {
-		interaction = new UndirectedSparseGraph<String,Interaction>();
-		homology = new UndirectedSparseGraph<String,Homology>();
+		interaction = new UndirectedSparseGraph<Integer,InteractionEdge>();
+		homology = new UndirectedSparseGraph<Integer,HomologyEdge>();
 	}
 	
-	public UndirectedGraph<String, Interaction> getInteraction() {
+	public UndirectedGraph<Integer, InteractionEdge> getInteraction() {
 		return interaction;
 	}
 
-	public UndirectedGraph<String, Homology> getHomology() {
+	public UndirectedGraph<Integer, HomologyEdge> getHomology() {
 		return homology;
 	}
 	

@@ -13,28 +13,45 @@
  */
 package org.structnetalign;
 
-public class Interaction {
+public class HomologyEdge {
 
-	private Object original;
-	
-	private double probability;
-
-	public Object getOriginal() {
-		return original;
-	}
-
-	public void setOriginal(Object original) {
-		this.original = original;
-	}
-
-	public double getProbability() {
-		return probability;
-	}
-
-	public void setProbability(double probability) {
-		this.probability = probability;
+	public enum Type {
+		SEQUENCE_ALIGNMENT, STRUCTURAL_ALIGNMENT, SEQUENCE_DATABASE, STRUCTURAL_DATABASE;
 	}
 	
+	private Type type;
 	
+	private int id;
+	
+	private double score;
+	
+	public HomologyEdge(Type type, double score) {
+		this.type = type;
+		this.score = score;
+	}
+
+	public Type getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public double getScore() {
+		return score;
+	}
+
+	public void setScore(double score) {
+		this.score = score;
+	}
 	
 }
