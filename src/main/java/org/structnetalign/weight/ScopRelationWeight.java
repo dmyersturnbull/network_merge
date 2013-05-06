@@ -33,19 +33,23 @@ public class ScopRelationWeight implements RelationWeight {
 	static {
 		DEFAULT_WEIGHTS.put(ScopCategory.Class, 0.0);
 		DEFAULT_WEIGHTS.put(ScopCategory.Fold, 0.1);
-		DEFAULT_WEIGHTS.put(ScopCategory.Superfamily, 0.6);
-		DEFAULT_WEIGHTS.put(ScopCategory.Family, 1.0);
-		DEFAULT_WEIGHTS.put(ScopCategory.Domain, 1.4);
-		DEFAULT_WEIGHTS.put(ScopCategory.Px, 1.6);
-		DEFAULT_WEIGHTS.put(ScopCategory.Species, 1.7);
+		DEFAULT_WEIGHTS.put(ScopCategory.Superfamily, 0.4);
+		DEFAULT_WEIGHTS.put(ScopCategory.Family, 0.7);
+		DEFAULT_WEIGHTS.put(ScopCategory.Domain, 0.8);
+		DEFAULT_WEIGHTS.put(ScopCategory.Px, 0.9);
+		DEFAULT_WEIGHTS.put(ScopCategory.Species, 1.0);
 	}
 	
 	public ScopRelationWeight(Map<ScopCategory,Double> weights) {
 		this.weights = weights;
 	}
+
+	public ScopRelationWeight() {
+		this(DEFAULT_WEIGHTS);
+	}
 	
 	@Override
-	public double assignWeight(String uniProtId1, String uniProtId2) {
+	public double assignWeight(String uniProtId1, String uniProtId2) throws WeightException {
 		
 		final String scopId1 = IdentifierMappingFactory.getMapping().uniProtToScop(uniProtId1);
 		final String scopId2 = IdentifierMappingFactory.getMapping().uniProtToScop(uniProtId2);
@@ -54,7 +58,9 @@ public class ScopRelationWeight implements RelationWeight {
 		
 		final ScopDatabase scop = ScopFactory.getSCOP();
 		final ScopDomain domain1 = scop.getDomainByScopID(scopId1);
+		if (domain1 == null) throw new WeightException("Could not find SCOP id for " + uniProtId1);
 		final ScopDomain domain2 = scop.getDomainByScopID(scopId2);
+		if (domain2 == null) throw new WeightException("Could not find SCOP id for " + uniProtId2);
 		
 		// we need to iterate in reverse order (most specific first)
 		ScopCategory[] categories = ScopCategory.values();
