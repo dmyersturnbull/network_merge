@@ -15,9 +15,11 @@
 package org.structnetalign.util;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
@@ -32,14 +34,32 @@ public class NetworkPreparerTest {
 	@Test
 	public void testSimplify() throws IOException {
 		final File expected = new File(RESOURCE_DIR + "simplified_network.xml");
-		final File input = new File(RESOURCE_DIR + "full_network.xml");
+		final File input = new File(RESOURCE_DIR + "input_network.xml");
 		final File output = new File("simplified_network.xml");
 		NetworkPreparer prep = new NetworkPreparer();
 		EntrySet entrySet = NetworkUtils.readNetwork(input);
 		entrySet = prep.simplify(entrySet);
 		NetworkUtils.writeNetwork(entrySet, output);
-		assertTrue(FileUtils.contentEquals(expected, output));
+		assertTrue("Simplified file is wrong", FileUtils.contentEquals(expected, output));
 		output.delete();
+	}
+
+	@Test
+	public void testGetCcs() throws IOException {
+		final File input = new File(RESOURCE_DIR + "simplified_network.xml");
+		final File output = new File("cc.xml");
+		final String expectedCcs = RESOURCE_DIR + "expected_ccs/";
+		NetworkPreparer prep = new NetworkPreparer();
+		EntrySet entrySet = NetworkUtils.readNetwork(input);
+		List<EntrySet> ccs = prep.getConnnectedComponents(entrySet);
+		
+		assertEquals("Found the wrong number of connected components", 2, ccs.size());
+		for (int i = 0; i < ccs.size(); i++) {
+			NetworkUtils.writeNetwork(ccs.get(i), output);
+			final File expectedCc = new File(expectedCcs + i + ".xml");
+			assertTrue("Connected component file " + i + " is wrong", FileUtils.contentEquals(expectedCc, output));
+			output.delete();
+		}
 	}
 	
 }

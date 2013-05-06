@@ -26,6 +26,7 @@ import psidev.psi.mi.xml.model.Entry;
 import psidev.psi.mi.xml.model.EntrySet;
 import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.model.Interactor;
+import psidev.psi.mi.xml.model.OpenCvType;
 import psidev.psi.mi.xml.model.Participant;
 
 public class NetworkCombiner {
@@ -81,7 +82,7 @@ public class NetworkCombiner {
 
 			entrySet = null;
 			System.gc(); // predictable GC times
-
+			OpenCvType x = null;
 		}
 
 		NetworkUtils.writeNetwork(myEntrySet, output);

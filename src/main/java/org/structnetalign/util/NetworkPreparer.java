@@ -30,6 +30,7 @@ import psidev.psi.mi.xml.model.EntrySet;
 import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.model.Interactor;
 import psidev.psi.mi.xml.model.Participant;
+import psidev.psi.mi.xml.model.Source;
 import edu.uci.ics.jung.algorithms.cluster.WeakComponentClusterer;
 import edu.uci.ics.jung.graph.UndirectedGraph;
 import org.apache.logging.log4j.LogManager;
@@ -74,11 +75,23 @@ public class NetworkPreparer {
 			}
 		}
 
+		// the schema requires a non-null source
+		Source source = null;
+		for (Entry entry : entrySet.getEntries()) {
+			if (entry.getSource() != null) {
+				source = entry.getSource();
+				break;
+			} else {
+				logger.warn("An entry is missing a source");
+			}
+		}
+		
 		// now create an EntrySet per cc
 		List<EntrySet> myEntrySets = new ArrayList<>(ccs.size());
 		for (Set<Integer> cc : ccs) {
 			EntrySet myEntrySet = NetworkUtils.skeletonClone(entrySet);
-			Entry myEntry = new Entry(); // TODO shouldn't lose info here
+			Entry myEntry = new Entry();
+			myEntry.setSource(source);
 			for (int id : cc) {
 				Interactor interactor = interactorMap.get(id);
 				Set<Interaction> interactions = interactionMap.get(id);
@@ -122,6 +135,7 @@ public class NetworkPreparer {
 			numInteractionsInit += entry.getInteractions().size();
 
 			Entry myEntry = new Entry();
+			myEntry.setSource(entry.getSource());
 
 			// only include interactions that have exactly 2 participants
 			Collection<Interaction> myInteractions = myEntry.getInteractions();

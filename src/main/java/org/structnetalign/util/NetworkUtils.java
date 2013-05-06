@@ -65,6 +65,10 @@ public class NetworkUtils {
 			entrySet = reader.read(file);
 		} catch (PsimiXmlReaderException e) {
 			throw new RuntimeException("Couldn't parse input file " + file.getPath(), e);
+		} catch (IllegalArgumentException e) {
+			System.err.println(file.getAbsolutePath());
+			e.printStackTrace();
+			return null;
 		}
 		return entrySet;
 	}
