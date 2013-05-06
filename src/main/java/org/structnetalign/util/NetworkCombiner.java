@@ -20,6 +20,8 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import psidev.psi.mi.xml.model.Entry;
 import psidev.psi.mi.xml.model.EntrySet;
 import psidev.psi.mi.xml.model.Interaction;
@@ -27,6 +29,8 @@ import psidev.psi.mi.xml.model.Interactor;
 import psidev.psi.mi.xml.model.Participant;
 
 public class NetworkCombiner {
+
+	static final Logger logger = Logger.getLogger(NetworkCombiner.class.getName());
 
 	private static Random random = new Random();
 

@@ -14,10 +14,17 @@
  */
 package org.structnetalign.util;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.NavigableSet;
 import java.util.TreeSet;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 
 import psidev.psi.mi.xml.PsimiXmlReader;
 import psidev.psi.mi.xml.PsimiXmlReaderException;
@@ -31,7 +38,13 @@ import psidev.psi.mi.xml.model.Participant;
 
 public class NetworkUtils {
 
+	static final Logger logger = Logger.getLogger(NetworkUtils.class.getName());
+
+	public static final String NEWLINE;
 	private static final PsimiXmlVersion XML_VERSION = PsimiXmlVersion.VERSION_254;
+	static {
+		NEWLINE = System.getProperty("line.separator");
+	}
 
 	public static NavigableSet<Integer> getVertexIds(Interaction interaction) {
 		Collection<Participant> participants = interaction.getParticipants();
@@ -56,6 +69,18 @@ public class NetworkUtils {
 		return entrySet;
 	}
 
+	public static EntrySet readNetwork(String string) {
+		return readNetwork(new File(string));
+	}
+
+	public static String repeat(String s, int n) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < n; i++) {
+			sb.append(s);
+		}
+		return sb.toString();
+	}
+
 	public static Entry skeletonClone(Entry entry) {
 		Entry myEntry = new Entry();
 		myEntry.setSource(entry.getSource());
@@ -73,13 +98,61 @@ public class NetworkUtils {
 		return myEntrySet;
 	}
 
+	/**
+	 * Converts space indentation to tab indentation, assuming no lines have trailing whitespace.
+	 * 
+	 * @param input
+	 * @param output
+	 * @param nSpaces
+	 * @throws IOException
+	 */
+	public static void spacesToTabs(File input, File output, int nSpaces) throws IOException {
+		BufferedReader br = new BufferedReader(new FileReader(input));
+		PrintWriter pw = new PrintWriter(output);
+		String line = "";
+		while ((line = br.readLine()) != null) {
+			String trimmed = line.trim();
+			int indent = (int) ((float) (line.length() - trimmed.length()) / (float) nSpaces);
+			pw.println(repeat("\t", indent) + trimmed);
+		}
+		br.close();
+		pw.close();
+	}
+
+	public static String spacesToTabs(String input, int nSpaces) throws IOException {
+		StringBuilder sb = new StringBuilder();
+		String[] lines = input.split(NEWLINE);
+		for (String line : lines) {
+			String trimmed = line.trim();
+			int indent = (int) ((float) (line.length() - trimmed.length()) / (float) nSpaces);
+			sb.append(repeat("\t", indent) + trimmed + NEWLINE);
+		}
+		return sb.toString();
+	}
+
 	public static void writeNetwork(EntrySet entrySet, File file) {
+
 		PsimiXmlWriter psimiXmlWriter = new PsimiXmlWriter(XML_VERSION);
 		try {
 			psimiXmlWriter.write(entrySet, file);
 		} catch (PsimiXmlWriterException e) {
 			throw new RuntimeException("Couldn't write XML to " + file.getPath(), e);
 		}
+		
+		// to reduce file size
+		File tmp = new File(file + ".spaces.xml.tmp");
+		try {
+			FileUtils.moveFile(file, tmp);
+			spacesToTabs(tmp, file, 4);
+			tmp.delete();
+		} catch (IOException e) {
+			logger.warn("Could not convert spaces in " + file.getPath() + " to tabs", e);
+		}
+		
+	}
+
+	public static void writeNetwork(EntrySet entrySet, String file) {
+		writeNetwork(entrySet, new File(file));
 	}
 
 }

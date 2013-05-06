@@ -32,25 +32,30 @@ import psidev.psi.mi.xml.model.Interactor;
 import psidev.psi.mi.xml.model.Participant;
 import edu.uci.ics.jung.algorithms.cluster.WeakComponentClusterer;
 import edu.uci.ics.jung.graph.UndirectedGraph;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+ 
 public class NetworkPreparer {
 
-	/**
-	 * @param args
-	 */
+	static final Logger logger = LogManager.getLogger("org.structnetalign");
+
 	public static void main(String[] args) {
 		if (args.length != 2) {
 			System.err.println("Usage: NetworkPreparer input-file output-dir");
 			return;
 		}
+		NetworkPreparer preparer = new NetworkPreparer();
+		preparer.prepare(new File(args[0]), args[1]);
 	}
 
 	public List<EntrySet> getConnnectedComponents(EntrySet entrySet) {
 
 		// first, find the connected components as sets of vertices
 		UndirectedGraph<Integer, InteractionEdge> graph = GraphInteractionAdaptor.toGraph(entrySet, 1);
+		logger.info("There are " + graph.getVertexCount() + " vertices and " + graph.getEdgeCount() + " edges");
 		WeakComponentClusterer<Integer, InteractionEdge> alg = new WeakComponentClusterer<>();
 		Set<Set<Integer>> ccs = alg.transform(graph);
+		logger.info("Found " + ccs.size() + " connected components");
 
 		// map each vertex id to an interactor and a set of interactions
 		HashMap<Integer, Interactor> interactorMap = new HashMap<>();
@@ -58,12 +63,11 @@ public class NetworkPreparer {
 		for (Entry entry : entrySet.getEntries()) {
 			for (Interactor interactor : entry.getInteractors()) {
 				interactorMap.put(interactor.getId(), interactor);
+				interactionMap.put(interactor.getId(), new HashSet<Interaction>());
 			}
 			for (Interaction interaction : entry.getInteractions()) {
 				NavigableSet<Integer> participants = NetworkUtils.getVertexIds(interaction);
 				for (int participant : participants) {
-					if (!interactionMap.containsKey(participant)) interactionMap.put(participant,
-							new HashSet<Interaction>());
 					Set<Interaction> interactionsOfInteractor = interactionMap.get(participant);
 					interactionsOfInteractor.add(interaction);
 				}
@@ -95,8 +99,9 @@ public class NetworkPreparer {
 		entrySet = simplify(entrySet);
 		List<EntrySet> ccs = getConnnectedComponents(entrySet);
 		for (int i = 0; i < ccs.size(); i++) {
-			File file = new File(outputDir + "-cc" + i + ".xml");
+			File file = new File(outputDir + "cc_" + i + ".xml");
 			NetworkUtils.writeNetwork(ccs.get(i), file);
+			logger.info("Wrote connected component " + i + " to " + file.getPath());
 		}
 	}
 
@@ -108,8 +113,13 @@ public class NetworkPreparer {
 		myEntrySet.setMinorVersion(entrySet.getMinorVersion());
 		myEntrySet.setLevel(entrySet.getLevel());
 
+		int numInteractionsInit = 0;
+		int numInteractionsRemoved = 0;
+
 		// now we want to add only the interactions and interactors from each entry
 		for (Entry entry : entrySet.getEntries()) {
+
+			numInteractionsInit += entry.getInteractions().size();
 
 			Entry myEntry = new Entry();
 
@@ -119,13 +129,17 @@ public class NetworkPreparer {
 				Collection<Participant> participants = interaction.getParticipants();
 				if (participants.size() == 2) {
 					myInteractions.add(interaction);
+				} else {
+					numInteractionsRemoved++;
+					logger.debug("Removing interaction " + interaction.getId() + " because it has " + participants.size() + " participants");
 				}
 			}
 
-			myEntrySet.getEntries().add(myEntry);
-			myEntry.getInteractions().addAll(entry.getInteractions());
+			myEntry.getInteractions().addAll(myInteractions);
 			myEntry.getInteractors().addAll(entry.getInteractors());
 			myEntrySet.getEntries().add(myEntry);
+			
+			logger.info("Removed " + numInteractionsRemoved + " interactions out of " + numInteractionsInit);
 
 		}
 
