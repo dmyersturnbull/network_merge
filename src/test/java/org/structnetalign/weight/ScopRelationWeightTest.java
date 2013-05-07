@@ -34,13 +34,13 @@ public class ScopRelationWeightTest {
 		String antiFungal = "Q9RCK8"; // Streptomyces tendae Antifungal protein AFP1 b.11.1.6; d1g6ea_
 		ScopRelationWeight weighter = new ScopRelationWeight();
 		Map<ScopCategory,Double> weights = ScopRelationWeight.DEFAULT_WEIGHTS;
-		assertEquals(weights.get(ScopCategory.Species).doubleValue(), weighter.assignWeight(cowSpermadhesin, cowSpermadhesin), WEIGHT_PRECISION);
-		assertEquals(weights.get(ScopCategory.Px).doubleValue(), weighter.assignWeight(cowSpermadhesin, pigSpermadhesin), WEIGHT_PRECISION);
+		assertEquals(weights.get(ScopCategory.Px).doubleValue(), weighter.assignWeight(cowSpermadhesin, cowSpermadhesin), WEIGHT_PRECISION);
+		assertEquals(weights.get(ScopCategory.Family).doubleValue(), weighter.assignWeight(cowSpermadhesin, pigSpermadhesin), WEIGHT_PRECISION);
 		assertEquals(weights.get(ScopCategory.Fold).doubleValue(), weighter.assignWeight(cowSpermadhesin, histoCallogen), WEIGHT_PRECISION);
 		assertEquals(weights.get(ScopCategory.Fold).doubleValue(), weighter.assignWeight(pigSpermadhesin, histoCallogen), WEIGHT_PRECISION);
 		assertEquals(weights.get(ScopCategory.Class).doubleValue(), weighter.assignWeight(cowSpermadhesin, yeastKiller), WEIGHT_PRECISION);
 		assertEquals(weights.get(ScopCategory.Class).doubleValue(), weighter.assignWeight(cowSpermadhesin, antiFungal), WEIGHT_PRECISION);
-		assertEquals(weights.get(ScopCategory.Family).doubleValue(), weighter.assignWeight(yeastKiller, antiFungal), WEIGHT_PRECISION);
+		assertEquals(weights.get(ScopCategory.Superfamily).doubleValue(), weighter.assignWeight(yeastKiller, antiFungal), WEIGHT_PRECISION);
 	}
 
 	@Test(expected=WeightException.class)

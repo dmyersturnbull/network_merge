@@ -35,9 +35,7 @@ public class ScopRelationWeight implements RelationWeight {
 		DEFAULT_WEIGHTS.put(ScopCategory.Fold, 0.1);
 		DEFAULT_WEIGHTS.put(ScopCategory.Superfamily, 0.4);
 		DEFAULT_WEIGHTS.put(ScopCategory.Family, 0.7);
-		DEFAULT_WEIGHTS.put(ScopCategory.Domain, 0.8);
-		DEFAULT_WEIGHTS.put(ScopCategory.Px, 0.9);
-		DEFAULT_WEIGHTS.put(ScopCategory.Species, 1.0);
+		DEFAULT_WEIGHTS.put(ScopCategory.Px, 1.0);
 	}
 	
 	public ScopRelationWeight(Map<ScopCategory,Double> weights) {
@@ -52,9 +50,9 @@ public class ScopRelationWeight implements RelationWeight {
 	public double assignWeight(String uniProtId1, String uniProtId2) throws WeightException {
 		
 		final String scopId1 = IdentifierMappingFactory.getMapping().uniProtToScop(uniProtId1);
+		if (scopId1 == null) throw new WeightException("Could not find SCOP id for " + uniProtId1);
 		final String scopId2 = IdentifierMappingFactory.getMapping().uniProtToScop(uniProtId2);
-		
-		if (scopId1 == null || scopId2 == null) return 0.0; // this is okay
+		if (scopId2 == null) throw new WeightException("Could not find SCOP id for " + uniProtId2);
 		
 		final ScopDatabase scop = ScopFactory.getSCOP();
 		final ScopDomain domain1 = scop.getDomainByScopID(scopId1);
@@ -68,7 +66,7 @@ public class ScopRelationWeight implements RelationWeight {
 		for (ScopCategory category : categories) {
 			int categoryId1 = sunIdOfCategory(domain1, category);
 			int categoryId2 = sunIdOfCategory(domain2, category);
-			if (categoryId1 == categoryId2) return weights.get(category);
+			if (categoryId1 == categoryId2 && weights.get(category) != null) return weights.get(category);
 		}
 		
 		return 0.0;
