@@ -46,7 +46,7 @@ public class CleverGraph {
 	public boolean addHomologies(HomologyEdge edge, Collection<? extends Integer> vertices) {
 		return homology.addEdge(edge, vertices);
 	}
-	public boolean addEdge(HomologyEdge edge, int vertex1, int vertex2) {
+	public boolean addHomology(HomologyEdge edge, int vertex1, int vertex2) {
 		return homology.addEdge(edge, vertex1, vertex2);
 	}
 	public int homologyDegree(int vertex) {
@@ -83,7 +83,7 @@ public class CleverGraph {
 	public boolean removeInteraction(InteractionEdge edge) {
 		return interaction.removeEdge(edge);
 	}
-
+	
 	private final UndirectedGraph<Integer,InteractionEdge> interaction;
 
 	private final UndirectedGraph<Integer,HomologyEdge> homology;
@@ -91,6 +91,12 @@ public class CleverGraph {
 	public CleverGraph() {
 		interaction = new UndirectedSparseGraph<Integer,InteractionEdge>();
 		homology = new UndirectedSparseGraph<Integer,HomologyEdge>();
+	}
+	
+	public CleverGraph(UndirectedGraph<Integer, InteractionEdge> interaction,
+			UndirectedGraph<Integer, HomologyEdge> homology) {
+		this.interaction = interaction;
+		this.homology = homology;
 	}
 	
 	public UndirectedGraph<Integer, InteractionEdge> getInteraction() {

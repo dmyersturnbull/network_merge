@@ -35,7 +35,7 @@ public class GraphInteractionAdaptor {
 
 	private static final String CONFIDENCE_SHORT_LABEL = "probability";
 
-	public static void modifyProbabilites(EntrySet entrySet, UndirectedSparseGraph<Integer, InteractionEdge> graph) {
+	public static void modifyProbabilites(EntrySet entrySet, UndirectedGraph<Integer, InteractionEdge> graph) {
 
 		for (Entry entry : entrySet.getEntries()) {
 			for (Interaction interaction : entry.getInteractions()) {
