@@ -1,55 +1,100 @@
-\documentclass[11pt]{article}
+\documentclass[12pt,twoside]{article}
+\usepackage[margin=0.5in]{geometry}
 \usepackage[utf8]{inputenc}
+\usepackage{setspace}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{enumerate}
 \usepackage{tikz}
 \usepackage{color}
+\usepackage{hyperref}
+\usepackage[square,numbers]{natbib}
 \definecolor{red}{rgb}{1,0,0}
 \newcommand*\circled[1]{\tikz[baseline=(char.base)]{\node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
-
 \renewcommand{\labelitemi}{$-$}
-\title{\textbf{Struct-net-align}}
-\date{currently a very rough incoherent and partially incorrect sketch}
+\setstretch{1.1}
+\setlength{\parskip}{0.4em plus0em minus0em}
+\setcounter{secnumdepth}{0}
+\setcounter{tocdepth}{2}
+\def\NI{\noindent}
+\def\NS{
+	\setlength{\itemsep}{0.1em}
+	\setlength{\parskip}{0em}
+	\setlength{\parsep}{0em}
+}
+\def\RS{
+	\setlength{\itemsep}{0em}
+	\setlength{\parskip}{0.4em}
+	\setlength{\parsep}{0em}
+}
+
+
 \begin{document}
 
+\title{\textbf{Using structure to improve a noisy PPI network} \\ \Large{(now semi-coherent!)}}
+\author{Douglas Myers-Turnbull\\ \texttt{dmyerstu@ucsd.edu}}
+\date{\small{\today}}
 \maketitle
 
-\section*{Introduction}
-The idea is to use protein structural information to improve a noisy PPI network. The method would typically be applied after a more cononical, sequence- or network-structure- based, heuristic network alignment or degeneracy minimization algorithm.\\\\
-The method uses the Structural Classification of Proteins (SCOP) and structural alignment based on Combinatorial Extension to introduce edges in the graph that indicate homology.\\\\
-It then uses this information to update the probability of interactions that are shared between homologous proteins. Finally, it collapses degenerate vertices via edge contraction, where degeneracy is decided by the presence of a clique whose members share interactions.\\\\
-Clique-finding is performed naively via the Bron--Kerbosch algorithm because edges indicating homology are drawn relatively conservatively, resulting in a sparse graph.
+\begin{abstract}
+\NI \textbf{Motivation: } Protein-protein interaction (PPI) networks are often derived from noisy high-throughput experimental methods such as protein complex co-immunoprecipitation and yeast two-hybrid screening. Consequently, PPI networks are typically both are cumbersome and suffer from low accuracy.\\
+\NI \textbf{Methods: } Here we present a novel method (StructNA) for both reducing the size of PPI networks and improving their accuracy by finding homologs in the network whose interactions are consistent. Homologs are identified in a species-independent way using protein structural information. The method takes as input a single network. It identifies homologs, then merges fully homologous proteins and assigns scores to  interactions that are consistent among homologs. It considers both degree of homology and similarity of network topology for both the merging and scoring.\\
+\NI \textbf{Results: }\\
+\NI \textbf{Availability: } The algorithm was implemented in Java and is licensed under the Apache License version 2.0. It's probably available for download somewhere.
+\end{abstract}
 
-\section*{Algorithm}
+\section{Introduction}
+\NI Protein-protein interaction (PPI) networks are often derived from high-throughput experimental assays such as protein complex co-immunoprecipitation [Kaboord and Perr], Tandem affinity purification [Rigaut et. al.], and yeast two-hybrid screening [Fields and Song], or by computational techniques such as gene co-expression [Goh and Cohen]. These techniques are used because they are cost-effective, but they frequently lead to the inclusion of false interactions and missing interactions, and they are unable to accurately determine the probability of interactions.
 
-\subsection*{Definitions}
+\NI PPI networks are modelled as undirected graphs in which vertices denote proteins and edges denote protein--protein interactions. Edge weights are used to describe the probability or certainty of an interaction. Psuedographs (which permit self-loops) allow for intramolecular interactions, and hypergraphs allow for multi-molecular interactions.
 
-Let $G = (V,Int(G) \cup Hom(G))$ be a network whose vertices represent domains.\\\\
-Let $Int(G)$ is a set of edges indicating interactions.\\\\
-Let $Int(v)$ for any vertex $v \in Int(G)$ is the set of edges in $Int(G)$ that are incident to $v$. Also define $Hom(v)$ in the same way.\\\\
-$Hom(G)$ is a set of edges indicating homology (similarity) between vertices.\\\\
-An edge $e \in Int(G)$ is associated with a probability $Prob(e)$.\\\\
-An edge $(a,b) \in Hom(G)$ is associated with a score denoted $s((a,b))$ ranging from $0$ to $\infty$. Any edge with score $s \geq 1$ is defined as significant.\\\\
-Let $\rho(a,b)$ denote the score of the most specific homology relation $r$ identified between nodes $a$ and $b$. For example, if $a$ and $b$ are from the same SCOP fold but not the same SCOP superfamily, $\rho(a,b)$ will be given by this relation.\\\\
-Let $\alpha(a,b)$ denote the weighted score of an alignment that has been performed between vertices $a$ and $b$.\\\\
-Let $\iota(v)$ denote the number of edges $(v, v'\,\!)$ in $Int(G)$, $\forall \: v \in V$, and let $\eta(v)$ denote the number of edges $(v, v'\,\!)$ in $Hom(G)$, $\forall \: v \in V$.\\\\
+\NI A number of algorithms have been developed to decrease noise in PPIs by identifying homologs. These algorithms all solve a specific formulation of a \emph{network alignment problem}. The objective of this class of problems is, given two networks ($n$ networks in the case of a multiple network alignment), to define a mapping between vertices in the networks that maximizes their overlap. Here, ``overlap" can be given a number of definitions, but it usually incorperates both extent of homology between the aligned proteins and similarity of the network topology in the neighborhood of those proteins. Network alignment algorithms generally assume that homology is one-to-one in order to make the problem more tractable.
+
+\NI There are a number of limitations inherent to these approaches. First, homology is not one-to-one in real biological systems. Consequently, network alignment algorithms fail to identify many homology relationships that are biological and should be used to inform interactions. Second, these algorithms cannot identify or use homology relationships between proteins within the same species. Finally, all current network alignment algorithms rely on sequence alignments to identify homologous pairs. Since the data describes physical interactions between proteins, sequence alignment is ill-suited for deciding homology.
+
+\NI Therefore, I propose an algorithm for improving PPI networks that differs from network alignment algorithms in three ways:
+\NS
+\begin{enumerate}
+\NS
+\item It does not require that homology is one-to-one.
+\item It can identify homology relationships within the same species.
+\item It is based on structural information rather than sequence information, making it more suitable for use with PPIs.
+\end{enumerate}
+
+\NI The method uses the Structural Classification of Proteins (SCOP) [Murzin et. al.] and structural alignment based on Combinatorial Extension [Shindyalov and Bourne] to introduce edges in the graph that indicate homology. It then uses this information to update the probability of interactions that are shared between homologous proteins. Finally, it collapses degenerate vertices via edge contraction, where degeneracy is decided by the presence of a clique whose members share interactions. Clique-finding is performed naively via the Bron--Kerbosch algorithm because edges indicating homology are drawn relatively conservatively, resulting in a sparse graph.\RS
+
+\section{Methods}
+
+\subsection{Definitions}
+
+Let $G = (V,Int(G) \cup Hom(G))$ be a network whose vertices represent domains.\\
+Let $Int(G)$ is a set of edges indicating interactions.\\
+Let $Int(v)$ for any vertex $v \in Int(G)$ is the set of edges in $Int(G)$ that are incident to $v$. Also define $Hom(v)$ in the same way.\\
+$Hom(G)$ is a set of edges indicating homology (similarity) between vertices.\\
+An edge $e \in Int(G)$ is associated with a probability $Prob(e)$.\\
+An edge $(a,b) \in Hom(G)$ is associated with a probability denoted $S((a,b))$. Any edge with score $S \geq \tau$ is defined as significant.\\
+Let $\rho(a,b)$ denote the score of the most specific homology relation $r$ identified between nodes $a$ and $b$. For example, if $a$ and $b$ are from the same SCOP fold but not the same SCOP superfamily, $\rho(a,b)$ will be given by this relation.\\
+Let $\alpha(a,b)$ denote the weighted score of an alignment that has been performed between vertices $a$ and $b$.\\
+Let $\iota(v)$ denote the number of edges $(v, v'\,\!)$ in $Int(G)$, $\forall \: v \in V$, and let $\eta(v)$ denote the number of edges $(v, v'\,\!)$ in $Hom(G)$, $\forall \: v \in V$.\\
 Let $\iota^* = \displaystyle \max_{v \in V}\{\iota(v)\}$, $\eta^* = \displaystyle \max_{v \in V}\{\eta(v)\}$.
-\subsection*{Overview}
+\subsection{Overview}
 
-The algorithm consists of three major steps.\\\\
-Given an interaction network $G=(V,Int(G))$, build a network $G'\,\! = (V,Int(G'\,\!) \cup Hom(G'\,\!))$ by using any available information (e.g. homology databases or alignment) to add edges to $Hom(G'\,\!)$ and to increase the weights of those edges. At the end of this process, remove any edge from $Hom(G'\,\!)$ with  weight less than $1$.\\\\
-Second, generate a network $G'\,\!'\,\! = (V, Int(G'\,\!'\,\!)$ by using edges in $Hom(G'\,\!)$ to update edge weights (probabilities) in $Int(G)$.\\\\
-Third, define a equivalence relation between vertices, $H$, such that $H(u) \equiv H(v)$ iff $v$ is reachable from $v$ by traversing $Hom(G'\,\!)$. Generate a network $G'\,\!'\,\!'\,\! = (V'\,\!, Int(G'\,\!'\,\!'\,\!) \cup Hom(G'\,\!'\,\!'\,\!))$ by merging nodes contained in cliques of $(V,Hom(G'\,\!'\,\!))$ in which every vertex in the clique is associated with the same set of interaction edges in $(V, Int(G'\,\!'\,\!))$, with respect to the equivalence relation $H$.
+The algorithm consists of three major steps.
 
-\subsection*{Algorithm}
+\NI Given an interaction network $G=(V,Int(G))$, build a network $G'\,\! = (V,Int(G'\,\!) \cup Hom(G'\,\!))$ by using any available information (e.g. homology databases or alignment) to add edges to $Hom(G'\,\!)$ and to increase the weights of those edges. At the end of this process, remove any edge from $Hom(G'\,\!)$ with  weight less than $\tau$.
+
+\NI Second, generate a network $G'\,\!'\,\! = (V, Int(G'\,\!'\,\!)$ by using edges in $Hom(G'\,\!)$ to update edge weights (probabilities) in $Int(G)$. Use both the probability of the shared intereaction and the probability of the homology for both interaction participants in this process.
+
+\NI Third, define a equivalence relation between vertices, $H$, such that $H(u) \equiv H(v)$ iff $v$ is reachable from $v$ with probability $\xi$ by traversing $Hom(G'\,\!)$. Remove any edge from $Hom(G'\,\!)$ with weight less than $\zeta$. Generate a network $G'\,\!'\,\!'\,\! = (V'\,\!, Int(G'\,\!'\,\!'\,\!) \cup Hom(G'\,\!'\,\!'\,\!))$ by merging nodes contained in cliques of $(V,Hom(G'\,\!'\,\!))$ in which every vertex in the clique is associated with the same set of interaction edges in $(V, Int(G'\,\!'\,\!))$, with respect to the equivalence relation $H$.
+
+\subsection{Algorithm}
 
 Pre- and post-processing steps are not included in the formal description but are listed below.\\\\
-\newpage
 StructNetAlign($G$, $\tau$, $\varsigma$, $\xi$):
 
 \begin{enumerate}
+\NS
 \item Parse network.
 \item For every pair of vertices $(a,b)$, add an edge $(a,b)$ to $Hom(G)$, with label $\rho(a,b)$.
 \item For every pair of vertices $(a,b)$ (optionally: not joined by an edge in $Hom(G)$), align $a$ against $b$ and add an edge to $Hom(G)$, with label $\alpha(a,b)$.
@@ -74,21 +119,20 @@ StructNetAlign($G$, $\tau$, $\varsigma$, $\xi$):
 \item Output the network $(V, Int(G))$.
 \end{enumerate}
 
-\subsection*{Secondary steps}
+\subsection{Secondary steps}
 \begin{enumerate}[a)]
 \item The algorithm should is run seperately for each connected component of a network.
 \item If edge weights for interactions in the network are binary or otherwise determined to be unreliable, the interactions are scored.
 \end{enumerate}
 
 \subsection*{Defining homology by relations}
+\NI The input DIP network consists of a list interactions occuring between two polypeptide chains, where the chains are described by UniProt Ids. In cases where the PDB contains at least one structure for that chain, a PDB Id and is found for that UniProt Id. From that, a SCOP domain corresponding to the PDB Id and chain are found. This selection process is problematic for multi-chain domains, which are ignored for this step. Scores ($\rho$) are assigned by using the most specific SCOP relationship found.\RS
 
-The input DIP network consists of a list interactions occuring between two polypeptide chains, where the chains are described by UniProt Ids. In cases where the PDB contains at least one structure for that chain, a PDB Id and is found for that UniProt Id. From that, a SCOP domain corresponding to the PDB Id and chain are found. This selection process is problematic for multi-chain domains, which are ignored for this step. Scores ($\rho$) are assigned by using the most specific SCOP relationship found.
-
-\subsection*{Defining homology by alignment}
+\subsection{Defining homology by alignment}
 
 In cases where homology is not established by SCOP relationships, homology can be derived by structural alignment using Combinatorial Extension.
 
-\subsection*{Using homology to score interactions}
+\subsection{Using homology to score interactions}
 
 Define
 $R_{i,j}^{(u,v)} = Prob(i,j) \left(1 - \displaystyle \prod_\pi Q_{u,i} - \prod_\pi Q_{v,j} + \prod_\pi Q_{u,i} \cdot \prod_\pi Q_{v,j} \right)$\\
@@ -96,7 +140,7 @@ Define $Q_{a,b} = \displaystyle \prod_{\text{paths } \pi \text{ from a to b}} \p
 Then we update the probability of an interaction $(u,v)$ with:\\
 $Prob((u,v))'\,\! = Prob((u,v)) + 1 - \displaystyle \prod_{i,j}(1 - R_{i,j}^{(u,v)})$
 
-\subsection*{Merging equivalent domains}
+\subsection{Merging equivalent domains}
 
 To merge, we require:
 \begin{enumerate}
@@ -105,21 +149,34 @@ To merge, we require:
 \end{enumerate}
 Unfortunately, \textsc{Max-Clique} is \textsc{NP-Hard}. However, we can bound the time-complexity of a naive algorithm (such as Bron--Kerbosch) in terms of the maximum number of homology edges of any vertex in $G$. Let $\gamma$ be the maximal clique size in $Hom(G)$. Then $\gamma^* \leq \eta^*$.\\\\
 We can readily solve \textsc{Max-Clique}$(G)$ in $\mathcal O(|V|^{\eta^*}(\eta^*)^3)$ time by enumerating all $|V|^{\gamma}$ subgraphs of size $\gamma$ for every $\gamma = 1, 2, \ldots, \eta^*$.\\\\
-Note that a subset of $Hom(G'\,\!'\,\!)$ nearly defines an isomorphism between two subgraphs of $(V'\,\!, Int(G'\,\!'\,\!))$ For a pair $(u,v)$ where $(u,v) \in Hom(G'\,\!)$, $Int(u)$ may not exactly equal $Int(v)$, but $Int(u) / H = Int(v) / H$, where $Int(u) / H$ is some kind of factor graph in the algebraic sense that I'll need to define (look up factor group or quotient ring).\\\\
+Note that a subset of $Hom(G'\,\!'\,\!)$ nearly defines an isomorphism between two subgraphs of $(V'\,\!, Int(G'\,\!'\,\!))$ For a pair $(u,v)$ where $(u,v) \in Hom(G'\,\!)$, $Int(u)$ may not exactly equal $Int(v)$, but $Int(u) / H = Int(v) / H$, where $Int(u) / H$ is some kind of factor graph in the algebraic sense that I'll need to define (look up factor group or quotient ring to get the idea of what I want).\\\\
 Once we have a (maximal) clique $C$, we need to find which vertices in $C$ share interactions. This results in a partitioning of $C$ into disjoint subgraphs $D$. We can then merge every vertex in each $D_i$ by edge contraction.
 
-\subsection*{Initial scoring of interactions}
+\subsection{Initial scoring of interactions}
 
-\subsection*{Implementation}
+\subsection{Implementation}
 
-\section*{Results}
+\section{Results}
 
-\subsection*{Overview}
+\subsection{Overview}
 
-\subsection*{Accuracy}
+\subsection{Accuracy}
 
-\subsection*{Speed}
+\subsection{Speed}
 
-\section*{Appendix 1. Formal proofs}
+\begin{thebibliography}{9}
+
+\bibitem{kaboord}
+  Kaboord B, Perr M.
+  \emph{Isolation of proteins and protein complexes by immunoprecipitation}.
+  Methods Mol. Bio. 2008. 424:349-64
+
+\end{thebibliography}
+
+
+\bibliographystyle{plainnat}
+\bibliography{doc}
+
+\section{Appendix 1. Formal proofs}
 
 \end{document}
