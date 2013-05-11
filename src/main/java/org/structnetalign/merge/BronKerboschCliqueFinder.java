@@ -20,21 +20,44 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.commons.collections15.Transformer;
-
 import edu.uci.ics.jung.graph.UndirectedGraph;
 
-public class BronKerboschCliqueFinder<V,E> implements Transformer<UndirectedGraph<V,E>, Collection<Set<V>>>  {
+/**
+ * An implementation of naive Bron–Kerbosch.
+ * @author dmyersturnbull
+ *
+ * @param <V>
+ * @param <E>
+ */
+public class BronKerboschCliqueFinder<V,E> implements CliqueFinder<V,E> {
 
 	@Override
 	public Collection<Set<V>> transform(UndirectedGraph<V, E> graph) {
 		Collection<Set<V>> cliques = new TreeSet<>();
-		// TODO another implementation
 		InternalBronKerboschCliqueFinder<V,E> finder = new InternalBronKerboschCliqueFinder<V,E>(graph);
 		cliques = finder.getAllMaximalCliques();
 		return cliques;
 	}
 
+	@Override
+	public Collection<Set<V>> getMaximumCliques(UndirectedGraph<V,E> graph) {
+		Collection<Set<V>> top = new TreeSet<>();
+		int max = 0;
+		Collection<Set<V>> cliques = transform(graph);
+		for (Set<V> clique : cliques) {
+			if (clique.size() >= max) {
+				max = clique.size();
+				top.add(clique);
+			}
+		}
+		return top;
+	}
+
+
+	@Override
+	public Collection<Set<V>> getMaximalCliques(UndirectedGraph<V,E> graph) {
+		return transform(graph);
+	}
 
 	/**
 	 * 
