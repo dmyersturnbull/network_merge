@@ -9,22 +9,80 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
+ * 
  * @author dmyersturnbull
  */
 package org.structnetalign.weight;
 
-import org.structnetalign.CleverGraph;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
+import org.structnetalign.CleverGraph;
+import org.structnetalign.HomologyEdge;
+
+/**
+ * A simple {@link WeightManager} that keeps a list of {@link Weight Weights} and sums over each weight. If a Weight
+ * fails, it simply adds 0.
+ * 
+ * @author dmyersturnbull
+ * 
+ */
 public class SimpleWeightManager implements WeightManager {
 
-	private final Weight[] weights;
+	private List<Double> coefficients;
+	private double threshold;
+	private List<Weight> weights;
 
-	public SimpleWeightManager(Weight[] weights) {
+	public SimpleWeightManager() {
+		super();
+		weights = new ArrayList<Weight>();
+		coefficients = new ArrayList<Double>();
+	}
+
+	public SimpleWeightManager(List<Weight> weights, List<Double> coefficients, double threshold) {
+		super();
+		this.weights = weights;
+		this.coefficients = coefficients;
+		this.threshold = threshold;
+	}
+
+	public boolean add(Weight e) {
+		return weights.add(e);
+	}
+
+	@Override
+	public void assignWeights(CleverGraph graph, Map<Integer, String> uniProtIds) {
+		for (int a : graph.getVertices()) {
+			for (int b : graph.getVertices()) {
+				if (a == b) continue;
+				double score = 0;
+				for (int i = 0; i < weights.size(); i++) {
+					String sa = uniProtIds.get(a);
+					String sb = uniProtIds.get(b);
+					try {
+						score += coefficients.get(i) * weights.get(i).assignWeight(sa, sb);
+					} catch (WeightException e) {
+						// totally okay; just don't add
+					}
+				}
+				if (score >= threshold) {
+					Collection<Integer> vertices = Arrays.asList(a, b);
+					HomologyEdge edge = new HomologyEdge(score);
+					graph.addHomologies(edge, vertices);
+				}
+			}
+		}
+	}
+
+	public void setThreshold(double threshold) {
+		this.threshold = threshold;
+	}
+
+	public void setWeights(List<Weight> weights) {
 		this.weights = weights;
 	}
-	
-	public void assignWeights(CleverGraph graph) {
-		
-	}
-	
+
 }

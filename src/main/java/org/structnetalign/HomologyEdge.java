@@ -15,35 +15,14 @@ package org.structnetalign;
 
 public class HomologyEdge {
 
-	public enum Type {
+	public static enum Type {
 		SEQUENCE_ALIGNMENT, STRUCTURAL_ALIGNMENT, SEQUENCE_DATABASE, STRUCTURAL_DATABASE;
 	}
 	
-	private Type type;
-	
-	private int id;
-	
 	private double score;
 	
-	public HomologyEdge(Type type, double score) {
-		this.type = type;
+	public HomologyEdge(double score) {
 		this.score = score;
-	}
-
-	public Type getType() {
-		return type;
-	}
-
-	public void setType(Type type) {
-		this.type = type;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public double getScore() {

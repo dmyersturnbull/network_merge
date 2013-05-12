@@ -9,15 +9,12 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
+ * 
  * @author dmyersturnbull
  */
-package org.structnetalign.weight;
 
-import java.util.Map;
+package org.structnetalign.util;
 
-import org.structnetalign.CleverGraph;
-
-
-public interface WeightManager {
-	void assignWeights(CleverGraph graph, Map<Integer,String> uniProtIds);
+public interface EdgeWeighter<E> {
+	double getWeight(E e);
 }

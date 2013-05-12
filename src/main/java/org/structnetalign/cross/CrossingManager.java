@@ -13,10 +13,10 @@
  */
 package org.structnetalign.cross;
 
-import edu.uci.ics.jung.graph.UndirectedGraph;
+import org.structnetalign.CleverGraph;
 
 public interface CrossingManager {
 
-	public void cross(UndirectedGraph<String,?> graph);
+	public void cross(CleverGraph graph);
 	
 }

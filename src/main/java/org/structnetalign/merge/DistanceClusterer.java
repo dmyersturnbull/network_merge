@@ -23,6 +23,7 @@ import java.util.LinkedList;
 import java.util.Set;
 
 import org.apache.commons.collections15.Transformer;
+import org.structnetalign.util.EdgeWeighter;
 
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.UndirectedGraph;
@@ -45,10 +46,6 @@ import edu.uci.ics.jung.graph.UndirectedGraph;
  * @param <E> The type of the edges
  */
 public abstract class DistanceClusterer<V, E> implements Transformer<Graph<V, E>, Set<Set<V>>> {
-
-	public interface EdgeWeighter<E> {
-		double getWeight(E e);
-	}
 
 	private final EdgeWeighter<E> edgeWeighter;
 

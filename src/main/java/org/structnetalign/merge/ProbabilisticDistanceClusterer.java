@@ -15,6 +15,8 @@
 
 package org.structnetalign.merge;
 
+import org.structnetalign.util.EdgeWeighter;
+
 /**
  * A {@link DistanceClusterer} that clusters vertices by reachability and distance, where edge weights denote
  * probabilities and the probability of the shortest (fewst-vertex) path is required to be above a threshold.

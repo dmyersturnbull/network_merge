@@ -92,6 +92,11 @@ public class CleverGraph {
 		interaction = new UndirectedSparseGraph<Integer,InteractionEdge>();
 		homology = new UndirectedSparseGraph<Integer,HomologyEdge>();
 	}
+
+	public CleverGraph(UndirectedGraph<Integer, InteractionEdge> interaction) {
+		this.interaction = interaction;
+		this.homology = new UndirectedSparseGraph<Integer,HomologyEdge>();
+	}
 	
 	public CleverGraph(UndirectedGraph<Integer, InteractionEdge> interaction,
 			UndirectedGraph<Integer, HomologyEdge> homology) {

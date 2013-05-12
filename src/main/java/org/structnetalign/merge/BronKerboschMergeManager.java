@@ -33,7 +33,7 @@ import org.apache.commons.codec.binary.Hex;
 import org.structnetalign.CleverGraph;
 import org.structnetalign.HomologyEdge;
 import org.structnetalign.InteractionEdge;
-import org.structnetalign.merge.DistanceClusterer.EdgeWeighter;
+import org.structnetalign.util.EdgeWeighter;
 import org.structnetalign.util.GraphInteractionAdaptor;
 import org.structnetalign.util.NetworkUtils;
 import org.xml.sax.SAXException;

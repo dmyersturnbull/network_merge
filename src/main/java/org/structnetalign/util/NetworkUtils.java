@@ -20,6 +20,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.NavigableSet;
 import java.util.TreeSet;
 
@@ -31,10 +33,13 @@ import psidev.psi.mi.xml.PsimiXmlReaderException;
 import psidev.psi.mi.xml.PsimiXmlVersion;
 import psidev.psi.mi.xml.PsimiXmlWriter;
 import psidev.psi.mi.xml.PsimiXmlWriterException;
+import psidev.psi.mi.xml.model.DbReference;
 import psidev.psi.mi.xml.model.Entry;
 import psidev.psi.mi.xml.model.EntrySet;
 import psidev.psi.mi.xml.model.Interaction;
+import psidev.psi.mi.xml.model.Interactor;
 import psidev.psi.mi.xml.model.Participant;
+import psidev.psi.mi.xml.model.Xref;
 
 public class NetworkUtils {
 
@@ -44,6 +49,36 @@ public class NetworkUtils {
 	private static final PsimiXmlVersion XML_VERSION = PsimiXmlVersion.VERSION_254;
 	static {
 		NEWLINE = System.getProperty("line.separator");
+	}
+
+	public static Map<Integer,String> getUniProtIds(File file) {
+		return getUniProtIds(NetworkUtils.readNetwork(file));
+	}
+	
+	public static Map<Integer,String> getUniProtIds(EntrySet entrySet) {
+		final String accession = "MI:0486";
+		final String accessionType = "MI:0356";
+		HashMap<Integer,String> map = new HashMap<>();
+		for (Entry entry : entrySet.getEntries()) {
+			for (Interactor interactor : entry.getInteractors()) {
+				String id = null;
+				Xref xref = interactor.getXref();
+				if (xref != null) {
+					Collection<DbReference> refs = xref.getAllDbReferences();
+					for (DbReference ref : refs) {
+						if (accession.equals(ref.getDbAc()) && accessionType.equals(ref.getRefTypeAc())) {
+							id = ref.getId();
+						}
+					}
+				}
+				if (id != null) {
+					map.put(interactor.getId(), id);
+				} else {
+					logger.warn("Reference Id not found for interactor #" + interactor.getId() + " (using acession " + accession + " of type " + accessionType + "). Not including.");
+				}
+			}
+		}
+		return map;
 	}
 
 	public static NavigableSet<Integer> getVertexIds(Interaction interaction) {
@@ -142,7 +177,7 @@ public class NetworkUtils {
 		} catch (PsimiXmlWriterException e) {
 			throw new RuntimeException("Couldn't write XML to " + file.getPath(), e);
 		}
-		
+
 		// to reduce file size
 		File tmp = new File(file + ".spaces.xml.tmp");
 		try {
@@ -152,7 +187,7 @@ public class NetworkUtils {
 		} catch (IOException e) {
 			logger.warn("Could not convert spaces in " + file.getPath() + " to tabs", e);
 		}
-		
+
 	}
 
 	public static void writeNetwork(EntrySet entrySet, String file) {

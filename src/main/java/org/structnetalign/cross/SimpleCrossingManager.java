@@ -13,12 +13,18 @@
  */
 package org.structnetalign.cross;
 
-import edu.uci.ics.jung.graph.UndirectedGraph;
+import org.structnetalign.CleverGraph;
 
 public class SimpleCrossingManager implements CrossingManager {
 
+	private int maxDepth;
+	
+	public SimpleCrossingManager(int maxDepth) {
+		this.maxDepth = maxDepth;
+	}
+	
 	@Override
-	public void cross(UndirectedGraph<String, ?> graph) {
+	public void cross(CleverGraph graph) {
 	}
 
 }
