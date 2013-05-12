@@ -13,18 +13,73 @@
  */
 package org.structnetalign.cross;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.structnetalign.CleverGraph;
+import org.structnetalign.InteractionEdge;
 
 public class SimpleCrossingManager implements CrossingManager {
 
+	private static final Logger logger = LogManager.getLogger("org.structnetalign");
 	private int maxDepth;
-	
-	public SimpleCrossingManager(int maxDepth) {
+	private int nCores;
+
+	public SimpleCrossingManager(int nCores, int maxDepth) {
+		this.nCores = nCores;
 		this.maxDepth = maxDepth;
 	}
-	
+
 	@Override
 	public void cross(CleverGraph graph) {
+		
+		ExecutorService pool = Executors.newFixedThreadPool(nCores);
+		
+		// depressingly, this used to be List<Future<Pair<Map<Integer,Double>>>>
+		// I'm glad that's no longer the case
+		CompletionService<InteractionUpdate> completion = new ExecutorCompletionService<>(pool);
+		List<Future<InteractionUpdate>> futures = new ArrayList<>();
+		
+		// submit the jobs
+		for (InteractionEdge interaction : graph.getInteraction().getEdges()) {
+			HomologySearchJob job = new HomologySearchJob(interaction, graph);
+			job.setMaxDepth(maxDepth);
+			completion.submit(job);
+		}
+		
+		for (Future<InteractionUpdate> future : futures) {
+			
+			// now wait for completion
+			InteractionUpdate update = null;
+			try {
+				// We should do this in case the job gets interrupted
+				// Sometimes the OS or JVM might do this
+				// Use the flag instead of future == null because future.get() may actually return null
+				while (update == null) {
+					try {
+						update = future.get();
+					} catch (InterruptedException e) {
+						logger.warn("Thread was interrupted while waiting to get interaction udpate. Retrying.", e);
+						continue;
+					}
+				}
+			} catch (ExecutionException e) {
+				logger.error("Encountered an error trying to update an interaction. Skipping interaction.", e);
+				continue;
+			}
+			
+			// we have an update to make!
+			InteractionEdge edge = update.getRootInteraction();
+			edge.setProbability(edge.getProbability() + update.getScore());
+		}
 	}
 
 }

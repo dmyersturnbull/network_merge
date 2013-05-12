@@ -38,6 +38,7 @@ public class PipelineManager {
 	private CrossingManager crossingManager;
 	private double delta = 0.3;
 	private MergeManager mergeManager;
+	private int nCores;
 	private double tau = 0.5;
 	private WeightManager weightManager;
 	private int xi = 5;
@@ -52,7 +53,8 @@ public class PipelineManager {
 		weightManager.add(new ScopRelationWeight());
 		weightManager.add(new CeWeight());
 		this.weightManager = weightManager;
-		crossingManager = new SimpleCrossingManager(xi);
+		nCores = Math.max(Runtime.getRuntime().availableProcessors() - 1, 1);
+		crossingManager = new SimpleCrossingManager(nCores, xi);
 		mergeManager = new BronKerboschMergeManager(delta);
 	}
 
@@ -69,7 +71,7 @@ public class PipelineManager {
 			graph = new CleverGraph(interaction);
 
 			// assign weights
-			Map<Integer,String> uniProtIds = NetworkUtils.getUniProtIds(entrySet);
+			Map<Integer, String> uniProtIds = NetworkUtils.getUniProtIds(entrySet);
 			weightManager.assignWeights(graph, uniProtIds);
 		}
 		System.gc();
@@ -80,8 +82,8 @@ public class PipelineManager {
 				return e.getScore();
 			}
 		};
-		EdgeTrimmer<Integer,HomologyEdge> trimmer = new EdgeTrimmer<>(weighter);
-		
+		EdgeTrimmer<Integer, HomologyEdge> trimmer = new EdgeTrimmer<>(weighter);
+
 		trimmer.trim(graph.getHomology(), tau);
 		crossingManager.cross(graph);
 
@@ -110,6 +112,10 @@ public class PipelineManager {
 
 	public void setMergeManager(MergeManager mergeManager) {
 		this.mergeManager = mergeManager;
+	}
+
+	public void setNCores(int nCores) {
+		this.nCores = nCores;
 	}
 
 	/**
