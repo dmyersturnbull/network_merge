@@ -38,7 +38,7 @@ import org.apache.logging.log4j.Logger;
  
 public class NetworkPreparer {
 
-	static final Logger logger = LogManager.getLogger("org.structnetalign");
+	private static final Logger logger = LogManager.getLogger("org.structnetalign");
 
 	public static void main(String[] args) {
 		if (args.length != 2) {

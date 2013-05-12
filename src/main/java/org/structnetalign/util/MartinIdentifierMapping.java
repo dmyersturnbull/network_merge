@@ -49,11 +49,9 @@ public class MartinIdentifierMapping implements IdentifierMapping {
 				if (line.isEmpty()) continue;
 				String[] parts = line.split("\\s+");
 				if (parts.length != 3 || line.contains("?")) {
-//					System.err.println(line);
 					continue;
 				}
 				if (pdbIds.containsKey(parts[2])) {
-//					System.out.println("Already contains " + parts[2]);
 					continue;
 				}
 				pdbIds.put(parts[2], parts[0]);

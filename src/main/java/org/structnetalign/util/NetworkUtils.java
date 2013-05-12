@@ -26,7 +26,8 @@ import java.util.NavigableSet;
 import java.util.TreeSet;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import psidev.psi.mi.xml.PsimiXmlReader;
 import psidev.psi.mi.xml.PsimiXmlReaderException;
@@ -43,22 +44,18 @@ import psidev.psi.mi.xml.model.Xref;
 
 public class NetworkUtils {
 
-	static final Logger logger = Logger.getLogger(NetworkUtils.class.getName());
-
 	public static final String NEWLINE;
-	private static final PsimiXmlVersion XML_VERSION = PsimiXmlVersion.VERSION_254;
+
+	public static final PsimiXmlVersion XML_VERSION = PsimiXmlVersion.VERSION_254;
+	private static final Logger logger = LogManager.getLogger("org.structnetalign");
 	static {
 		NEWLINE = System.getProperty("line.separator");
 	}
 
-	public static Map<Integer,String> getUniProtIds(File file) {
-		return getUniProtIds(NetworkUtils.readNetwork(file));
-	}
-	
-	public static Map<Integer,String> getUniProtIds(EntrySet entrySet) {
+	public static Map<Integer, String> getUniProtIds(EntrySet entrySet) {
 		final String accession = "MI:0486";
 		final String accessionType = "MI:0356";
-		HashMap<Integer,String> map = new HashMap<>();
+		HashMap<Integer, String> map = new HashMap<>();
 		for (Entry entry : entrySet.getEntries()) {
 			for (Interactor interactor : entry.getInteractors()) {
 				String id = null;
@@ -74,11 +71,16 @@ public class NetworkUtils {
 				if (id != null) {
 					map.put(interactor.getId(), id);
 				} else {
-					logger.warn("Reference Id not found for interactor #" + interactor.getId() + " (using acession " + accession + " of type " + accessionType + "). Not including.");
+					logger.warn("Reference Id not found for interactor #" + interactor.getId() + " (using acession "
+							+ accession + " of type " + accessionType + "). Not including.");
 				}
 			}
 		}
 		return map;
+	}
+
+	public static Map<Integer, String> getUniProtIds(File file) {
+		return getUniProtIds(NetworkUtils.readNetwork(file));
 	}
 
 	public static NavigableSet<Integer> getVertexIds(Interaction interaction) {
@@ -100,10 +102,6 @@ public class NetworkUtils {
 			entrySet = reader.read(file);
 		} catch (PsimiXmlReaderException e) {
 			throw new RuntimeException("Couldn't parse input file " + file.getPath(), e);
-		} catch (IllegalArgumentException e) {
-			System.err.println(file.getAbsolutePath());
-			e.printStackTrace();
-			return null;
 		}
 		return entrySet;
 	}
