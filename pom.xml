@@ -108,5 +108,47 @@
 		<url>https://github.com/dmyersturnbull/network_merge/issues</url>
 		<system>Github</system>
 	</issueManagement>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.5.1</version>
+				<configuration>
+					<fork>true</fork>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+					<maxmem>2000m</maxmem>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.5</version>
+			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.14.1</version>
+				<configuration>
+					<argLine>-Xms256m -Xmx2000M</argLine>
+				</configuration>
+			</plugin>
+		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/*.properties</include>
+				</includes>
+			</resource>
+				<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<includes>
+				</includes>
+			</resource>
+		</resources>
+	</build>
 	<packaging>pom</packaging>
 </project>
