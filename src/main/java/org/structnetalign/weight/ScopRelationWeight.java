@@ -9,6 +9,7 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
+ * 
  * @author dmyersturnbull
  */
 package org.structnetalign.weight;
@@ -24,12 +25,23 @@ import org.biojava.bio.structure.scop.ScopDomain;
 import org.biojava.bio.structure.scop.ScopFactory;
 import org.structnetalign.util.IdentifierMappingFactory;
 
-
 public class ScopRelationWeight implements RelationWeight {
 
-	private Map<ScopCategory,Double> weights;
+	/**
+	 * Thread safety is required here.
+	 * @return
+	 */
+	private static synchronized ScopDatabase getSCOP() {
+		return ScopFactory.getSCOP(ScopFactory.VERSION_1_75B);
+	}
 	
-	public static final Map<ScopCategory,Double> DEFAULT_WEIGHTS = new HashMap<ScopCategory,Double>();
+	public static final Map<ScopCategory, Double> DEFAULT_WEIGHTS = new HashMap<ScopCategory, Double>();
+
+	private ScopDomain domain1;
+	private ScopDomain domain2;
+
+	private Map<ScopCategory, Double> weights;
+
 	static {
 		DEFAULT_WEIGHTS.put(ScopCategory.Class, 0.0);
 		DEFAULT_WEIGHTS.put(ScopCategory.Fold, 0.1);
@@ -37,44 +49,9 @@ public class ScopRelationWeight implements RelationWeight {
 		DEFAULT_WEIGHTS.put(ScopCategory.Family, 0.7);
 		DEFAULT_WEIGHTS.put(ScopCategory.Px, 1.0);
 	}
-	
-	public ScopRelationWeight(Map<ScopCategory,Double> weights) {
-		this.weights = weights;
-	}
-
-	public ScopRelationWeight() {
-		this(DEFAULT_WEIGHTS);
-	}
-	
-	@Override
-	public double assignWeight(String uniProtId1, String uniProtId2) throws WeightException {
-		
-		final String scopId1 = IdentifierMappingFactory.getMapping().uniProtToScop(uniProtId1);
-		if (scopId1 == null) throw new WeightException("Could not find SCOP id for " + uniProtId1);
-		final String scopId2 = IdentifierMappingFactory.getMapping().uniProtToScop(uniProtId2);
-		if (scopId2 == null) throw new WeightException("Could not find SCOP id for " + uniProtId2);
-		
-		final ScopDatabase scop = ScopFactory.getSCOP();
-		final ScopDomain domain1 = scop.getDomainByScopID(scopId1);
-		if (domain1 == null) throw new WeightException("Could not find SCOP id for " + uniProtId1);
-		final ScopDomain domain2 = scop.getDomainByScopID(scopId2);
-		if (domain2 == null) throw new WeightException("Could not find SCOP id for " + uniProtId2);
-		
-		// we need to iterate in reverse order (most specific first)
-		ScopCategory[] categories = ScopCategory.values();
-		Collections.reverse(Arrays.asList(categories));
-		for (ScopCategory category : categories) {
-			int categoryId1 = sunIdOfCategory(domain1, category);
-			int categoryId2 = sunIdOfCategory(domain2, category);
-			if (categoryId1 == categoryId2 && weights.get(category) != null) return weights.get(category);
-		}
-		
-		return 0.0;
-		
-	}
 
 	private static int sunIdOfCategory(ScopDomain domain, ScopCategory category) {
-		switch(category) {
+		switch (category) {
 		case Class:
 			return domain.getClassId();
 		case Fold:
@@ -93,5 +70,51 @@ public class ScopRelationWeight implements RelationWeight {
 			throw new IllegalArgumentException("Invalid SCOP category " + category.name());
 		}
 	}
-	
+
+	public ScopRelationWeight() {
+		this(DEFAULT_WEIGHTS);
+	}
+
+	public ScopRelationWeight(Map<ScopCategory, Double> weights) {
+		this.weights = weights;
+	}
+
+	@Override
+	public double assignWeight(String uniProtId1, String uniProtId2) throws Exception {
+		setIds(uniProtId1, uniProtId2);
+		return call();
+	}
+
+	@Override
+	public Double call() throws Exception {
+
+		// we need to iterate in reverse order (most specific first)
+		ScopCategory[] categories = ScopCategory.values();
+		Collections.reverse(Arrays.asList(categories));
+		for (ScopCategory category : categories) {
+			int categoryId1 = sunIdOfCategory(domain1, category);
+			int categoryId2 = sunIdOfCategory(domain2, category);
+			if (categoryId1 == categoryId2 && weights.get(category) != null) return weights.get(category);
+		}
+
+		return 0.0;
+
+	}
+
+	@Override
+	public void setIds(String uniProtId1, String uniProtId2) throws WeightException {
+
+		final String scopId1 = IdentifierMappingFactory.getMapping().uniProtToScop(uniProtId1);
+		if (scopId1 == null) throw new WeightException("Could not find SCOP id for " + uniProtId1);
+		final String scopId2 = IdentifierMappingFactory.getMapping().uniProtToScop(uniProtId2);
+		if (scopId2 == null) throw new WeightException("Could not find SCOP id for " + uniProtId2);
+
+		final ScopDatabase scop = ScopRelationWeight.getSCOP();
+		domain1 = scop.getDomainByScopID(scopId1);
+		if (domain1 == null) throw new WeightException("Could not find SCOP id for " + uniProtId1);
+		domain2 = scop.getDomainByScopID(scopId2);
+		if (domain2 == null) throw new WeightException("Could not find SCOP id for " + uniProtId2);
+
+	}
+
 }

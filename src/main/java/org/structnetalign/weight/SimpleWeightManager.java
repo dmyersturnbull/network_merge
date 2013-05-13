@@ -63,8 +63,9 @@ public class SimpleWeightManager implements WeightManager {
 					String sa = uniProtIds.get(a);
 					String sb = uniProtIds.get(b);
 					try {
-						score += coefficients.get(i) * weights.get(i).assignWeight(sa, sb);
-					} catch (WeightException e) {
+						weights.get(i).setIds(sa, sb);
+						score += coefficients.get(i) * weights.get(i).call();
+					} catch (Exception e) {
 						// totally okay; just don't add
 					}
 				}

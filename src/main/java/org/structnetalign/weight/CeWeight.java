@@ -9,6 +9,7 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
+ * 
  * @author dmyersturnbull
  */
 package org.structnetalign.weight;
@@ -24,7 +25,6 @@ import org.biojava.bio.structure.align.ce.ConfigStrucAligParams;
 import org.biojava.bio.structure.align.model.AFPChain;
 import org.biojava.bio.structure.align.util.AFPChainScorer;
 import org.biojava.bio.structure.align.util.AtomCache;
-import org.structnetalign.util.IdentifierMapping;
 import org.structnetalign.util.IdentifierMappingFactory;
 
 public class CeWeight implements AlignmentWeight {
@@ -57,6 +57,10 @@ public class CeWeight implements AlignmentWeight {
 
 	private AlgorithmGiver algorithm;
 
+	private String scopId1;
+
+	private String scopId2;
+
 	/**
 	 * Disable on production.
 	 * 
@@ -79,11 +83,13 @@ public class CeWeight implements AlignmentWeight {
 	}
 
 	@Override
-	public double assignWeight(String uniProtId1, String uniProtId2) throws WeightException {
-		final String scopId1 = IdentifierMappingFactory.getMapping().uniProtToPdb(uniProtId1);
-		if (scopId1 == null) throw new WeightException("Could not find SCOP id for " + uniProtId1);
-		final String scopId2 = IdentifierMappingFactory.getMapping().uniProtToPdb(uniProtId2);
-		if (scopId2 == null) throw new WeightException("Could not find SCOP id for " + uniProtId2);
+	public double assignWeight(String uniProtId1, String uniProtId2) throws Exception {
+		setIds(uniProtId1, uniProtId2);
+		return call();
+	}
+
+	@Override
+	public Double call() throws Exception {
 		AFPChain afpChain;
 		try {
 			afpChain = align(scopId1, scopId2);
@@ -93,6 +99,14 @@ public class CeWeight implements AlignmentWeight {
 		if (afpChain.getTMScore() == -1) throw new WeightException("TM-score not calculated for the alignment of "
 				+ scopId1 + " against " + scopId2);
 		return afpChain.getTMScore();
+	}
+
+	@Override
+	public void setIds(String uniProtId1, String uniProtId2) throws WeightException {
+		scopId1 = IdentifierMappingFactory.getMapping().uniProtToPdb(uniProtId1);
+		if (scopId1 == null) throw new WeightException("Could not find SCOP id for " + uniProtId1);
+		scopId2 = IdentifierMappingFactory.getMapping().uniProtToPdb(uniProtId2);
+		if (scopId2 == null) throw new WeightException("Could not find SCOP id for " + uniProtId2);
 	}
 
 	private AFPChain align(String name1, String name2) throws IOException, StructureException {

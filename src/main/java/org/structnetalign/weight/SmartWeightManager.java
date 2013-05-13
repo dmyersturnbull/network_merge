@@ -9,19 +9,31 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
+ * 
  * @author dmyersturnbull
  */
 package org.structnetalign.weight;
 
-import java.util.concurrent.Callable;
+import java.util.Map;
 
-public interface Weight extends Callable<Double> {
+import org.structnetalign.CleverGraph;
 
-	void setIds(String uniProtId1, String uniProtId2) throws WeightException;
+/**
+ * An intelligent multithreaded {@link WeightManager} that uses sequence information if and only if the corresponding
+ * structural information is missing.
+ * 
+ * @author dmyersturnbull
+ * 
+ */
+public class SmartWeightManager implements WeightManager {
 
-	/**
-	 * A convenience method for single runs. Equivalent to calling {@link #setIds(String, String)} followed by {@link #call()}.
-	 */
-	double assignWeight(String uniProtId1, String uniProtId2) throws Exception;
-	
+	@Override
+	public void assignWeights(CleverGraph graph, Map<Integer, String> uniProtIds) {
+		for (int a : graph.getVertices()) {
+			for (int b : graph.getVertices()) {
+				if (a == b) continue;
+			}
+		}
+	}
+
 }
