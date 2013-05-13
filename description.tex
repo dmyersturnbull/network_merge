@@ -135,8 +135,8 @@ In cases where homology is not established by SCOP relationships, homology can b
 \subsection{Using homology to score interactions}
 
 Define
-$R_{i,j}^{(u,v)} = Prob(i,j) \left(1 - \displaystyle \prod_\pi Q_{u,i} - \prod_\pi Q_{v,j} + \prod_\pi Q_{u,i} \cdot \prod_\pi Q_{v,j} \right)$\\
-Define $Q_{a,b} = \displaystyle \prod_{\text{paths } \pi \text{ from a to b}} \prod_{k} (1 - S(\pi_k))$\\
+$R_{i,j}^{(u,v)} = Prob(i,j) \left(1 - \displaystyle Q_{u,i} - Q_{v,j} + Q_{u,i} \cdot Q_{v,j} \right)$\\
+Define $Q_{a,b} = \displaystyle \prod_{\text{paths } \pi \text{ from a to b}} \left( 1 - \prod_{k} S(\pi_k) \right)$\\
 Then we update the probability of an interaction $(u,v)$ with:\\
 $Prob((u,v))'\,\! = Prob((u,v)) + 1 - \displaystyle \prod_{i,j}(1 - R_{i,j}^{(u,v)})$
 
