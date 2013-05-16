@@ -52,7 +52,8 @@ public class SimpleCrossingManager implements CrossingManager {
 		for (InteractionEdge interaction : graph.getInteraction().getEdges()) {
 			HomologySearchJob job = new HomologySearchJob(interaction, graph);
 			job.setMaxDepth(maxDepth);
-			completion.submit(job);
+			Future<InteractionUpdate> result = completion.submit(job);
+			futures.add(result);
 		}
 		
 		for (Future<InteractionUpdate> future : futures) {
@@ -67,7 +68,7 @@ public class SimpleCrossingManager implements CrossingManager {
 					try {
 						update = future.get();
 					} catch (InterruptedException e) {
-						logger.warn("Thread was interrupted while waiting to get interaction udpate. Retrying.", e);
+						logger.warn("A thread was interrupted while waiting to get interaction udpate. Retrying.", e);
 						continue;
 					}
 				}

@@ -25,9 +25,12 @@ import java.util.Map;
 import java.util.NavigableSet;
 import java.util.TreeSet;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.xml.sax.SAXException;
 
 import psidev.psi.mi.xml.PsimiXmlReader;
 import psidev.psi.mi.xml.PsimiXmlReaderException;
@@ -41,6 +44,9 @@ import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.model.Interactor;
 import psidev.psi.mi.xml.model.Participant;
 import psidev.psi.mi.xml.model.Xref;
+import edu.uci.ics.jung.graph.UndirectedGraph;
+import edu.uci.ics.jung.graph.UndirectedSparseGraph;
+import edu.uci.ics.jung.io.GraphMLReader;
 
 public class NetworkUtils {
 
@@ -50,6 +56,22 @@ public class NetworkUtils {
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");
 	static {
 		NEWLINE = System.getProperty("line.separator");
+	}
+
+	public static <V,E> UndirectedGraph<V,E> fromGraphMl(String file) {
+		GraphMLReader<UndirectedGraph<V, E>, V, E> reader;
+		try {
+			reader = new GraphMLReader<>();
+		} catch (ParserConfigurationException | SAXException e) {
+			throw new RuntimeException("Couldn't load GraphML file", e);
+		}
+		UndirectedGraph<V, E> graph = new UndirectedSparseGraph<>();
+		try {
+			reader.load(file, graph);
+		} catch (IOException e) {
+			throw new RuntimeException("Couldn't load GraphML file", e);
+		}
+		return graph;
 	}
 
 	public static Map<Integer, String> getUniProtIds(EntrySet entrySet) {

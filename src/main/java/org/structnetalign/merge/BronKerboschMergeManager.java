@@ -64,9 +64,7 @@ public class BronKerboschMergeManager implements MergeManager {
 		File output = new File(args[2]);
 
 		// build the homology graph
-		GraphMLReader<UndirectedGraph<Integer, HomologyEdge>, Integer, HomologyEdge> reader = new GraphMLReader<>();
-		UndirectedGraph<Integer, HomologyEdge> homology = new UndirectedSparseGraph<>();
-		reader.load(graphFile, homology);
+		UndirectedGraph<Integer, HomologyEdge> homology = NetworkUtils.fromGraphMl(graphFile);
 
 		// build the interaction graph
 		EntrySet entrySet = NetworkUtils.readNetwork(input);
