@@ -9,19 +9,49 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
+ * 
  * @author dmyersturnbull
  */
 package org.structnetalign.weight;
 
-import java.util.concurrent.Callable;
+public class WeightResult {
 
-public interface Weight extends Callable<WeightResult> {
+	private double weight;
+	
+	private String a;
+	
+	private String b;
 
-	void setIds(String uniProtId1, String uniProtId2) throws WeightException;
+	public double getWeight() {
+		return weight;
+	}
 
-	/**
-	 * A convenience method for single runs. Equivalent to calling {@link #setIds(String, String)} followed by {@link #call()}.
-	 */
-	double assignWeight(String uniProtId1, String uniProtId2) throws Exception;
+	public void setWeight(double weight) {
+		this.weight = weight;
+	}
+
+	public String getA() {
+		return a;
+	}
+
+	public void setA(String a) {
+		this.a = a;
+	}
+
+	public String getB() {
+		return b;
+	}
+
+	public void setB(String b) {
+		this.b = b;
+	}
+
+	public WeightResult(double weight, String a, String b) {
+		super();
+		this.weight = weight;
+		this.a = a;
+		this.b = b;
+	}
+	
 	
 }

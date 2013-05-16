@@ -20,6 +20,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.structnetalign.CleverGraph;
 import org.structnetalign.HomologyEdge;
 
@@ -31,6 +33,8 @@ import org.structnetalign.HomologyEdge;
  * 
  */
 public class SimpleWeightManager implements WeightManager {
+
+	private static final Logger logger = LogManager.getLogger("org.structnetalign");
 
 	private List<Double> coefficients;
 	private double threshold;
@@ -63,13 +67,14 @@ public class SimpleWeightManager implements WeightManager {
 					String sa = uniProtIds.get(a);
 					String sb = uniProtIds.get(b);
 					try {
-						weights.get(i).setIds(sa, sb);
-						score += coefficients.get(i) * weights.get(i).call();
+						score += coefficients.get(i) * weights.get(i).assignWeight(sa, sb);
 					} catch (Exception e) {
 						// totally okay; just don't add
+						logger.debug("Couldn't get a weight for " + a + " against " + b, e);
 					}
 				}
 				if (score >= threshold) {
+					logger.debug("Adding homology edge (" + a + "," + b + "," + score + ")");
 					Collection<Integer> vertices = Arrays.asList(a, b);
 					HomologyEdge edge = new HomologyEdge(score);
 					graph.addHomologies(edge, vertices);

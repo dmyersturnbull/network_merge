@@ -60,6 +60,9 @@ public class CeWeight implements AlignmentWeight {
 	private String scopId1;
 
 	private String scopId2;
+	
+	private String uniProtId1;
+	private String uniProtId2;
 
 	/**
 	 * Disable on production.
@@ -85,11 +88,11 @@ public class CeWeight implements AlignmentWeight {
 	@Override
 	public double assignWeight(String uniProtId1, String uniProtId2) throws Exception {
 		setIds(uniProtId1, uniProtId2);
-		return call();
+		return call().getWeight();
 	}
 
 	@Override
-	public Double call() throws Exception {
+	public WeightResult call() throws Exception {
 		AFPChain afpChain;
 		try {
 			afpChain = align(scopId1, scopId2);
@@ -98,11 +101,15 @@ public class CeWeight implements AlignmentWeight {
 		}
 		if (afpChain.getTMScore() == -1) throw new WeightException("TM-score not calculated for the alignment of "
 				+ scopId1 + " against " + scopId2);
-		return afpChain.getTMScore();
+		return new WeightResult(afpChain.getTMScore(), uniProtId1, uniProtId2);
 	}
 
 	@Override
 	public void setIds(String uniProtId1, String uniProtId2) throws WeightException {
+		
+		this.uniProtId1 = uniProtId1;
+		this.uniProtId2 = uniProtId2;
+		
 		scopId1 = IdentifierMappingFactory.getMapping().uniProtToPdb(uniProtId1);
 		if (scopId1 == null) throw new WeightException("Could not find SCOP id for " + uniProtId1);
 		scopId2 = IdentifierMappingFactory.getMapping().uniProtToPdb(uniProtId2);

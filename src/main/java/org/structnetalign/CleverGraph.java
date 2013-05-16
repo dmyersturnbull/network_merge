@@ -35,7 +35,7 @@ public class CleverGraph {
 	public int getVertexCount() {
 		return homology.getVertexCount();
 	}
-	public int getEdgeCount() {
+	public int getHomologyCount() {
 		return homology.getEdgeCount();
 	}
 	
@@ -82,6 +82,9 @@ public class CleverGraph {
 	}
 	public boolean removeInteraction(InteractionEdge edge) {
 		return interaction.removeEdge(edge);
+	}
+	public int getInteractionCount() {
+		return interaction.getEdgeCount();
 	}
 	
 	private final UndirectedGraph<Integer,InteractionEdge> interaction;

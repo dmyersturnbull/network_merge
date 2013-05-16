@@ -39,6 +39,8 @@ public class ScopRelationWeight implements RelationWeight {
 
 	private ScopDomain domain1;
 	private ScopDomain domain2;
+	private String uniProtId1;
+	private String uniProtId2;
 
 	private Map<ScopCategory, Double> weights;
 
@@ -82,11 +84,11 @@ public class ScopRelationWeight implements RelationWeight {
 	@Override
 	public double assignWeight(String uniProtId1, String uniProtId2) throws Exception {
 		setIds(uniProtId1, uniProtId2);
-		return call();
+		return call().getWeight();
 	}
 
 	@Override
-	public Double call() throws Exception {
+	public WeightResult call() throws Exception {
 
 		// we need to iterate in reverse order (most specific first)
 		ScopCategory[] categories = ScopCategory.values();
@@ -94,16 +96,21 @@ public class ScopRelationWeight implements RelationWeight {
 		for (ScopCategory category : categories) {
 			int categoryId1 = sunIdOfCategory(domain1, category);
 			int categoryId2 = sunIdOfCategory(domain2, category);
-			if (categoryId1 == categoryId2 && weights.get(category) != null) return weights.get(category);
+			if (categoryId1 == categoryId2 && weights.get(category) != null) {
+				return new WeightResult(weights.get(category), uniProtId1, uniProtId2);
+			}
 		}
 
-		return 0.0;
+		return new WeightResult(0.0, uniProtId1, uniProtId2);
 
 	}
 
 	@Override
 	public void setIds(String uniProtId1, String uniProtId2) throws WeightException {
 
+		this.uniProtId1 = uniProtId1;
+		this.uniProtId2 = uniProtId2;
+		
 		final String scopId1 = IdentifierMappingFactory.getMapping().uniProtToScop(uniProtId1);
 		if (scopId1 == null) throw new WeightException("Could not find SCOP id for " + uniProtId1);
 		final String scopId2 = IdentifierMappingFactory.getMapping().uniProtToScop(uniProtId2);
