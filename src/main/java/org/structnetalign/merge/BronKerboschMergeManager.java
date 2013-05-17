@@ -16,41 +16,32 @@ package org.structnetalign.merge;
 
 import java.io.File;
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.NavigableMap;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.codec.binary.Hex;
 import org.structnetalign.CleverGraph;
 import org.structnetalign.HomologyEdge;
 import org.structnetalign.InteractionEdge;
-import org.structnetalign.util.EdgeWeighter;
 import org.structnetalign.util.GraphInteractionAdaptor;
 import org.structnetalign.util.NetworkUtils;
 import org.xml.sax.SAXException;
 
 import psidev.psi.mi.xml.model.EntrySet;
 import edu.uci.ics.jung.graph.UndirectedGraph;
-import edu.uci.ics.jung.graph.UndirectedSparseGraph;
-import edu.uci.ics.jung.io.GraphMLReader;
 
 /**
- * A {@link MergeManager} that finds cliques whose members share interactions, using a {@link ProbabilisticDistanceCluster} and a modification of the Bron–Kerbosch algorithm for Max-Clique. The runtime is approximately 
+ * A {@link MergeManager} that finds cliques whose members share interactions, using a
+ * {@link ProbabilisticDistanceCluster} and a modification of the Bron–Kerbosch algorithm for Max-Clique. The runtime is
+ * approximately
+ * 
  * @author dmyersturnbull
  * @see BronKerboschCliqueFinder
  */
 public class BronKerboschMergeManager implements MergeManager {
 
-	private final double minProbabilityOfHomologyConnectedness;
+	private final double xi;
 
 	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
 
@@ -82,56 +73,17 @@ public class BronKerboschMergeManager implements MergeManager {
 		NetworkUtils.writeNetwork(entrySet, output);
 	}
 
-	public BronKerboschMergeManager(double minProbabilityOfHomologyConnectedness) {
-		super();
-		this.minProbabilityOfHomologyConnectedness = minProbabilityOfHomologyConnectedness;
-	}
-
-	@Override
-	public void merge(CleverGraph graph) {
-
-		// define the equivalence relation we need
-		EdgeWeighter<HomologyEdge> weighter = new EdgeWeighter<HomologyEdge>() {
-			@Override
-			public double getWeight(HomologyEdge e) {
-				return e.getScore();
-			}
-		};
-		ProbabilisticDistanceClusterer<Integer, HomologyEdge> alg = new ProbabilisticDistanceClusterer<Integer, HomologyEdge>(
-				weighter, minProbabilityOfHomologyConnectedness);
-		Set<Set<Integer>> ccs = alg.transform(graph.getHomology());
-
-		// now map each cluster to a root for that cluster
-		// the choice of root is arbitrary and just for hashing
-		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
-		for (Set<Integer> cc : ccs) {
-			int v0 = -1;
-			int i = 0;
-			for (int v : cc) {
-				if (i == 0) v0 = v;
-				map.put(v, v0);
-				i++;
-			}
-		}
-
-		// find the cliques
-		BronKerboschCliqueFinder<Integer, HomologyEdge> finder = new BronKerboschCliqueFinder<>();
-		Collection<Set<Integer>> cliques = finder.transform(graph.getHomology());
-
-		// group the cliques by sets of interactions
-		NavigableMap<String, Collection<Integer>> cliqueGroups = new TreeMap<>();
-		for (Set<Integer> clique : cliques) {
-			for (int v : clique) {
-				Collection<Integer> neighbors = graph.getInteractionNeighbors(v);
-				String hash = hashVertexInteractions(neighbors, map);
-				Collection<Integer> group = cliqueGroups.get(hash);
-				if (group == null) group = new TreeSet<>();
-				group.add(v);
-			}
-		}
-
+	/**
+	 * Performs edge contraction on the graph {@code graph}.
+	 * 
+	 * @param graph
+	 * @param cliqueGroups
+	 *            A map where the key is any value, and the value is a set of vertices to be merged (can include the key
+	 *            vertex)
+	 */
+	protected static void contract(CleverGraph graph, Collection<Collection<Integer>> cliqueGroups) {
 		// now perform edge contraction
-		for (Collection<Integer> group : cliqueGroups.values()) {
+		for (Collection<Integer> group : cliqueGroups) {
 
 			int v0 = -1; // the vertex label we'll actually use
 			int i = 0;
@@ -168,19 +120,24 @@ public class BronKerboschMergeManager implements MergeManager {
 		}
 	}
 
-	private String hashVertexInteractions(Collection<Integer> vertexInteractionNeighbors, Map<Integer, Integer> map) {
-		MessageDigest md;
+	public BronKerboschMergeManager(double xi) {
+		super();
+		this.xi = xi;
+	}
+
+	@Override
+	public void merge(CleverGraph graph) {
+		BronKerboschMergeJob job = new BronKerboschMergeJob(graph, xi);
 		try {
-			md = MessageDigest.getInstance("MD5");
-		} catch (NoSuchAlgorithmException e) {
-			throw new RuntimeException("Couldn't find the algorithm MD5", e);
+			Collection<Collection<Integer>> cliqueSets = job.call();
+			contract(graph, cliqueSets);
+		} catch (Exception e) {
+			throw new RuntimeException("The merging process failed", e);
 		}
-		StringBuilder sb = new StringBuilder();
-		for (int neighbor : vertexInteractionNeighbors) {
-			sb.append(map.get(neighbor)); // use the equivalence relation here
-		}
-		byte[] bytes = md.digest(sb.toString().getBytes());
-		return new String(Hex.encodeHex(bytes));
+	}
+
+	protected double getXi() {
+		return xi;
 	}
 
 }

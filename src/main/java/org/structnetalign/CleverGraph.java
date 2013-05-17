@@ -55,6 +55,9 @@ public class CleverGraph {
 	public Collection<HomologyEdge> getHomologies(int vertex) {
 		return homology.getIncidentEdges(vertex);
 	}
+	public Collection<HomologyEdge> getHomologies() {
+		return homology.getEdges();
+	}
 	public Collection<Integer> getHomologyNeighbors(int vertex) {
 		return homology.getNeighbors(vertex);
 	}
@@ -76,6 +79,9 @@ public class CleverGraph {
 	}
 	public Collection<InteractionEdge> getInteractions(int vertex) {
 		return interaction.getIncidentEdges(vertex);
+	}
+	public Collection<InteractionEdge> getInteractions() {
+		return interaction.getEdges();
 	}
 	public Collection<Integer> getInteractionNeighbors(int vertex) {
 		return interaction.getNeighbors(vertex);
