@@ -73,7 +73,7 @@ public class SmartWeightManager implements WeightManager {
 			for (int b : graph.getVertices()) {
 
 				if (a == b) continue; // don't bother with intramolecular homology
-				
+
 				final String sa = uniProtIds.get(a);
 				final String sb = uniProtIds.get(b);
 
@@ -121,7 +121,7 @@ public class SmartWeightManager implements WeightManager {
 		}
 
 		logger.info("Submitted " + futures.size() + " jobs to " + nCores + " cores");
-		
+
 		// now respond to completion
 		for (Future<WeightResult> future : futures) {
 			Double weight = null;
@@ -137,7 +137,7 @@ public class SmartWeightManager implements WeightManager {
 						va = graphIds.get(result.getA());
 						vb = graphIds.get(result.getB());
 					} catch (InterruptedException e1) {
-						logger.warn("A thread was interrupted while waiting to get interaction udpate. Retrying.", e1);
+						logger.warn("A thread was interrupted while waiting to get a weight. Retrying.", e1);
 					}
 				}
 			} catch (ExecutionException e) {
@@ -147,13 +147,19 @@ public class SmartWeightManager implements WeightManager {
 			if (weight >= threshold) {
 				logger.debug("Adding homology edge (" + va + "," + vb + "," + weight + ")");
 				Collection<Integer> vertices = Arrays.asList(va, vb);
-				HomologyEdge edge = new HomologyEdge(weight);
-				graph.addHomologies(edge, vertices);
+				// there may already be an edge there
+				HomologyEdge existing = graph.getHomology().findEdge(va, vb);
+				if (existing != null) {
+					existing.setScore(existing.getScore() + weight);
+				} else {
+					HomologyEdge edge = new HomologyEdge(weight);
+					graph.addHomologies(edge, vertices);
+				}
 			}
 		}
 
 		logger.info("Added " + graph.getHomologyCount() + " homology edges");
-		
+
 	}
 
 }
