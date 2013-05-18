@@ -25,6 +25,7 @@ import org.structnetalign.CleverGraph;
 import org.structnetalign.HomologyEdge;
 import org.structnetalign.InteractionEdge;
 import org.structnetalign.util.GraphInteractionAdaptor;
+import org.structnetalign.util.GraphMLAdaptor;
 import org.structnetalign.util.NetworkUtils;
 import org.xml.sax.SAXException;
 
@@ -55,7 +56,7 @@ public class BronKerboschMergeManager implements MergeManager {
 		File output = new File(args[2]);
 
 		// build the homology graph
-		UndirectedGraph<Integer, HomologyEdge> homology = NetworkUtils.fromGraphMl(graphFile);
+		UndirectedGraph<Integer, HomologyEdge> homology = GraphMLAdaptor.readHomologyGraph(graphFile);
 
 		// build the interaction graph
 		EntrySet entrySet = NetworkUtils.readNetwork(input);

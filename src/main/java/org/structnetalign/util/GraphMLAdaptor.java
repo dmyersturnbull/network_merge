@@ -51,6 +51,28 @@ public class GraphMLAdaptor {
 		return readGraph(interactionFile.getPath(), homologyFile.getPath());
 	}
 
+	/**
+	 * Just a simple graph reader. Does <em>not</em> read edge weights, etc.
+	 * 
+	 * @param file
+	 * @return
+	 */
+	public static <V, E> UndirectedGraph<V, E> readGraph(String file) {
+		GraphMLReader<UndirectedGraph<V, E>, V, E> reader;
+		try {
+			reader = new GraphMLReader<>();
+		} catch (ParserConfigurationException | SAXException e) {
+			throw new RuntimeException("Couldn't load GraphML file", e);
+		}
+		UndirectedGraph<V, E> graph = new UndirectedSparseGraph<>();
+		try {
+			reader.load(file, graph);
+		} catch (IOException e) {
+			throw new RuntimeException("Couldn't load GraphML file", e);
+		}
+		return graph;
+	}
+
 	public static CleverGraph readGraph(String interactionFile, String homologyFile) {
 		UndirectedGraph<Integer, InteractionEdge> interaction = readInteractionGraph(interactionFile);
 		UndirectedGraph<Integer, HomologyEdge> homology = readHomologyGraph(interactionFile);
