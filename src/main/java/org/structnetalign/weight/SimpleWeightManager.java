@@ -60,9 +60,11 @@ public class SimpleWeightManager implements WeightManager {
 	@Override
 	public void assignWeights(CleverGraph graph, Map<Integer, String> uniProtIds) {
 		int createdIndex = 0;
+		int x = 0;
 		for (int a : graph.getVertices()) {
+			int y = 0;
 			for (int b : graph.getVertices()) {
-				if (a == b) continue;
+				if (x <= y) continue; // homology had damn well better be reflexive!
 				double score = 0;
 				for (int i = 0; i < weights.size(); i++) {
 					String sa = uniProtIds.get(a);
@@ -80,7 +82,9 @@ public class SimpleWeightManager implements WeightManager {
 					HomologyEdge edge = new HomologyEdge(createdIndex++, score);
 					graph.addHomologies(edge, vertices);
 				}
+				y++;
 			}
+			x++;
 		}
 	}
 

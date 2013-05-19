@@ -63,34 +63,39 @@ public class SmartWeightManager implements WeightManager {
 			graphIds.put(entry.getValue(), entry.getKey());
 		}
 
+		// make a thread pool
 		logger.info("Starting weight assignment with " + nCores + " cores");
 		ExecutorService pool = Executors.newFixedThreadPool(nCores);
 		CompletionService<WeightResult> completion = new ExecutorCompletionService<>(pool);
 		List<Future<WeightResult>> futures = new ArrayList<>();
 
 		// let's submit the jobs
+		// iterate over all pairs of vertices
+		int i = 0;
 		for (int a : graph.getVertices()) {
+			int j = 0;
 			for (int b : graph.getVertices()) {
 
-				if (a == b) continue; // don't bother with intramolecular homology
+				if (i <= j) continue; // homology had damn well better be reflexive!
 
-				final String sa = uniProtIds.get(a);
-				final String sb = uniProtIds.get(b);
+				final String uniProtIdA = uniProtIds.get(a);
+				final String uniProtIdB = uniProtIds.get(b);
 
 				// let's get weight from alignment
 				AlignmentWeight alignment;
 				try {
 					// try to use structure
 					alignment = new CeWeight();
-					alignment.setIds(sa, sb);
+					alignment.setIds(uniProtIdA, uniProtIdB);
 				} catch (WeightException e) {
 					// okay, try to use sequence
-					logger.debug("Using sequence alignment for " + sa + " against " + sb, e);
+					logger.debug("Using sequence alignment for " + uniProtIdA + " against " + uniProtIdB, e);
 					alignment = new NeedlemanWunschWeight();
 					try {
-						alignment.setIds(sa, sb);
+						alignment.setIds(uniProtIdA, uniProtIdB);
 					} catch (WeightException e1) {
-						logger.warn("Couldn't get alignment-based weight for " + sa + " against " + sb, e1);
+						logger.warn("Couldn't get alignment-based weight for " + uniProtIdA + " against " + uniProtIdB, e1);
+						alignment = null;
 					}
 				}
 
@@ -99,25 +104,32 @@ public class SmartWeightManager implements WeightManager {
 				try {
 					// try to use structure
 					relation = new ScopRelationWeight();
-					relation.setIds(sa, sb);
+					relation.setIds(uniProtIdA, uniProtIdB);
 				} catch (WeightException e) {
 					// okay, try to use sequence
-					logger.debug("Using sequence relation for " + sa + " against " + sb, e);
+					logger.debug("Using sequence relation for " + uniProtIdA + " against " + uniProtIdB, e);
 					relation = new PfamWeight();
 					try {
-						relation.setIds(sa, sb);
+						relation.setIds(uniProtIdA, uniProtIdB);
 					} catch (WeightException e1) {
-						logger.warn("Couldn't get relation-based weight for " + sa + " against " + sb, e1);
+						logger.warn("Couldn't get relation-based weight for " + uniProtIdA + " against " + uniProtIdB, e1);
+						relation = null;
 					}
 				}
 
 				// now submit
-				Future<WeightResult> alignmentWeight = completion.submit(alignment);
-				futures.add(alignmentWeight);
-				Future<WeightResult> relationWeight = completion.submit(relation);
-				futures.add(relationWeight);
+				if (alignment != null) {
+					Future<WeightResult> alignmentWeight = completion.submit(alignment);
+					futures.add(alignmentWeight);
+				}
+				if (relation != null) {
+					Future<WeightResult> relationWeight = completion.submit(relation);
+					futures.add(relationWeight);
+				}
 
+				j++;
 			}
+			i++;
 		}
 
 		logger.info("Submitted " + futures.size() + " jobs to " + nCores + " cores");
@@ -126,7 +138,7 @@ public class SmartWeightManager implements WeightManager {
 		int createdIndex = 0;
 		for (Future<WeightResult> future : futures) {
 			Double weight = null;
-			Integer va = null, vb = null;
+			Integer vertexA = null, vertexB = null;
 			try {
 				// We should do this in case the job gets interrupted
 				// Sometimes the OS or JVM might do this
@@ -135,27 +147,31 @@ public class SmartWeightManager implements WeightManager {
 					try {
 						WeightResult result = future.get();
 						weight = result.getWeight();
-						va = graphIds.get(result.getA());
-						vb = graphIds.get(result.getB());
+						vertexA = graphIds.get(result.getA());
+						vertexB = graphIds.get(result.getB());
 					} catch (InterruptedException e1) {
 						logger.warn("A thread was interrupted while waiting to get a weight. Retrying.", e1);
 					}
 				}
 			} catch (ExecutionException e) {
-				logger.error("Encountered an error trying to get a weight. Skipping", e);
+				logger.error("Encountered an error trying to get a weight. Skipping.", e);
+				continue;
 			}
 
 			if (weight >= threshold) {
-				logger.debug("Adding homology edge (" + va + "," + vb + "," + weight + ")");
-				Collection<Integer> vertices = Arrays.asList(va, vb);
+
+				logger.debug("Adding homology edge (" + vertexA + "," + vertexB + "," + weight + ")");
+				Collection<Integer> vertices = Arrays.asList(vertexA, vertexB);
+
 				// there may already be an edge there
-				HomologyEdge existing = graph.getHomology().findEdge(va, vb);
+				HomologyEdge existing = graph.getHomology().findEdge(vertexA, vertexB);
 				if (existing != null) {
 					existing.setWeight(existing.getWeight() + weight);
 				} else {
 					HomologyEdge edge = new HomologyEdge(createdIndex++, weight);
 					graph.addHomologies(edge, vertices);
 				}
+
 			}
 		}
 
