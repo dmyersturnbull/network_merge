@@ -44,7 +44,7 @@ public class HomologySearchJob implements Callable<InteractionUpdate> {
 	private EdgeWeighter<HomologyEdge> weighter = new EdgeWeighter<HomologyEdge>() {
 		@Override
 		public double getWeight(HomologyEdge e) {
-			return e.getScore();
+			return e.getWeight();
 		}
 	};
 
@@ -68,7 +68,7 @@ public class HomologySearchJob implements Callable<InteractionUpdate> {
 				if (interaction != null) {
 					double scoreA = 1 - Math.exp(a.getValue());
 					double scoreB = 1 - Math.exp(b.getValue());
-					score += interaction.getProbability() * (1 - scoreA - scoreB + scoreA*scoreB);
+					score += interaction.getWeight() * (1 - scoreA - scoreB + scoreA*scoreB);
 				}
 			}
 		}

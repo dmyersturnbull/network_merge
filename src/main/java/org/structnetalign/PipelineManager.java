@@ -79,7 +79,7 @@ public class PipelineManager {
 		EdgeWeighter<HomologyEdge> weighter = new EdgeWeighter<HomologyEdge>() {
 			@Override
 			public double getWeight(HomologyEdge e) {
-				return e.getScore();
+				return e.getWeight();
 			}
 		};
 		EdgeTrimmer<Integer, HomologyEdge> trimmer = new EdgeTrimmer<>(weighter);

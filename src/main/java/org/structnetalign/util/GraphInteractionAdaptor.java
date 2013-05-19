@@ -41,7 +41,7 @@ public class GraphInteractionAdaptor {
 			for (Interaction interaction : entry.getInteractions()) {
 				final NavigableSet<Integer> ids = NetworkUtils.getVertexIds(interaction);
 				final InteractionEdge edge = graph.findEdge(ids.first(), ids.last());
-				final double probability = edge.getProbability();
+				final double probability = edge.getWeight();
 				Confidence confidence = new Confidence();
 				Unit unit = new Unit();
 				Names unitNames = new Names();

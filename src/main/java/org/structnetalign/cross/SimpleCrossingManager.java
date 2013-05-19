@@ -79,7 +79,7 @@ public class SimpleCrossingManager implements CrossingManager {
 			
 			// we have an update to make!
 			InteractionEdge edge = update.getRootInteraction();
-			edge.setProbability(edge.getProbability() + update.getScore());
+			edge.setWeight(edge.getWeight() + update.getScore());
 		}
 	}
 

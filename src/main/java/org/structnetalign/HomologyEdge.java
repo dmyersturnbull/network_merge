@@ -9,28 +9,67 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
+ * 
  * @author dmyersturnbull
  */
 package org.structnetalign;
 
-public class HomologyEdge {
+public class HomologyEdge implements Edge {
 
 	public static enum Type {
-		SEQUENCE_ALIGNMENT, STRUCTURAL_ALIGNMENT, SEQUENCE_DATABASE, STRUCTURAL_DATABASE;
-	}
-	
-	private double score;
-	
-	public HomologyEdge(double score) {
-		this.score = score;
+		SEQUENCE_ALIGNMENT, SEQUENCE_DATABASE, STRUCTURAL_ALIGNMENT, STRUCTURAL_DATABASE;
 	}
 
-	public double getScore() {
-		return score;
+	private int id;
+
+	private double weight;
+
+	public HomologyEdge(int id, double weight) {
+		super();
+		this.id = id;
+		this.weight = weight;
 	}
 
-	public void setScore(double score) {
-		this.score = score;
+	public HomologyEdge() {
+		
 	}
-	
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		HomologyEdge other = (HomologyEdge) obj;
+		if (id != other.id) return false;
+		return true;
+	}
+
+	@Override
+	public int getId() {
+		return id;
+	}
+
+	@Override
+	public double getWeight() {
+		return weight;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	@Override
+	public void setWeight(double weight) {
+		this.weight = weight;
+	}
+
 }

@@ -14,8 +14,10 @@
  */
 package org.structnetalign.util;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -23,15 +25,24 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.collections15.Transformer;
 import org.structnetalign.CleverGraph;
+import org.structnetalign.Edge;
 import org.structnetalign.HomologyEdge;
 import org.structnetalign.InteractionEdge;
 import org.xml.sax.SAXException;
 
+import edu.uci.ics.jung.graph.DirectedSparseGraph;
+import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.UndirectedGraph;
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
-import edu.uci.ics.jung.io.GraphMLMetadata;
+import edu.uci.ics.jung.io.GraphIOException;
 import edu.uci.ics.jung.io.GraphMLReader;
 import edu.uci.ics.jung.io.GraphMLWriter;
+import edu.uci.ics.jung.io.graphml.EdgeMetadata;
+import edu.uci.ics.jung.io.graphml.GraphMLReader2;
+import edu.uci.ics.jung.io.graphml.GraphMetadata;
+import edu.uci.ics.jung.io.graphml.GraphMetadata.EdgeDefault;
+import edu.uci.ics.jung.io.graphml.HyperEdgeMetadata;
+import edu.uci.ics.jung.io.graphml.NodeMetadata;
 
 /**
  * An adaptor that converts between {@link UndirectedGraph graphs} for homology and interactions and their GraphML
@@ -42,10 +53,12 @@ import edu.uci.ics.jung.io.GraphMLWriter;
  */
 public class GraphMLAdaptor {
 
-	private static final String HOMOLOGY_WEIGHT_DESCRIPTION = "weight";
-	private static final String HOMOLOGY_WEIGHT_LABEL = "w";
-	private static final String INTERACTION_WEIGHT_DESCRIPTION = "weight";
-	private static final String INTERACTION_WEIGHT_LABEL = "w";
+	private interface EdgeFactory<E extends Edge> {
+		E createEmptyEdge();
+	}
+
+	private static final String WEIGHT_DESCRIPTION = "weight";
+	private static final String WEIGHT_LABEL = "w";
 
 	public static CleverGraph readGraph(File interactionFile, File homologyFile) {
 		return readGraph(interactionFile.getPath(), homologyFile.getPath());
@@ -83,24 +96,35 @@ public class GraphMLAdaptor {
 		return readHomologyGraph(file.getPath());
 	}
 
-	public static UndirectedGraph<Integer, HomologyEdge> readHomologyGraph(String file) {
-		GraphMLReader<UndirectedGraph<Integer, HomologyEdge>, Integer, HomologyEdge> reader;
-		try {
-			reader = new GraphMLReader<>();
-		} catch (ParserConfigurationException | SAXException e) {
-			throw new RuntimeException("Couldn't load GraphML file", e);
+	public static UndirectedGraph<Integer, HomologyEdge> readHomologyGraph(final String file) {
+
+		// get the transformers
+		Transformer<GraphMetadata, Graph<Integer, HomologyEdge>> graphTransformer = getGraphTransformer();
+		Transformer<NodeMetadata, Integer> vertexTransformer = getVertexTransformer();
+		EdgeFactory<HomologyEdge> factory = new EdgeFactory<HomologyEdge>() {
+			@Override
+			public HomologyEdge createEmptyEdge() {
+				return new HomologyEdge();
+			}
+		};
+		Transformer<EdgeMetadata, HomologyEdge> edgeTransformer = getEdgeTransformer(factory);
+		Transformer<HyperEdgeMetadata, HomologyEdge> hyperEdgeTransformer = getHyperEdgeTransformer();
+
+		// now build the graph
+		UndirectedGraph<Integer, HomologyEdge> graph;
+		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+			GraphMLReader2<Graph<Integer, HomologyEdge>, Integer, HomologyEdge> reader;
+			reader = new GraphMLReader2<>(br, graphTransformer, vertexTransformer, edgeTransformer,
+					hyperEdgeTransformer);
+			try {
+				graph = (UndirectedGraph<Integer, HomologyEdge>) reader.readGraph();
+			} catch (GraphIOException e) {
+				throw new RuntimeException("Couldn't load GraphML file", e);
+			}
+		} catch (IOException e1) {
+			throw new RuntimeException("Couldn't load GraphML file", e1);
 		}
-		UndirectedGraph<Integer, HomologyEdge> graph = new UndirectedSparseGraph<>();
-		try {
-			reader.load(file, graph);
-		} catch (IOException e) {
-			throw new RuntimeException("Couldn't load GraphML file", e);
-		}
-		GraphMLMetadata<HomologyEdge> weights = reader.getEdgeMetadata().get(HOMOLOGY_WEIGHT_LABEL);
-		for (HomologyEdge edge : graph.getEdges()) {
-			double score = Double.parseDouble(weights.transformer.transform(edge));
-			edge.setScore(score);
-		}
+
 		return graph;
 	}
 
@@ -108,36 +132,51 @@ public class GraphMLAdaptor {
 		return readInteractionGraph(file.getPath());
 	}
 
-	public static UndirectedGraph<Integer, InteractionEdge> readInteractionGraph(String file) {
-		GraphMLReader<UndirectedGraph<Integer, InteractionEdge>, Integer, InteractionEdge> reader;
-		try {
-			reader = new GraphMLReader<>();
-		} catch (ParserConfigurationException | SAXException e) {
-			throw new RuntimeException("Couldn't load GraphML file", e);
+	public static UndirectedGraph<Integer, InteractionEdge> readInteractionGraph(final String file) {
+
+		// get the transformers
+		Transformer<GraphMetadata, Graph<Integer, InteractionEdge>> graphTransformer = getGraphTransformer();
+		Transformer<NodeMetadata, Integer> vertexTransformer = getVertexTransformer();
+		EdgeFactory<InteractionEdge> factory = new EdgeFactory<InteractionEdge>() {
+			@Override
+			public InteractionEdge createEmptyEdge() {
+				return new InteractionEdge();
+			}
+		};
+		Transformer<EdgeMetadata, InteractionEdge> edgeTransformer = getEdgeTransformer(factory);
+		Transformer<HyperEdgeMetadata, InteractionEdge> hyperEdgeTransformer = getHyperEdgeTransformer();
+
+		// now build the graph
+		UndirectedGraph<Integer, InteractionEdge> graph;
+		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+			GraphMLReader2<Graph<Integer, InteractionEdge>, Integer, InteractionEdge> reader;
+			reader = new GraphMLReader2<>(br, graphTransformer, vertexTransformer, edgeTransformer,
+					hyperEdgeTransformer);
+			try {
+				graph = (UndirectedGraph<Integer, InteractionEdge>) reader.readGraph();
+			} catch (GraphIOException e) {
+				throw new RuntimeException("Couldn't load GraphML file", e);
+			}
+		} catch (IOException e1) {
+			throw new RuntimeException("Couldn't load GraphML file", e1);
 		}
-		UndirectedGraph<Integer, InteractionEdge> graph = new UndirectedSparseGraph<>();
-		try {
-			reader.load(file, graph);
-		} catch (IOException e) {
-			throw new RuntimeException("Couldn't load GraphML file", e);
-		}
-		GraphMLMetadata<InteractionEdge> weights = reader.getEdgeMetadata().get(INTERACTION_WEIGHT_LABEL);
-		for (InteractionEdge edge : graph.getEdges()) {
-			double score = Double.parseDouble(weights.transformer.transform(edge));
-			edge.setProbability(score);
-		}
+
 		return graph;
 	}
 
 	public static void writeHomologyGraph(UndirectedGraph<Integer, HomologyEdge> graph, File file) {
+
 		GraphMLWriter<Integer, HomologyEdge> writer = new GraphMLWriter<>();
-		Transformer<HomologyEdge, String> edgeTransformer = new Transformer<HomologyEdge, String>() {
-			@Override
-			public String transform(HomologyEdge edge) {
-				return String.valueOf(edge.getScore());
-			}
-		};
-		writer.addEdgeData(HOMOLOGY_WEIGHT_LABEL, HOMOLOGY_WEIGHT_DESCRIPTION, null, edgeTransformer);
+
+		// assign weights
+		Transformer<HomologyEdge, String> edgeTransformer = getEdgeWeightTransformer();
+		writer.addEdgeData(WEIGHT_LABEL, WEIGHT_DESCRIPTION, null, edgeTransformer);
+
+		// assign edge Ids (needed by reader)
+		Transformer<HomologyEdge, String> edgeIdTransformer = getEdgeIdTransformer();
+		writer.setEdgeIDs(edgeIdTransformer);
+
+		// write graph
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(file));
 			writer.save(graph, bw);
@@ -148,14 +187,17 @@ public class GraphMLAdaptor {
 	}
 
 	public static void writeInteractionGraph(UndirectedGraph<Integer, InteractionEdge> graph, File file) {
+
 		GraphMLWriter<Integer, InteractionEdge> writer = new GraphMLWriter<>();
-		Transformer<InteractionEdge, String> edgeTransformer = new Transformer<InteractionEdge, String>() {
-			@Override
-			public String transform(InteractionEdge edge) {
-				return String.valueOf(edge.getProbability());
-			}
-		};
-		writer.addEdgeData(INTERACTION_WEIGHT_LABEL, INTERACTION_WEIGHT_DESCRIPTION, null, edgeTransformer);
+
+		// assign weights
+		Transformer<InteractionEdge, String> weightEdgeTransformer = getEdgeWeightTransformer();
+		writer.addEdgeData(WEIGHT_LABEL, WEIGHT_DESCRIPTION, null, weightEdgeTransformer);
+
+		// assign edge Ids (needed by reader)
+		Transformer<InteractionEdge, String> edgeIdTransformer = getEdgeIdTransformer();
+		writer.setEdgeIDs(edgeIdTransformer);
+
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(file));
 			writer.save(graph, bw);
@@ -163,6 +205,84 @@ public class GraphMLAdaptor {
 		} catch (IOException e) {
 			throw new RuntimeException("Couldn't save graph to " + file, e);
 		}
+	}
+
+	private static <E extends Edge> Transformer<E, String> getEdgeWeightTransformer() {
+		return new Transformer<E, String>() {
+			@Override
+			public String transform(E edge) {
+				return String.valueOf(edge.getWeight());
+			}
+		};
+	}
+
+	private static <E extends Edge> Transformer<E, String> getEdgeIdTransformer() {
+		return new Transformer<E, String>() {
+			@Override
+			public String transform(E edge) {
+				return String.valueOf(edge.getId());
+			}
+		};
+	}
+
+	private static <E extends Edge> Transformer<EdgeMetadata, E> getEdgeTransformer(final EdgeFactory<E> factory) {
+		return new Transformer<EdgeMetadata, E>() {
+			@Override
+			public E transform(EdgeMetadata metadata) {
+				int id;
+				try {
+					id = Integer.parseInt(metadata.getId());
+				} catch (NumberFormatException e) {
+					throw new IllegalArgumentException("The graph has an edge whose Id is not a number");
+				}
+				double weight;
+				try {
+					weight = Double.parseDouble(metadata.getProperty(WEIGHT_LABEL));
+				} catch (NumberFormatException e) {
+					throw new IllegalArgumentException("The graph has an edge whose Id is not a number");
+				}
+				E edge = factory.createEmptyEdge();
+				edge.setId(id);
+				edge.setWeight(weight);
+				return edge;
+			}
+		};
+	}
+
+	private static <E extends Edge> Transformer<GraphMetadata, Graph<Integer, E>> getGraphTransformer() {
+		return new Transformer<GraphMetadata, Graph<Integer, E>>() {
+			@Override
+			public Graph<Integer, E> transform(GraphMetadata metadata) {
+				metadata.getEdgeDefault();
+				if (metadata.getEdgeDefault().equals(EdgeDefault.DIRECTED)) {
+					return new DirectedSparseGraph<Integer, E>();
+				} else {
+					return new UndirectedSparseGraph<Integer, E>();
+				}
+			}
+		};
+	}
+
+	private static <E extends Edge> Transformer<HyperEdgeMetadata, E> getHyperEdgeTransformer() {
+		return new Transformer<HyperEdgeMetadata, E>() {
+			@Override
+			public E transform(HyperEdgeMetadata metadata) {
+				return null;
+			}
+		};
+	}
+
+	private static Transformer<NodeMetadata, Integer> getVertexTransformer() {
+		return new Transformer<NodeMetadata, Integer>() {
+			@Override
+			public Integer transform(NodeMetadata metadata) {
+				try {
+					return Integer.parseInt(metadata.getId());
+				} catch (NumberFormatException e) {
+					throw new IllegalArgumentException("The graph has a vertex whose Id is not a number");
+				}
+			}
+		};
 	}
 
 }

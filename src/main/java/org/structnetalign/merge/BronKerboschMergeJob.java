@@ -64,7 +64,7 @@ public class BronKerboschMergeJob implements Callable<Collection<Collection<Inte
 		EdgeWeighter<HomologyEdge> weighter = new EdgeWeighter<HomologyEdge>() {
 			@Override
 			public double getWeight(HomologyEdge e) {
-				return e.getScore();
+				return e.getWeight();
 			}
 		};
 		ProbabilisticDistanceClusterer<Integer, HomologyEdge> alg = new ProbabilisticDistanceClusterer<Integer, HomologyEdge>(

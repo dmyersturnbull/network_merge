@@ -9,38 +9,61 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
+ * 
  * @author dmyersturnbull
  */
 package org.structnetalign;
 
-public class InteractionEdge {
+public class InteractionEdge implements Edge {
 
 	private int id;
-	
-	private double probability;
 
+	private double weight;
+
+	public InteractionEdge() {
+	}
+
+	public InteractionEdge(int id, double weight) {
+		this.id = id;
+		this.weight = weight;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		InteractionEdge other = (InteractionEdge) obj;
+		if (id != other.id) return false;
+		return true;
+	}
+
+	@Override
 	public int getId() {
 		return id;
 	}
 
+	@Override
+	public double getWeight() {
+		return weight;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
 	public void setId(int id) {
 		this.id = id;
 	}
 
-	public double getProbability() {
-		return probability;
+	@Override
+	public void setWeight(double weight) {
+		this.weight = weight;
 	}
 
-	public void setProbability(double probability) {
-		this.probability = probability;
-	}
-
-	public InteractionEdge(int id, double probability) {
-		this.id = id;
-		this.probability = probability;
-	}
-
-	public InteractionEdge() {
-	}
-	
 }

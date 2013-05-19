@@ -123,6 +123,7 @@ public class SmartWeightManager implements WeightManager {
 		logger.info("Submitted " + futures.size() + " jobs to " + nCores + " cores");
 
 		// now respond to completion
+		int createdIndex = 0;
 		for (Future<WeightResult> future : futures) {
 			Double weight = null;
 			Integer va = null, vb = null;
@@ -150,9 +151,9 @@ public class SmartWeightManager implements WeightManager {
 				// there may already be an edge there
 				HomologyEdge existing = graph.getHomology().findEdge(va, vb);
 				if (existing != null) {
-					existing.setScore(existing.getScore() + weight);
+					existing.setWeight(existing.getWeight() + weight);
 				} else {
-					HomologyEdge edge = new HomologyEdge(weight);
+					HomologyEdge edge = new HomologyEdge(createdIndex++, weight);
 					graph.addHomologies(edge, vertices);
 				}
 			}
