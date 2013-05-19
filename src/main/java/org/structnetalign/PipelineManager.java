@@ -41,10 +41,16 @@ public class PipelineManager {
 
 	private int nCores;
 	
-	private int xi = 5;
-	private double zeta = 0.7;
-	private double delta = 0.3;
-	private double tau = 0.5;
+	public static final int XI = 5;
+	public static final double ZETA = 0.7;
+	public static final double DELTA = 0.3;
+	public static final double TAU = 0.5;
+	public static final double BETA = 1;
+	
+	private int xi = XI;
+	private double zeta = ZETA;
+	private double delta = DELTA;
+	private double tau = TAU;
 	
 	public void init() {
 		init(Math.max(Runtime.getRuntime().availableProcessors() - 1, 1));

@@ -33,7 +33,7 @@ import org.structnetalign.util.EdgeWeighter;
 public class BronKerboschMergeJob implements Callable<Collection<Collection<Integer>>> {
 
 	private CleverGraph graph;
-	private double xi;
+	private double delta;
 
 	private static String hashVertexInteractions(Collection<Integer> vertexInteractionNeighbors,
 			Map<Integer, Integer> map) {
@@ -51,10 +51,10 @@ public class BronKerboschMergeJob implements Callable<Collection<Collection<Inte
 		return new String(Hex.encodeHex(bytes));
 	}
 
-	public BronKerboschMergeJob(CleverGraph graph, double xi) {
+	public BronKerboschMergeJob(CleverGraph graph, double delta) {
 		super();
 		this.graph = graph;
-		this.xi = xi;
+		this.delta = delta;
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class BronKerboschMergeJob implements Callable<Collection<Collection<Inte
 			}
 		};
 		ProbabilisticDistanceClusterer<Integer, HomologyEdge> alg = new ProbabilisticDistanceClusterer<Integer, HomologyEdge>(
-				weighter, xi);
+				weighter, delta);
 		Set<Set<Integer>> ccs = alg.transform(graph.getHomology());
 
 		// now map each cluster to a root for that cluster
