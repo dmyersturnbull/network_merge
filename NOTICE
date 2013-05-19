@@ -12,10 +12,12 @@ is distributed under the Apache License.
 This software uses a graph API provided by Jung (http://jung.sourceforge.net),
 which is distributed under the BSD license.
 
-This software relies heavily on both Junit (http://junit.org/) and Mockito
-(http://code.google.com/p/mockito/) for testing. Junit is distributed under the
-Common Public License. Mockito is distributed under the MIT License.
+This software relies heavily on Junit (http://junit.org/), XMLUnit
+(http://xmlunit.sourceforge.net/), and Mockito
+(http://code.google.com/p/mockito/) for testing. JUnit is distributed under the
+Common Public License. Mockito is distributed under the MIT License. XMLUnit is
+provided under an open source license by Jeff Martin and Tim Bacon.
 
-This software uses the Apache Commons (http://commons.apache.org/) and log4J
-(http://logging.apache.org/log4j/), which are distributed under the Apache
-License.
+This software uses the Apache Commons (http://commons.apache.org/), log4J
+(http://logging.apache.org/log4j/), and Apache Velocity, which are all
+distributed under the Apache License.
