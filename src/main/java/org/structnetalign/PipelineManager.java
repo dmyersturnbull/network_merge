@@ -35,25 +35,31 @@ import edu.uci.ics.jung.graph.UndirectedGraph;
 
 public class PipelineManager {
 
-	private CrossingManager crossingManager;
-	private double delta = 0.3;
-	private MergeManager mergeManager;
-	private int nCores;
-	private double tau = 0.5;
 	private WeightManager weightManager;
+	private CrossingManager crossingManager;
+	private MergeManager mergeManager;
+
+	private int nCores;
+	
 	private int xi = 5;
 	private double zeta = 0.7;
+	private double delta = 0.3;
+	private double tau = 0.5;
+	
+	public void init() {
+		init(Math.max(Runtime.getRuntime().availableProcessors() - 1, 1));
+	}
 
 	/**
 	 * Creates a new PipelineManager using the default parameters.
 	 */
-	public PipelineManager() {
+	public void init(int nCores) {
+		this.nCores = nCores;
 		SimpleWeightManager weightManager = new SimpleWeightManager();
 		weightManager.setThreshold(tau);
 		weightManager.add(new ScopRelationWeight());
 		weightManager.add(new CeWeight());
 		this.weightManager = weightManager;
-		nCores = Math.max(Runtime.getRuntime().availableProcessors() - 1, 1);
 		crossingManager = new SimpleCrossingManager(nCores, xi);
 		mergeManager = new BronKerboschMergeManager(delta);
 	}
@@ -76,6 +82,7 @@ public class PipelineManager {
 		}
 		System.gc();
 
+		// make a trimmer
 		EdgeWeighter<HomologyEdge> weighter = new EdgeWeighter<HomologyEdge>() {
 			@Override
 			public double getWeight(HomologyEdge e) {
@@ -84,11 +91,15 @@ public class PipelineManager {
 		};
 		EdgeTrimmer<Integer, HomologyEdge> trimmer = new EdgeTrimmer<>(weighter);
 
+		// cross
 		trimmer.trim(graph.getHomology(), tau);
 		crossingManager.cross(graph);
 
+		// merge
 		trimmer.trim(graph.getHomology(), zeta);
 		mergeManager.merge(graph);
+		
+		crossingManager = null; mergeManager = null; trimmer = null;
 
 		// now output
 		EntrySet entrySet = NetworkUtils.readNetwork(input);

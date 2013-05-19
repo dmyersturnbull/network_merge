@@ -26,7 +26,7 @@ public class ScopRelationWeightTest {
 	private static final double WEIGHT_PRECISION = 0.00001;
 	
 	@Test
-	public void test() throws WeightException {
+	public void test() throws Exception {
 		String cowSpermadhesin = "P29392";  // cow Acidic seminal fluid protein (ASFP) b.23.1.1; d1sfpa_
 		String pigSpermadhesin = "P35495"; // pig Major seminal plasma glycoprotein PSP-I b.23.1.1; d1sppa_
 		String histoCallogen = "Q9S0X0"; // Clostridium histolyticum Collagen-binding domain b.23.2.1; d1nqda_
@@ -44,7 +44,7 @@ public class ScopRelationWeightTest {
 	}
 
 	@Test(expected=WeightException.class)
-	public void testBadUniprotId() throws WeightException {
+	public void testBadUniprotId() throws Exception {
 		ScopRelationWeight weighter = new ScopRelationWeight();
 		weighter.assignWeight("asdfasdfasdf", "sdgoyhljhsadf");
 	}
