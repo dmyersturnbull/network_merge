@@ -45,7 +45,7 @@ public class BronKerboschMergeJob implements Callable<Collection<Collection<Inte
 		}
 		StringBuilder sb = new StringBuilder();
 		for (int neighbor : vertexInteractionNeighbors) {
-			sb.append(map.get(neighbor)); // use the equivalence relation here
+			sb.append(map.get(neighbor) + ","); // use the equivalence relation here
 		}
 		byte[] bytes = md.digest(sb.toString().getBytes());
 		return new String(Hex.encodeHex(bytes));
