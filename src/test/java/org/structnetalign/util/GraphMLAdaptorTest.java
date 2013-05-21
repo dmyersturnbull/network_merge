@@ -20,7 +20,9 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -45,11 +47,19 @@ public class GraphMLAdaptorTest {
 
 	public static class IgnoringDifferenceListener implements DifferenceListener {
 
-		private static final int[] IGNORE_VALUES = new int[] { DifferenceConstants.ATTR_VALUE.getId(), };
+		private List<Integer> ignoreValues;
+
+		public IgnoringDifferenceListener() {
+			this(Arrays.asList(DifferenceConstants.ATTR_VALUE.getId()));
+		}
+
+		public IgnoringDifferenceListener(List<Integer> ignoreValues) {
+			this.ignoreValues = ignoreValues;
+		}
 
 		@Override
 		public int differenceFound(Difference difference) {
-			if (isIgnoredDifference(difference)) {
+			if (ignoreValues.contains(difference.getId())) {
 				return RETURN_IGNORE_DIFFERENCE_NODES_IDENTICAL;
 			} else {
 				return RETURN_ACCEPT_DIFFERENCE;
@@ -60,15 +70,6 @@ public class GraphMLAdaptorTest {
 		public void skippedComparison(Node control, Node test) {
 		}
 
-		private boolean isIgnoredDifference(Difference difference) {
-			int differenceId = difference.getId();
-			for (int element : IGNORE_VALUES) {
-				if (differenceId == element) {
-					return true;
-				}
-			}
-			return false;
-		}
 	}
 
 	private static final String RESOURCE_DIR = "src/test/resources/util/";
