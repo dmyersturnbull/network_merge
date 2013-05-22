@@ -9,7 +9,7 @@
 		<root level="trace">
 			<appender-ref ref="Console"/>
 		</root>
-		<logger name="org.structnetalign" level="trace">
+		<logger name="org.structnetalign" level="trace" additivity="false">
 			<appender-ref ref="Console"/>
 		</logger>
 	</loggers>
