@@ -105,6 +105,9 @@ public class CleverGraph {
 	public CleverGraph(UndirectedGraph<Integer, InteractionEdge> interaction) {
 		this.interaction = interaction;
 		this.homology = new UndirectedSparseGraph<Integer,HomologyEdge>();
+		for (int vertex : interaction.getVertices()) {
+			homology.addVertex(vertex);
+		}
 	}
 	
 	public CleverGraph(UndirectedGraph<Integer, InteractionEdge> interaction,
