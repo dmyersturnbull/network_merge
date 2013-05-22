@@ -20,70 +20,70 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections15.Transformer;
 import org.structnetalign.util.EdgeWeighter;
 
 import edu.uci.ics.jung.graph.Graph;
-import edu.uci.ics.jung.graph.UndirectedGraph;
 
 /**
- * A {@link Transformer} that clusters vertices by their reachability. Two vertices u and v are clustered together if
- * and only if:
+ * A {@link Transformer} determines the set of vertices that easily reachable from a root vertex. A vertex v is easily
+ * reachable from a root vertex r if:
  * <ol>
- * <li>u is reachable from v, and</li>
- * <li>The path from u to v traversing the fewest vertices has a score above, below, or between some threshold(s)</li>
+ * <li>there is a path from r to v, and</li>
+ * <li>The path from v to r traversing the fewest vertices has a score above, below, or between some threshold(s)</li>
  * </ol>
  * The scoring of a path is handled by {@link #visit(Object, Object)}, {@link #unvisit(Object, Object)},
- * {@link #isWithinRange(Object, Object)}, and the callback interface {@link EdgeWeighter}. This is most applicable to
- * {@link UndirectedGraph UndirectedGraphs} but works by <em>weak clustering</em> with directed graphs—that is, can be
- * clustered together if u is reachable from v but v is not reachable from u.
+ * {@link #isWithinRange(Object, Object)}, and the callback interface {@link EdgeWeighter}.
  * 
  * @author dmyersturnbull
  * 
  * @param <V> The type of the vertices
  * @param <E> The type of the edges
  */
-public abstract class DistanceClusterer<V, E> implements Transformer<Graph<V, E>, Set<Set<V>>> {
+public abstract class DistanceClusterer<V, E> {
 
 	private final EdgeWeighter<E> edgeWeighter;
-
+	
 	public DistanceClusterer(EdgeWeighter<E> edgeWeighter) {
-		super();
 		this.edgeWeighter = edgeWeighter;
 	}
 
-	@Override
-	public final Set<Set<V>> transform(Graph<V, E> graph) {
+	/**
+	 *
+	 * @param graph
+	 * @param roots
+	 * @return For each root, the set of other roots that are easily reachable, including the parent root
+	 */
+	public final Map<V,Set<V>> transform(Graph<V, E> graph, Collection<V> roots) {
 
-		Set<Set<V>> clusters = new HashSet<Set<V>>();
+		Map<V,Set<V>> reachableMap = new HashMap<V,Set<V>>();
 
-		// need constant-time get
-		HashSet<V> unvisited = new HashSet<V>(graph.getVertices());
+		for (V root : roots) {
 
-		// a map from every vertex to the edge used to get to it
-		// works because only visit a vertex once
-		HashMap<V, E> edgesTaken = new HashMap<V, E>();
+			Set<V> reachable = new HashSet<>();
+			HashSet<V> unvisited = new HashSet<V>(graph.getVertices());
 
-		while (!unvisited.isEmpty()) {
-
-			// first get a root for the cluster
-			Set<V> cluster = new HashSet<V>();
-			V root = unvisited.iterator().next();
-			unvisited.remove(root);
-			cluster.add(root);
+			// a map from every vertex to the edge used to get to it
+			// works because only visit a vertex once
+			HashMap<V, E> edgesTaken = new HashMap<V, E>();
 
 			Deque<V> queue = new LinkedList<V>();
 			queue.add(root);
+			reachable.add(root);
 
 			while (!queue.isEmpty()) {
 
 				V vertex = queue.remove();
 				E edge = edgesTaken.get(vertex);
+				unvisited.remove(vertex);
 				
 				// stop traversing if we're too far
 				if (!isWithinRange(root, vertex)) continue;
+				
+				reachable.add(vertex); // not that this is AFTER the within-range check
 				
 				if (edge != null) visit(vertex, edge); // this is the ONLY place where we "officially" VISIT a vertex
 
@@ -91,21 +91,20 @@ public abstract class DistanceClusterer<V, E> implements Transformer<Graph<V, E>
 				for (V neighbor : neighbors) {
 					if (unvisited.contains(neighbor)) {
 						queue.add(neighbor);
-						unvisited.remove(neighbor);
-						cluster.add(neighbor);
 						E edgeToNeighbor = graph.findEdge(vertex, neighbor);
 						edgesTaken.put(neighbor, edgeToNeighbor);
 					}
 				}
 
-				clusters.add(cluster);
 				unvisit(vertex, edge); // this is the ONLY place where we "officially" UNVISIT a vertex
 
 			}
+			
+			reachableMap.put(root, reachable);
 
 		}
 
-		return clusters;
+		return reachableMap;
 	}
 
 	protected final double getEdgeWeight(E edge) {
