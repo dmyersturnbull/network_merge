@@ -34,12 +34,15 @@ import psidev.psi.mi.xml.PsimiXmlReaderException;
 import psidev.psi.mi.xml.PsimiXmlVersion;
 import psidev.psi.mi.xml.PsimiXmlWriter;
 import psidev.psi.mi.xml.PsimiXmlWriterException;
+import psidev.psi.mi.xml.model.Confidence;
 import psidev.psi.mi.xml.model.DbReference;
 import psidev.psi.mi.xml.model.Entry;
 import psidev.psi.mi.xml.model.EntrySet;
 import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.model.Interactor;
+import psidev.psi.mi.xml.model.Names;
 import psidev.psi.mi.xml.model.Participant;
+import psidev.psi.mi.xml.model.Unit;
 import psidev.psi.mi.xml.model.Xref;
 
 public class NetworkUtils {
@@ -52,6 +55,38 @@ public class NetworkUtils {
 		NEWLINE = System.getProperty("line.separator");
 	}
 
+	/**
+	 * Returns the first Confidence with <em>either</em> label {@code confidenceLabel} <em>or</em> full name {@code confidenceFullName}.
+	 */
+	public static Confidence getExistingConfidence(Interaction interaction, String confidenceLabel, String confidenceFullName) {
+
+		for (Confidence exisiting : interaction.getConfidences()) {
+			Unit existingUnit = exisiting.getUnit();
+			if (existingUnit != null) {
+				Names existingNames = existingUnit.getNames();
+				if (existingUnit != null) {
+					if (confidenceLabel.equals(existingNames.getShortLabel())
+							|| confidenceFullName.equals(existingNames.getFullName())) {
+						return exisiting;
+					}
+				}
+			}
+		}
+		return null;
+
+	}
+	
+	public static Confidence makeConfidence(double value, String confidenceLabel, String confidenceFullName) {
+		Confidence confidence = new Confidence();
+		Unit unit = new Unit();
+		Names unitNames = new Names();
+		unitNames.setShortLabel(confidenceLabel);
+		unitNames.setFullName(confidenceFullName);
+		unit.setNames(unitNames);
+		confidence.setValue(String.valueOf(value));
+		return confidence;
+	}
+	
 	public static Map<Integer, String> getUniProtIds(EntrySet entrySet) {
 		final String accession = "MI:0486";
 		final String accessionType = "MI:0356";

@@ -20,25 +20,44 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.NavigableSet;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.structnetalign.InteractionEdge;
 
+import psidev.psi.mi.xml.model.Confidence;
 import psidev.psi.mi.xml.model.Entry;
 import psidev.psi.mi.xml.model.EntrySet;
 import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.model.Interactor;
+import psidev.psi.mi.xml.model.Names;
 import psidev.psi.mi.xml.model.Participant;
 import psidev.psi.mi.xml.model.Source;
+import psidev.psi.mi.xml.model.Unit;
 import edu.uci.ics.jung.algorithms.cluster.WeakComponentClusterer;
 import edu.uci.ics.jung.graph.UndirectedGraph;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
- 
+import edu.uci.ics.jung.graph.util.Pair;
+
+/**
+ * A standalone utility to simplify a PSI-MI XML file by removing information that is not usable in the pipeline.
+ * This reduces the sizes of files.
+ * Also assigns initial confidence values to interactions.
+ * This <em>should</em> be run before running on any network, although this is not strictly required.
+ * @author dmyersturnbull
+ *
+ */
 public class NetworkPreparer {
 
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");
+
+	public static final String INITIAL_CONFIDENCE_LABEL = "struct-NA intial weighting";
+
+	public static final String INITIAL_CONFIDENCE_FULL_NAME = "struct-NA intial weighting";
+	
+	public static final double SINGLE_INTERACTION_PROBABILITY = 0.2;
 
 	public static void main(String[] args) {
 		if (args.length != 2) {
@@ -46,7 +65,7 @@ public class NetworkPreparer {
 			return;
 		}
 		NetworkPreparer preparer = new NetworkPreparer();
-		preparer.prepare(new File(args[0]), args[1]);
+		preparer.prepare(new File(args[0]), new File(args[1]));
 	}
 
 	public List<EntrySet> getConnnectedComponents(EntrySet entrySet) {
@@ -106,18 +125,89 @@ public class NetworkPreparer {
 
 	}
 
-	public void prepare(File input, String outputDir) {
-		if (!outputDir.endsWith("/")) outputDir += "/";
+	public void prepare(File input, File output) {
 		EntrySet entrySet = NetworkUtils.readNetwork(input);
 		entrySet = simplify(entrySet);
-		List<EntrySet> ccs = getConnnectedComponents(entrySet);
-		for (int i = 0; i < ccs.size(); i++) {
-			File file = new File(outputDir + "cc_" + i + ".xml");
-			NetworkUtils.writeNetwork(ccs.get(i), file);
-			logger.info("Wrote connected component " + i + " to " + file.getPath());
-		}
+		entrySet = initConfidences(entrySet, INITIAL_CONFIDENCE_LABEL, INITIAL_CONFIDENCE_FULL_NAME, SINGLE_INTERACTION_PROBABILITY);
+		NetworkUtils.writeNetwork(entrySet, output);
 	}
 
+	/**
+	 * Gives a new confidence to each interaction based on its number of occurrences.
+	 * Specifically, the confidence value is the probability of any interaction given that each single interaction is assigned a probability of {@code p0}.
+	 */
+	private EntrySet initConfidences(EntrySet entrySet, String confidenceLabel, String confidenceFullName, double p0) {
+
+		// first, only copy the essential information (e.g. version number)
+		EntrySet myEntrySet = new EntrySet();
+		myEntrySet.setVersion(entrySet.getVersion());
+		myEntrySet.setMinorVersion(entrySet.getMinorVersion());
+		myEntrySet.setLevel(entrySet.getLevel());
+
+		HashSet<Pair<Integer>> exisitingEdges = new HashSet<>();
+		
+		Map<Pair<Integer>,Confidence> confidences = new HashMap<>();
+
+		int entryIndex = 1;
+		for (Entry entry : entrySet.getEntries()) {
+
+			logger.info("Setting initial confidences in entry " + entryIndex);
+
+			Entry myEntry = new Entry();
+			myEntry.setSource(entry.getSource());
+			Collection<Interaction> myInteractions = myEntry.getInteractions();
+			
+			for (Interaction interaction : entry.getInteractions()) {
+				
+				NavigableSet<Integer> participants = NetworkUtils.getVertexIds(interaction);
+				Pair<Integer> pair = new Pair<>(participants.first(), participants.last());
+				
+				if (exisitingEdges.contains(pair)) {
+					
+					double prevValue = Double.parseDouble(confidences.get(pair).getValue());
+					double newValue = prevValue + p0 - prevValue * p0;
+					confidences.get(pair).setValue(String.valueOf(newValue));
+					logger.debug("Updated initial confidence of interaction Id#" + interaction.getId() + " from " + prevValue + " to " + newValue);
+					
+				} else {
+					
+					exisitingEdges.add(pair);
+					myInteractions.add(interaction);
+
+					// a confidence with this label or full name shouldn't already exist
+					// if it does, it probably means we've already run before
+					// so, we'll just delete it from the output
+					// it can always be recovered from the input file
+					// but this is critical because otherwise we'd lose our new confidence
+					Confidence alreadyExists = NetworkUtils.getExistingConfidence(interaction, confidenceLabel, confidenceFullName);
+					if (alreadyExists != null) {
+						logger.warn("Confidence " + confidenceLabel + " already exists. Overwriting.");
+						interaction.getConfidences().remove(alreadyExists);
+					}
+
+					// make a new Confidence
+					Confidence confidence = NetworkUtils.makeConfidence(p0, confidenceLabel, confidenceFullName);
+
+					confidences.put(pair, confidence);
+					logger.debug("Set initial confidence of interaction Id#" + interaction.getId() + " to " + p0);
+				}
+				
+				entryIndex++;
+			}
+
+			myEntry.getInteractions().addAll(myInteractions);
+			myEntry.getInteractors().addAll(entry.getInteractors());
+			myEntrySet.getEntries().add(myEntry);
+			
+		}
+		return myEntrySet;
+	}
+
+	/**
+	 * Removes multimolecular and unimolecular interactions from the EntrySet, and removes information about experiments, etc.
+	 * @param entrySet
+	 * @return
+	 */
 	public EntrySet simplify(EntrySet entrySet) {
 
 		// first, only copy the essential information (e.g. version number)
