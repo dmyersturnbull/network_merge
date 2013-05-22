@@ -18,78 +18,23 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.custommonkey.xmlunit.DetailedDiff;
-import org.custommonkey.xmlunit.Diff;
-import org.custommonkey.xmlunit.Difference;
-import org.custommonkey.xmlunit.DifferenceConstants;
-import org.custommonkey.xmlunit.DifferenceListener;
-import org.custommonkey.xmlunit.XMLUnit;
-import org.custommonkey.xmlunit.examples.RecursiveElementNameAndTextQualifier;
 import org.junit.Test;
 import org.structnetalign.CleverGraph;
 import org.structnetalign.HomologyEdge;
 import org.structnetalign.InteractionEdge;
-import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import edu.uci.ics.jung.graph.UndirectedGraph;
 
 public class GraphMLAdaptorTest {
 
-	public static class IgnoringDifferenceListener implements DifferenceListener {
-
-		private List<Integer> ignoreValues;
-
-		public IgnoringDifferenceListener() {
-			this(Arrays.asList(DifferenceConstants.ATTR_VALUE.getId()));
-		}
-
-		public IgnoringDifferenceListener(List<Integer> ignoreValues) {
-			this.ignoreValues = ignoreValues;
-		}
-
-		@Override
-		public int differenceFound(Difference difference) {
-			if (ignoreValues.contains(difference.getId())) {
-				return RETURN_IGNORE_DIFFERENCE_NODES_IDENTICAL;
-			} else {
-				return RETURN_ACCEPT_DIFFERENCE;
-			}
-		}
-
-		@Override
-		public void skippedComparison(Node control, Node test) {
-		}
-
-	}
-
 	private static final String RESOURCE_DIR = "src/test/resources/util/";
-
-	private static final double WEIGHT_PRECISION = 0.000000001;
-
-	static {
-		XMLUnit.setIgnoreWhitespace(true);
-		XMLUnit.setTransformerFactory("org.apache.xalan.processor.TransformerFactoryImpl");
-		XMLUnit.setIgnoreComments(true);
-		XMLUnit.setIgnoreAttributeOrder(true);
-	}
-
-	private static void printDetailedDiff(Diff diff) {
-		DetailedDiff detDiff = new DetailedDiff(diff);
-		for (Object object : detDiff.getAllDifferences()) {
-			Difference difference = (Difference) object;
-			System.err.println(difference);
-		}
-	}
 
 	@Test
 	public void testReadGraph() {
@@ -137,20 +82,8 @@ public class GraphMLAdaptorTest {
 		clever.addHomology(new HomologyEdge(1, 0.3), 2, 4);
 		clever.addHomology(new HomologyEdge(2, 0.6), 4, 5);
 		File expectedFile = new File(RESOURCE_DIR + "hom_1.graphml.xml");
-		File file = new File("ahomgraph.xml.tmp");
-		GraphMLAdaptor.writeHomologyGraph(clever.getHomology(), file);
-		FileReader expectedFr = new FileReader(expectedFile);
-		FileReader actualFr = new FileReader(file);
-		Diff diff = new Diff(expectedFr, actualFr);
-		// ignore order
-		// look at element, id, and weight (weight is a nested element)
-		diff.overrideElementQualifier(new RecursiveElementNameAndTextQualifier());
-		final boolean isSimilar = diff.similar();
-		if (!isSimilar) printDetailedDiff(diff);
+		boolean isSimilar = TestUtils.compareHomologyGraph(clever.getHomology(), expectedFile);
 		assertTrue("XML output for homology graph differs from expected", isSimilar);
-		expectedFr.close();
-		actualFr.close();
-		file.delete();
 	}
 
 	@Test
@@ -165,17 +98,7 @@ public class GraphMLAdaptorTest {
 		clever.addInteraction(new InteractionEdge(1, 0.3), 2, 4);
 		clever.addInteraction(new InteractionEdge(2, 0.6), 4, 5);
 		File expectedFile = new File(RESOURCE_DIR + "int_1.graphml.xml");
-		File file = new File("anintgraph.xml.tmp");
-		GraphMLAdaptor.writeInteractionGraph(clever.getInteraction(), file);
-		FileReader expectedFr = new FileReader(expectedFile);
-		FileReader actualFr = new FileReader(file);
-		Diff diff = new Diff(expectedFr, actualFr);
-		diff.overrideElementQualifier(new RecursiveElementNameAndTextQualifier());
-		final boolean isSimilar = diff.similar();
-		if (!isSimilar) printDetailedDiff(diff);
+		boolean isSimilar = TestUtils.compareInteractionGraph(clever.getInteraction(), expectedFile);
 		assertTrue("XML output for interaction graph differs from expected", isSimilar);
-		expectedFr.close();
-		actualFr.close();
-		file.delete();
 	}
 }
