@@ -35,7 +35,8 @@ import org.structnetalign.HomologyEdge;
 /**
  * An intelligent multithreaded {@link WeightManager} that uses sequence information if and only if the corresponding
  * structural information is missing.
- * 
+ * This is a pretty bad implementation, since the weights it assigns don't correspond to probabilities (and can even
+ * exceed 1).
  * @author dmyersturnbull
  * 
  */
@@ -76,7 +77,7 @@ public class SmartWeightManager implements WeightManager {
 			int j = 0;
 			for (int b : graph.getVertices()) {
 
-				if (i <= j) continue; // homology had damn well better be reflexive!
+				if (i <= j) continue; // homology had damn well better be reflexive and symmetric!
 
 				final String uniProtIdA = uniProtIds.get(a);
 				final String uniProtIdB = uniProtIds.get(b);
@@ -166,7 +167,8 @@ public class SmartWeightManager implements WeightManager {
 				// there may already be an edge there
 				HomologyEdge existing = graph.getHomology().findEdge(vertexA, vertexB);
 				if (existing != null) {
-					existing.setWeight(existing.getWeight() + weight);
+					// (a+b-ab) + c - c*(a+b-ab) = a + b + c - ab - ac - bc + abc
+					existing.setWeight(existing.getWeight() + weight - existing.getWeight() * weight);
 				} else {
 					HomologyEdge edge = new HomologyEdge(createdIndex++, weight);
 					graph.addHomologies(edge, vertices);
