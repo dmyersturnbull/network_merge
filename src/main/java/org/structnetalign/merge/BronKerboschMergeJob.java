@@ -35,8 +35,7 @@ public class BronKerboschMergeJob implements Callable<Collection<Collection<Inte
 	private CleverGraph graph;
 	private double delta;
 
-	private static String hashVertexInteractions(Collection<Integer> vertexInteractionNeighbors,
-			Map<Integer, Integer> map) {
+	private static String hashVertexInteractions(Collection<Integer> vertexInteractionNeighbors) {
 		MessageDigest md;
 		try {
 			md = MessageDigest.getInstance("MD5");
@@ -45,7 +44,7 @@ public class BronKerboschMergeJob implements Callable<Collection<Collection<Inte
 		}
 		StringBuilder sb = new StringBuilder();
 		for (int neighbor : vertexInteractionNeighbors) {
-			sb.append(map.get(neighbor) + ","); // use the equivalence relation here
+			sb.append(neighbor + ",");
 		}
 		byte[] bytes = md.digest(sb.toString().getBytes());
 		return new String(Hex.encodeHex(bytes));
@@ -60,30 +59,6 @@ public class BronKerboschMergeJob implements Callable<Collection<Collection<Inte
 	@Override
 	public Collection<Collection<Integer>> call() throws Exception {
 
-		// define the equivalence relation we need
-		EdgeWeighter<HomologyEdge> weighter = new EdgeWeighter<HomologyEdge>() {
-			@Override
-			public double getWeight(HomologyEdge e) {
-				return e.getWeight();
-			}
-		};
-		ProbabilisticDistanceClusterer<Integer, HomologyEdge> alg = new ProbabilisticDistanceClusterer<Integer, HomologyEdge>(
-				weighter, delta);
-		Set<Set<Integer>> ccs = alg.transform(graph.getHomology());
-
-		// now map each cluster to a root for that cluster
-		// the choice of root is arbitrary and just for hashing
-		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
-		for (Set<Integer> cc : ccs) {
-			int v0 = -1;
-			int i = 0;
-			for (int v : cc) {
-				if (i == 0) v0 = v;
-				map.put(v, v0);
-				i++;
-			}
-		}
-
 		// find the cliques
 		BronKerboschCliqueFinder<Integer, HomologyEdge> finder = new BronKerboschCliqueFinder<>();
 		Collection<Set<Integer>> cliques = finder.transform(graph.getHomology());
@@ -93,7 +68,7 @@ public class BronKerboschMergeJob implements Callable<Collection<Collection<Inte
 		for (Set<Integer> clique : cliques) {
 			for (int v : clique) {
 				Collection<Integer> neighbors = graph.getInteractionNeighbors(v);
-				String hash = hashVertexInteractions(neighbors, map);
+				String hash = hashVertexInteractions(neighbors);
 				Collection<Integer> group = cliqueGroups.get(hash);
 				if (group == null) group = new TreeSet<>();
 				group.add(v);
