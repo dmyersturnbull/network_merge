@@ -35,6 +35,7 @@ import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.model.Interactor;
 import psidev.psi.mi.xml.model.Names;
 import psidev.psi.mi.xml.model.Participant;
+import psidev.psi.mi.xml.model.PsiFactory;
 import psidev.psi.mi.xml.model.Source;
 import psidev.psi.mi.xml.model.Unit;
 import edu.uci.ics.jung.algorithms.cluster.WeakComponentClusterer;
@@ -136,7 +137,7 @@ public class NetworkPreparer {
 	 * Gives a new confidence to each interaction based on its number of occurrences.
 	 * Specifically, the confidence value is the probability of any interaction given that each single interaction is assigned a probability of {@code p0}.
 	 */
-	private EntrySet initConfidences(EntrySet entrySet, String confidenceLabel, String confidenceFullName, double p0) {
+	public EntrySet initConfidences(EntrySet entrySet, String confidenceLabel, String confidenceFullName, double p0) {
 
 		// first, only copy the essential information (e.g. version number)
 		EntrySet myEntrySet = new EntrySet();
@@ -186,7 +187,7 @@ public class NetworkPreparer {
 					}
 
 					// make a new Confidence
-					Confidence confidence = NetworkUtils.makeConfidence(p0, confidenceLabel, confidenceFullName);
+					Confidence confidence = NetworkUtils.makeConfidence(p0, confidenceLabel, confidenceFullName, confidenceLabel);
 
 					confidences.put(pair, confidence);
 					logger.debug("Set initial confidence of interaction Id#" + interaction.getId() + " to " + p0);
@@ -194,12 +195,22 @@ public class NetworkPreparer {
 				
 				entryIndex++;
 			}
-
+			
 			myEntry.getInteractions().addAll(myInteractions);
 			myEntry.getInteractors().addAll(entry.getInteractors());
 			myEntrySet.getEntries().add(myEntry);
-			
 		}
+		
+		// now add the confidences
+		for (Entry entry : myEntrySet.getEntries()) {
+			for (Interaction interaction : entry.getInteractions()) {
+				NavigableSet<Integer> participants = NetworkUtils.getVertexIds(interaction);
+				Pair<Integer> pair = new Pair<>(participants.first(), participants.last());
+				Confidence conf = confidences.get(pair);
+				interaction.getConfidences().add(conf);
+			}
+		}
+
 		return myEntrySet;
 	}
 

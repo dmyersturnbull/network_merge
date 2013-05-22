@@ -87,11 +87,11 @@ public class GraphInteractionAdaptor {
 				}
 
 				// make a new Confidence
-				Confidence confidence = NetworkUtils.makeConfidence(edge.getWeight(), confidenceLabel, confidenceFullName);
-				
+				Confidence confidence = NetworkUtils.makeConfidence(edge.getWeight(), confidenceLabel, confidenceFullName, confidenceLabel);
+
 				interaction.getConfidences().add(confidence);
 				logger.debug("Updated interaction Id#" + interaction.getId() + " with probablility " + edge.getWeight());
-				
+
 			}
 			entryIndex++;
 		}
@@ -135,22 +135,12 @@ public class GraphInteractionAdaptor {
 			int edgeIndex = 1;
 			for (Interaction interaction : entry.getInteractions()) {
 
+				// note that using confidenceLabel twice here is weird
 				double probability = defaultProbability;
-				Collection<Confidence> confidences = interaction.getConfidences();
-				if (confidenceLabel != null && confidences != null) {
-					for (Confidence confidence : confidences) {
-						Unit unit = confidence.getUnit();
-						if (unit != null) {
-							Names names = unit.getNames();
-							if (names != null) {
-								String name = names.getShortLabel();
-								if (confidenceLabel.equals(name)) {
-									probability = Double.parseDouble(confidence.getValue());
-									logger.trace("Prob(interaction)=" + probability);
-								}
-							}
-						}
-					}
+				Confidence conf = NetworkUtils.getExistingConfidence(interaction, confidenceLabel, confidenceLabel);
+				if (conf != null) {
+					logger.trace("Prob(interaction)=" + probability);
+					probability = Double.parseDouble(conf.getValue());
 				}
 
 				InteractionEdge edge = new InteractionEdge(interaction.getId(), probability);

@@ -42,6 +42,7 @@ import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.model.Interactor;
 import psidev.psi.mi.xml.model.Names;
 import psidev.psi.mi.xml.model.Participant;
+import psidev.psi.mi.xml.model.PsiFactory;
 import psidev.psi.mi.xml.model.Unit;
 import psidev.psi.mi.xml.model.Xref;
 
@@ -76,14 +77,9 @@ public class NetworkUtils {
 
 	}
 	
-	public static Confidence makeConfidence(double value, String confidenceLabel, String confidenceFullName) {
-		Confidence confidence = new Confidence();
-		Unit unit = new Unit();
-		Names unitNames = new Names();
-		unitNames.setShortLabel(confidenceLabel);
-		unitNames.setFullName(confidenceFullName);
-		unit.setNames(unitNames);
-		confidence.setValue(String.valueOf(value));
+	public static Confidence makeConfidence(double value, String confidenceLabel, String confidenceFullName, String xRefId) {
+		Confidence confidence = PsiFactory.createConfidence(String.valueOf(value), xRefId, confidenceLabel);
+		confidence.getUnit().getNames().setFullName(confidenceFullName);
 		return confidence;
 	}
 	
