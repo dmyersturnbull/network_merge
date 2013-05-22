@@ -36,6 +36,7 @@ public class NetworkPreparerTest {
 		final File expected = new File(RESOURCE_DIR + "simplified_network.xml");
 		final File input = new File(RESOURCE_DIR + "input_network.xml");
 		final File output = new File("simplified_network.xml");
+		output.deleteOnExit();
 		NetworkPreparer prep = new NetworkPreparer();
 		EntrySet entrySet = NetworkUtils.readNetwork(input);
 		entrySet = prep.simplify(entrySet);
@@ -45,9 +46,25 @@ public class NetworkPreparerTest {
 	}
 
 	@Test
+	public void testInitConfidence() {
+		final File input = new File(RESOURCE_DIR + "before_init_conf.psimi.xml");
+		NetworkPreparer prep = new NetworkPreparer();
+		EntrySet entrySet = NetworkUtils.readNetwork(input);
+		entrySet = prep.initConfidences(entrySet, "IamaLABEL", "andImaNAME", 0.2);
+		File actual = new File("withinitconf.xml.tmp");
+		actual.deleteOnExit();
+		NetworkUtils.writeNetwork(entrySet, actual);
+		final File expected = new File(RESOURCE_DIR + "after_init_conf.psimi.xml");
+		boolean similar = TestUtils.compareXml(actual, expected);
+		assertTrue("Graph is wrong", similar);
+		actual.delete();
+	}
+	
+	@Test
 	public void testGetCcs() throws IOException {
 		final File input = new File(RESOURCE_DIR + "simplified_network.xml");
 		final File output = new File("cc.xml");
+		output.deleteOnExit();
 		final String expectedCcs = RESOURCE_DIR + "expected_ccs/";
 		NetworkPreparer prep = new NetworkPreparer();
 		EntrySet entrySet = NetworkUtils.readNetwork(input);
@@ -57,7 +74,8 @@ public class NetworkPreparerTest {
 		for (int i = 0; i < ccs.size(); i++) {
 			NetworkUtils.writeNetwork(ccs.get(i), output);
 			final File expectedCc = new File(expectedCcs + i + ".xml");
-			assertTrue("Connected component file " + i + " is wrong", FileUtils.contentEquals(expectedCc, output));
+			boolean similar = TestUtils.compareXml(expectedCc, output);
+			assertTrue("Connected component file " + i + " is wrong", similar);
 			output.delete();
 		}
 	}
