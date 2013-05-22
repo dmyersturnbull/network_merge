@@ -40,6 +40,10 @@ public class GraphInteractionAdaptor {
 	public static final double DEFAULT_PROBABILITY = 0.5;
 
 	public static void modifyProbabilites(EntrySet entrySet, UndirectedGraph<Integer, InteractionEdge> graph) {
+		modifyProbabilites(entrySet, graph, CONFIDENCE_SHORT_LABEL, CONFIDENCE_FULL_NAME);
+	}
+	
+	public static void modifyProbabilites(EntrySet entrySet, UndirectedGraph<Integer, InteractionEdge> graph, String confidenceLabel, String confidenceFullName) {
 
 		for (Entry entry : entrySet.getEntries()) {
 			for (Interaction interaction : entry.getInteractions()) {
@@ -49,8 +53,8 @@ public class GraphInteractionAdaptor {
 				Confidence confidence = new Confidence();
 				Unit unit = new Unit();
 				Names unitNames = new Names();
-				unitNames.setShortLabel(CONFIDENCE_SHORT_LABEL);
-				unitNames.setFullName(CONFIDENCE_FULL_NAME);
+				unitNames.setShortLabel(confidenceLabel);
+				unitNames.setFullName(confidenceFullName);
 				unit.setNames(unitNames);
 				confidence.setValue(String.valueOf(probability));
 				interaction.getConfidences().add(confidence);

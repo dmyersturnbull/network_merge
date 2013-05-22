@@ -24,6 +24,7 @@ import org.structnetalign.merge.MergeManager;
 import org.structnetalign.util.EdgeTrimmer;
 import org.structnetalign.util.EdgeWeighter;
 import org.structnetalign.util.GraphInteractionAdaptor;
+import org.structnetalign.util.GraphMLAdaptor;
 import org.structnetalign.util.NetworkUtils;
 import org.structnetalign.weight.CeWeight;
 import org.structnetalign.weight.ScopRelationWeight;
@@ -35,58 +36,65 @@ import edu.uci.ics.jung.graph.UndirectedGraph;
 
 public class PipelineManager {
 
-	private WeightManager weightManager;
+	public static final double BETA = 1;
+	public static final int N_CORES = Math.max(Runtime.getRuntime().availableProcessors() - 1, 1);
+	public static final double TAU = 0.5;
+	public static final int XI = 5;
+	public static final double ZETA = 0.7;
+
 	private CrossingManager crossingManager;
 	private MergeManager mergeManager;
 
 	private int nCores;
-	
-	public static final int N_CORES = Math.max(Runtime.getRuntime().availableProcessors() - 1, 1);
-	public static final int XI = 5;
-	public static final double ZETA = 0.7;
-	public static final double TAU = 0.5;
-	public static final double BETA = 1;
-	
 	private boolean report = false;
+	private WeightManager weightManager;
+	private String initialConfidenceLabel = GraphInteractionAdaptor.INITIAL_CONFIDENCE_LABEL;
+	public double defaultProbability = GraphInteractionAdaptor.DEFAULT_PROBABILITY;
 	private boolean writeSteps = false;
-	private double beta = BETA;
+	private boolean noMerge;
+	private boolean noCross;
+
 	private int xi = XI;
 	private double zeta = ZETA;
+	private double beta = BETA;
 	private double tau = TAU;
-	
-	public boolean isReport() {
-		return report;
+
+	public boolean isNoMerge() {
+		return noMerge;
 	}
 
-	public void setReport(boolean report) {
-		this.report = report;
+	public void setNoMerge(boolean noMerge) {
+		this.noMerge = noMerge;
 	}
 
-	public boolean isWriteSteps() {
-		return writeSteps;
+	public boolean isNoCross() {
+		return noCross;
 	}
 
-	public void setWriteSteps(boolean writeSteps) {
-		this.writeSteps = writeSteps;
+	public void setNoCross(boolean noCross) {
+		this.noCross = noCross;
+	}
+
+	public double getDefaultProbability() {
+		return defaultProbability;
+	}
+
+	public void setDefaultProbability(double defaultProbability) {
+		this.defaultProbability = defaultProbability;
 	}
 
 	public double getBeta() {
 		return beta;
 	}
 
-	public void setBeta(double beta) {
-		this.beta = beta;
-	}
-
-	public void init() {
-		init(Math.max(Runtime.getRuntime().availableProcessors() - 1, 1));
+	public String getInitialConfidenceLabel() {
+		return initialConfidenceLabel;
 	}
 
 	/**
-	 * Creates a new PipelineManager using the default parameters.
+	 * Initializes a new PipelineManager using the default parameters. Once this has been performed, setting of variables will have no effect.
 	 */
-	public void init(int nCores) {
-		this.nCores = nCores;
+	private void init() {
 		SimpleWeightManager weightManager = new SimpleWeightManager();
 		weightManager.setThreshold(tau);
 		weightManager.add(new ScopRelationWeight());
@@ -96,16 +104,29 @@ public class PipelineManager {
 		mergeManager = new BronKerboschMergeManager();
 	}
 
+	public boolean isReport() {
+		return report;
+	}
+
+	public boolean isWriteSteps() {
+		return writeSteps;
+	}
+
 	/**
 	 * Runs the entire pipeline.
 	 */
 	public void run(File input, File output) {
 
+		init();
+
+		String path = output.getParent();
+		if (!path.endsWith(File.separator)) path += File.separator;
+
 		CleverGraph graph;
 		{
 			// build the graph
 			EntrySet entrySet = NetworkUtils.readNetwork(input);
-			UndirectedGraph<Integer, InteractionEdge> interaction = GraphInteractionAdaptor.toGraph(entrySet);
+			UndirectedGraph<Integer, InteractionEdge> interaction = GraphInteractionAdaptor.toGraph(entrySet, initialConfidenceLabel, defaultProbability);
 			graph = new CleverGraph(interaction);
 
 			// assign weights
@@ -122,16 +143,35 @@ public class PipelineManager {
 			}
 		};
 		EdgeTrimmer<Integer, HomologyEdge> trimmer = new EdgeTrimmer<>(weighter);
+		
+		if (writeSteps) {
+			GraphMLAdaptor.writeHomologyGraph(graph.getHomology(), new File(path + "hom_weighted.graphml.xml"));
+			GraphMLAdaptor.writeInteractionGraph(graph.getInteraction(), new File(path + "int_weighted.graphml.xml"));
+		}
 
 		// cross
-		trimmer.trim(graph.getHomology(), tau);
-		crossingManager.cross(graph);
+		if (!noCross) {
+			trimmer.trim(graph.getHomology(), tau);
+			crossingManager.cross(graph);
+		}
+		if (writeSteps) {
+			GraphMLAdaptor.writeHomologyGraph(graph.getHomology(), new File(path + "hom_crossed.graphml.xml"));
+			GraphMLAdaptor.writeInteractionGraph(graph.getInteraction(), new File(path + "int_crossed.graphml.xml"));
+		}
 
 		// merge
-		trimmer.trim(graph.getHomology(), zeta);
-		mergeManager.merge(graph);
-		
-		crossingManager = null; mergeManager = null; trimmer = null;
+		if (!noMerge) {
+			trimmer.trim(graph.getHomology(), zeta);
+			mergeManager.merge(graph);
+		}
+		if (writeSteps) {
+			GraphMLAdaptor.writeHomologyGraph(graph.getHomology(), new File(path + "hom_merged.graphml.xml"));
+			GraphMLAdaptor.writeInteractionGraph(graph.getInteraction(), new File(path + "int_merged.graphml.xml"));
+		}
+
+		crossingManager = null;
+		mergeManager = null;
+		trimmer = null;
 
 		// now output
 		EntrySet entrySet = NetworkUtils.readNetwork(input);
@@ -140,8 +180,16 @@ public class PipelineManager {
 
 	}
 
+	public void setBeta(double beta) {
+		this.beta = beta;
+	}
+
 	public void setCrossingManager(CrossingManager crossingManager) {
 		this.crossingManager = crossingManager;
+	}
+
+	public void setInitialConfidenceLabel(String initialConfidenceLabel) {
+		this.initialConfidenceLabel = initialConfidenceLabel;
 	}
 
 	public void setMergeManager(MergeManager mergeManager) {
@@ -150,6 +198,10 @@ public class PipelineManager {
 
 	public void setNCores(int nCores) {
 		this.nCores = nCores;
+	}
+
+	public void setReport(boolean report) {
+		this.report = report;
 	}
 
 	/**
@@ -162,6 +214,10 @@ public class PipelineManager {
 
 	public void setWeightManager(WeightManager weightManager) {
 		this.weightManager = weightManager;
+	}
+
+	public void setWriteSteps(boolean writeSteps) {
+		this.writeSteps = writeSteps;
 	}
 
 	/**

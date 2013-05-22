@@ -13,6 +13,8 @@
  */
 package org.structnetalign;
 
+import java.io.File;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.GnuParser;
@@ -22,6 +24,8 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.biojava.bio.structure.align.ce.AbstractUserArgumentProcessor;
+import org.structnetalign.util.GraphInteractionAdaptor;
 
 public class CLI {
 
@@ -43,6 +47,42 @@ public class CLI {
 			return;
 		}
 		
+		runPipeline(cmd);
+		
+	}
+
+	private static void runPipeline(CommandLine cmd) {
+		String pdbDir = cmd.getOptionValue("pdb_dir");
+		String inputCertainty = cmd.getOptionValue("input_confidence");
+		File input = new File(cmd.getOptionValue("input"));
+		File output = new File(cmd.getOptionValue("output"));
+		double defaultWeight = cmd.hasOption("default_weight")? Double.parseDouble(cmd.getOptionValue("default_weight")) : GraphInteractionAdaptor.DEFAULT_PROBABILITY;
+		int nCores = cmd.hasOption("cores")? Integer.parseInt(cmd.getOptionValue("cores")) : PipelineManager.N_CORES;
+		int xi = cmd.hasOption("xi")? Integer.parseInt(cmd.getOptionValue("xi")) : PipelineManager.XI;
+		double tau = cmd.hasOption("tau")? Double.parseDouble(cmd.getOptionValue("tau")) : PipelineManager.TAU;
+		double zeta = cmd.hasOption("zeta")? Double.parseDouble(cmd.getOptionValue("zeta")) : PipelineManager.ZETA;
+		double beta = cmd.hasOption("beta")? Double.parseDouble(cmd.getOptionValue("beta")) : PipelineManager.BETA;
+		boolean report = cmd.hasOption("report");
+		boolean writeSteps = cmd.hasOption("write_steps");
+		boolean noCross = cmd.hasOption("no_cross");
+		boolean noMerge = cmd.hasOption("no_merge");
+		runPipeline(pdbDir, nCores, input, output, inputCertainty, defaultWeight, tau, zeta, xi, beta, noCross, noMerge, writeSteps, report);
+	}
+	private static void runPipeline(String pdbDir, int nCores, File input, File output, String inputCertainty, double defaultWeight, double tau, double zeta, int xi, double beta, boolean noCross, boolean noMerge, boolean writeSteps, boolean report) {
+		System.setProperty(AbstractUserArgumentProcessor.PDB_DIR, pdbDir);
+		PipelineManager man = new PipelineManager();
+		man.setXi(xi);
+		man.setNCores(nCores);
+		man.setTau(tau);
+		man.setZeta(zeta);
+		man.setBeta(beta);
+		man.setReport(report);
+		man.setWriteSteps(writeSteps);
+		man.setDefaultProbability(defaultWeight);
+		man.setInitialConfidenceLabel(inputCertainty);
+		man.setNoCross(noCross);
+		man.setNoMerge(noMerge);
+		man.run(input, output);
 	}
 
 	/**
@@ -66,9 +106,6 @@ public class CLI {
 		options.addOption(OptionBuilder.hasArg(true)
 				.withDescription("The maximum search depth for traversal during crossing. If a vertex v shares an interaction edge x with vertex s, vertex v shares an interaction edge y with vertex t, and there is no path from u to t and no path from v to s, then x will be updated by y if and only if u and v are seperated by no more than xi homology edges (inclusive), AND s and t are seperated by no more than xi homology edges. Defaults to " + PipelineManager.XI + ". See paper for more details.").isRequired(false)
 				.create("xi"));
-		options.addOption(OptionBuilder.hasArg(true)
-				.withDescription("The minimum probability of homology required to consider two vertices sufficiently homologous to constitute a shared interaction during the merge process. If vertices u and v form a clique in the homology graph with sole interactions s and t, respectively, then u and v will be merged if and only if the probability of homology between s and t is no less than delta. Defaults to " + PipelineManager.DELTA + ". See paper for more details.").isRequired(false)
-				.create("delta"));
 		options.addOption(OptionBuilder.hasArg(true)
 				.withDescription("A threshold probability prior for running the crossing process. Prior to crossing, any homology edge with probability less than tau will be removed. Defaults to " + PipelineManager.TAU + ".").isRequired(false)
 				.create("tau"));
@@ -94,8 +131,17 @@ public class CLI {
 				.withDescription("Required. The input PSI-MI25 XML output file.").isRequired(true)
 				.create("output"));
 		options.addOption(OptionBuilder.hasArg(true)
-				.withDescription("The name of the PSI-MI25 confidence field to use to give the probability of an interaction. Defaults to ...").isRequired(false)
-				.create("certainty"));
+				.withDescription("The name of the PSI-MI25 confidence short label to use to give the initial weighting (probability) of an interaction as input to " + CLI.PROGRAM_NAME + ". Defaults to " + GraphInteractionAdaptor.INITIAL_CONFIDENCE_LABEL).isRequired(false)
+				.create("input_conf"));
+		options.addOption(OptionBuilder.hasArg(true)
+				.withDescription("The default weighting (probability) of an interaction if the interaction does not have a weight described by input_conf. Defaults to " + GraphInteractionAdaptor.DEFAULT_PROBABILITY).isRequired(false)
+				.create("default_weight"));
+//		options.addOption(OptionBuilder.hasArg(true)
+//				.withDescription("The name of the PSI-MI25 confidence short label to use to describe the certainty of an interaction as determined by " + CLI.PROGRAM_NAME + ". Defaults to " + GraphInteractionAdaptor.CONFIDENCE_SHORT_LABEL).isRequired(false)
+//				.create("output_conf_label"));
+//		options.addOption(OptionBuilder.hasArg(true)
+//				.withDescription("The name of the PSI-MI25 confidence full name to use to describe certainty of an interaction as determined by " + CLI.PROGRAM_NAME + ". Defaults to " + GraphInteractionAdaptor.CONFIDENCE_FULL_NAME).isRequired(false)
+//				.create("output_conf_name"));
 		options.addOption(OptionBuilder.hasArg(true)
 				.withDescription("Write a GraphML file for each step, where the file is located in the specified directory. This functionalty is turned off by default.").isRequired(false)
 				.create("write_steps"));
