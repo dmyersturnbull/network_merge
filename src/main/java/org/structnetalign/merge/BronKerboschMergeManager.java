@@ -42,8 +42,6 @@ import edu.uci.ics.jung.graph.UndirectedGraph;
  */
 public class BronKerboschMergeManager implements MergeManager {
 
-	private final double delta;
-
 	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
 
 		if (args.length != 3) {
@@ -66,7 +64,7 @@ public class BronKerboschMergeManager implements MergeManager {
 		CleverGraph graph = new CleverGraph(interaction, homology);
 
 		// merge!
-		BronKerboschMergeManager merge = new BronKerboschMergeManager(0.5);
+		BronKerboschMergeManager merge = new BronKerboschMergeManager();
 		merge.merge(graph);
 
 		// modify and output
@@ -121,24 +119,19 @@ public class BronKerboschMergeManager implements MergeManager {
 		}
 	}
 
-	public BronKerboschMergeManager(double delta) {
+	public BronKerboschMergeManager() {
 		super();
-		this.delta = delta;
 	}
 
 	@Override
 	public void merge(CleverGraph graph) {
-		BronKerboschMergeJob job = new BronKerboschMergeJob(graph, delta);
+		BronKerboschMergeJob job = new BronKerboschMergeJob(graph);
 		try {
 			Collection<Collection<Integer>> cliqueSets = job.call();
 			contract(graph, cliqueSets);
 		} catch (Exception e) {
 			throw new RuntimeException("The merging process failed", e);
 		}
-	}
-
-	protected double getXi() {
-		return delta;
 	}
 
 }

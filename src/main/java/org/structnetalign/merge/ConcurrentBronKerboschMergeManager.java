@@ -140,7 +140,7 @@ public class ConcurrentBronKerboschMergeManager extends BronKerboschMergeManager
 	}
 
 	public ConcurrentBronKerboschMergeManager(int nCores, double xi) {
-		super(xi);
+		super();
 		this.nCores = nCores;
 	}
 
@@ -155,7 +155,7 @@ public class ConcurrentBronKerboschMergeManager extends BronKerboschMergeManager
 		List<Future<Collection<Collection<Integer>>>> futures = new ArrayList<>();
 		for (Set<Integer> cc : ccs) {
 			CleverGraph subgraph = getSubgraphForCc(graph, cc);
-			BronKerboschMergeJob job = new BronKerboschMergeJob(subgraph, getXi());
+			BronKerboschMergeJob job = new BronKerboschMergeJob(subgraph);
 			Future<Collection<Collection<Integer>>> future = completion.submit(job);
 			futures.add(future);
 		}

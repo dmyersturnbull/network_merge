@@ -17,8 +17,6 @@ package org.structnetalign.merge;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.NavigableMap;
 import java.util.Set;
 import java.util.TreeMap;
@@ -28,13 +26,11 @@ import java.util.concurrent.Callable;
 import org.apache.commons.codec.binary.Hex;
 import org.structnetalign.CleverGraph;
 import org.structnetalign.HomologyEdge;
-import org.structnetalign.util.EdgeWeighter;
 
 public class BronKerboschMergeJob implements Callable<Collection<Collection<Integer>>> {
 
 	private CleverGraph graph;
-	private double delta;
-
+	
 	private static String hashVertexInteractions(Collection<Integer> vertexInteractionNeighbors) {
 		MessageDigest md;
 		try {
@@ -50,10 +46,9 @@ public class BronKerboschMergeJob implements Callable<Collection<Collection<Inte
 		return new String(Hex.encodeHex(bytes));
 	}
 
-	public BronKerboschMergeJob(CleverGraph graph, double delta) {
+	public BronKerboschMergeJob(CleverGraph graph) {
 		super();
 		this.graph = graph;
-		this.delta = delta;
 	}
 
 	@Override

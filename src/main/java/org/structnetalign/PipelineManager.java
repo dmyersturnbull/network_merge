@@ -41,15 +41,14 @@ public class PipelineManager {
 
 	private int nCores;
 	
+	public static final int N_CORES = Math.max(Runtime.getRuntime().availableProcessors() - 1, 1);
 	public static final int XI = 5;
 	public static final double ZETA = 0.7;
-	public static final double DELTA = 0.3;
 	public static final double TAU = 0.5;
 	public static final double BETA = 1;
 	
 	private int xi = XI;
 	private double zeta = ZETA;
-	private double delta = DELTA;
 	private double tau = TAU;
 	
 	public void init() {
@@ -67,7 +66,7 @@ public class PipelineManager {
 		weightManager.add(new CeWeight());
 		this.weightManager = weightManager;
 		crossingManager = new SimpleCrossingManager(nCores, xi);
-		mergeManager = new BronKerboschMergeManager(delta);
+		mergeManager = new BronKerboschMergeManager();
 	}
 
 	/**
@@ -116,15 +115,6 @@ public class PipelineManager {
 
 	public void setCrossingManager(CrossingManager crossingManager) {
 		this.crossingManager = crossingManager;
-	}
-
-	/**
-	 * @param delta
-	 *            The minimum probability of the shortest path of homology edges between two vertices required to
-	 *            consider the vertices homologous when determining whether interactions are shared.
-	 */
-	public void setDelta(double delta) {
-		this.delta = delta;
 	}
 
 	public void setMergeManager(MergeManager mergeManager) {
