@@ -14,10 +14,13 @@
  */
 package org.structnetalign.weight;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import org.biojava.bio.structure.scop.ScopCategory;
 import org.biojava.bio.structure.scop.ScopDatabase;
@@ -45,13 +48,21 @@ public class ScopRelationWeight implements RelationWeight {
 	private Map<ScopCategory, Double> weights;
 
 	static {
-		DEFAULT_WEIGHTS.put(ScopCategory.Class, 0.0);
-		DEFAULT_WEIGHTS.put(ScopCategory.Fold, 0.1);
-		DEFAULT_WEIGHTS.put(ScopCategory.Superfamily, 0.4);
-		DEFAULT_WEIGHTS.put(ScopCategory.Family, 0.7);
-		DEFAULT_WEIGHTS.put(ScopCategory.Px, 1.0);
+		Properties props = new Properties();
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();           
+		InputStream stream = loader.getResourceAsStream("weight/scop_weights.properties");
+		try {
+			props.load(stream);
+		} catch (IOException e) {
+			throw new RuntimeException("Couldn't open SCOP weights property file", e);
+		}
+		DEFAULT_WEIGHTS.put(ScopCategory.Class, Double.parseDouble(props.getProperty("class")));
+		DEFAULT_WEIGHTS.put(ScopCategory.Fold, Double.parseDouble(props.getProperty("fold")));
+		DEFAULT_WEIGHTS.put(ScopCategory.Superfamily, Double.parseDouble(props.getProperty("superfamily")));
+		DEFAULT_WEIGHTS.put(ScopCategory.Family, Double.parseDouble(props.getProperty("family")));
+		DEFAULT_WEIGHTS.put(ScopCategory.Px, Double.parseDouble(props.getProperty("species")));
 	}
-
+	
 	private static int sunIdOfCategory(ScopDomain domain, ScopCategory category) {
 		switch (category) {
 		case Class:
