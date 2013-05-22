@@ -58,7 +58,7 @@ public class BronKerboschMergeManager implements MergeManager {
 
 		// build the interaction graph
 		EntrySet entrySet = NetworkUtils.readNetwork(input);
-		UndirectedGraph<Integer, InteractionEdge> interaction = GraphInteractionAdaptor.toGraph(entrySet, 0.5);
+		UndirectedGraph<Integer, InteractionEdge> interaction = GraphInteractionAdaptor.toGraph(entrySet);
 
 		// now make the CleverGraph
 		CleverGraph graph = new CleverGraph(interaction, homology);

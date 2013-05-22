@@ -47,10 +47,37 @@ public class PipelineManager {
 	public static final double TAU = 0.5;
 	public static final double BETA = 1;
 	
+	private boolean report = false;
+	private boolean writeSteps = false;
+	private double beta = BETA;
 	private int xi = XI;
 	private double zeta = ZETA;
 	private double tau = TAU;
 	
+	public boolean isReport() {
+		return report;
+	}
+
+	public void setReport(boolean report) {
+		this.report = report;
+	}
+
+	public boolean isWriteSteps() {
+		return writeSteps;
+	}
+
+	public void setWriteSteps(boolean writeSteps) {
+		this.writeSteps = writeSteps;
+	}
+
+	public double getBeta() {
+		return beta;
+	}
+
+	public void setBeta(double beta) {
+		this.beta = beta;
+	}
+
 	public void init() {
 		init(Math.max(Runtime.getRuntime().availableProcessors() - 1, 1));
 	}
@@ -78,7 +105,7 @@ public class PipelineManager {
 		{
 			// build the graph
 			EntrySet entrySet = NetworkUtils.readNetwork(input);
-			UndirectedGraph<Integer, InteractionEdge> interaction = GraphInteractionAdaptor.toGraph(entrySet, 0.5);
+			UndirectedGraph<Integer, InteractionEdge> interaction = GraphInteractionAdaptor.toGraph(entrySet);
 			graph = new CleverGraph(interaction);
 
 			// assign weights

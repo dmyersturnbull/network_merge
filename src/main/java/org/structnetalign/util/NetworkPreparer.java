@@ -52,7 +52,7 @@ public class NetworkPreparer {
 	public List<EntrySet> getConnnectedComponents(EntrySet entrySet) {
 
 		// first, find the connected components as sets of vertices
-		UndirectedGraph<Integer, InteractionEdge> graph = GraphInteractionAdaptor.toGraph(entrySet, 1);
+		UndirectedGraph<Integer, InteractionEdge> graph = GraphInteractionAdaptor.toGraph(entrySet);
 		logger.info("There are " + graph.getVertexCount() + " vertices and " + graph.getEdgeCount() + " edges");
 		WeakComponentClusterer<Integer, InteractionEdge> alg = new WeakComponentClusterer<>();
 		Set<Set<Integer>> ccs = alg.transform(graph);

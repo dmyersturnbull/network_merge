@@ -31,9 +31,13 @@ import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 
 public class GraphInteractionAdaptor {
 
-	private static final String CONFIDENCE_FULL_NAME = "probability predicted by struct-net-align";
+	public static final String CONFIDENCE_FULL_NAME = "probability predicted by struct-NA";
 
-	private static final String CONFIDENCE_SHORT_LABEL = "probability";
+	public static final String CONFIDENCE_SHORT_LABEL = "struct-NA confidence";
+	
+	public static final String INITIAL_CONFIDENCE_LABEL = "struct-NA intial weighting";
+	
+	public static final double DEFAULT_PROBABILITY = 0.5;
 
 	public static void modifyProbabilites(EntrySet entrySet, UndirectedGraph<Integer, InteractionEdge> graph) {
 
@@ -54,8 +58,12 @@ public class GraphInteractionAdaptor {
 		}
 
 	}
+	
+	public static UndirectedGraph<Integer, InteractionEdge> toGraph(EntrySet entrySet) {
+		return toGraph(entrySet, INITIAL_CONFIDENCE_LABEL, DEFAULT_PROBABILITY);
+	}
 
-	public static UndirectedGraph<Integer, InteractionEdge> toGraph(EntrySet entrySet, double defaultProbability) {
+	public static UndirectedGraph<Integer, InteractionEdge> toGraph(EntrySet entrySet, String confidenceName, double defaultProbability) {
 
 		UndirectedGraph<Integer, InteractionEdge> graph = new UndirectedSparseGraph<Integer, InteractionEdge>();
 
@@ -70,8 +78,25 @@ public class GraphInteractionAdaptor {
 
 			// now add the edges
 			for (Interaction interaction : entry.getInteractions()) {
+				
+				double probability = defaultProbability;
+				Collection<Confidence> confidences = interaction.getConfidences();
+				if (confidenceName != null && confidences != null) {
+					for (Confidence confidence : confidences) {
+						Unit unit = confidence.getUnit();
+						if (unit != null) {
+							Names names = unit.getNames();
+							if (names != null) {
+								String name = names.getShortLabel();
+								if (confidenceName.equals(name)) {
+									probability = Double.parseDouble(confidence.getValue());
+								}
+							}
+						}
+					}
+				}
 
-				InteractionEdge edge = new InteractionEdge(interaction.getId(), defaultProbability);
+				InteractionEdge edge = new InteractionEdge(interaction.getId(), probability);
 
 				NavigableSet<Integer> ids = NetworkUtils.getVertexIds(interaction); // a set of size 2
 
