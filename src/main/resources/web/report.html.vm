@@ -1,0 +1,22 @@
+## A template for a webpage of protodomain search results
+## These webpages can be used for manual verification and documentation of search results
+#set($tm_score_cutoff = 0.4)
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>$program_name $program_version report $run_date</title>
+		<link rel="stylesheet" href="main.css" />
+	</head>
+	<body>
+		<div id="content">
+			<header>
+				<h1><a href="index.html">Struct-NA $program_version report</a></h1>
+				<h2>$run_date</h2>
+				<nav>
+					<a href="">documentation</a>
+				</nav>
+			</header>
+		</div>
+	</body>
+</html>
