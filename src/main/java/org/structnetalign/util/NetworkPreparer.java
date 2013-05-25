@@ -196,7 +196,6 @@ public class NetworkPreparer {
 				entryIndex++;
 			}
 			
-			myEntry.getInteractions().addAll(myInteractions);
 			myEntry.getInteractors().addAll(entry.getInteractors());
 			myEntrySet.getEntries().add(myEntry);
 		}
