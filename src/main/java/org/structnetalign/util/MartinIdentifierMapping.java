@@ -37,7 +37,6 @@ public class MartinIdentifierMapping implements IdentifierMapping {
 	private Map<String,String> pdbIds;
 	private Map<String,Character> chainIds;
 
-
 	MartinIdentifierMapping() {
 		try {
 			pdbIds = new HashMap<String,String>();
@@ -83,6 +82,18 @@ public class MartinIdentifierMapping implements IdentifierMapping {
 			}
 		}
 		return null;
+	}
+
+	public int size() {
+		return chainIds.size();
+	}
+
+	public Map<String, String> getPdbIds() {
+		return pdbIds;
+	}
+
+	public Map<String, Character> getChainIds() {
+		return chainIds;
 	}
 
 }
