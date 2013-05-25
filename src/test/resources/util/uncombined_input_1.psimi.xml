@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<entrySet level="2" version="5" minorVersion="4" xsi:schemaLocation="http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd" xmlns="http://psi.hupo.org/mi/mif" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<entry>
+		<source releaseDate="2013-01-31-08:00">
+			<names>
+				<shortLabel>DIP</shortLabel>
+				<fullName>Database of Interacting Proteins</fullName>
+			</names>
+		</source>
+		<experimentList/>
+		<interactorList>
+			<interactor id="21">
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488a" id="a2" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+			</interactor>
+			<interactor id="22">
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0465" id="b2" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+			</interactor>
+			<interactor id="23">
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0465" id="c2" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+			</interactor>
+			<interactor id="24">
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488b" id="d2" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+			</interactor>
+			<interactor id="25">
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="e2" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+			</interactor>
+			<interactor id="26">
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="f2" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+			</interactor>
+		</interactorList>
+		<interactionList>
+			<interaction id="210">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="z2" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList/>
+				<participantList>
+					<participant id="1">
+						<interactorRef>21</interactorRef>
+					</participant>
+					<participant id="2">
+						<interactorRef>22</interactorRef>
+					</participant>
+				</participantList>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+			</interaction>
+			<interaction id="211">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="y2" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList/>
+				<participantList>
+					<participant id="1">
+						<interactorRef>22</interactorRef>
+					</participant>
+					<participant id="2">
+						<interactorRef>23</interactorRef>
+					</participant>
+				</participantList>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+			</interaction>
+			<interaction id="212">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="x2" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList/>
+				<participantList>
+					<participant id="1">
+						<interactorRef>21</interactorRef>
+					</participant>
+					<participant id="2">
+						<interactorRef>25</interactorRef>
+					</participant>
+				</participantList>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+			</interaction>
+			<interaction id="213">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="w2" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList/>
+				<participantList>
+					<participant id="1">
+						<interactorRef>23</interactorRef>
+					</participant>
+					<participant id="2">
+						<interactorRef>25</interactorRef>
+					</participant>
+				</participantList>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+			</interaction>
+			<interaction id="214">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="v2" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList/>
+				<participantList>
+					<participant id="1">
+						<interactorRef>24</interactorRef>
+					</participant>
+					<participant id="2">
+						<interactorRef>26</interactorRef>
+					</participant>
+				</participantList>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+			</interaction>
+		</interactionList>
+	</entry>
+</entrySet>
