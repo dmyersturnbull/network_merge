@@ -31,7 +31,37 @@ import org.biojava3.core.sequence.io.FastaReaderHelper;
 
 public class NeedlemanWunschWeight implements AlignmentWeight {
 
+	private static class PoissonScorer {
+		private static final double LN2 = Math.log(2);
+		private final double k;
+		private final double lambda;
+
+		public PoissonScorer(double lambda, double k) {
+			super();
+			this.lambda = lambda;
+			this.k = k;
+		}
+
+		public double score(SequencePair<ProteinSequence, AminoAcidCompound> pair, double score) {
+			double bitScore = (lambda * score - Math.log(k)) / LN2;
+			double eValue = pair.getSize() * pair.getLength() * Math.pow(2, -2 * bitScore);
+			return Math.exp(-eValue);
+		}
+	}
+
 	private static final GapPenalty GAP_PENALTY = new SimpleGapPenalty();
+
+	/**
+	 * This value comes from NCBI BLAST somewhere. Will find. Note that it is not perfect for this project, but it's
+	 * good enough for now.
+	 */
+	private static final double K = 0.711;
+
+	/**
+	 * This value comes from NCBI BLAST somewhere. Will find. Note that it is not perfect for this project, but it's
+	 * good enough for now.
+	 */
+	private static final double LAMBDA = 1.37;
 
 	private static final SubstitutionMatrix<AminoAcidCompound> MATRIX = SubstitutionMatrixHelper.getBlosum62();
 
@@ -59,13 +89,11 @@ public class NeedlemanWunschWeight implements AlignmentWeight {
 		ProteinSequence b = getSequenceForId(uniProtId2);
 		NeedlemanWunsch<ProteinSequence, AminoAcidCompound> alg = new NeedlemanWunsch<>(a, b, GAP_PENALTY, MATRIX);
 		SequencePair<ProteinSequence, AminoAcidCompound> pair = alg.getPair();
-		// this scorer is pretty stupid
-		// but let's pretend this is okay so I can actually do my project instead
 		PairwiseSequenceScorer<ProteinSequence, AminoAcidCompound> scorer = new FractionalIdentityScorer<>(pair);
-		// yeah. this is really, really not probability.
-		// let's put a TODO here just as a reminder
 		double score = scorer.getScore() / scorer.getMaxScore();
-		return new WeightResult(score, uniProtId1, uniProtId2);
+		PoissonScorer poisson = new PoissonScorer(LAMBDA, K);
+		double prob = poisson.score(pair, score);
+		return new WeightResult(prob, uniProtId1, uniProtId2);
 	}
 
 	@Override
