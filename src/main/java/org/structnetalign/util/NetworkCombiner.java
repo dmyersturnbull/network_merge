@@ -26,14 +26,22 @@ import psidev.psi.mi.xml.model.Entry;
 import psidev.psi.mi.xml.model.EntrySet;
 import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.model.Interactor;
-import psidev.psi.mi.xml.model.OpenCvType;
 import psidev.psi.mi.xml.model.Participant;
 
+/**
+ * A standalone utility that takes one or more PSI-MI XML networks and produces a combined network containing a random
+ * subsample of the two networks. Specifically, interactors (vertices) are selected for inclusion at random, and an
+ * interaction is included if and only if both of its participants are included. In this way, NetworkCombiner can remove
+ * both vertices and edges.
+ * 
+ * @author dmyersturnbull
+ * 
+ */
 public class NetworkCombiner {
 
-	static final Logger logger = Logger.getLogger(NetworkCombiner.class.getName());
-
 	private static Random random = new Random();
+
+	static final Logger logger = Logger.getLogger(NetworkCombiner.class.getName());
 
 	private double probability = 0.05;
 
@@ -51,6 +59,20 @@ public class NetworkCombiner {
 		NetworkCombiner combiner = new NetworkCombiner();
 		combiner.setProbability(probability);
 		combiner.combine(output, inputs);
+	}
+
+	public NetworkCombiner() {
+		super();
+	}
+
+	/**
+	 * 
+	 * @param probability
+	 *            The probability that an interactor/vertex will be removed
+	 */
+	public NetworkCombiner(double probability) {
+		super();
+		this.probability = probability;
 	}
 
 	public void combine(File output, File... inputs) {
@@ -81,8 +103,7 @@ public class NetworkCombiner {
 			}
 
 			entrySet = null;
-			System.gc(); // predictable GC times
-			OpenCvType x = null;
+			System.gc();
 		}
 
 		NetworkUtils.writeNetwork(myEntrySet, output);
