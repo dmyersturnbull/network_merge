@@ -14,8 +14,6 @@
  */
 package org.structnetalign.merge;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -25,11 +23,11 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.Callable;
 
-import org.apache.commons.codec.binary.Hex;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.structnetalign.CleverGraph;
 import org.structnetalign.HomologyEdge;
+import org.structnetalign.util.NetworkUtils;
 
 public class BronKerboschMergeJob implements Callable<List<List<Integer>>> {
 
@@ -40,18 +38,7 @@ public class BronKerboschMergeJob implements Callable<List<List<Integer>>> {
 	private int index;
 	
 	private static String hashVertexInteractions(Collection<Integer> vertexInteractionNeighbors) {
-		MessageDigest md;
-		try {
-			md = MessageDigest.getInstance("MD5");
-		} catch (NoSuchAlgorithmException e) {
-			throw new RuntimeException("Couldn't find the algorithm MD5", e);
-		}
-		StringBuilder sb = new StringBuilder();
-		for (int neighbor : vertexInteractionNeighbors) {
-			sb.append(neighbor + ",");
-		}
-		byte[] bytes = md.digest(sb.toString().getBytes());
-		return new String(Hex.encodeHex(bytes));
+		return NetworkUtils.hash(vertexInteractionNeighbors);
 	}
 
 	public BronKerboschMergeJob(CleverGraph graph, int index) {

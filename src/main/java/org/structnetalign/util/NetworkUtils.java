@@ -19,12 +19,17 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NavigableSet;
 import java.util.TreeSet;
 
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -57,9 +62,11 @@ public class NetworkUtils {
 	}
 
 	/**
-	 * Returns the first Confidence with <em>either</em> label {@code confidenceLabel} <em>or</em> full name {@code confidenceFullName}.
+	 * Returns the first Confidence with <em>either</em> label {@code confidenceLabel} <em>or</em> full name
+	 * {@code confidenceFullName}.
 	 */
-	public static Confidence getExistingConfidence(Interaction interaction, String confidenceLabel, String confidenceFullName) {
+	public static Confidence getExistingConfidence(Interaction interaction, String confidenceLabel,
+			String confidenceFullName) {
 
 		for (Confidence exisiting : interaction.getConfidences()) {
 			Unit existingUnit = exisiting.getUnit();
@@ -76,13 +83,7 @@ public class NetworkUtils {
 		return null;
 
 	}
-	
-	public static Confidence makeConfidence(double value, String confidenceLabel, String confidenceFullName, String xRefId) {
-		Confidence confidence = PsiFactory.createConfidence(String.valueOf(value), xRefId, confidenceLabel);
-		confidence.getUnit().getNames().setFullName(confidenceFullName);
-		return confidence;
-	}
-	
+
 	public static Map<Integer, String> getUniProtIds(EntrySet entrySet) {
 		final String accession = "MI:0486";
 		final String accessionType = "MI:0356";
@@ -124,6 +125,40 @@ public class NetworkUtils {
 			set.add(id);
 		}
 		return set;
+	}
+
+	@SuppressWarnings("rawtypes")
+	public static String hash(Collection collection) {
+		MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException("Couldn't find the algorithm MD5", e);
+		}
+		StringBuilder sb = new StringBuilder();
+		for (Object neighbor : collection) {
+			if (neighbor.toString().contains(";")) throw new IllegalArgumentException(
+					"String cannot contain a semicolon");
+			sb.append(neighbor.toString() + ";");
+		}
+		byte[] bytes = md.digest(sb.toString().getBytes());
+		return new String(Hex.encodeHex(bytes));
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static String hash(Object... array) {
+		List list = new ArrayList();
+		for (Object object : array) {
+			list.add(object);
+		}
+		return hash(list);
+	}
+
+	public static Confidence makeConfidence(double value, String confidenceLabel, String confidenceFullName,
+			String xRefId) {
+		Confidence confidence = PsiFactory.createConfidence(String.valueOf(value), xRefId, confidenceLabel);
+		confidence.getUnit().getNames().setFullName(confidenceFullName);
+		return confidence;
 	}
 
 	public static EntrySet readNetwork(File file) {
