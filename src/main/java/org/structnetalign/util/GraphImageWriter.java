@@ -16,7 +16,6 @@ package org.structnetalign.util;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Paint;
@@ -29,7 +28,6 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.JComponent;
 
 import org.apache.commons.collections15.Transformer;
 import org.structnetalign.CleverGraph;
@@ -37,42 +35,13 @@ import org.structnetalign.Edge;
 import org.structnetalign.HomologyEdge;
 import org.structnetalign.InteractionEdge;
 
-import edu.uci.ics.jung.algorithms.layout.FRLayout;
 import edu.uci.ics.jung.algorithms.layout.FRLayout2;
-import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.UndirectedGraph;
 import edu.uci.ics.jung.visualization.VisualizationImageServer;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
-import edu.uci.ics.jung.visualization.renderers.DefaultEdgeLabelRenderer;
 import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 
 public class GraphImageWriter {
-
-	public class MyRenderer extends DefaultEdgeLabelRenderer {
-		protected Color unpickedEdgeLabelColor = Color.PINK;
-
-		public MyRenderer(Color unpickedEdgeLabelColor, Color pickedEdgeLabelColor) {
-			super(pickedEdgeLabelColor);
-			this.unpickedEdgeLabelColor = unpickedEdgeLabelColor;
-		}
-
-		@Override
-		public <E> Component getEdgeLabelRendererComponent(JComponent vv, Object value, Font font, boolean isSelected,
-				E edge) {
-			super.setForeground(unpickedEdgeLabelColor);
-			if (isSelected) setForeground(pickedEdgeLabelColor);
-			super.setBackground(vv.getBackground());
-			if (font != null) {
-				setFont(font);
-			} else {
-				setFont(vv.getFont());
-			}
-			setIcon(null);
-			setBorder(noFocusBorder);
-			setValue(value);
-			return this;
-		}
-	}
 
 	private int fontSize = 20;
 
@@ -168,6 +137,7 @@ public class GraphImageWriter {
 		Dimension dim = new Dimension(width, height);
 
 		FRLayout2<Integer, Edge> layout = new FRLayout2<>(graph);
+		layout.setRepulsionMultiplier(10);
 		layout.setMaxIterations(1000);
 		layout.setSize(new Dimension(width - xMargin, height - yMargin));
 
@@ -283,7 +253,7 @@ public class GraphImageWriter {
 
 	private <V, E> void writeImage(VisualizationImageServer<V, E> vis, File file) throws IOException {
 		Dimension dim = new Dimension(width, height);
-		Point2D center = new Point2D.Double(width / 2.0, height / 2.0);
+		Point2D center = new Point2D.Double(width / 2.0 - xMargin / 2.0, height / 2.0 - yMargin / 2.0);
 		BufferedImage image = (BufferedImage) vis.getImage(center, dim);
 		ImageIO.write(image, "png", file);
 	}
