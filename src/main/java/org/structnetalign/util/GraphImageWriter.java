@@ -18,6 +18,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
@@ -35,8 +36,9 @@ import org.structnetalign.Edge;
 import org.structnetalign.HomologyEdge;
 import org.structnetalign.InteractionEdge;
 
-import edu.uci.ics.jung.algorithms.layout.FRLayout2;
+import edu.uci.ics.jung.algorithms.layout.KKLayout;
 import edu.uci.ics.jung.graph.UndirectedGraph;
+import edu.uci.ics.jung.visualization.Layer;
 import edu.uci.ics.jung.visualization.VisualizationImageServer;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
@@ -75,7 +77,8 @@ public class GraphImageWriter {
 
 	public static void main(String[] args) throws IOException {
 		if (args.length != 3) {
-			System.err.println("Usage: GraphImageWriter input-interaction-graphml-file input-homology-graphml-file output-png-file");
+			System.err
+					.println("Usage: GraphImageWriter input-interaction-graphml-file input-homology-graphml-file output-png-file");
 			return;
 		}
 		writeImage(new File(args[0]), new File(args[1]), new File(args[2]));
@@ -91,10 +94,30 @@ public class GraphImageWriter {
 		}
 	}
 
+	private static BufferedImage getImage(VisualizationImageServer<Integer, Edge> vv, Point2D center, Dimension d) {
+		int width = vv.getWidth();
+		int height = vv.getHeight();
+
+		float scalex = (float) width / d.width;
+		float scaley = (float) height / d.height;
+		try {
+			vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).scale(scalex, scaley, center);
+
+			BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D graphics = bi.createGraphics();
+			graphics.setRenderingHints(vv.getRenderingHints());
+			vv.paint(graphics);
+			graphics.dispose();
+			return bi;
+		} finally {
+			vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).setToIdentity();
+		}
+	}
+
 	public GraphImageWriter() {
 		this(1800, 1800);
 	}
-	
+
 	public GraphImageWriter(int width, int height) {
 		super();
 		this.width = width;
@@ -170,10 +193,10 @@ public class GraphImageWriter {
 
 		Dimension dim = new Dimension(width, height);
 
-		FRLayout2<Integer, Edge> layout = new FRLayout2<>(graph);
-		layout.setAttractionMultiplier(attraction);
-		layout.setRepulsionMultiplier(repulsion);
-		layout.setMaxIterations(1000);
+		KKLayout<Integer, Edge> layout = new KKLayout<>(graph);
+		// layout.setAttractionMultiplier(attraction);
+		// layout.setRepulsionMultiplier(repulsion);
+		// layout.setMaxIterations(1000);
 		layout.setSize(new Dimension(width - xMargin, height - yMargin));
 
 		VisualizationImageServer<Integer, Edge> vv = new VisualizationImageServer<>(layout, dim);
@@ -280,16 +303,17 @@ public class GraphImageWriter {
 		vv.getRenderer().getVertexLabelRenderer().setPosition(Position.CNTR);
 		vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller<Integer>());
 		vv.getRenderContext().getEdgeLabelRenderer().setRotateEdgeLabels(false);
-		vv.setBackground(new Color(255, 255, 255, 255));
+		vv.setOpaque(false);
+		vv.setBackground(new Color(255, 255, 255, 0));
 
 		writeImage(vv, file);
 
 	}
 
-	private <V, E> void writeImage(VisualizationImageServer<V, E> vis, File file) throws IOException {
+	private void writeImage(VisualizationImageServer<Integer, Edge> vv, File file) throws IOException {
 		Dimension dim = new Dimension(width, height);
 		Point2D center = new Point2D.Double(width / 2.0 - xMargin / 2.0, height / 2.0 - yMargin / 2.0);
-		BufferedImage image = (BufferedImage) vis.getImage(center, dim);
+		BufferedImage image = getImage(vv, center, dim);
 		ImageIO.write(image, "png", file);
 	}
 }
