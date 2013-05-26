@@ -88,7 +88,7 @@ public class GraphMLAdaptor {
 
 	public static CleverGraph readGraph(String interactionFile, String homologyFile) {
 		UndirectedGraph<Integer, InteractionEdge> interaction = readInteractionGraph(interactionFile);
-		UndirectedGraph<Integer, HomologyEdge> homology = readHomologyGraph(interactionFile);
+		UndirectedGraph<Integer, HomologyEdge> homology = readHomologyGraph(homologyFile);
 		return new CleverGraph(interaction, homology);
 	}
 
