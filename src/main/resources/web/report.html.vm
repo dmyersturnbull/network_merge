@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>$program_name $program_version report $run_date</title>
+		<title>Struct-NA 0.1 report $run_date</title>
 		<link rel="stylesheet" href="main.css" />
 	</head>
 	<body>
@@ -12,7 +12,7 @@
 				<h1>Struct-NA 0.1 report</h1>
 				<h2>$run_date</h2>
 				<nav>
-					<a href="">documentation</a>
+					<a href="https://github.com/dmyersturnbull/network_merge/blob/master/description.pdf?raw=true">documentation</a>
 				</nav>
 			</header>
 			<section class="weighted">
