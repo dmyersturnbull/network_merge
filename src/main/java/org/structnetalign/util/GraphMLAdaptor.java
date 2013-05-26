@@ -20,10 +20,15 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashSet;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.collections15.Transformer;
+import org.apache.log4j.Logger;
 import org.structnetalign.CleverGraph;
 import org.structnetalign.Edge;
 import org.structnetalign.HomologyEdge;
@@ -34,6 +39,7 @@ import edu.uci.ics.jung.graph.DirectedSparseGraph;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.UndirectedGraph;
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
+import edu.uci.ics.jung.graph.util.Pair;
 import edu.uci.ics.jung.io.GraphIOException;
 import edu.uci.ics.jung.io.GraphMLReader;
 import edu.uci.ics.jung.io.GraphMLWriter;
@@ -52,6 +58,8 @@ import edu.uci.ics.jung.io.graphml.NodeMetadata;
  * 
  */
 public class GraphMLAdaptor {
+
+	static final Logger logger = Logger.getLogger(NetworkCombiner.class.getName());
 
 	private interface EdgeFactory<E extends Edge> {
 		E createEmptyEdge();
@@ -227,6 +235,13 @@ public class GraphMLAdaptor {
 
 	private static <E extends Edge> Transformer<EdgeMetadata, E> getEdgeTransformer(final EdgeFactory<E> factory) {
 		return new Transformer<EdgeMetadata, E>() {
+			private HashSet<String> sourceDest = new HashSet<String>();
+			private boolean contains(String source, String target) {
+				String hash = NetworkUtils.hash(source, target);
+				boolean contains = sourceDest.contains(hash);
+				sourceDest.add(hash);
+				return contains;
+			}
 			@Override
 			public E transform(EdgeMetadata metadata) {
 				int id;
@@ -240,6 +255,9 @@ public class GraphMLAdaptor {
 					weight = Double.parseDouble(metadata.getProperty(WEIGHT_LABEL));
 				} catch (NumberFormatException e) {
 					throw new IllegalArgumentException("The graph has an edge whose Id is not a number");
+				}
+				if (contains(metadata.getSource(), metadata.getTarget())) {
+					throw new IllegalArgumentException("Graph already contains an edge (" + metadata.getSource() + ", " + metadata.getTarget());
 				}
 				E edge = factory.createEmptyEdge();
 				edge.setId(id);
