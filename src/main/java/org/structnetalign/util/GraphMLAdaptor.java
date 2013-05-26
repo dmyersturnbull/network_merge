@@ -20,13 +20,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.HashSet;
+import java.util.TreeSet;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.collections15.Transformer;
 import org.apache.log4j.Logger;
 import org.structnetalign.CleverGraph;
@@ -39,7 +36,6 @@ import edu.uci.ics.jung.graph.DirectedSparseGraph;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.UndirectedGraph;
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
-import edu.uci.ics.jung.graph.util.Pair;
 import edu.uci.ics.jung.io.GraphIOException;
 import edu.uci.ics.jung.io.GraphMLReader;
 import edu.uci.ics.jung.io.GraphMLWriter;
@@ -235,7 +231,7 @@ public class GraphMLAdaptor {
 
 	private static <E extends Edge> Transformer<EdgeMetadata, E> getEdgeTransformer(final EdgeFactory<E> factory) {
 		return new Transformer<EdgeMetadata, E>() {
-			private HashSet<String> sourceDest = new HashSet<String>();
+			private TreeSet<String> sourceDest = new TreeSet<String>();
 			private boolean contains(String source, String target) {
 				String hash = NetworkUtils.hash(source, target);
 				boolean contains = sourceDest.contains(hash);
