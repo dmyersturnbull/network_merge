@@ -43,6 +43,8 @@ import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 
 public class GraphImageWriter {
 
+	private double attraction = 0.8;
+
 	private int fontSize = 20;
 
 	private int height = 1800;
@@ -57,6 +59,8 @@ public class GraphImageWriter {
 
 	private int labelOffset = 25;
 
+	private double repulsion = 0.9;
+
 	private float thickness = 3f;
 
 	private Color vertexColor = new Color(100, 200, 250);
@@ -69,10 +73,36 @@ public class GraphImageWriter {
 
 	private int yMargin = 60;
 
+	public static void main(String[] args) throws IOException {
+		if (args.length != 3) {
+			System.err.println("Usage: GraphImageWriter input-interaction-graphml-file input-homology-graphml-file output-png-file");
+			return;
+		}
+		writeImage(new File(args[0]), new File(args[1]), new File(args[2]));
+	}
+
+	public static void writeImage(File interaction, File homology, File output) {
+		CleverGraph graph = GraphMLAdaptor.readGraph(interaction, homology);
+		GraphImageWriter writer = new GraphImageWriter();
+		try {
+			writer.writeGraph(graph, output);
+		} catch (IOException e) {
+			throw new RuntimeException("Couldn't write graph image to " + output, e);
+		}
+	}
+
+	public GraphImageWriter() {
+		this(1800, 1800);
+	}
+	
 	public GraphImageWriter(int width, int height) {
 		super();
 		this.width = width;
 		this.height = height;
+	}
+
+	public void setAttraction(double attraction) {
+		this.attraction = attraction;
 	}
 
 	public void setFontSize(int fontSize) {
@@ -101,6 +131,10 @@ public class GraphImageWriter {
 
 	public void setLabelOffset(int labelOffset) {
 		this.labelOffset = labelOffset;
+	}
+
+	public void setRepulsion(double repulsion) {
+		this.repulsion = repulsion;
 	}
 
 	public void setThickness(float thickness) {
@@ -137,7 +171,8 @@ public class GraphImageWriter {
 		Dimension dim = new Dimension(width, height);
 
 		FRLayout2<Integer, Edge> layout = new FRLayout2<>(graph);
-		layout.setRepulsionMultiplier(10);
+		layout.setAttractionMultiplier(attraction);
+		layout.setRepulsionMultiplier(repulsion);
 		layout.setMaxIterations(1000);
 		layout.setSize(new Dimension(width - xMargin, height - yMargin));
 
