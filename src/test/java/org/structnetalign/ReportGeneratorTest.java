@@ -32,7 +32,10 @@ public class ReportGeneratorTest {
 	 */
 	@Test
 	public void test() throws IOException {
-		File output = new File("playground/areport.html");
+		File dir = new File("reportgeneratortest");
+		dir.mkdir();
+		dir.deleteOnExit();
+		File output = new File("reportgeneratortest/areport.html");
 		output.deleteOnExit();
 		File interactionFile = new File(RESOURCE_DIR + "trivial_int.graphml.xml");
 		File homologyFile = new File(RESOURCE_DIR + "trivial_hom.graphml.xml");
@@ -45,6 +48,9 @@ public class ReportGeneratorTest {
 		generator.saveCrossed(weighted);
 		generator.saveMerged(merged);
 		generator.write();
+		new File("reportgeneratortest/weighted.png").delete();
+		new File("reportgeneratortest/crossed.png").delete();
+		new File("reportgeneratortest/merged.png").delete();
 	}
 	
 }
