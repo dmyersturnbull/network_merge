@@ -15,6 +15,8 @@
 package org.structnetalign;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import org.structnetalign.cross.CrossingManager;
@@ -119,6 +121,13 @@ public class PipelineManager {
 
 		init();
 
+		// handle reporting
+		// always do this even if we're not generating the report, since MergeManager etc. needs it
+		String timestamp = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+		File reportFile = new File("./report_" + timestamp + "/report.html");
+		if (report) reportFile.getParentFile().mkdir(); // don't make a new directory if we're not reporting
+		ReportGenerator.setInstance(new ReportGenerator(reportFile));
+
 		String path = output.getParent();
 		if (!path.endsWith(File.separator)) path += File.separator;
 
@@ -142,31 +151,41 @@ public class PipelineManager {
 				return e.getWeight();
 			}
 		};
-		EdgeTrimmer<Integer, HomologyEdge> trimmer = new EdgeTrimmer<>(weighter);
 		
+		if (report) {
+			ReportGenerator.getInstance().saveWeighted(graph);
+		}
 		if (writeSteps) {
 			GraphMLAdaptor.writeHomologyGraph(graph.getHomology(), new File(path + "hom_weighted.graphml.xml"));
 			GraphMLAdaptor.writeInteractionGraph(graph.getInteraction(), new File(path + "int_weighted.graphml.xml"));
 		}
-
+		
+		EdgeTrimmer<Integer, HomologyEdge> trimmer = new EdgeTrimmer<>(weighter);
+		
 		// cross
+		trimmer.trim(graph.getHomology(), tau);
 		if (!noCross) {
-			trimmer.trim(graph.getHomology(), tau);
 			crossingManager.cross(graph);
 		}
 		if (writeSteps) {
 			GraphMLAdaptor.writeHomologyGraph(graph.getHomology(), new File(path + "hom_crossed.graphml.xml"));
 			GraphMLAdaptor.writeInteractionGraph(graph.getInteraction(), new File(path + "int_crossed.graphml.xml"));
 		}
-
+		if (report) {
+			ReportGenerator.getInstance().saveCrossed(graph);
+		}
+		
 		// merge
+		trimmer.trim(graph.getHomology(), zeta);
 		if (!noMerge) {
-			trimmer.trim(graph.getHomology(), zeta);
 			mergeManager.merge(graph);
 		}
 		if (writeSteps) {
 			GraphMLAdaptor.writeHomologyGraph(graph.getHomology(), new File(path + "hom_merged.graphml.xml"));
 			GraphMLAdaptor.writeInteractionGraph(graph.getInteraction(), new File(path + "int_merged.graphml.xml"));
+		}
+		if (report) {
+			ReportGenerator.getInstance().saveMerged(graph);
 		}
 
 		crossingManager = null;
