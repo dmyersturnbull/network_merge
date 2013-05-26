@@ -15,17 +15,17 @@
 
 package org.structnetalign.merge;
 
-import java.util.Collection;
+import java.util.NavigableSet;
 import java.util.Set;
 
 import org.apache.commons.collections15.Transformer;
 
 import edu.uci.ics.jung.graph.UndirectedGraph;
 
-public interface CliqueFinder<V,E> extends Transformer<UndirectedGraph<V,E>, Collection<Set<V>>> {
+public interface CliqueFinder<V,E> extends Transformer<UndirectedGraph<V,E>, NavigableSet<Set<V>>> {
 
-	Collection<Set<V>> getMaximumCliques(UndirectedGraph<V,E> graph);
+	NavigableSet<Set<V>> getMaximumCliques(UndirectedGraph<V,E> graph);
 
-	Collection<Set<V>> getMaximalCliques(UndirectedGraph<V,E> graph);
+	NavigableSet<Set<V>> getMaximalCliques(UndirectedGraph<V,E> graph);
 	
 }

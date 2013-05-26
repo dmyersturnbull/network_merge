@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.NavigableSet;
 import java.util.Set;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
@@ -151,20 +152,20 @@ public class ConcurrentBronKerboschMergeManager extends BronKerboschMergeManager
 
 		// submit jobs
 		ExecutorService pool = Executors.newFixedThreadPool(nCores);
-		CompletionService<List<List<Integer>>> completion = new ExecutorCompletionService<>(pool);
-		List<Future<List<List<Integer>>>> futures = new ArrayList<>();
+		CompletionService<List<NavigableSet<Integer>>> completion = new ExecutorCompletionService<>(pool);
+		List<Future<List<NavigableSet<Integer>>>> futures = new ArrayList<>();
 		int index = 1;
 		for (Set<Integer> cc : ccs) {
 			CleverGraph subgraph = getSubgraphForCc(graph, cc);
 			BronKerboschMergeJob job = new BronKerboschMergeJob(subgraph, index);
-			Future<List<List<Integer>>> future = completion.submit(job);
+			Future<List<NavigableSet<Integer>>> future = completion.submit(job);
 			futures.add(future);
 			index++;
 		}
 
 		// now respond to completion
-		for (Future<List<List<Integer>>> future : futures) {
-			List<List<Integer>> cliqueGroups = null;
+		for (Future<List<NavigableSet<Integer>>> future : futures) {
+			List<NavigableSet<Integer>> cliqueGroups = null;
 			try {
 				// We should do this in case the job gets interrupted
 				// Sometimes the OS or JVM might do this

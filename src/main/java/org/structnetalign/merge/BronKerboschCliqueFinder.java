@@ -15,10 +15,14 @@ package org.structnetalign.merge;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.NavigableSet;
 import java.util.Set;
 import java.util.TreeSet;
+
+import org.apache.commons.collections.CollectionUtils;
 
 import edu.uci.ics.jung.graph.UndirectedGraph;
 
@@ -32,18 +36,34 @@ import edu.uci.ics.jung.graph.UndirectedGraph;
 public class BronKerboschCliqueFinder<V,E> implements CliqueFinder<V,E> {
 
 	@Override
-	public Collection<Set<V>> transform(UndirectedGraph<V, E> graph) {
-		Collection<Set<V>> cliques = new TreeSet<>();
+	public NavigableSet<Set<V>> transform(UndirectedGraph<V, E> graph) {
 		InternalBronKerboschCliqueFinder<V,E> finder = new InternalBronKerboschCliqueFinder<V,E>(graph);
-		cliques = finder.getAllMaximalCliques();
-		return cliques;
+		Collection<Set<V>> unsortedCliques = finder.getAllMaximalCliques();
+		Comparator<Set<V>> comparator = new Comparator<Set<V>>() {
+			@Override
+			public int compare(Set<V> clique1, Set<V> clique2) {
+				if (CollectionUtils.isEqualCollection(clique1, clique2)) return 0;
+				if (clique1.size() < clique2.size()) {
+					return 1;
+				} else if (clique1.size() > clique2.size()) {
+					return -1;
+				} else {
+					return -1;
+				}
+			}
+		};
+		NavigableSet<Set<V>> yes = new TreeSet<>(comparator);
+		for (Set<V> s : unsortedCliques) {
+			yes.add(s);
+		}
+		return yes;
 	}
 
 	@Override
-	public Collection<Set<V>> getMaximumCliques(UndirectedGraph<V,E> graph) {
-		Collection<Set<V>> top = new TreeSet<>();
+	public NavigableSet<Set<V>> getMaximumCliques(UndirectedGraph<V,E> graph) {
+		NavigableSet<Set<V>> top = new TreeSet<>();
 		int max = 0;
-		Collection<Set<V>> cliques = transform(graph);
+		NavigableSet<Set<V>> cliques = transform(graph);
 		for (Set<V> clique : cliques) {
 			if (clique.size() >= max) {
 				max = clique.size();
@@ -55,7 +75,7 @@ public class BronKerboschCliqueFinder<V,E> implements CliqueFinder<V,E> {
 
 
 	@Override
-	public Collection<Set<V>> getMaximalCliques(UndirectedGraph<V,E> graph) {
+	public NavigableSet<Set<V>> getMaximalCliques(UndirectedGraph<V,E> graph) {
 		return transform(graph);
 	}
 
