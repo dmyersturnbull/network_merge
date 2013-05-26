@@ -1,6 +1,4 @@
-## A template for a webpage of protodomain search results
-## These webpages can be used for manual verification and documentation of search results
-#set($tm_score_cutoff = 0.4)
+## A report on the pipeline's performance and process
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 	<head>
@@ -11,12 +9,117 @@
 	<body>
 		<div id="content">
 			<header>
-				<h1><a href="index.html">Struct-NA $program_version report</a></h1>
+				<h1>Struct-NA 0.1 report</h1>
 				<h2>$run_date</h2>
 				<nav>
 					<a href="">documentation</a>
 				</nav>
 			</header>
+			<section class="weighted">
+				<h2>Weighted graph</h2>
+				<div class="left">
+    				<table class="properties">
+    					<thead class="properties">
+    						<tr class="properties">
+    							<th class="properties">property name</th>
+    							<th class="properties">property value</th>
+    						</tr>
+    					</thead>
+    					<tbody class="properties">
+    						<tr class="properties">
+    							<td class="properties">N vertices</td>
+    							<td class="properties">${weighted.n_vertices}</td>
+    						</tr>
+    						<tr class="properties">
+    							<td class="properties">N interactions</td>
+    							<td class="properties">${weighted.n_interactions}</td>
+    						</tr>
+    						<tr class="properties">
+    							<td class="properties">N homology edges</td>
+    							<td class="properties">${weighted.n_homologies}</td>
+    						</tr>
+    					</tbody>
+    				</table>
+				</div>
+    			<div class="right">
+    				<figure>
+    					<a href="${weighted.img_src}">
+    						<img src="${weighted.img_src}" alt="weighted network" />
+    					</a>
+    					<figcaption>The graph after homology edges (dashed red lines) have been added.</figcaption>
+    				</figure>
+				</div>
+			</section>
+			<section class="crossed">
+				<h2>Crossed graph</h2>
+				<div class="left">
+    				<table class="properties">
+    					<thead class="properties">
+    						<tr class="properties">
+    							<th class="properties">property name</th>
+    							<th class="properties">property value</th>
+    						</tr>
+    					</thead>
+    					<tbody class="properties">
+    						<tr class="properties">
+    							<td class="properties">N vertices</td>
+    							<td class="properties">${crossed.n_vertices}</td>
+    						</tr>
+    						<tr class="properties">
+    							<td class="properties">N interactions</td>
+    							<td class="properties">${crossed.n_interactions}</td>
+    						</tr>
+    						<tr class="properties">
+    							<td class="properties">N homology edges</td>
+    							<td class="properties">${crossed.n_homologies}</td>
+    						</tr>
+    					</tbody>
+    				</table>
+				</div>
+    			<div class="right">
+    				<figure>
+    					<a href="${crossed.img_src}">
+    						<img src="${crossed.img_src}" alt="crossed network" />
+    					</a>
+    					<figcaption>The graph after interactions that are conserved between homologus vertices have been updated in probability.</figcaption>
+    				</figure>
+				</div>
+			</section>
+			<section class="merged">
+				<h2>Merged graph</h2>
+				<div class="left">
+    				<table class="properties">
+    					<thead class="properties">
+    						<tr class="properties">
+    							<th class="properties">property name</th>
+    							<th class="properties">property value</th>
+    						</tr>
+    					</thead>
+    					<tbody class="properties">
+    						<tr class="properties">
+    							<td class="properties">N vertices</td>
+    							<td class="properties">${merged.n_vertices}</td>
+    						</tr>
+    						<tr class="properties">
+    							<td class="properties">N interactions</td>
+    							<td class="properties">${merged.n_interactions}</td>
+    						</tr>
+    						<tr class="properties">
+    							<td class="properties">N homology edges</td>
+    							<td class="properties">${merged.n_homologies}</td>
+    						</tr>
+    					</tbody>
+    				</table>
+				</div>
+    			<div class="right">
+    				<figure>
+    					<a href="${merged.img_src}">
+    						<img src="${merged.img_src}" alt="merged network" />
+    					</a>
+    					<figcaption>The graph after fully degenerate vertex sets have been contracted. A degenerate vertex set is a maximal clique whose members share interactions exactly.</figcaption>
+    				</figure>
+				</div>
+			</section>
 		</div>
 	</body>
 </html>

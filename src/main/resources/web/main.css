@@ -10,4 +10,96 @@
 		overflow: auto;
 		overflow-y: scroll;
 	}
+	#content {
+		margin: 0 auto;
+	}
+	h1 {
+		font-size: 1.8em;
+		text-align: center;
+	}
+	header {
+		margin-bottom: 1em;
+		width: 40%;
+		margin: 0 auto;
+	}
+	h2 {
+		font-size: 1.8em;
+		font-weight: bold;
+	}
+	header > h2 {
+		margin-top: 0.2em;
+		font-size: 1.4em;
+	}
+	nav {
+		text-align: center;
+	}
+	section {
+		border: 1px solid black;
+		display: inline-block;
+		clear: both;
+		margin-top: 1em;
+		margin-bottom: 1em;
+		padding: 1em;
+	}
+	.left {
+		width: 20%;
+		float: left;
+	}
+	.right {
+		width: 60%;
+		float: right;
+	}
+	.weighted {
+		background-color: #fffcfc;
+	}
+	.crossed {
+		background-color: #fcfffc;
+	}
+	.merged {
+		background-color: #fcfcff;
+	}
+	figure {
+		max-width: 50%;
+		width: 50%;
+		height: auto;
+		margin: 1em;
+		text-align: center;
+	}
+	img {
+		border: 1px solid black;
+	}
+	h2 {
+		font-size: 1.4em;
+		text-align: center;
+	}
+	table {
+		border-spacing: 0;
+		padding: 0;
+		border-color: black;
+		border-width: 1px;
+		border-style: solid;
+		margin: 1em;
+	}
+	tbody tr:nth-child(odd) {
+		background-color: rgba(210, 210, 210, 0.2);
+	}
+	tbody tr:nth-child(even) {
+	}
+	th {
+		padding: 0.2em;
+		margin: 0;
+		font-weight: bold;
+		text-align: left;
+	}
+	tr {
+		padding: 0;
+		margin: 0;
+	}
+	td,th {
+		padding: 0.8em;
+		margin: 0;
+	}
+	.clearfix {
+		clear: both;
+	}
 }
