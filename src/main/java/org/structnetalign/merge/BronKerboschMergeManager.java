@@ -16,11 +16,15 @@ package org.structnetalign.merge;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.structnetalign.CleverGraph;
 import org.structnetalign.HomologyEdge;
 import org.structnetalign.InteractionEdge;
@@ -42,6 +46,8 @@ import edu.uci.ics.jung.graph.UndirectedGraph;
  */
 public class BronKerboschMergeManager implements MergeManager {
 
+	private static final Logger logger = LogManager.getLogger("org.structnetalign");
+	
 	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
 
 		if (args.length != 3) {
@@ -80,31 +86,50 @@ public class BronKerboschMergeManager implements MergeManager {
 	 *            A map where the key is any value, and the value is a set of vertices to be merged (can include the key
 	 *            vertex)
 	 */
-	protected static void contract(CleverGraph graph, Collection<Collection<Integer>> cliqueGroups) {
-		// now perform edge contraction
+	protected static void contract(CleverGraph graph, List<List<Integer>> cliqueGroups) {
+		
+		if (cliqueGroups.size() > 0) {
+			logger.info("Performing edge contraction on " + cliqueGroups.size() + " degenerate sets");
+		} else {
+			logger.info("No degenerate sets were found");
+		}
+		
 		for (Collection<Integer> group : cliqueGroups) {
 
+			logger.debug("Performing edge contraction on a degenerate set " + group);
+			
 			int v0 = -1; // the vertex label we'll actually use
 			int i = 0;
 
+			int nVerticesRemoved = group.size() - 1;
+			int nHomRemoved = 0;
+			int nIntRemoved = 0;
+			
 			for (int v : group) {
 
 				if (i != 0) {
 
 					// move interactions
 					Iterator<InteractionEdge> interactionIter = graph.getInteractions(v).iterator();
-					Iterator<Integer> neighborIter = graph.getInteractionNeighbors(v).iterator();
+					Iterator<Integer> intNeighborIter = graph.getInteractionNeighbors(v).iterator();
 					while (interactionIter.hasNext()) {
 						InteractionEdge interaction = interactionIter.next();
-						int neighbor = neighborIter.next();
+						int neighbor = intNeighborIter.next();
+						// as long as it's not an interaction within this degenerate set
 						if (!graph.getInteractionNeighbors(v0).contains(neighbor)) {
 							graph.addInteraction(interaction, v0, neighbor);
 						}
 						graph.removeInteraction(interaction);
+						nIntRemoved++;
 					}
 
 					// just remove homology edges
+					List<HomologyEdge> homToRemove = new ArrayList<>();
 					for (HomologyEdge edge : graph.getHomologies(v)) {
+						homToRemove.add(edge);
+					}
+					nHomRemoved += homToRemove.size();
+					for (HomologyEdge edge : homToRemove) {
 						graph.removeHomology(edge);
 					}
 
@@ -116,6 +141,9 @@ public class BronKerboschMergeManager implements MergeManager {
 				}
 				i++;
 			}
+
+			logger.debug(nVerticesRemoved + " vertices, " + nHomRemoved + " homology edges, and " + nIntRemoved + " interaction edges contracted into vertex Id#" + v0 + " for degenerate set " + group);
+			
 		}
 	}
 
@@ -125,9 +153,9 @@ public class BronKerboschMergeManager implements MergeManager {
 
 	@Override
 	public void merge(CleverGraph graph) {
-		BronKerboschMergeJob job = new BronKerboschMergeJob(graph);
+		BronKerboschMergeJob job = new BronKerboschMergeJob(graph, 1);
 		try {
-			Collection<Collection<Integer>> cliqueSets = job.call();
+			List<List<Integer>> cliqueSets = job.call();
 			contract(graph, cliqueSets);
 		} catch (Exception e) {
 			throw new RuntimeException("The merging process failed", e);

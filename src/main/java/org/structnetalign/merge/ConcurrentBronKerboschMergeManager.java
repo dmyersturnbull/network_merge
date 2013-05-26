@@ -151,18 +151,20 @@ public class ConcurrentBronKerboschMergeManager extends BronKerboschMergeManager
 
 		// submit jobs
 		ExecutorService pool = Executors.newFixedThreadPool(nCores);
-		CompletionService<Collection<Collection<Integer>>> completion = new ExecutorCompletionService<>(pool);
-		List<Future<Collection<Collection<Integer>>>> futures = new ArrayList<>();
+		CompletionService<List<List<Integer>>> completion = new ExecutorCompletionService<>(pool);
+		List<Future<List<List<Integer>>>> futures = new ArrayList<>();
+		int index = 1;
 		for (Set<Integer> cc : ccs) {
 			CleverGraph subgraph = getSubgraphForCc(graph, cc);
-			BronKerboschMergeJob job = new BronKerboschMergeJob(subgraph);
-			Future<Collection<Collection<Integer>>> future = completion.submit(job);
+			BronKerboschMergeJob job = new BronKerboschMergeJob(subgraph, index);
+			Future<List<List<Integer>>> future = completion.submit(job);
 			futures.add(future);
+			index++;
 		}
 
 		// now respond to completion
-		for (Future<Collection<Collection<Integer>>> future : futures) {
-			Collection<Collection<Integer>> cliqueGroups = null;
+		for (Future<List<List<Integer>>> future : futures) {
+			List<List<Integer>> cliqueGroups = null;
 			try {
 				// We should do this in case the job gets interrupted
 				// Sometimes the OS or JVM might do this
