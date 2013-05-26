@@ -28,10 +28,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
+import org.apache.velocity.runtime.RuntimeConstants;
+import org.apache.velocity.runtime.RuntimeServices;
+import org.apache.velocity.runtime.log.LogChute;
 import org.structnetalign.util.GraphImageWriter;
 
 public class ReportGenerator {
@@ -68,19 +72,29 @@ public class ReportGenerator {
 		}
 	}
 
+	private static ReportGenerator instance;
+
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");
 
-	private final String DIR = "src/main/resources/web/";
-	
 	private Properties weighted = new Properties();
 	private Properties crossed = new Properties();
 	private Properties merged = new Properties();
-	
+
+	private final String DIR = "src/main/resources/web/";
+
+	private int width = 1800;
+	private int height = 1800;
+
 	private String outputDir;
 	private File outputFile;
 
-	private int height = 1800;
-	private int width = 1800;
+	public static ReportGenerator getInstance() {
+		return instance;
+	}
+
+	public static void setInstance(ReportGenerator instance) {
+		ReportGenerator.instance = instance;
+	}
 
 	public ReportGenerator(File outputFile) {
 		super();
@@ -89,41 +103,119 @@ public class ReportGenerator {
 		if (!outputDir.endsWith(File.separator)) outputDir += "/";
 	}
 
-	public void saveCrossed(CleverGraph graph) throws IOException {
+	public void saveCrossed(CleverGraph graph) {
 		File png = new File(outputDir + "crossed" + ".png");
 		crossed.setImageSource(png.getName());
 		crossed.setNVertices(graph.getVertexCount());
 		crossed.setNHomologies(graph.getHomologyCount());
 		crossed.setNInteractions(graph.getInteractionCount());
 		GraphImageWriter writer = new GraphImageWriter(width, height);
-		writer.writeGraph(graph, png);
+		try {
+			writer.writeGraph(graph, png);
+		} catch (IOException e) {
+			throw new RuntimeException("Could not save graph image file to " + png, e);
+		}
 	}
 
-	public void saveMerged(CleverGraph graph) throws IOException {
+	public void saveMerged(CleverGraph graph) {
 		File png = new File(outputDir + "merged" + ".png");
 		merged.setImageSource(png.getName());
 		merged.setNVertices(graph.getVertexCount());
 		merged.setNHomologies(graph.getHomologyCount());
 		merged.setNInteractions(graph.getInteractionCount());
 		GraphImageWriter writer = new GraphImageWriter(width, height);
-		writer.writeGraph(graph, png);
+		try {
+			writer.writeGraph(graph, png);
+		} catch (IOException e) {
+			throw new RuntimeException("Could not save graph image file to " + png, e);
+		}
 	}
 
-	public void saveWeighted(CleverGraph graph) throws IOException {
+	public void saveWeighted(CleverGraph graph) {
 		File png = new File(outputDir + "weighted" + ".png");
 		weighted.setImageSource(png.getName());
 		weighted.setNVertices(graph.getVertexCount());
 		weighted.setNHomologies(graph.getHomologyCount());
 		weighted.setNInteractions(graph.getInteractionCount());
 		GraphImageWriter writer = new GraphImageWriter(width, height);
-		writer.writeGraph(graph, png);
+		try {
+			writer.writeGraph(graph, png);
+		} catch (IOException e) {
+			throw new RuntimeException("Could not save graph image file to " + png, e);
+		}
 	}
 
 	public void write() {
-		
+
 		logger.info("Saving final report to " + outputFile);
-		
+
 		VelocityEngine ve = new VelocityEngine();
+
+		/*
+		 * We need to do this because current Velocity doesn't work with Log4J version 2.
+		 * So, we'll set up a logger ("chute") which just uses our log4J logger.
+		 */
+		LogChute chute = new LogChute() {
+			@Override
+			public void init(RuntimeServices arg0) throws Exception {
+
+			}
+
+			@Override
+			public boolean isLevelEnabled(int level) {
+				return true; // no way to tell
+			}
+
+			@Override
+			public void log(int level, String message) {
+				switch (level) {
+				case LogChute.TRACE_ID:
+					logger.trace(message);
+					break;
+				case LogChute.DEBUG_ID:
+					logger.debug(message);
+					break;
+				case LogChute.INFO_ID:
+					logger.info(message);
+					break;
+				case LogChute.WARN_ID:
+					logger.warn(message);
+					break;
+				case LogChute.ERROR_ID:
+					logger.error(message);
+					break;
+				default:
+					logger.debug(message);
+					break;
+				}
+			}
+
+			@Override
+			public void log(int level, String message, Throwable e) {
+				switch (level) {
+				case LogChute.TRACE_ID:
+					logger.trace(message, e);
+					break;
+				case LogChute.DEBUG_ID:
+					logger.debug(message, e);
+					break;
+				case LogChute.INFO_ID:
+					logger.info(message, e);
+					break;
+				case LogChute.WARN_ID:
+					logger.warn(message, e);
+					break;
+				case LogChute.ERROR_ID:
+					logger.error(message, e);
+					break;
+				default:
+					logger.debug(message, e);
+					break;
+				}
+			}
+		};
+		ve.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, chute);
+		Velocity.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, chute);
 		Template template;
 		try {
 			ve.init();
@@ -131,6 +223,7 @@ public class ReportGenerator {
 		} catch (Exception e) {
 			throw new RuntimeException("Couldn't initialize velocity engine for generating report", e);
 		}
+
 		VelocityContext context = new VelocityContext();
 
 		String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
@@ -159,9 +252,9 @@ public class ReportGenerator {
 		} catch (IOException e) {
 			throw new RuntimeException("Couldn't write HTML to file " + outputFile.getPath(), e);
 		}
-		
+
 		logger.info("Saved final report to " + outputFile);
-		
+
 	}
 
 }
