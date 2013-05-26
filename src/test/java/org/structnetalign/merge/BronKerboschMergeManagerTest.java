@@ -14,15 +14,38 @@
  */
 package org.structnetalign.merge;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+
 import org.junit.Test;
+import org.structnetalign.CleverGraph;
+import org.structnetalign.util.GraphMLAdaptor;
+import org.structnetalign.util.TestUtils;
 
 
 
 public class BronKerboschMergeManagerTest {
 
+	private static final String RESOURCE_DIR = "src/test/resources/merge/";
+	
 	@Test
-	public void test() {
-		
+	public void testTrivial() {
+		File homologyInput = new File(RESOURCE_DIR + "trivial_hom.graphml.xml");
+		File interactionInput = new File(RESOURCE_DIR + "trivial_int.graphml.xml");
+		File homologyOutput = new File(RESOURCE_DIR + "trivial_hom_merged.graphml.xml");
+		File interactionOutput = new File(RESOURCE_DIR + "trivial_int_merged.graphml.xml");
+		CleverGraph graph = GraphMLAdaptor.readGraph(interactionInput, homologyInput);
+		assertEquals(6, graph.getVertexCount()); // just a sanity check for the test itself
+		assertEquals(5, graph.getHomologyCount()); // just a sanity check for the test itself
+		assertEquals(3, graph.getInteractionCount()); // just a sanity check for the test itself
+		BronKerboschMergeManager merge = new BronKerboschMergeManager();
+		merge.merge(graph);
+		boolean inter = TestUtils.compareInteractionGraph(graph.getInteraction(), interactionOutput);
+		assertTrue("Interaction graph differs from expected", inter);
+		boolean hom = TestUtils.compareHomologyGraph(graph.getHomology(), homologyOutput);
+		assertTrue("Homology graph differs from expected", hom);
 	}
 	
 }
