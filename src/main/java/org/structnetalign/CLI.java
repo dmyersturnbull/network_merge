@@ -44,8 +44,7 @@ public class CLI {
 		try {
 			cmd = parser.parse(options, args);
 		} catch (ParseException e) {
-			e.printStackTrace();
-			printUsage(null, options);
+			printUsage(e.getMessage(), options);
 			return;
 		}
 		
@@ -133,7 +132,7 @@ public class CLI {
 				.withDescription("Required. The input PSI-MI25 XML file.").isRequired(true)
 				.create("input"));
 		options.addOption(OptionBuilder.hasArg(true)
-				.withDescription("Required. The input PSI-MI25 XML output file.").isRequired(true)
+				.withDescription("Required. The output PSI-MI25 XML file.").isRequired(true)
 				.create("output"));
 		options.addOption(OptionBuilder.hasArg(true)
 				.withDescription("The name of the PSI-MI25 confidence short label to use to give the initial weighting (probability) of an interaction as input to " + CLI.PROGRAM_NAME + ". Defaults to " + GraphInteractionAdaptor.INITIAL_CONFIDENCE_LABEL).isRequired(false)
@@ -182,7 +181,7 @@ public class CLI {
 	private static void printUsage(String note, Options options) {
 		if (note != null) System.out.println(note);
 		HelpFormatter hf = new HelpFormatter();
-		hf.printHelp("java -jar CensusCLI.jar", options);
+		hf.printHelp("java -jar " + CLI.class.getSimpleName() + ".jar [options]", options);
 	}
 
 }
