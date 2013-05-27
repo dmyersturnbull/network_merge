@@ -15,8 +15,6 @@
 package org.structnetalign.merge;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.NavigableSet;
 import java.util.Set;
@@ -30,12 +28,12 @@ import java.util.concurrent.Future;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.structnetalign.CleverGraph;
+import org.structnetalign.Edge;
 import org.structnetalign.HomologyEdge;
 import org.structnetalign.InteractionEdge;
 
 import edu.uci.ics.jung.algorithms.cluster.WeakComponentClusterer;
 import edu.uci.ics.jung.graph.UndirectedGraph;
-import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import edu.uci.ics.jung.graph.util.Pair;
 
 /**
@@ -53,94 +51,47 @@ public class ConcurrentBronKerboschMergeManager extends BronKerboschMergeManager
 	private int nCores;
 
 	/**
-	 * Returns a set of connected components in the {@link CleverGraph}. No distinct connected components may share
-	 * homology edges <em>or</em> interaction edges.
-	 * 
-	 * @param clever
-	 * @return
-	 */
-	private static Set<Set<Integer>> cleverCcs(CleverGraph clever) {
-
-		// sometimes the stupidest solutions are the best
-		// we're just going to make a new graph containing both types of edges
-		UndirectedGraph<Integer, Integer> combined = new UndirectedSparseGraph<>();
-		for (int vertex : clever.getVertices()) {
-			combined.addVertex(vertex);
-		}
-		int i = 0;
-		for (HomologyEdge edge : clever.getHomologies()) {
-			Pair<Integer> vertices = clever.getHomology().getEndpoints(edge);
-			combined.addEdge(i, vertices);
-			i++;
-		}
-		// do NOT reset i
-		for (InteractionEdge edge : clever.getInteractions()) {
-			Pair<Integer> vertices = clever.getInteraction().getEndpoints(edge);
-			combined.addEdge(i, vertices);
-			i++;
-		}
-
-		WeakComponentClusterer<Integer, Integer> alg = new WeakComponentClusterer<>();
-		Set<Set<Integer>> ccs = alg.transform(combined);
-		return ccs;
-	}
-
-	/**
 	 * Returns a subgraph contained in the set {@code cc}, assuming that {@code cc} is a connected component.
 	 * 
-	 * @param whole
+	 * @param clever
 	 * @param cc
 	 *            If {@code cc} is not a connected component, the method not return the expected solution
 	 * @return
 	 */
-	private static CleverGraph getSubgraphForCc(CleverGraph whole, Set<Integer> cc) {
+	private static CleverGraph getSubgraphForCc(CleverGraph clever, Set<Integer> cc) {
 
-		// first let's map each edge (of both types) to either of its vertices
-		// we can do this because we have a cc
-		// do it this way to get from nlogn to n
-		HashMap<Integer, Integer> homToVertex = new HashMap<>();
-		int i = 0;
-		for (HomologyEdge edge : whole.getHomologies()) {
-			homToVertex.put(i, whole.getHomology().getSource(edge)); // again, either is fine
-			i++;
-		}
-		HashMap<Integer, Integer> intToVertex = new HashMap<>();
-		i = 0; // DO reset i
-		for (InteractionEdge edge : whole.getInteractions()) {
-			homToVertex.put(i, whole.getInteraction().getSource(edge));
-			i++;
-		}
+		CleverGraph subgraph = new CleverGraph();
 
 		// add vertices
-		CleverGraph subgraph = new CleverGraph();
-		for (int vertex : whole.getVertices()) {
+		for (int vertex : clever.getVertices()) {
 			if (cc.contains(vertex)) subgraph.addVertex(vertex);
 		}
 
 		// add interaction edges
-		i = 0;
-		for (InteractionEdge edge : whole.getInteractions()) {
-			int aVertex = intToVertex.get(i);
-			if (cc.contains(aVertex)) {
-				subgraph.addInteraction(edge, whole.getInteraction().getSource(edge),
-						whole.getInteraction().getDest(edge));
+		for (InteractionEdge edge : clever.getInteractions()) {
+			Pair<Integer> pair = clever.getInteraction().getEndpoints(edge);
+			if (cc.contains(pair.getFirst()) && cc.contains(pair.getSecond())) {
+				Pair<Integer> newPair = new Pair<Integer>(pair.getFirst(), pair.getSecond());
+				InteractionEdge newEdge = new InteractionEdge(edge.getId(), edge.getWeight());
+				subgraph.getInteraction().addEdge(newEdge, newPair);
 			}
-			i++;
 		}
 
 		// add homology edges
-		i = 0;
-		for (HomologyEdge edge : whole.getHomologies()) {
-			int aVertex = intToVertex.get(i);
-			if (cc.contains(aVertex)) {
-				subgraph.addHomology(edge, whole.getHomology().getSource(edge), whole.getHomology().getDest(edge));
+		for (HomologyEdge edge : clever.getHomologies()) {
+			Pair<Integer> pair = clever.getHomology().getEndpoints(edge);
+			if (cc.contains(pair.getFirst()) && cc.contains(pair.getSecond())) {
+				Pair<Integer> newPair = new Pair<Integer>(pair.getFirst(), pair.getSecond());
+				HomologyEdge newEdge = new HomologyEdge(edge.getId(), edge.getWeight());
+				subgraph.getHomology().addEdge(newEdge, newPair);
 			}
-			i++;
 		}
+
 		return subgraph;
+
 	}
 
-	public ConcurrentBronKerboschMergeManager(int nCores, double xi) {
+	public ConcurrentBronKerboschMergeManager(int nCores) {
 		super();
 		this.nCores = nCores;
 	}
@@ -148,7 +99,10 @@ public class ConcurrentBronKerboschMergeManager extends BronKerboschMergeManager
 	@Override
 	public void merge(CleverGraph graph) {
 
-		Set<Set<Integer>> ccs = cleverCcs(graph);
+		WeakComponentClusterer<Integer, Edge> alg = new WeakComponentClusterer<>();
+		UndirectedGraph<Integer, Edge> combined = graph.buildCombinedGraph();
+		Set<Set<Integer>> ccs = alg.transform(combined);
+		logger.info("Submitting " + ccs.size() + " connected components as jobs");
 
 		// submit jobs
 		ExecutorService pool = Executors.newFixedThreadPool(nCores);
