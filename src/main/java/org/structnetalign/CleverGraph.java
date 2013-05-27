@@ -62,7 +62,7 @@ public class CleverGraph {
 	}
 
 	public boolean addVertex(int vertex) {
-		return homology.addVertex(vertex);
+		return interaction.addVertex(vertex) & homology.addVertex(vertex); // single ampersand
 	}
 
 	public UndirectedGraph<Integer, Edge> buildCombinedGraph() {
