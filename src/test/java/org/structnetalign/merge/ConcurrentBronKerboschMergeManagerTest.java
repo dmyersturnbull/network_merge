@@ -14,20 +14,14 @@
  */
 package org.structnetalign.merge;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 
 import org.junit.Test;
-import org.structnetalign.CleverGraph;
-import org.structnetalign.util.GraphMLAdaptor;
-import org.structnetalign.util.TestUtils;
 
 
 
-public class BronKerboschMergeManagerTest {
-
+public class ConcurrentBronKerboschMergeManagerTest {
+	
 	private static final String RESOURCE_DIR = "src/test/resources/merge/";
 	
 	@Test
@@ -36,7 +30,7 @@ public class BronKerboschMergeManagerTest {
 		File interactionInput = new File(RESOURCE_DIR + "trivial_int.graphml.xml");
 		File homologyOutput = new File(RESOURCE_DIR + "trivial_hom_merged.graphml.xml");
 		File interactionOutput = new File(RESOURCE_DIR + "trivial_int_merged.graphml.xml");
-		MergeManagerTest.test(homologyInput, interactionInput, homologyOutput, interactionOutput, 6, 5, 3, new BronKerboschMergeManager());
+		MergeManagerTest.test(homologyInput, interactionInput, homologyOutput, interactionOutput, 6, 5, 3, new ConcurrentBronKerboschMergeManager(3));
 	}
 
 	@Test
@@ -45,7 +39,7 @@ public class BronKerboschMergeManagerTest {
 		File interactionInput = new File(RESOURCE_DIR + "tricky_int.graphml.xml");
 		File homologyOutput = new File(RESOURCE_DIR + "tricky_hom_merged.graphml.xml");
 		File interactionOutput = new File(RESOURCE_DIR + "tricky_int_merged.graphml.xml");
-		MergeManagerTest.test(homologyInput, interactionInput, homologyOutput, interactionOutput, 17, 23, 12, new BronKerboschMergeManager());
+		MergeManagerTest.test(homologyInput, interactionInput, homologyOutput, interactionOutput, 17, 23, 12, new ConcurrentBronKerboschMergeManager(3));
 	}
 	
 	@Test
@@ -54,7 +48,7 @@ public class BronKerboschMergeManagerTest {
 		File interactionInput = new File(RESOURCE_DIR + "overlapping_int.graphml.xml");
 		File homologyOutput = new File(RESOURCE_DIR + "overlapping_hom_merged.graphml.xml");
 		File interactionOutput = new File(RESOURCE_DIR + "overlapping_int_merged.graphml.xml");
-		MergeManagerTest.test(homologyInput, interactionInput, homologyOutput, interactionOutput, 9, 12, 7, new BronKerboschMergeManager());
+		MergeManagerTest.test(homologyInput, interactionInput, homologyOutput, interactionOutput, 9, 12, 7, new ConcurrentBronKerboschMergeManager(3));
 	}
 	
 	@Test
@@ -63,7 +57,7 @@ public class BronKerboschMergeManagerTest {
 		File interactionInput = new File(RESOURCE_DIR + "different_sized_int.graphml.xml");
 		File homologyOutput = new File(RESOURCE_DIR + "different_sized_hom_merged.graphml.xml");
 		File interactionOutput = new File(RESOURCE_DIR + "different_sized_int_merged.graphml.xml");
-		MergeManagerTest.test(homologyInput, interactionInput, homologyOutput, interactionOutput, 8, 9, 6, new BronKerboschMergeManager());
+		MergeManagerTest.test(homologyInput, interactionInput, homologyOutput, interactionOutput, 8, 9, 6, new ConcurrentBronKerboschMergeManager(3));
 	}
 	
 	@Test
@@ -72,6 +66,6 @@ public class BronKerboschMergeManagerTest {
 		File interactionInput = new File(RESOURCE_DIR + "multiedge_int.graphml.xml");
 		File homologyOutput = new File(RESOURCE_DIR + "multiedge_hom_merged.graphml.xml");
 		File interactionOutput = new File(RESOURCE_DIR + "multiedge_int_merged.graphml.xml");
-		MergeManagerTest.test(homologyInput, interactionInput, homologyOutput, interactionOutput, 3, 2, 2, new BronKerboschMergeManager());
+		MergeManagerTest.test(homologyInput, interactionInput, homologyOutput, interactionOutput, 3, 2, 2, new ConcurrentBronKerboschMergeManager(3));
 	}
 }
