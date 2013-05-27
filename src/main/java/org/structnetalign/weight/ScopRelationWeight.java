@@ -108,11 +108,11 @@ public class ScopRelationWeight implements RelationWeight {
 			int categoryId1 = sunIdOfCategory(domain1, category);
 			int categoryId2 = sunIdOfCategory(domain2, category);
 			if (categoryId1 == categoryId2 && weights.get(category) != null) {
-				return new WeightResult(weights.get(category), uniProtId1, uniProtId2);
+				return new WeightResult(weights.get(category), uniProtId1, uniProtId2, this.getClass());
 			}
 		}
 
-		return new WeightResult(0.0, uniProtId1, uniProtId2);
+		return new WeightResult(0.0, uniProtId1, uniProtId2, this.getClass());
 
 	}
 

@@ -159,7 +159,7 @@ public class NeedlemanWunschWeight implements AlignmentWeight {
 		double score = (double) scorer.getScore() / (double) scorer.getMaxScore();
 		GammaScorer gamma = new GammaScorer();
 		double prob = gamma.score(pair, score);
-		return new WeightResult(prob, uniProtId1, uniProtId2);
+		return new WeightResult(prob, uniProtId1, uniProtId2, this.getClass());
 	}
 
 	@Override

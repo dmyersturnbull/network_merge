@@ -105,7 +105,7 @@ public class CeWeight implements AlignmentWeight {
 		}
 		if (afpChain.getTMScore() == -1) throw new WeightException("TM-score not calculated for the alignment of "
 				+ pdbIdAndChain1 + " against " + pdbIdAndChain2);
-		return new WeightResult(afpChain.getTMScore(), uniProtId1, uniProtId2);
+		return new WeightResult(afpChain.getTMScore(), uniProtId1, uniProtId2, this.getClass());
 	}
 
 	@Override

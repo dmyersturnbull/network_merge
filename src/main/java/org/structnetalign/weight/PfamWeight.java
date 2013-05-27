@@ -35,7 +35,7 @@ public class PfamWeight implements RelationWeight {
 	public WeightResult call() throws Exception {
 		// in all honesty, I won't finish this
 		// but we can put a TODO here anyway
-		return new WeightResult(0, uniProtId1, uniProtId2);
+		return new WeightResult(0, uniProtId1, uniProtId2, this.getClass());
 	}
 
 }

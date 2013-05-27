@@ -170,6 +170,9 @@ public class SmartWeightManager implements WeightManager {
 						weight = result.getWeight();
 						vertexA = graphIds.get(result.getA());
 						vertexB = graphIds.get(result.getB());
+						if (result.getSubmitter().isInstance(RelationWeight.class)) {
+							weight *= beta; // scale database results by beta as per description
+						}
 					} catch (InterruptedException e1) {
 						logger.warn("A thread was interrupted while waiting to get a weight. Retrying.", e1);
 					}
