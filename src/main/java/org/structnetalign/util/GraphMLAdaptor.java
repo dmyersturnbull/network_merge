@@ -20,6 +20,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.TreeSet;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -68,6 +70,12 @@ public class GraphMLAdaptor {
 		return readGraph(interactionFile.getPath(), homologyFile.getPath());
 	}
 
+	private static NumberFormat nf = new DecimalFormat();
+	static {
+		nf.setMinimumFractionDigits(1);
+		nf.setMaximumFractionDigits(7);
+	}
+	
 	/**
 	 * Just a simple graph reader. Does <em>not</em> read edge weights, etc.
 	 * 
@@ -215,7 +223,7 @@ public class GraphMLAdaptor {
 		return new Transformer<E, String>() {
 			@Override
 			public String transform(E edge) {
-				return String.valueOf(edge.getWeight());
+				return nf.format(edge.getWeight());
 			}
 		};
 	}
