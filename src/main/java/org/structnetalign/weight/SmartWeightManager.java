@@ -111,6 +111,7 @@ public class SmartWeightManager implements WeightManager {
 					alignment = new CeWeight();
 					alignment.setIds(uniProtIdA, uniProtIdB);
 				} catch (WeightException e) {
+					logger.warn("Couldn't get CE weight for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")", e);
 					// okay, try to use sequence
 					alignment = new NeedlemanWunschWeight();
 					try {
@@ -128,6 +129,7 @@ public class SmartWeightManager implements WeightManager {
 					relation = new ScopRelationWeight();
 					relation.setIds(uniProtIdA, uniProtIdB);
 				} catch (WeightException e) {
+					logger.warn("Couldn't get SCOP weight for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")", e);
 					// okay, try to use sequence
 					relation = new PfamWeight();
 					try {

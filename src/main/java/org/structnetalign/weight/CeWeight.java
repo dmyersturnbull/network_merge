@@ -57,10 +57,6 @@ public class CeWeight implements AlignmentWeight {
 
 	private AlgorithmGiver algorithm;
 
-	private Atom[] ca1;
-
-	private Atom[] ca2;
-
 	private String pdbIdAndChain1;
 	private String pdbIdAndChain2;
 
@@ -97,9 +93,23 @@ public class CeWeight implements AlignmentWeight {
 
 	@Override
 	public WeightResult call() throws Exception {
+		final AtomCache cache = AtomCacheFactory.getCache();
+		Atom[] ca1, ca2;
+		try {
+			ca1 = cache.getAtoms(pdbIdAndChain1);
+		} catch (IOException | StructureException e) {
+			throw new WeightException("Could not parse structure for PDB entry " + pdbIdAndChain1 + " for "
+					+ uniProtId1, e);
+		}
+		try {
+			ca2 = cache.getAtoms(pdbIdAndChain2);
+		} catch (IOException | StructureException e) {
+			throw new WeightException("Could not parse structure for PDB entry " + pdbIdAndChain2 + " for "
+					+ uniProtId2, e);
+		}
 		AFPChain afpChain;
 		try {
-			afpChain = align(pdbIdAndChain1, pdbIdAndChain2);
+			afpChain = align(ca1, ca2);
 		} catch (IOException | StructureException e) {
 			throw new WeightException("Could not align " + pdbIdAndChain1 + " against " + pdbIdAndChain2, e);
 		}
@@ -119,33 +129,14 @@ public class CeWeight implements AlignmentWeight {
 		pdbIdAndChain2 = IdentifierMappingFactory.getMapping().uniProtToPdb(uniProtId2);
 		if (pdbIdAndChain2 == null) throw new WeightException("Could not find PDB Id for " + uniProtId2);
 
-		final AtomCache cache = AtomCacheFactory.getCache();
-		try {
-			ca1 = cache.getAtoms(pdbIdAndChain1);
-		} catch (IOException | StructureException e) {
-			throw new WeightException("Could not parse structure for PDB entry " + pdbIdAndChain1 + " for "
-					+ uniProtId1, e);
-		}
-		try {
-			ca2 = cache.getAtoms(pdbIdAndChain2);
-		} catch (IOException | StructureException e) {
-			throw new WeightException("Could not parse structure for PDB entry " + pdbIdAndChain2 + " for "
-					+ uniProtId2, e);
-		}
-
 	}
 
-	private AFPChain align(String name1, String name2) throws IOException, StructureException {
-		AFPChain afpChain = align(name1, name2, ca1, ca2);
-		return afpChain;
-	}
-
-	private AFPChain align(String name1, String name2, Atom[] ca1, Atom[] ca2) throws StructureException, IOException {
+	private AFPChain align(Atom[] ca1, Atom[] ca2) throws StructureException, IOException {
 		if (!sanityCheckPreAlign(ca1, ca2)) throw new IllegalArgumentException("Can't align using same structure.");
 		AFPChain afpChain = algorithm.getAlgorithm().align(ca1, ca2);
 		if (afpChain == null) return null;
-		afpChain.setName1(name1);
-		afpChain.setName2(name2);
+		afpChain.setName1(pdbIdAndChain1);
+		afpChain.setName2(pdbIdAndChain2);
 		double realTmScore = AFPChainScorer.getTMScore(afpChain, ca1, ca2);
 		afpChain.setTMScore(realTmScore);
 		return afpChain;
