@@ -65,6 +65,7 @@ public class MartinIdentifierMapping implements IdentifierMapping {
 
 	@Override
 	public String uniProtToPdb(String uniProtId) {
+		if (!pdbIds.containsKey(uniProtId) || !chainIds.containsKey(uniProtId)) return null;
 		return pdbIds.get(uniProtId) + "_" + chainIds.get(uniProtId);
 	}
 
