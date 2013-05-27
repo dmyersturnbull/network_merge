@@ -14,6 +14,8 @@
  */
 package org.structnetalign.util;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.NavigableSet;
 
@@ -26,8 +28,6 @@ import psidev.psi.mi.xml.model.Entry;
 import psidev.psi.mi.xml.model.EntrySet;
 import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.model.Interactor;
-import psidev.psi.mi.xml.model.Names;
-import psidev.psi.mi.xml.model.Unit;
 import edu.uci.ics.jung.graph.UndirectedGraph;
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 
@@ -47,6 +47,17 @@ public class GraphInteractionAdaptor {
 	public static final String INITIAL_CONFIDENCE_LABEL = "struct-NA intial weighting";
 
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");
+
+	public static void main(String[] args) throws IOException {
+		if (args.length != 2) {
+			System.err.println("Usage: " + GraphInteractionAdaptor.class.getSimpleName()
+					+ " input-psimi25-file output-graphml-file");
+			return;
+		}
+		EntrySet entrySet = NetworkUtils.readNetwork(args[0]);
+		UndirectedGraph<Integer, InteractionEdge> graph = GraphInteractionAdaptor.toGraph(entrySet);
+		GraphMLAdaptor.writeInteractionGraph(graph, new File(args[1]));
+	}
 
 	public static void modifyProbabilites(EntrySet entrySet, UndirectedGraph<Integer, InteractionEdge> graph) {
 		modifyProbabilites(entrySet, graph, CONFIDENCE_SHORT_LABEL, CONFIDENCE_FULL_NAME);
@@ -80,14 +91,16 @@ public class GraphInteractionAdaptor {
 				// so, we'll just delete it from the output
 				// it can always be recovered from the input file
 				// but this is critical because otherwise we'd lose our new confidence
-				Confidence alreadyExists = NetworkUtils.getExistingConfidence(interaction, confidenceLabel, confidenceFullName);
+				Confidence alreadyExists = NetworkUtils.getExistingConfidence(interaction, confidenceLabel,
+						confidenceFullName);
 				if (alreadyExists != null) {
 					logger.warn("Confidence " + confidenceLabel + " already exists. Overwriting.");
 					interaction.getConfidences().remove(alreadyExists);
 				}
 
 				// make a new Confidence
-				Confidence confidence = NetworkUtils.makeConfidence(edge.getWeight(), confidenceLabel, confidenceFullName, confidenceLabel);
+				Confidence confidence = NetworkUtils.makeConfidence(edge.getWeight(), confidenceLabel,
+						confidenceFullName, confidenceLabel);
 
 				interaction.getConfidences().add(confidence);
 				logger.debug("Updated interaction Id#" + interaction.getId() + " with probablility " + edge.getWeight());
