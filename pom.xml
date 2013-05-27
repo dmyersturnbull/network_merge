@@ -26,6 +26,10 @@
 			<id>psidev.psi</id>
 			<name>EBI psidev</name>
 			<url>http://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo/psidev/psi/</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>daily</updatePolicy>
+			</snapshots>
 		</repository>
 	</repositories>
 	<dependencies>
