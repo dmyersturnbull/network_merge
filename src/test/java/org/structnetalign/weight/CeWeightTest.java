@@ -13,14 +13,22 @@
  */
 package org.structnetalign.weight;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 
 public class CeWeightTest {
 
+	private static final double PRECISION = 0.0000001;
+	
 	@Test
-	public void test() {
-		
+	public void test() throws Exception {
+		String uniProtId1 = "P02761"; // 2a2g.A
+		String uniProtId2 = "Q48422"; // 2a2l.A
+		CeWeight weight = new CeWeight();
+		double tmScore = weight.assignWeight(uniProtId1, uniProtId2);
+		assertEquals("Probability is wrong", 0.08162607996231466, tmScore, PRECISION);
 	}
 	
 }
