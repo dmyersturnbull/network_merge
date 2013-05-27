@@ -74,8 +74,9 @@ public class BronKerboschMergeJob implements Callable<List<NavigableSet<Integer>
 
 		// partition the cliques by sets of interactions
 		// we call these (maximal) degenerate sets
-		NavigableMap<String, NavigableSet<Integer>> degenerateSetMap = new TreeMap<>();
+		List<NavigableSet<Integer>> simpleDegenerateSets = new ArrayList<NavigableSet<Integer>>();
 		for (Set<Integer> clique : cliques) {
+			NavigableMap<String, NavigableSet<Integer>> degenerateSetMap = new TreeMap<>();
 			for (int v : clique) {
 				Collection<Integer> neighbors = graph.getInteractionNeighbors(v);
 				String hash = hashVertexInteractions(neighbors);
@@ -86,6 +87,9 @@ public class BronKerboschMergeJob implements Callable<List<NavigableSet<Integer>
 				}
 				degenerateSet.add(v);
 				logger.trace("Job " + index + ": " + "Found " + hash + " --> " + degenerateSetMap.get(hash));
+			}
+			for (NavigableSet<Integer> set : degenerateSetMap.values()) {
+				simpleDegenerateSets.add(set);
 			}
 		}
 
@@ -118,8 +122,8 @@ public class BronKerboschMergeJob implements Callable<List<NavigableSet<Integer>
 				return 0;
 			}
 		};
-		List<NavigableSet<Integer>> sortedDegenerateSets = new ArrayList<>(degenerateSetMap.values().size());
-		sortedDegenerateSets.addAll(degenerateSetMap.values());
+		List<NavigableSet<Integer>> sortedDegenerateSets = new ArrayList<>(simpleDegenerateSets.size());
+		sortedDegenerateSets.addAll(simpleDegenerateSets);
 		Collections.sort(sortedDegenerateSets, comparator);
 
 		/*
