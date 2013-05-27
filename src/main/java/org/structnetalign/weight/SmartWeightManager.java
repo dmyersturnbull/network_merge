@@ -14,6 +14,8 @@
  */
 package org.structnetalign.weight;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -46,12 +48,21 @@ public class SmartWeightManager implements WeightManager {
 
 	private int nCores;
 
-	private double threshold;
+	private double beta = 1;
 
-	public SmartWeightManager(int nCores, double threshold) {
+	public void setBeta(double beta) {
+		this.beta = beta;
+	}
+
+	public SmartWeightManager(int nCores) {
 		super();
 		this.nCores = nCores;
-		this.threshold = threshold;
+	}
+
+	private static final NumberFormat nf = new DecimalFormat();
+	static {
+		nf.setMinimumFractionDigits(1);
+		nf.setMaximumFractionDigits(3);
 	}
 
 	@Override
@@ -72,15 +83,26 @@ public class SmartWeightManager implements WeightManager {
 
 		// let's submit the jobs
 		// iterate over all pairs of vertices
-		int i = 0;
 		for (int a : graph.getVertices()) {
-			int j = 0;
 			for (int b : graph.getVertices()) {
 
-				if (i <= j) continue; // homology had damn well better be reflexive and symmetric!
+				if (a >= b) {
+					continue; // homology had damn well better be reflexive and symmetric!
+				}
 
 				final String uniProtIdA = uniProtIds.get(a);
 				final String uniProtIdB = uniProtIds.get(b);
+
+				if (uniProtIdA == null) {
+					logger.error("Could not get UniProt Id for Id#" + a);
+					continue;
+				}
+				if (uniProtIdB == null) {
+					logger.error("Could not get UniProt Id for Id#" + b);
+					continue;
+				}
+
+				logger.trace("Weighting " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")");
 
 				// let's get weight from alignment
 				AlignmentWeight alignment;
@@ -90,12 +112,11 @@ public class SmartWeightManager implements WeightManager {
 					alignment.setIds(uniProtIdA, uniProtIdB);
 				} catch (WeightException e) {
 					// okay, try to use sequence
-					logger.debug("Using sequence alignment for " + uniProtIdA + " against " + uniProtIdB, e);
 					alignment = new NeedlemanWunschWeight();
 					try {
 						alignment.setIds(uniProtIdA, uniProtIdB);
 					} catch (WeightException e1) {
-						logger.warn("Couldn't get alignment-based weight for " + uniProtIdA + " against " + uniProtIdB, e1);
+						logger.warn("Couldn't get alignment-based weight for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")", e1);
 						alignment = null;
 					}
 				}
@@ -108,35 +129,34 @@ public class SmartWeightManager implements WeightManager {
 					relation.setIds(uniProtIdA, uniProtIdB);
 				} catch (WeightException e) {
 					// okay, try to use sequence
-					logger.debug("Using sequence relation for " + uniProtIdA + " against " + uniProtIdB, e);
 					relation = new PfamWeight();
 					try {
 						relation.setIds(uniProtIdA, uniProtIdB);
 					} catch (WeightException e1) {
-						logger.warn("Couldn't get relation-based weight for " + uniProtIdA + " against " + uniProtIdB, e1);
+						logger.warn("Couldn't get relation-based weight for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")", e1);
 						relation = null;
 					}
 				}
 
 				// now submit
 				if (alignment != null) {
+					logger.debug("Running alignment " + alignment.getClass().getSimpleName() + " for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")");
 					Future<WeightResult> alignmentWeight = completion.submit(alignment);
 					futures.add(alignmentWeight);
 				}
 				if (relation != null) {
+					logger.debug("Running relation " + relation.getClass().getSimpleName() + " for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")");
 					Future<WeightResult> relationWeight = completion.submit(relation);
 					futures.add(relationWeight);
 				}
 
-				j++;
 			}
-			i++;
 		}
 
 		logger.info("Submitted " + futures.size() + " jobs to " + nCores + " cores");
 
 		// now respond to completion
-		int createdIndex = 0;
+		int createdIndex = 0; // there shouldn't be any homology edges yet
 		for (Future<WeightResult> future : futures) {
 			Double weight = null;
 			Integer vertexA = null, vertexB = null;
@@ -159,22 +179,20 @@ public class SmartWeightManager implements WeightManager {
 				continue;
 			}
 
-			if (weight >= threshold) {
+			Collection<Integer> vertices = Arrays.asList(vertexA, vertexB);
 
-				logger.debug("Adding homology edge (" + vertexA + "," + vertexB + "," + weight + ")");
-				Collection<Integer> vertices = Arrays.asList(vertexA, vertexB);
-
-				// there may already be an edge there
-				HomologyEdge existing = graph.getHomology().findEdge(vertexA, vertexB);
-				if (existing != null) {
-					// (a+b-ab) + c - c*(a+b-ab) = a + b + c - ab - ac - bc + abc
-					existing.setWeight(existing.getWeight() + weight - existing.getWeight() * weight);
-				} else {
-					HomologyEdge edge = new HomologyEdge(createdIndex++, weight);
-					graph.addHomologies(edge, vertices);
-				}
-
+			// there may already be an edge there
+			HomologyEdge existing = graph.getHomology().findEdge(vertexA, vertexB);
+			if (existing != null) {
+				// (a+b-ab) + c - c*(a+b-ab) = a + b + c - ab - ac - bc + abc
+				existing.setWeight(existing.getWeight() + weight - existing.getWeight() * weight);
+				logger.debug("Updated homology edge (" + vertexA + ", " + vertexB + ", " + nf.format(existing.getWeight()) + ") with weight " + weight);
+			} else {
+				HomologyEdge edge = new HomologyEdge(createdIndex++, weight);
+				graph.addHomologies(edge, vertices);
+				logger.debug("Added homology edge (" + vertexA + ", " + vertexB + ", " + nf.format(weight) + ")");
 			}
+
 		}
 
 		logger.info("Added " + graph.getHomologyCount() + " homology edges");

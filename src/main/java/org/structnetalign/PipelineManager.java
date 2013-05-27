@@ -30,7 +30,7 @@ import org.structnetalign.util.GraphMLAdaptor;
 import org.structnetalign.util.NetworkUtils;
 import org.structnetalign.weight.CeWeight;
 import org.structnetalign.weight.ScopRelationWeight;
-import org.structnetalign.weight.SimpleWeightManager;
+import org.structnetalign.weight.SmartWeightManager;
 import org.structnetalign.weight.WeightManager;
 
 import psidev.psi.mi.xml.model.EntrySet;
@@ -97,10 +97,8 @@ public class PipelineManager {
 	 * Initializes a new PipelineManager using the default parameters. Once this has been performed, setting of variables will have no effect.
 	 */
 	private void init() {
-		SimpleWeightManager weightManager = new SimpleWeightManager();
-		weightManager.setThreshold(tau);
-		weightManager.add(new ScopRelationWeight());
-		weightManager.add(new CeWeight());
+		SmartWeightManager weightManager = new SmartWeightManager(nCores);
+		weightManager.setBeta(beta);
 		this.weightManager = weightManager;
 		crossingManager = new SimpleCrossingManager(nCores, xi);
 		mergeManager = new BronKerboschMergeManager();

@@ -14,6 +14,8 @@
  */
 package org.structnetalign.weight;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -37,7 +39,6 @@ public class SimpleWeightManager implements WeightManager {
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");
 
 	private List<Double> coefficients;
-	private double threshold;
 	private List<Weight> weights;
 
 	public SimpleWeightManager() {
@@ -46,52 +47,56 @@ public class SimpleWeightManager implements WeightManager {
 		coefficients = new ArrayList<Double>();
 	}
 
-	public SimpleWeightManager(List<Weight> weights, List<Double> coefficients, double threshold) {
+	public SimpleWeightManager(List<Weight> weights, List<Double> coefficients) {
 		super();
 		this.weights = weights;
 		this.coefficients = coefficients;
-		this.threshold = threshold;
 	}
 
-	public boolean add(Weight e) {
+	public boolean add(Weight e, double coefficient) {
+		coefficients.add(coefficient);
 		return weights.add(e);
+	}
+
+	private static final NumberFormat nf = new DecimalFormat();
+	static {
+		nf.setMinimumFractionDigits(1);
+		nf.setMaximumFractionDigits(3);
 	}
 
 	@Override
 	public void assignWeights(CleverGraph graph, Map<Integer, String> uniProtIds) {
-		int createdIndex = 0;
-		int x = 0;
+
+		int createdIndex = 0; // there shouldn't be any homology edges yet
+
 		for (int a : graph.getVertices()) {
-			int y = 0;
 			for (int b : graph.getVertices()) {
-				if (x <= y) continue; // homology had damn well better be reflexive!
+
+				if (a >= b) continue; // homology had damn well better be reflexive and symmetric!
+
 				double score = 0;
+
 				for (int i = 0; i < weights.size(); i++) {
 					String sa = uniProtIds.get(a);
 					String sb = uniProtIds.get(b);
 					try {
-						score += coefficients.get(i) * weights.get(i).assignWeight(sa, sb);
+						double updateScore = coefficients.get(i) * weights.get(i).assignWeight(sa, sb);
+						score += updateScore - score * updateScore;
 					} catch (Exception e) {
 						// totally okay; just don't add
 						logger.debug("Couldn't get a weight for " + a + " against " + b, e);
 					}
 				}
-				if (score >= threshold) {
-					logger.debug("Adding homology edge (" + a + "," + b + "," + score + ")");
-					Collection<Integer> vertices = Arrays.asList(a, b);
-					HomologyEdge edge = new HomologyEdge(createdIndex++, score);
-					graph.addHomologies(edge, vertices);
-				}
-				y++;
+
+				Collection<Integer> vertices = Arrays.asList(a, b);
+				HomologyEdge edge = new HomologyEdge(createdIndex++, score);
+				graph.addHomologies(edge, vertices);
+				logger.debug("Added homology edge (" + a + ", " + b + ", " + nf.format(score) + ")");
+				
 			}
-			x++;
 		}
-	}
 
-	public void setThreshold(double threshold) {
-		this.threshold = threshold;
 	}
-
 	public void setWeights(List<Weight> weights) {
 		this.weights = weights;
 	}
