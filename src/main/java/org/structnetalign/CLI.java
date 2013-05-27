@@ -26,6 +26,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.biojava.bio.structure.align.ce.AbstractUserArgumentProcessor;
 import org.structnetalign.util.GraphInteractionAdaptor;
+import org.structnetalign.weight.AtomCacheFactory;
 
 public class CLI {
 
@@ -43,6 +44,7 @@ public class CLI {
 		try {
 			cmd = parser.parse(options, args);
 		} catch (ParseException e) {
+			e.printStackTrace();
 			printUsage(null, options);
 			return;
 		}
@@ -69,7 +71,10 @@ public class CLI {
 		runPipeline(pdbDir, nCores, input, output, inputCertainty, defaultWeight, tau, zeta, xi, beta, noCross, noMerge, writeSteps, report);
 	}
 	private static void runPipeline(String pdbDir, int nCores, File input, File output, String inputCertainty, double defaultWeight, double tau, double zeta, int xi, double beta, boolean noCross, boolean noMerge, boolean writeSteps, boolean report) {
-		System.setProperty(AbstractUserArgumentProcessor.PDB_DIR, pdbDir);
+		if (pdbDir != null) {
+			System.setProperty(AbstractUserArgumentProcessor.PDB_DIR, pdbDir);
+			AtomCacheFactory.setCache(pdbDir);
+		}
 		PipelineManager man = new PipelineManager();
 		man.setXi(xi);
 		man.setNCores(nCores);
@@ -79,7 +84,7 @@ public class CLI {
 		man.setReport(report);
 		man.setWriteSteps(writeSteps);
 		man.setDefaultProbability(defaultWeight);
-		man.setInitialConfidenceLabel(inputCertainty);
+		if (inputCertainty != null) man.setInitialConfidenceLabel(inputCertainty);
 		man.setNoCross(noCross);
 		man.setNoMerge(noMerge);
 		man.run(input, output);
@@ -115,7 +120,7 @@ public class CLI {
 		options.addOption(OptionBuilder.hasArg(true)
 				.withDescription("The relative importance of databases over alignment. A homology edge will be assigned a weight of the sum of the alignment scores plus the beta times the sum of the database scores. Defaults to " + PipelineManager.BETA + ".").isRequired(false)
 				.create("beta"));
-		options.addOption(OptionBuilder.hasArg(true)
+		options.addOption(OptionBuilder.hasArg(false)
 				.withDescription("If set, generates an HTML report page with accompanying graph visualizations in the specified directory.").isRequired(false)
 				.create("report"));
 		options.addOption(OptionBuilder.hasArg(false)
