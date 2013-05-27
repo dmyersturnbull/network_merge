@@ -84,27 +84,35 @@ public class NetworkUtils {
 
 	}
 
+	private final static String UNIPROT_ACCESSION = "MI:0486";
+	private final static String UNIPROT_ACCESSION_TYPE = "MI:0356";
+	
+	/**
+	 * Returns the UniProtId corresponding to this interactor, or null if it isn't defined.
+	 */
+	public static String getUniProtId(Interactor interactor) {
+		Xref xref = interactor.getXref();
+		if (xref != null) {
+			Collection<DbReference> refs = xref.getAllDbReferences();
+			for (DbReference ref : refs) {
+				if (UNIPROT_ACCESSION.equals(ref.getDbAc()) && UNIPROT_ACCESSION_TYPE.equals(ref.getRefTypeAc())) {
+					return ref.getId();
+				}
+			}
+		}
+		return null;
+	}
+	
 	public static Map<Integer, String> getUniProtIds(EntrySet entrySet) {
-		final String accession = "MI:0486";
-		final String accessionType = "MI:0356";
 		HashMap<Integer, String> map = new HashMap<>();
 		for (Entry entry : entrySet.getEntries()) {
 			for (Interactor interactor : entry.getInteractors()) {
-				String id = null;
-				Xref xref = interactor.getXref();
-				if (xref != null) {
-					Collection<DbReference> refs = xref.getAllDbReferences();
-					for (DbReference ref : refs) {
-						if (accession.equals(ref.getDbAc()) && accessionType.equals(ref.getRefTypeAc())) {
-							id = ref.getId();
-						}
-					}
-				}
+				String id = getUniProtId(interactor);
 				if (id != null) {
 					map.put(interactor.getId(), id);
 				} else {
 					logger.warn("Reference Id not found for interactor #" + interactor.getId() + " (using acession "
-							+ accession + " of type " + accessionType + "). Not including.");
+							+ UNIPROT_ACCESSION + " of type " + UNIPROT_ACCESSION_TYPE + "). Not including.");
 				}
 			}
 		}
