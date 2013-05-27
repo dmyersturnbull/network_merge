@@ -167,8 +167,17 @@ public class NeedlemanWunschWeight implements AlignmentWeight {
 
 	@Override
 	public WeightResult call() throws Exception {
-		ProteinSequence a = getSequenceForId(uniProtId1);
-		ProteinSequence b = getSequenceForId(uniProtId2);
+		ProteinSequence a, b;
+		try {
+			a = getSequenceForId(uniProtId1);
+		} catch (Exception e) {
+			throw new WeightException("Could not get FASTA sequence for " + uniProtId1, uniProtId1, uniProtId2, true, false);
+		}
+		try {
+			b = getSequenceForId(uniProtId2);
+		} catch (Exception e) {
+			throw new WeightException("Could not get FASTA sequence for " + uniProtId1, uniProtId1, uniProtId2, true, false);
+		}
 		NeedlemanWunsch<ProteinSequence, AminoAcidCompound> alg = new NeedlemanWunsch<>(a, b, GAP_PENALTY, MATRIX);
 		SequencePair<ProteinSequence, AminoAcidCompound> pair = alg.getPair();
 		PairwiseSequenceScorer<ProteinSequence, AminoAcidCompound> scorer = new FractionalIdentityScorer<>(pair);
@@ -182,15 +191,5 @@ public class NeedlemanWunschWeight implements AlignmentWeight {
 	public void setIds(String uniProtId1, String uniProtId2) throws WeightException {
 		this.uniProtId1 = uniProtId1;
 		this.uniProtId2 = uniProtId2;
-//		try {
-//			getSequenceForId(uniProtId1);
-//		} catch (Exception e) {
-//			throw new WeightException("Could not get FASTA sequence for " + uniProtId1);
-//		}
-//		try {
-//			getSequenceForId(uniProtId2);
-//		} catch (Exception e) {
-//			throw new WeightException("Could not get FASTA sequence for " + uniProtId1);
-//		}
 	}
 }

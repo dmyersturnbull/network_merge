@@ -99,22 +99,22 @@ public class CeWeight implements AlignmentWeight {
 			ca1 = cache.getAtoms(pdbIdAndChain1);
 		} catch (IOException | StructureException e) {
 			throw new WeightException("Could not parse structure for PDB entry " + pdbIdAndChain1 + " for "
-					+ uniProtId1, e);
+					+ uniProtId1, e, uniProtId1, uniProtId2, true, true);
 		}
 		try {
 			ca2 = cache.getAtoms(pdbIdAndChain2);
 		} catch (IOException | StructureException e) {
 			throw new WeightException("Could not parse structure for PDB entry " + pdbIdAndChain2 + " for "
-					+ uniProtId2, e);
+					+ uniProtId2, e, uniProtId1, uniProtId2, true, true);
 		}
 		AFPChain afpChain;
 		try {
 			afpChain = align(ca1, ca2);
 		} catch (IOException | StructureException e) {
-			throw new WeightException("Could not align " + pdbIdAndChain1 + " against " + pdbIdAndChain2, e);
+			throw new WeightException("Could not align " + pdbIdAndChain1 + " against " + pdbIdAndChain2, e, uniProtId1, uniProtId2, true, true);
 		}
 		if (afpChain.getTMScore() == -1) throw new WeightException("TM-score not calculated for the alignment of "
-				+ pdbIdAndChain1 + " against " + pdbIdAndChain2);
+				+ pdbIdAndChain1 + " against " + pdbIdAndChain2, uniProtId1, uniProtId2, true, true);
 		return new WeightResult(afpChain.getTMScore(), uniProtId1, uniProtId2, this.getClass());
 	}
 
@@ -125,9 +125,9 @@ public class CeWeight implements AlignmentWeight {
 		this.uniProtId2 = uniProtId2;
 
 		pdbIdAndChain1 = IdentifierMappingFactory.getMapping().uniProtToPdb(uniProtId1);
-		if (pdbIdAndChain1 == null) throw new WeightException("Could not find PDB Id for " + uniProtId1);
+		if (pdbIdAndChain1 == null) throw new WeightException("Could not find PDB Id for " + uniProtId1, uniProtId1, uniProtId2, true, true);
 		pdbIdAndChain2 = IdentifierMappingFactory.getMapping().uniProtToPdb(uniProtId2);
-		if (pdbIdAndChain2 == null) throw new WeightException("Could not find PDB Id for " + uniProtId2);
+		if (pdbIdAndChain2 == null) throw new WeightException("Could not find PDB Id for " + uniProtId2, uniProtId1, uniProtId2, true, true);
 
 	}
 

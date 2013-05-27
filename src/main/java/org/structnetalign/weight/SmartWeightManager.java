@@ -159,10 +159,13 @@ public class SmartWeightManager implements WeightManager {
 
 		// now respond to completion
 		int createdIndex = 0; // there shouldn't be any homology edges yet
-		for (Future<WeightResult> future : futures) {
+		forfutures: for (Future<WeightResult> future : futures) {
+			
 			Double weight = null;
 			Integer vertexA = null, vertexB = null;
+			
 			try {
+				
 				// We should do this in case the job gets interrupted
 				// Sometimes the OS or JVM might do this
 				// Use the flag instead of future == null because future.get() may actually return null
@@ -172,6 +175,10 @@ public class SmartWeightManager implements WeightManager {
 						weight = result.getWeight();
 						vertexA = graphIds.get(result.getA());
 						vertexB = graphIds.get(result.getB());
+						logger.trace("Job (" + vertexA + ", " + vertexB + ") returned with weight " + nf.format(weight));
+						if (weight == 0) {
+							continue forfutures; // don't both updating with 0
+						}
 						if (result.getSubmitter().isInstance(RelationWeight.class)) {
 							weight *= beta; // scale database results by beta as per description
 						}
@@ -179,11 +186,47 @@ public class SmartWeightManager implements WeightManager {
 						logger.warn("A thread was interrupted while waiting to get a weight. Retrying.", e1);
 					}
 				}
+				
 			} catch (ExecutionException e) {
-				logger.error("Encountered an error trying to get a weight. Skipping.", e);
-				continue;
+
+				// we can try this again if it's structural
+				if (e.getCause() != null && e.getCause() instanceof WeightException) {
+					WeightException myE = (WeightException) e.getCause();
+					if (myE.isStructure()) {
+						String myA = myE.getA();
+						String myB = myE.getB();
+						if (myE.isAlignment()) {
+							logger.warn("Structure-based alignment weight failed for (" + myA + ", " + myB + "). Attempting to use a sequence alignment.", e);
+							try {
+								AlignmentWeight alignment = new NeedlemanWunschWeight();
+								alignment.setIds(myA, myB);
+								completion.submit(alignment);
+							} catch (WeightException e1) {
+
+							}
+						} else {
+							logger.warn("Structure-based relation weight failed for (" + myA + ", " + myB + ") Attempting to use sequence a relation.", e);
+							try {
+								RelationWeight relation = new PfamWeight();
+								relation.setIds(myA, myB);
+								completion.submit(relation);
+							} catch (WeightException e1) {
+
+							}
+						}
+					} else {
+						logger.error("Encountered an error using sequence alignment.", e);
+					}
+				} else {
+					logger.error("Encountered an unknown error trying to get a weight.", e);
+				}
+				
+				continue; // we can't process this job
+				
 			}
 
+			// everything is ok; now update or add the edge
+			
 			Collection<Integer> vertices = Arrays.asList(vertexA, vertexB);
 
 			// there may already be an edge there
@@ -191,7 +234,7 @@ public class SmartWeightManager implements WeightManager {
 			if (existing != null) {
 				// (a+b-ab) + c - c*(a+b-ab) = a + b + c - ab - ac - bc + abc
 				existing.setWeight(existing.getWeight() + weight - existing.getWeight() * weight);
-				logger.debug("Updated homology edge (" + vertexA + ", " + vertexB + ", " + nf.format(existing.getWeight()) + ") with weight " + weight);
+				logger.debug("Updated homology edge (" + vertexA + ", " + vertexB + ", " + nf.format(existing.getWeight()) + ") with weight " + nf.format(weight));
 			} else {
 				HomologyEdge edge = new HomologyEdge(createdIndex++, weight);
 				graph.addHomologies(edge, vertices);

@@ -15,24 +15,53 @@ package org.structnetalign.weight;
 
 public class WeightException extends Exception {
 
+	private String a;
+	private String b;
+	private boolean isAlignment;
+	private boolean isStructure;
+	
+	public String getA() {
+		return a;
+	}
+
+	public String getB() {
+		return b;
+	}
+
+	public boolean isAlignment() {
+		return isAlignment;
+	}
+
+	public boolean isStructure() {
+		return isStructure;
+	}
+
 	public WeightException() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public WeightException(String message, Throwable cause) {
+	public WeightException(String message, Throwable cause, String a, String b, boolean isAlignment, boolean isStructure) {
 		super(message, cause);
-		// TODO Auto-generated constructor stub
+		this.a = a;
+		this.b = b;
+		this.isAlignment = isAlignment;
+		this.isStructure = isStructure;
 	}
 
-	public WeightException(String message) {
+	public WeightException(String message, String a, String b, boolean isAlignment, boolean isStructure) {
 		super(message);
-		// TODO Auto-generated constructor stub
+		this.a = a;
+		this.b = b;
+		this.isAlignment = isAlignment;
+		this.isStructure = isStructure;
 	}
 
-	public WeightException(Throwable cause) {
+	public WeightException(Throwable cause, String a, String b, boolean isAlignment, boolean isStructure) {
 		super(cause);
-		// TODO Auto-generated constructor stub
+		this.a = a;
+		this.b = b;
+		this.isAlignment = isAlignment;
+		this.isStructure = isStructure;
 	}
 
 }
