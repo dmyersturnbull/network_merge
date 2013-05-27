@@ -28,7 +28,7 @@ public class CeWeightTest {
 		String uniProtId2 = "Q48422"; // 2a2l.A
 		CeWeight weight = new CeWeight();
 		double tmScore = weight.assignWeight(uniProtId1, uniProtId2);
-		assertEquals("Probability is wrong", 0.08162607996231466, tmScore, PRECISION);
+		assertEquals("Probability is wrong", 0.0797555587996446, tmScore, PRECISION);
 	}
 	
 }
