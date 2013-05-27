@@ -13,7 +13,10 @@
  */
 package org.structnetalign.cross;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
@@ -33,6 +36,12 @@ public class SimpleCrossingManager implements CrossingManager {
 	private int maxDepth;
 	private int nCores;
 
+	private static NumberFormat nf = new DecimalFormat();
+	static {
+		nf.setMinimumFractionDigits(1);
+		nf.setMaximumFractionDigits(3);
+	}
+	
 	public SimpleCrossingManager(int nCores, int maxDepth) {
 		this.nCores = nCores;
 		this.maxDepth = maxDepth;
@@ -55,6 +64,12 @@ public class SimpleCrossingManager implements CrossingManager {
 			Future<InteractionUpdate> result = completion.submit(job);
 			futures.add(result);
 		}
+
+		/*
+		 * We'll make a list of updates to do when we're finished.
+		 * Otherwise, we can run into some ugly concurrency issues and get the wrong answer.
+		 */
+		HashMap<InteractionEdge, Double> edgesToUpdate = new HashMap<>();
 		
 		for (Future<InteractionUpdate> future : futures) {
 			
@@ -78,9 +93,18 @@ public class SimpleCrossingManager implements CrossingManager {
 			}
 			
 			// we have an update to make!
-			InteractionEdge edge = update.getRootInteraction();
-			edge.setWeight(edge.getWeight() + update.getScore());
+			InteractionEdge edge = update.getRootInteraction(); // don't make a copy here!!
+			edgesToUpdate.put(edge, edge.getWeight() + update.getScore() - edge.getWeight() * update.getScore());
+			logger.debug("Updated interaction " + edge.getId() + " to " + nf.format(edge.getWeight()));
 		}
+
+		/*
+		 * Now that the multithreaded part has finished, we can update the interactions.
+		 */
+		for (InteractionEdge edge : edgesToUpdate.keySet()) {
+			edge.setWeight(edgesToUpdate.get(edge));
+		}
+		
 	}
 
 }

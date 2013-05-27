@@ -67,13 +67,17 @@ public class HomologySearchJob implements Callable<InteractionUpdate> {
 		for (Map.Entry<Integer, Double> a : distancesToA.entrySet()) {
 			for (Map.Entry<Integer, Double> b : distancesToB.entrySet()) {
 				InteractionEdge interaction = graph.getInteraction().findEdge(a.getKey(), b.getKey());
-				if (interaction != null) {
+				if (interaction != null && interaction.getId() != root.getId()) {
 					Double distToA = a.getValue();
 					Double distToB = b.getValue();
 					if (distToA == null || distToB == null) continue; // we can't reach one of a or b
-					double updateProb = interaction.getWeight() * Math.exp(distToA) * Math.exp(distToB);
-					logger.debug("Updating " + root + " (" + rootA + ", " + rootB + ")" + " with score " + nf.format(updateProb) + " due to " + interaction + " (" + a.getKey() + ", " + b.getKey() + ")");
-					score += updateProb - score * updateProb;
+//					double updateProb = interaction.getWeight() * Math.exp(distToA) * Math.exp(distToB);
+//					score += updateProb - score * updateProb;
+					double scoreA = 1 - Math.exp(distToA);
+					double scoreB = 1 - Math.exp(distToB);
+					double aScore = interaction.getWeight() * (1 - scoreA - scoreB + scoreA*scoreB);
+					logger.debug("Updating " + root + " (" + rootA + ", " + rootB + ")" + " with score " + nf.format(aScore) + " due to " + interaction + " (" + a.getKey() + ", " + b.getKey() + ")");
+					score += aScore - score * aScore;
 				}
 			}
 		}
