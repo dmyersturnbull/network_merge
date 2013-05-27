@@ -21,15 +21,13 @@ import java.util.Map;
 
 import org.structnetalign.cross.CrossingManager;
 import org.structnetalign.cross.SimpleCrossingManager;
-import org.structnetalign.merge.BronKerboschMergeManager;
+import org.structnetalign.merge.ConcurrentBronKerboschMergeManager;
 import org.structnetalign.merge.MergeManager;
 import org.structnetalign.util.EdgeTrimmer;
 import org.structnetalign.util.EdgeWeighter;
 import org.structnetalign.util.GraphInteractionAdaptor;
 import org.structnetalign.util.GraphMLAdaptor;
 import org.structnetalign.util.NetworkUtils;
-import org.structnetalign.weight.CeWeight;
-import org.structnetalign.weight.ScopRelationWeight;
 import org.structnetalign.weight.SmartWeightManager;
 import org.structnetalign.weight.WeightManager;
 
@@ -101,7 +99,7 @@ public class PipelineManager {
 		weightManager.setBeta(beta);
 		this.weightManager = weightManager;
 		crossingManager = new SimpleCrossingManager(nCores, xi);
-		mergeManager = new BronKerboschMergeManager();
+		mergeManager = new ConcurrentBronKerboschMergeManager(nCores);
 	}
 
 	public boolean isReport() {
