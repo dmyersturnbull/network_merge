@@ -52,7 +52,7 @@ public class HomologySearchJobTest {
 		assertEquals("Wrong root interaction", rootInteraction, update.getRootInteraction());
 		// 0.4 + 0.4⋅0.8^2 − 0.4⋅0.4⋅0.8^2 = 0.5536
 		// 0.5536 + 0.8^4⋅0.4 − 0.5536⋅0.8^4⋅0.4 = 0.62673818
-		assertEquals("Wrong probability", 0.62673818, update.getScore(), PRECISION); 
+		assertEquals("Wrong probability", 0.37789696, update.getScore(), PRECISION); 
 	}
 	
 }

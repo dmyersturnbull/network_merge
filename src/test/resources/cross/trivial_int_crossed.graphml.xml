@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns/graphml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns/graphml">
+	<key id="w" for="edge">
+		<desc>weight</desc>
+	</key>
+	<graph edgedefault="undirected">
+		<node id="1"/>
+		<node id="2"/>
+		<node id="3"/>
+		<node id="4"/>
+		<node id="5"/>
+		<node id="6"/>
+		<edge id="3" source="2" target="6">
+			<data key="w">0.79</data>
+		</edge>
+		<edge id="1" source="3" target="6">
+			<data key="w">0.79</data>
+		</edge>
+		<edge id="2" source="4" target="6">
+			<data key="w">0.79</data>
+		</edge>
+	</graph>
+</graphml>
