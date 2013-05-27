@@ -14,10 +14,12 @@
  */
 package org.structnetalign.weight;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
 
@@ -71,13 +73,27 @@ public class NeedlemanWunschWeight implements AlignmentWeight {
 
 	}
 
+	static String url;
+	static {
+		Properties props = new Properties();
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		InputStream stream = loader.getResourceAsStream("databases.properties");
+		try {
+			props.load(stream);
+		} catch (IOException e) {
+			throw new RuntimeException("Couldn't open databases property file", e);
+		}
+		url = props.getProperty("uniprot_url");
+	}
+	
+	private static final String URL = url;
+	
 	private static GapPenalty GAP_PENALTY = new SimpleGapPenalty((short) 12, (short) 1);
 
 	private static final Logger logger = LogManager.getLogger(NeedlemanWunschWeight.class.getName());
 
 	private static SubstitutionMatrix<AminoAcidCompound> MATRIX = SubstitutionMatrixHelper.getBlosum62();
-	private static final String URL = "http://www.uniprot.org/uniprot/%s.fasta";
-
+	
 	private ProteinSequence a;
 
 	private ProteinSequence b;

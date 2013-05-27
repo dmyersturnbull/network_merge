@@ -25,7 +25,7 @@ import java.util.Properties;
 import org.biojava.bio.structure.scop.ScopCategory;
 import org.biojava.bio.structure.scop.ScopDatabase;
 import org.biojava.bio.structure.scop.ScopDomain;
-import org.biojava.bio.structure.scop.ScopFactory;
+import org.structnetalign.util.BasicScop;
 import org.structnetalign.util.IdentifierMappingFactory;
 
 public class ScopRelationWeight implements RelationWeight {
@@ -35,7 +35,7 @@ public class ScopRelationWeight implements RelationWeight {
 	 * @return
 	 */
 	private static synchronized ScopDatabase getSCOP() {
-		return ScopFactory.getSCOP(ScopFactory.VERSION_1_75B);
+		return BasicScop.getScop();
 	}
 	
 	public static final Map<ScopCategory, Double> DEFAULT_WEIGHTS = new HashMap<ScopCategory, Double>();
