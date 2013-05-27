@@ -65,4 +65,24 @@ public class BronKerboschMergeManagerTest {
 		boolean hom = TestUtils.compareHomologyGraph(graph.getHomology(), homologyOutput);
 		assertTrue("Homology graph differs from expected", hom);
 	}
+	
+	@Test
+	public void testOverlapping() {
+		File homologyInput = new File(RESOURCE_DIR + "overlapping_hom.graphml.xml");
+		File interactionInput = new File(RESOURCE_DIR + "overlapping_int.graphml.xml");
+		File homologyOutput = new File(RESOURCE_DIR + "overlapping_hom_merged.graphml.xml");
+		File interactionOutput = new File(RESOURCE_DIR + "overlapping_int_merged.graphml.xml");
+		CleverGraph graph = GraphMLAdaptor.readGraph(interactionInput, homologyInput);
+		assertEquals(9, graph.getVertexCount()); // just a sanity check for the test itself
+		assertEquals(12, graph.getHomologyCount()); // just a sanity check for the test itself
+		assertEquals(7, graph.getInteractionCount()); // just a sanity check for the test itself
+		BronKerboschMergeManager merge = new BronKerboschMergeManager();
+		merge.merge(graph);
+//		GraphMLAdaptor.writeHomologyGraph(graph.getHomology(), new File("ahom.xml.tmp"));
+//		GraphMLAdaptor.writeInteractionGraph(graph.getInteraction(), new File("aint.xml.tmp"));
+		boolean inter = TestUtils.compareInteractionGraph(graph.getInteraction(), interactionOutput);
+		assertTrue("Interaction graph differs from expected", inter);
+		boolean hom = TestUtils.compareHomologyGraph(graph.getHomology(), homologyOutput);
+		assertTrue("Homology graph differs from expected", hom);
+	}
 }
