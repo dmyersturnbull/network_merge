@@ -78,6 +78,10 @@ public class NeedlemanWunschWeight implements AlignmentWeight {
 	private static SubstitutionMatrix<AminoAcidCompound> MATRIX = SubstitutionMatrixHelper.getBlosum62();
 	private static final String URL = "http://www.uniprot.org/uniprot/%s.fasta";
 
+	private ProteinSequence a;
+
+	private ProteinSequence b;
+
 	private String uniProtId1;
 
 	private String uniProtId2;
@@ -165,6 +169,16 @@ public class NeedlemanWunschWeight implements AlignmentWeight {
 	@Override
 	public void setIds(String uniProtId1, String uniProtId2) throws WeightException {
 		this.uniProtId1 = uniProtId1;
+		try {
+			a = getSequenceForId(uniProtId1);
+		} catch (Exception e) {
+			throw new WeightException("Could not get FASTA sequence for " + uniProtId1);
+		}
 		this.uniProtId2 = uniProtId2;
+		try {
+			b = getSequenceForId(uniProtId2);
+		} catch (Exception e) {
+			throw new WeightException("Could not get FASTA sequence for " + uniProtId1);
+		}
 	}
 }
