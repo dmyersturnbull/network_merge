@@ -57,11 +57,15 @@ public class CeWeight implements AlignmentWeight {
 
 	private AlgorithmGiver algorithm;
 
-	private String scopId1;
+	private Atom[] ca1;
 
-	private String scopId2;
-	
+	private Atom[] ca2;
+
+	private String pdbIdAndChain1;
+	private String pdbIdAndChain2;
+
 	private String uniProtId1;
+
 	private String uniProtId2;
 
 	/**
@@ -95,31 +99,43 @@ public class CeWeight implements AlignmentWeight {
 	public WeightResult call() throws Exception {
 		AFPChain afpChain;
 		try {
-			afpChain = align(scopId1, scopId2);
+			afpChain = align(pdbIdAndChain1, pdbIdAndChain2);
 		} catch (IOException | StructureException e) {
-			throw new WeightException("Could not align " + scopId1 + " against " + scopId2, e);
+			throw new WeightException("Could not align " + pdbIdAndChain1 + " against " + pdbIdAndChain2, e);
 		}
 		if (afpChain.getTMScore() == -1) throw new WeightException("TM-score not calculated for the alignment of "
-				+ scopId1 + " against " + scopId2);
+				+ pdbIdAndChain1 + " against " + pdbIdAndChain2);
 		return new WeightResult(afpChain.getTMScore(), uniProtId1, uniProtId2);
 	}
 
 	@Override
 	public void setIds(String uniProtId1, String uniProtId2) throws WeightException {
-		
+
 		this.uniProtId1 = uniProtId1;
 		this.uniProtId2 = uniProtId2;
-		
-		scopId1 = IdentifierMappingFactory.getMapping().uniProtToPdb(uniProtId1);
-		if (scopId1 == null) throw new WeightException("Could not find SCOP id for " + uniProtId1);
-		scopId2 = IdentifierMappingFactory.getMapping().uniProtToPdb(uniProtId2);
-		if (scopId2 == null) throw new WeightException("Could not find SCOP id for " + uniProtId2);
+
+		pdbIdAndChain1 = IdentifierMappingFactory.getMapping().uniProtToPdb(uniProtId1);
+		if (pdbIdAndChain1 == null) throw new WeightException("Could not find PDB Id for " + uniProtId1);
+		pdbIdAndChain2 = IdentifierMappingFactory.getMapping().uniProtToPdb(uniProtId2);
+		if (pdbIdAndChain2 == null) throw new WeightException("Could not find PDB Id for " + uniProtId2);
+
+		final AtomCache cache = AtomCacheFactory.getCache();
+		try {
+			ca1 = cache.getAtoms(pdbIdAndChain1);
+		} catch (IOException | StructureException e) {
+			throw new WeightException("Could not parse structure for PDB entry " + pdbIdAndChain1 + " for "
+					+ uniProtId1, e);
+		}
+		try {
+			ca2 = cache.getAtoms(pdbIdAndChain2);
+		} catch (IOException | StructureException e) {
+			throw new WeightException("Could not parse structure for PDB entry " + pdbIdAndChain2 + " for "
+					+ uniProtId2, e);
+		}
+
 	}
 
 	private AFPChain align(String name1, String name2) throws IOException, StructureException {
-		final AtomCache cache = AtomCacheFactory.getCache();
-		Atom[] ca1 = cache.getAtoms(name1); // C-alpha only
-		Atom[] ca2 = cache.getAtoms(name2);
 		AFPChain afpChain = align(name1, name2, ca1, ca2);
 		return afpChain;
 	}
