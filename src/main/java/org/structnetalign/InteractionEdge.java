@@ -14,11 +14,21 @@
  */
 package org.structnetalign;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 public class InteractionEdge implements Edge {
+
+	private static NumberFormat nf = new DecimalFormat();
 
 	private int id;
 
 	private double weight;
+
+	static {
+		nf.setMinimumFractionDigits(1);
+		nf.setMaximumFractionDigits(3);
+	}
 
 	public InteractionEdge() {
 	}
@@ -26,6 +36,12 @@ public class InteractionEdge implements Edge {
 	public InteractionEdge(int id, double weight) {
 		this.id = id;
 		this.weight = weight;
+	}
+
+	public InteractionEdge(InteractionEdge edge) {
+		super();
+		id = edge.id;
+		weight = edge.weight;
 	}
 
 	@Override
@@ -64,6 +80,11 @@ public class InteractionEdge implements Edge {
 	@Override
 	public void setWeight(double weight) {
 		this.weight = weight;
+	}
+
+	@Override
+	public String toString() {
+		return "Int(" + id + ", " + nf.format(weight) + ")";
 	}
 
 }

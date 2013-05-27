@@ -14,24 +14,40 @@
  */
 package org.structnetalign;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 public class HomologyEdge implements Edge {
 
 	public static enum Type {
 		SEQUENCE_ALIGNMENT, SEQUENCE_DATABASE, STRUCTURAL_ALIGNMENT, STRUCTURAL_DATABASE;
 	}
 
+	private static NumberFormat nf = new DecimalFormat();
+
 	private int id;
 
 	private double weight;
+
+	static {
+		nf.setMinimumFractionDigits(1);
+		nf.setMaximumFractionDigits(3);
+	}
+
+	public HomologyEdge() {
+
+	}
+
+	public HomologyEdge(HomologyEdge edge) {
+		super();
+		id = edge.id;
+		weight = edge.weight;
+	}
 
 	public HomologyEdge(int id, double weight) {
 		super();
 		this.id = id;
 		this.weight = weight;
-	}
-
-	public HomologyEdge() {
-		
 	}
 
 	@Override
@@ -70,6 +86,11 @@ public class HomologyEdge implements Edge {
 	@Override
 	public void setWeight(double weight) {
 		this.weight = weight;
+	}
+
+	@Override
+	public String toString() {
+		return "Hom(" + id + ", " + nf.format(weight) + ")";
 	}
 
 }
