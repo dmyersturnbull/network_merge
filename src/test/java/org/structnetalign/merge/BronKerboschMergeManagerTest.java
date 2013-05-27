@@ -78,6 +78,24 @@ public class BronKerboschMergeManagerTest {
 		assertEquals(7, graph.getInteractionCount()); // just a sanity check for the test itself
 		BronKerboschMergeManager merge = new BronKerboschMergeManager();
 		merge.merge(graph);
+		boolean inter = TestUtils.compareInteractionGraph(graph.getInteraction(), interactionOutput);
+		assertTrue("Interaction graph differs from expected", inter);
+		boolean hom = TestUtils.compareHomologyGraph(graph.getHomology(), homologyOutput);
+		assertTrue("Homology graph differs from expected", hom);
+	}
+	
+	@Test
+	public void testDifferentSized() {
+		File homologyInput = new File(RESOURCE_DIR + "different_sized_hom.graphml.xml");
+		File interactionInput = new File(RESOURCE_DIR + "different_sized_int.graphml.xml");
+		File homologyOutput = new File(RESOURCE_DIR + "different_sized_hom_merged.graphml.xml");
+		File interactionOutput = new File(RESOURCE_DIR + "different_sized_int_merged.graphml.xml");
+		CleverGraph graph = GraphMLAdaptor.readGraph(interactionInput, homologyInput);
+		assertEquals(8, graph.getVertexCount()); // just a sanity check for the test itself
+		assertEquals(9, graph.getHomologyCount()); // just a sanity check for the test itself
+		assertEquals(6, graph.getInteractionCount()); // just a sanity check for the test itself
+		BronKerboschMergeManager merge = new BronKerboschMergeManager();
+		merge.merge(graph);
 //		GraphMLAdaptor.writeHomologyGraph(graph.getHomology(), new File("ahom.xml.tmp"));
 //		GraphMLAdaptor.writeInteractionGraph(graph.getInteraction(), new File("aint.xml.tmp"));
 		boolean inter = TestUtils.compareInteractionGraph(graph.getInteraction(), interactionOutput);
