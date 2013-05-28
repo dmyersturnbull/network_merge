@@ -107,41 +107,52 @@ public class ConcurrentBronKerboschMergeManager extends BronKerboschMergeManager
 		// submit jobs
 		ExecutorService pool = Executors.newFixedThreadPool(nCores);
 		CompletionService<List<NavigableSet<Integer>>> completion = new ExecutorCompletionService<>(pool);
-		List<Future<List<NavigableSet<Integer>>>> futures = new ArrayList<>();
-		int index = 1;
-		for (Set<Integer> cc : ccs) {
-			CleverGraph subgraph = getSubgraphForCc(graph, cc);
-			BronKerboschMergeJob job = new BronKerboschMergeJob(subgraph, index);
-			Future<List<NavigableSet<Integer>>> future = completion.submit(job);
-			futures.add(future);
-			index++;
-		}
 
-		// now respond to completion
-		for (Future<List<NavigableSet<Integer>>> future : futures) {
-			List<NavigableSet<Integer>> cliqueGroups = null;
-			try {
-				// We should do this in case the job gets interrupted
-				// Sometimes the OS or JVM might do this
-				// Use the flag instead of future == null because future.get() may actually return null
-				while (cliqueGroups == null) {
-					try {
-						cliqueGroups = future.get();
-					} catch (InterruptedException e1) {
-						logger.warn(
-								"A thread was interrupted while waiting for a connected component merging process. Retrying.",
-								e1);
-					}
-				}
-			} catch (ExecutionException e) {
-				logger.error("Encountered an error running the merging process for a connected component. Skipping", e);
+		try {
+
+			List<Future<List<NavigableSet<Integer>>>> futures = new ArrayList<>();
+			int index = 1;
+			for (Set<Integer> cc : ccs) {
+				CleverGraph subgraph = getSubgraphForCc(graph, cc);
+				BronKerboschMergeJob job = new BronKerboschMergeJob(subgraph, index);
+				Future<List<NavigableSet<Integer>>> future = completion.submit(job);
+				futures.add(future);
+				index++;
 			}
 
-			// now add the result to the clevergraph
-			contract(graph, cliqueGroups);
+			// now respond to completion
+			for (Future<List<NavigableSet<Integer>>> future : futures) {
+				List<NavigableSet<Integer>> cliqueGroups = null;
+				try {
+					// We should do this in case the job gets interrupted
+					// Sometimes the OS or JVM might do this
+					// Use the flag instead of future == null because future.get() may actually return null
+					while (cliqueGroups == null) {
+						try {
+							cliqueGroups = future.get();
+						} catch (InterruptedException e1) {
+							logger.warn(
+									"A thread was interrupted while waiting for a connected component merging process. Retrying.",
+									e1);
+						}
+					}
+				} catch (ExecutionException e) {
+					logger.error("Encountered an error running the merging process for a connected component. Skipping", e);
+				}
 
+				// now add the result to the clevergraph
+				contract(graph, cliqueGroups);
+
+			}
+
+		} finally {
+			pool.shutdownNow();
+
+			int count = Thread.activeCount()-1;
+			if (count > 0) {
+				logger.warn("There are " + count + " lingering threads");
+			}
 		}
-
 	}
 
 }

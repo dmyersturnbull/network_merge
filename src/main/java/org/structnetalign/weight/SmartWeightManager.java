@@ -78,173 +78,184 @@ public class SmartWeightManager implements WeightManager {
 		// make a thread pool
 		logger.info("Starting weight assignment with " + nCores + " cores");
 		ExecutorService pool = Executors.newFixedThreadPool(nCores);
-		CompletionService<WeightResult> completion = new ExecutorCompletionService<>(pool);
-		List<Future<WeightResult>> futures = new ArrayList<>();
 
-		// let's submit the jobs
-		// iterate over all pairs of vertices
-		for (int a : graph.getVertices()) {
-			for (int b : graph.getVertices()) {
+		try {
+			
+			CompletionService<WeightResult> completion = new ExecutorCompletionService<>(pool);
+			List<Future<WeightResult>> futures = new ArrayList<>();
 
-				if (a >= b) {
-					continue; // homology had damn well better be reflexive and symmetric!
-				}
+			// let's submit the jobs
+			// iterate over all pairs of vertices
+			for (int a : graph.getVertices()) {
+				for (int b : graph.getVertices()) {
 
-				final String uniProtIdA = uniProtIds.get(a);
-				final String uniProtIdB = uniProtIds.get(b);
+					if (a >= b) {
+						continue; // homology had damn well better be reflexive and symmetric!
+					}
 
-				if (uniProtIdA == null) {
-					logger.error("Could not get UniProt Id for Id#" + a);
-					continue;
-				}
-				if (uniProtIdB == null) {
-					logger.error("Could not get UniProt Id for Id#" + b);
-					continue;
-				}
+					final String uniProtIdA = uniProtIds.get(a);
+					final String uniProtIdB = uniProtIds.get(b);
 
-				logger.trace("Weighting " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")");
+					if (uniProtIdA == null) {
+						logger.error("Could not get UniProt Id for Id#" + a);
+						continue;
+					}
+					if (uniProtIdB == null) {
+						logger.error("Could not get UniProt Id for Id#" + b);
+						continue;
+					}
 
-				// let's get weight from alignment
-				AlignmentWeight alignment;
-				try {
-					// try to use structure
-					alignment = new CeWeight();
-					alignment.setIds(uniProtIdA, uniProtIdB);
-				} catch (WeightException e) {
-					logger.warn("Couldn't get CE weight for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")", e);
-					// okay, try to use sequence
-					alignment = new NeedlemanWunschWeight();
+					logger.trace("Weighting " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")");
+
+					// let's get weight from alignment
+					AlignmentWeight alignment;
 					try {
+						// try to use structure
+						alignment = new CeWeight();
 						alignment.setIds(uniProtIdA, uniProtIdB);
-					} catch (WeightException e1) {
-						logger.warn("Couldn't get alignment-based weight for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")", e1);
-						alignment = null;
+					} catch (WeightException e) {
+						logger.warn("Couldn't get CE weight for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")", e);
+						// okay, try to use sequence
+						alignment = new NeedlemanWunschWeight();
+						try {
+							alignment.setIds(uniProtIdA, uniProtIdB);
+						} catch (WeightException e1) {
+							logger.warn("Couldn't get alignment-based weight for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")", e1);
+							alignment = null;
+						}
 					}
-				}
 
-				// let's get weight from a database
-				RelationWeight relation;
-				try {
-					// try to use structure
-					relation = new ScopRelationWeight();
-					relation.setIds(uniProtIdA, uniProtIdB);
-				} catch (WeightException e) {
-					logger.warn("Couldn't get SCOP weight for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")", e);
-					// okay, try to use sequence
-					relation = new PfamWeight();
+					// let's get weight from a database
+					RelationWeight relation;
 					try {
+						// try to use structure
+						relation = new ScopRelationWeight();
 						relation.setIds(uniProtIdA, uniProtIdB);
-					} catch (WeightException e1) {
-						logger.warn("Couldn't get relation-based weight for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")", e1);
-						relation = null;
+					} catch (WeightException e) {
+						logger.warn("Couldn't get SCOP weight for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")", e);
+						// okay, try to use sequence
+						relation = new PfamWeight();
+						try {
+							relation.setIds(uniProtIdA, uniProtIdB);
+						} catch (WeightException e1) {
+							logger.warn("Couldn't get relation-based weight for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")", e1);
+							relation = null;
+						}
 					}
-				}
 
-				// now submit
-				if (alignment != null && !Double.isInfinite(beta)) { // beta == infinity means we're not using alignment
-					logger.debug("Running alignment " + alignment.getClass().getSimpleName() + " for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")");
-					Future<WeightResult> alignmentWeight = completion.submit(alignment);
-					futures.add(alignmentWeight);
-				}
-				if (relation != null) {
-					logger.debug("Running relation " + relation.getClass().getSimpleName() + " for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")");
-					Future<WeightResult> relationWeight = completion.submit(relation);
-					futures.add(relationWeight);
-				}
+					// now submit
+					if (alignment != null && !Double.isInfinite(beta)) { // beta == infinity means we're not using alignment
+						logger.debug("Running alignment " + alignment.getClass().getSimpleName() + " for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")");
+						Future<WeightResult> alignmentWeight = completion.submit(alignment);
+						futures.add(alignmentWeight);
+					}
+					if (relation != null) {
+						logger.debug("Running relation " + relation.getClass().getSimpleName() + " for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")");
+						Future<WeightResult> relationWeight = completion.submit(relation);
+						futures.add(relationWeight);
+					}
 
+				}
 			}
-		}
 
-		logger.info("Submitted " + futures.size() + " jobs to " + nCores + " cores");
+			logger.info("Submitted " + futures.size() + " jobs to " + nCores + " cores");
 
-		// now respond to completion
-		int createdIndex = 0; // there shouldn't be any homology edges yet
-		forfutures: for (Future<WeightResult> future : futures) {
-			
-			Double weight = null;
-			Integer vertexA = null, vertexB = null;
-			
-			try {
-				
-				// We should do this in case the job gets interrupted
-				// Sometimes the OS or JVM might do this
-				// Use the flag instead of future == null because future.get() may actually return null
-				while (weight == null) {
-					try {
-						WeightResult result = future.get();
-						weight = result.getWeight();
-						vertexA = graphIds.get(result.getA());
-						vertexB = graphIds.get(result.getB());
-						logger.trace("Job (" + vertexA + ", " + vertexB + ") returned with weight " + nf.format(weight));
-						if (weight == 0) {
-							continue forfutures; // don't both updating with 0
+			// now respond to completion
+			int createdIndex = 0; // there shouldn't be any homology edges yet
+			forfutures: for (Future<WeightResult> future : futures) {
+
+				Double weight = null;
+				Integer vertexA = null, vertexB = null;
+
+				try {
+
+					// We should do this in case the job gets interrupted
+					// Sometimes the OS or JVM might do this
+					// Use the flag instead of future == null because future.get() may actually return null
+					while (weight == null) {
+						try {
+							WeightResult result = future.get();
+							weight = result.getWeight();
+							vertexA = graphIds.get(result.getA());
+							vertexB = graphIds.get(result.getB());
+							logger.trace("Job (" + vertexA + ", " + vertexB + ") returned with weight " + nf.format(weight));
+							if (weight == 0) {
+								continue forfutures; // don't both updating with 0
+							}
+							if (result.getSubmitter().isInstance(RelationWeight.class)) {
+								weight *= beta; // scale database results by beta as per description
+							}
+						} catch (InterruptedException e1) {
+							logger.warn("A thread was interrupted while waiting to get a weight. Retrying.", e1);
 						}
-						if (result.getSubmitter().isInstance(RelationWeight.class)) {
-							weight *= beta; // scale database results by beta as per description
-						}
-					} catch (InterruptedException e1) {
-						logger.warn("A thread was interrupted while waiting to get a weight. Retrying.", e1);
 					}
-				}
-				
-			} catch (ExecutionException e) {
 
-				// we can try this again if it's structural
-				if (e.getCause() != null && e.getCause() instanceof WeightException) {
-					WeightException myE = (WeightException) e.getCause();
-					if (myE.isStructure()) {
-						String myA = myE.getA();
-						String myB = myE.getB();
-						if (myE.isAlignment()) {
-							logger.warn("Structure-based alignment weight failed for (" + myA + ", " + myB + "). Attempting to use a sequence alignment.", e);
-							try {
-								AlignmentWeight alignment = new NeedlemanWunschWeight();
-								alignment.setIds(myA, myB);
-								completion.submit(alignment);
-							} catch (WeightException e1) {
+				} catch (ExecutionException e) {
 
+					// we can try this again if it's structural
+					if (e.getCause() != null && e.getCause() instanceof WeightException) {
+						WeightException myE = (WeightException) e.getCause();
+						if (myE.isStructure()) {
+							String myA = myE.getA();
+							String myB = myE.getB();
+							if (myE.isAlignment()) {
+								logger.warn("Structure-based alignment weight failed for (" + myA + ", " + myB + "). Attempting to use a sequence alignment.", e);
+								try {
+									AlignmentWeight alignment = new NeedlemanWunschWeight();
+									alignment.setIds(myA, myB);
+									completion.submit(alignment);
+								} catch (WeightException e1) {
+
+								}
+							} else {
+								logger.warn("Structure-based relation weight failed for (" + myA + ", " + myB + ") Attempting to use sequence a relation.", e);
+								try {
+									RelationWeight relation = new PfamWeight();
+									relation.setIds(myA, myB);
+									completion.submit(relation);
+								} catch (WeightException e1) {
+
+								}
 							}
 						} else {
-							logger.warn("Structure-based relation weight failed for (" + myA + ", " + myB + ") Attempting to use sequence a relation.", e);
-							try {
-								RelationWeight relation = new PfamWeight();
-								relation.setIds(myA, myB);
-								completion.submit(relation);
-							} catch (WeightException e1) {
-
-							}
+							logger.error("Encountered an error using sequence alignment.", e);
 						}
 					} else {
-						logger.error("Encountered an error using sequence alignment.", e);
+						logger.error("Encountered an unknown error trying to get a weight.", e);
 					}
-				} else {
-					logger.error("Encountered an unknown error trying to get a weight.", e);
+
+					continue; // we can't process this job
+
 				}
-				
-				continue; // we can't process this job
-				
+
+				// everything is ok; now update or add the edge
+
+				Collection<Integer> vertices = Arrays.asList(vertexA, vertexB);
+
+				// there may already be an edge there
+				HomologyEdge existing = graph.getHomology().findEdge(vertexA, vertexB);
+				if (existing != null) {
+					// (a+b-ab) + c - c*(a+b-ab) = a + b + c - ab - ac - bc + abc
+					existing.setWeight(existing.getWeight() + weight - existing.getWeight() * weight);
+					logger.debug("[" + ((double) createdIndex) / ((double) (futures.size() + createdIndex)) + "] Updated homology edge (" + vertexA + ", " + vertexB + ", " + nf.format(existing.getWeight()) + ") with weight " + nf.format(weight));
+				} else {
+					HomologyEdge edge = new HomologyEdge(createdIndex++, weight);
+					graph.addHomologies(edge, vertices);
+					logger.debug("Added homology edge (" + vertexA + ", " + vertexB + ", " + nf.format(weight) + ")");
+				}
+
 			}
 
-			// everything is ok; now update or add the edge
-			
-			Collection<Integer> vertices = Arrays.asList(vertexA, vertexB);
+			logger.info("Added " + graph.getHomologyCount() + " homology edges");
 
-			// there may already be an edge there
-			HomologyEdge existing = graph.getHomology().findEdge(vertexA, vertexB);
-			if (existing != null) {
-				// (a+b-ab) + c - c*(a+b-ab) = a + b + c - ab - ac - bc + abc
-				existing.setWeight(existing.getWeight() + weight - existing.getWeight() * weight);
-				logger.debug("[" + ((double) createdIndex) / ((double) (futures.size() + createdIndex)) + "] Updated homology edge (" + vertexA + ", " + vertexB + ", " + nf.format(existing.getWeight()) + ") with weight " + nf.format(weight));
-			} else {
-				HomologyEdge edge = new HomologyEdge(createdIndex++, weight);
-				graph.addHomologies(edge, vertices);
-				logger.debug("Added homology edge (" + vertexA + ", " + vertexB + ", " + nf.format(weight) + ")");
+		} finally {
+			pool.shutdownNow();
+
+			int count = Thread.activeCount()-1;
+			if (count > 0) {
+				logger.warn("There are " + count + " lingering threads");
 			}
-
 		}
-
-		logger.info("Added " + graph.getHomologyCount() + " homology edges");
-
 	}
 
 }

@@ -41,7 +41,7 @@ public class SimpleCrossingManager implements CrossingManager {
 		nf.setMinimumFractionDigits(1);
 		nf.setMaximumFractionDigits(3);
 	}
-	
+
 	public SimpleCrossingManager(int nCores, int maxDepth) {
 		this.nCores = nCores;
 		this.maxDepth = maxDepth;
@@ -49,62 +49,72 @@ public class SimpleCrossingManager implements CrossingManager {
 
 	@Override
 	public void cross(CleverGraph graph) {
-		
+
 		ExecutorService pool = Executors.newFixedThreadPool(nCores);
-		
-		// depressingly, this used to be List<Future<Pair<Map<Integer,Double>>>>
-		// I'm glad that's no longer the case
-		CompletionService<InteractionUpdate> completion = new ExecutorCompletionService<>(pool);
-		List<Future<InteractionUpdate>> futures = new ArrayList<>();
-		
-		// submit the jobs
-		for (InteractionEdge interaction : graph.getInteraction().getEdges()) {
-			HomologySearchJob job = new HomologySearchJob(interaction, graph);
-			job.setMaxDepth(maxDepth);
-			Future<InteractionUpdate> result = completion.submit(job);
-			futures.add(result);
-		}
 
-		/*
-		 * We'll make a list of updates to do when we're finished.
-		 * Otherwise, we can run into some ugly concurrency issues and get the wrong answer.
-		 */
-		HashMap<InteractionEdge, Double> edgesToUpdate = new HashMap<>();
-		
-		for (Future<InteractionUpdate> future : futures) {
-			
-			// now wait for completion
-			InteractionUpdate update = null;
-			try {
-				// We should do this in case the job gets interrupted
-				// Sometimes the OS or JVM might do this
-				// Use the flag instead of future == null because future.get() may actually return null
-				while (update == null) {
-					try {
-						update = future.get();
-					} catch (InterruptedException e) {
-						logger.warn("A thread was interrupted while waiting to get interaction udpate. Retrying.", e);
-						continue;
-					}
-				}
-			} catch (ExecutionException e) {
-				logger.error("Encountered an error trying to update an interaction. Skipping interaction.", e);
-				continue;
+		try {
+
+			// depressingly, this used to be List<Future<Pair<Map<Integer,Double>>>>
+			// I'm glad that's no longer the case
+			CompletionService<InteractionUpdate> completion = new ExecutorCompletionService<>(pool);
+			List<Future<InteractionUpdate>> futures = new ArrayList<>();
+
+			// submit the jobs
+			for (InteractionEdge interaction : graph.getInteraction().getEdges()) {
+				HomologySearchJob job = new HomologySearchJob(interaction, graph);
+				job.setMaxDepth(maxDepth);
+				Future<InteractionUpdate> result = completion.submit(job);
+				futures.add(result);
 			}
-			
-			// we have an update to make!
-			InteractionEdge edge = update.getRootInteraction(); // don't make a copy here!!
-			edgesToUpdate.put(edge, edge.getWeight() + update.getScore() - edge.getWeight() * update.getScore());
-			logger.debug("Updated interaction " + edge.getId() + " to " + nf.format(edge.getWeight()));
-		}
 
-		/*
-		 * Now that the multithreaded part has finished, we can update the interactions.
-		 */
-		for (InteractionEdge edge : edgesToUpdate.keySet()) {
-			edge.setWeight(edgesToUpdate.get(edge));
+			/*
+			 * We'll make a list of updates to do when we're finished.
+			 * Otherwise, we can run into some ugly concurrency issues and get the wrong answer.
+			 */
+			HashMap<InteractionEdge, Double> edgesToUpdate = new HashMap<>();
+
+			for (Future<InteractionUpdate> future : futures) {
+
+				// now wait for completion
+				InteractionUpdate update = null;
+				try {
+					// We should do this in case the job gets interrupted
+					// Sometimes the OS or JVM might do this
+					// Use the flag instead of future == null because future.get() may actually return null
+					while (update == null) {
+						try {
+							update = future.get();
+						} catch (InterruptedException e) {
+							logger.warn("A thread was interrupted while waiting to get interaction udpate. Retrying.", e);
+							continue;
+						}
+					}
+				} catch (ExecutionException e) {
+					logger.error("Encountered an error trying to update an interaction. Skipping interaction.", e);
+					continue;
+				}
+
+				// we have an update to make!
+				InteractionEdge edge = update.getRootInteraction(); // don't make a copy here!!
+				edgesToUpdate.put(edge, edge.getWeight() + update.getScore() - edge.getWeight() * update.getScore());
+				logger.debug("Updated interaction " + edge.getId() + " to " + nf.format(edge.getWeight()));
+			}
+
+			/*
+			 * Now that the multithreaded part has finished, we can update the interactions.
+			 */
+			for (InteractionEdge edge : edgesToUpdate.keySet()) {
+				edge.setWeight(edgesToUpdate.get(edge));
+			}
+
+		} finally {
+			pool.shutdownNow();
+
+			int count = Thread.activeCount()-1;
+			if (count > 0) {
+				logger.warn("There are " + count + " lingering threads");
+			}
 		}
-		
 	}
 
 }

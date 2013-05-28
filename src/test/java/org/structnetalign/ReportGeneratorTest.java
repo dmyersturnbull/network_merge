@@ -34,13 +34,13 @@ public class ReportGeneratorTest {
 	public void test() throws IOException {
 		File dir = new File("reportgeneratortest");
 		dir.mkdir();
-		dir.deleteOnExit();
+//		dir.deleteOnExit();
 		File output = new File("reportgeneratortest/areport.html");
-		output.deleteOnExit();
-		File interactionFile = new File(RESOURCE_DIR + "trivial_int.graphml.xml");
-		File homologyFile = new File(RESOURCE_DIR + "trivial_hom.graphml.xml");
-		File interactionFileMerged = new File(RESOURCE_DIR + "trivial_int_merged.graphml.xml");
-		File homologyFileMerged = new File(RESOURCE_DIR + "trivial_hom_merged.graphml.xml");
+//		output.deleteOnExit();
+		File interactionFile = new File(RESOURCE_DIR + "tricky_int.graphml.xml");
+		File homologyFile = new File(RESOURCE_DIR + "tricky_hom.graphml.xml");
+		File interactionFileMerged = new File("hom.xml.tmp");
+		File homologyFileMerged = new File("int.xml.tmp");
 		ReportGenerator generator = new ReportGenerator(output);
 		CleverGraph weighted = GraphMLAdaptor.readGraph(interactionFile, homologyFile);
 		CleverGraph merged = GraphMLAdaptor.readGraph(interactionFileMerged, homologyFileMerged);
@@ -48,9 +48,9 @@ public class ReportGeneratorTest {
 		generator.saveCrossed(weighted);
 		generator.saveMerged(merged);
 		generator.write();
-		new File("reportgeneratortest/weighted.png").delete();
-		new File("reportgeneratortest/crossed.png").delete();
-		new File("reportgeneratortest/merged.png").delete();
+//		new File("reportgeneratortest/weighted.png").delete();
+//		new File("reportgeneratortest/crossed.png").delete();
+//		new File("reportgeneratortest/merged.png").delete();
 	}
 	
 }

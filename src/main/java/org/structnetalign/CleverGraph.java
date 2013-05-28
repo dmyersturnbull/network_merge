@@ -86,6 +86,22 @@ public class CleverGraph {
 
 	}
 
+	public int calcLastHomologyId() {
+		int last = -1;
+		for (HomologyEdge edge : homology.getEdges()) {
+			if (edge.getId() > last) last = edge.getId();
+		}
+		return last;
+	}
+
+	public int calcLastInteractionId() {
+		int last = -1;
+		for (InteractionEdge edge : interaction.getEdges()) {
+			if (edge.getId() > last) last = edge.getId();
+		}
+		return last;
+	}
+
 	public boolean containsVertex(int vertex) {
 		return homology.containsVertex(vertex);
 	}

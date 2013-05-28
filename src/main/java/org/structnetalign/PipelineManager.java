@@ -19,6 +19,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.structnetalign.cross.CrossingManager;
 import org.structnetalign.cross.SimpleCrossingManager;
 import org.structnetalign.merge.ConcurrentBronKerboschMergeManager;
@@ -35,6 +37,8 @@ import psidev.psi.mi.xml.model.EntrySet;
 import edu.uci.ics.jung.graph.UndirectedGraph;
 
 public class PipelineManager {
+
+	private static final Logger logger = LogManager.getLogger("org.structnetalign");
 
 	public static final double BETA = 1;
 	public static final int N_CORES = Math.max(Runtime.getRuntime().availableProcessors() - 1, 1);
@@ -120,8 +124,7 @@ public class PipelineManager {
 		// handle reporting
 		// always do this even if we're not generating the report, since MergeManager etc. needs it
 		String timestamp = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-		String path = output.getParent();
-		if (!path.endsWith(File.separator)) path += File.separator;
+		String path = output.getParent() + File.separator + "report-" + timestamp + File.separator;
 		if (report || writeSteps) new File(path).mkdir(); // don't make a new directory if we're not reporting
 		File reportFile = new File(path + "report.html");
 		ReportGenerator.setInstance(new ReportGenerator(reportFile));
@@ -181,6 +184,7 @@ public class PipelineManager {
 		}
 		if (report) {
 			ReportGenerator.getInstance().saveMerged(graph);
+			ReportGenerator.getInstance().write();
 		}
 
 		crossingManager = null;
@@ -192,6 +196,11 @@ public class PipelineManager {
 		GraphInteractionAdaptor.modifyProbabilites(entrySet, graph.getInteraction());
 		NetworkUtils.writeNetwork(entrySet, output);
 
+		int count = Thread.activeCount()-1;
+		if (count > 0) {
+			logger.warn("There are " + count + " lingering threads. Exiting anyway.");
+			System.exit(0);
+		}
 	}
 
 	public void setBeta(double beta) {

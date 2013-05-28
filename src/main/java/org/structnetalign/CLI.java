@@ -146,8 +146,8 @@ public class CLI {
 //		options.addOption(OptionBuilder.hasArg(true)
 //				.withDescription("The name of the PSI-MI25 confidence full name to use to describe certainty of an interaction as determined by " + CLI.PROGRAM_NAME + ". Defaults to " + GraphInteractionAdaptor.CONFIDENCE_FULL_NAME).isRequired(false)
 //				.create("output_conf_name"));
-		options.addOption(OptionBuilder.hasArg(true)
-				.withDescription("Write a GraphML file for each step, where the file is located in the specified directory. This functionalty is turned off by default.").isRequired(false)
+		options.addOption(OptionBuilder.hasArg(false)
+				.withDescription("Output a GraphML file for each step.").isRequired(false)
 				.create("write_steps"));
 		options.addOption(OptionBuilder.hasArg(true)
 				.withDescription("Skip the weighting process and use the specified GraphML file to indicate homology instead.").isRequired(false)
