@@ -243,6 +243,8 @@ public class NetworkUtils {
 
 	public static void writeNetwork(EntrySet entrySet, File file) {
 
+		logger.info("Writing network to " + file);
+		
 		PsimiXmlWriter psimiXmlWriter = new PsimiXmlWriter(XML_VERSION);
 		try {
 			psimiXmlWriter.write(entrySet, file);
@@ -260,6 +262,8 @@ public class NetworkUtils {
 			logger.warn("Could not convert spaces in " + file.getPath() + " to tabs", e);
 		}
 
+		logger.info("Wrote network to " + file);
+		
 	}
 
 	public static void writeNetwork(EntrySet entrySet, String file) {
