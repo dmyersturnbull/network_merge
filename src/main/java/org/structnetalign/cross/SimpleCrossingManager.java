@@ -13,6 +13,8 @@
  */
 package org.structnetalign.cross;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -25,10 +27,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.structnetalign.CleverGraph;
 import org.structnetalign.InteractionEdge;
+import org.structnetalign.util.GraphMLAdaptor;
+import org.xml.sax.SAXException;
 
 public class SimpleCrossingManager implements CrossingManager {
 
@@ -36,6 +42,25 @@ public class SimpleCrossingManager implements CrossingManager {
 	private int maxDepth;
 	private int nCores;
 
+	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
+
+		if (args.length != 3) {
+			System.err.println("Usage: " + SimpleCrossingManager.class.getSimpleName() + " interaction-graph-file homology-graph-file output-file");
+			return;
+		}
+
+		File interactionFile = new File(args[0]);
+		File homologyFile = new File(args[1]);
+		File output = new File(args[2]);
+
+		CleverGraph graph = GraphMLAdaptor.readGraph(interactionFile, homologyFile);
+
+		SimpleCrossingManager cross = new SimpleCrossingManager(2, 1000);
+		cross.cross(graph);
+		
+		GraphMLAdaptor.writeInteractionGraph(graph.getInteraction(), output);
+		
+	}
 	private static NumberFormat nf = new DecimalFormat();
 	static {
 		nf.setMinimumFractionDigits(1);

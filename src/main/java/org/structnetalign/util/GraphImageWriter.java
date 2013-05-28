@@ -89,12 +89,12 @@ public class GraphImageWriter {
 					.println("Usage: GraphImageWriter input-interaction-graphml-file input-homology-graphml-file output-png-file");
 			return;
 		}
-		writeImage(new File(args[0]), new File(args[1]), new File(args[2]));
+		writeImage(new File(args[0]), new File(args[1]), new File(args[2]), 1800, 1800);
 	}
 
-	public static void writeImage(File interaction, File homology, File output) {
+	public static void writeImage(File interaction, File homology, File output, int width, int height) {
 		CleverGraph graph = GraphMLAdaptor.readGraph(interaction, homology);
-		GraphImageWriter writer = new GraphImageWriter();
+		GraphImageWriter writer = new GraphImageWriter(width, height);
 		try {
 			writer.writeGraph(graph, output);
 		} catch (IOException e) {

@@ -28,14 +28,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.structnetalign.CleverGraph;
 import org.structnetalign.Edge;
-import org.structnetalign.HomologyEdge;
-import org.structnetalign.InteractionEdge;
-import org.structnetalign.util.GraphInteractionAdaptor;
 import org.structnetalign.util.GraphMLAdaptor;
-import org.structnetalign.util.NetworkUtils;
 import org.xml.sax.SAXException;
 
-import psidev.psi.mi.xml.model.EntrySet;
 import edu.uci.ics.jung.graph.UndirectedGraph;
 import edu.uci.ics.jung.graph.util.Pair;
 
@@ -53,32 +48,23 @@ public class BronKerboschMergeManager implements MergeManager {
 
 	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
 
-		if (args.length != 3) {
-			System.err.println("Usage: BronKerboschMergeManager input-file homology-graph-file output-file");
+		if (args.length != 4) {
+			System.err.println("Usage: " + BronKerboschMergeManager.class.getSimpleName() + " interaction-graph-file homology-graph-file output-interaction-graph-file output-homology-graph-file");
 			return;
 		}
 
-		File input = new File(args[0]);
-		String graphFile = args[1];
-		File output = new File(args[2]);
+		File interactionFile = new File(args[0]);
+		File homologyFile = new File(args[1]);
+		File outputInteraction = new File(args[2]);
+		File outputHomology = new File(args[3]);
 
-		// build the homology graph
-		UndirectedGraph<Integer, HomologyEdge> homology = GraphMLAdaptor.readHomologyGraph(graphFile);
+		CleverGraph graph = GraphMLAdaptor.readGraph(interactionFile, homologyFile);
 
-		// build the interaction graph
-		EntrySet entrySet = NetworkUtils.readNetwork(input);
-		UndirectedGraph<Integer, InteractionEdge> interaction = GraphInteractionAdaptor.toGraph(entrySet);
-
-		// now make the CleverGraph
-		CleverGraph graph = new CleverGraph(interaction, homology);
-
-		// merge!
 		BronKerboschMergeManager merge = new BronKerboschMergeManager();
 		merge.merge(graph);
-
-		// modify and output
-		GraphInteractionAdaptor.modifyProbabilites(entrySet, graph.getInteraction());
-		NetworkUtils.writeNetwork(entrySet, output);
+		
+		GraphMLAdaptor.writeInteractionGraph(graph.getInteraction(), outputInteraction);
+		GraphMLAdaptor.writeHomologyGraph(graph.getHomology(), outputHomology);
 	}
 
 	private static <E extends Edge> void move(UndirectedGraph<Integer, E> graph, int v, int v0, AtomicInteger removed,
