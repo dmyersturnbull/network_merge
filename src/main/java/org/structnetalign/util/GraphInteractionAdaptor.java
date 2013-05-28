@@ -16,6 +16,8 @@ package org.structnetalign.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.NavigableSet;
 
@@ -48,6 +50,12 @@ public class GraphInteractionAdaptor {
 
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");
 
+	private static NumberFormat nf = new DecimalFormat();
+	static {
+		nf.setMinimumFractionDigits(1);
+		nf.setMaximumFractionDigits(3);
+	}
+	
 	public static void main(String[] args) throws IOException {
 		if (args.length != 2) {
 			System.err.println("Usage: " + GraphInteractionAdaptor.class.getSimpleName()
@@ -103,7 +111,7 @@ public class GraphInteractionAdaptor {
 						confidenceFullName, confidenceLabel);
 
 				interaction.getConfidences().add(confidence);
-				logger.debug("Updated interaction Id#" + interaction.getId() + " with probablility " + edge.getWeight());
+				logger.debug("Updated interaction Id#" + interaction.getId() + " with probablility " + nf.format(edge.getWeight()));
 
 			}
 			entryIndex++;

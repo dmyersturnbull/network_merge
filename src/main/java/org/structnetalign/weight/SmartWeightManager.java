@@ -141,7 +141,7 @@ public class SmartWeightManager implements WeightManager {
 				}
 
 				// now submit
-				if (alignment != null) {
+				if (alignment != null && !Double.isInfinite(beta)) { // beta == infinity means we're not using alignment
 					logger.debug("Running alignment " + alignment.getClass().getSimpleName() + " for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")");
 					Future<WeightResult> alignmentWeight = completion.submit(alignment);
 					futures.add(alignmentWeight);
@@ -234,7 +234,7 @@ public class SmartWeightManager implements WeightManager {
 			if (existing != null) {
 				// (a+b-ab) + c - c*(a+b-ab) = a + b + c - ab - ac - bc + abc
 				existing.setWeight(existing.getWeight() + weight - existing.getWeight() * weight);
-				logger.debug("Updated homology edge (" + vertexA + ", " + vertexB + ", " + nf.format(existing.getWeight()) + ") with weight " + nf.format(weight));
+				logger.debug("[" + ((double) createdIndex) / ((double) (futures.size() + createdIndex)) + "] Updated homology edge (" + vertexA + ", " + vertexB + ", " + nf.format(existing.getWeight()) + ") with weight " + nf.format(weight));
 			} else {
 				HomologyEdge edge = new HomologyEdge(createdIndex++, weight);
 				graph.addHomologies(edge, vertices);
