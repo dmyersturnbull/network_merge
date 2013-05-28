@@ -10,22 +10,24 @@
 		<div id="content">
 			<header>
 				<h1>Struct-NA 0.1 report</h1>
-				<h2>$run_date</h2>
+				<h2>$run_date ($time_taken seconds taken)</h2>
 			</header>
 			<section id="main">
-				<p class="top">Run with:</p>
-    			<ul>
-					<li>nCores = $n_cores</li>
-					<li>β = $beta</li>
-					<li>τ = $tau</li>
-					<li>ζ = $zeta</li>
-					<li>ξ = $xi</li>
-    			</ul>
-				<p>
-					See the relevant <a href="https://github.com/dmyersturnbull/network_merge/blob/master/description.pdf?raw=true">documentation</a> for more details.
-				</p>
+				<div id="centerer">
+					<p class="top">Run with:</p>
+        			<ul>
+    					<li>nCores = $n_cores</li>
+    					<li>β = $beta</li>
+    					<li>τ = $tau</li>
+    					<li>ζ = $zeta</li>
+    					<li>ξ = $xi</li>
+        			</ul>
+    				<p>
+    					See the relevant <a href="https://github.com/dmyersturnbull/network_merge/blob/master/description.pdf?raw=true">documentation</a> for more details.
+    				</p>
+				</div>
 			</section>
-			#if ($weighted):
+			#if ($weighted)
 			<section class="weighted">
 				<h2>Weighted graph</h2>
 				<div class="left">
@@ -78,7 +80,7 @@
 				</div>
 			</section>
 			#end
-			#if ($crossed):
+			#if ($crossed)
 			<section class="crossed">
 				<h2>Crossed graph</h2>
 				<div class="left">
@@ -127,7 +129,7 @@
 				</div>
 			</section>
 			#end
-			#if ($merged):
+			#if ($merged)
 			<section class="merged">
 				<h2>Merged graph</h2>
 				<div class="left">

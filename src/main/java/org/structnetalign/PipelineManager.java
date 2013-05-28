@@ -119,6 +119,8 @@ public class PipelineManager {
 	 */
 	public void run(File input, File output) {
 
+		int startTime = (int) (System.currentTimeMillis() / 1000L);
+		
 		init();
 
 		// handle reporting
@@ -189,9 +191,9 @@ public class PipelineManager {
 			GraphMLAdaptor.writeHomologyGraph(graph.getHomology(), new File(path + "hom_merged.graphml.xml"));
 			GraphMLAdaptor.writeInteractionGraph(graph.getInteraction(), new File(path + "int_merged.graphml.xml"));
 		}
+		
 		if (report) {
 			ReportGenerator.getInstance().saveMerged(graph);
-			ReportGenerator.getInstance().write();
 		}
 
 		crossingManager = null;
@@ -203,6 +205,12 @@ public class PipelineManager {
 		GraphInteractionAdaptor.modifyProbabilites(entrySet, graph.getInteraction());
 		NetworkUtils.writeNetwork(entrySet, output);
 
+		int endTime = (int) (System.currentTimeMillis() / 1000L);
+		if (report) {
+			ReportGenerator.getInstance().put("time_taken", (endTime - startTime));
+			ReportGenerator.getInstance().write();
+		}
+		
 		int count = Thread.activeCount()-1;
 		if (count > 0) {
 			logger.warn("There are " + count + " lingering threads. Exiting anyway.");
