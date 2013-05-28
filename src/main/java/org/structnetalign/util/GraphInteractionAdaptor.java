@@ -92,7 +92,12 @@ public class GraphInteractionAdaptor {
 			for (Interaction interaction : entry.getInteractions()) {
 
 				final NavigableSet<Integer> ids = NetworkUtils.getVertexIds(interaction);
-				final InteractionEdge edge = graph.findEdge(ids.first(), ids.last());
+				InteractionEdge edge = graph.findEdge(ids.first(), ids.last());
+				
+				if (edge == null) {
+					logger.debug("No edge for " + interaction.getId());
+					continue;
+				}
 
 				// a confidence with this label or full name shouldn't already exist
 				// if it does, it probably means we've already run before
