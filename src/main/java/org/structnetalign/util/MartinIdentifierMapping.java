@@ -74,7 +74,7 @@ public class MartinIdentifierMapping implements IdentifierMapping {
 		final String pdb = pdbIds.get(uniProtId);
 		if (chainIds.get(uniProtId) == null) return null;
 		final char chain = chainIds.get(uniProtId);
-		ScopDatabase scop = ScopFactory.getSCOP(ScopFactory.VERSION_1_75B);
+		ScopDatabase scop = BasicScop.getScop();
 		List<ScopDomain> domains = scop.getDomainsForPDB(pdb);
 		for (ScopDomain domain : domains) {
 			List<String> ranges = domain.getRanges();
