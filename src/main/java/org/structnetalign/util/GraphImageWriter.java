@@ -27,6 +27,8 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import javax.imageio.ImageIO;
 
@@ -45,11 +47,17 @@ import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 
 public class GraphImageWriter {
 
-	private double attraction = 0.8;
+	private static NumberFormat nf = new DecimalFormat();
+	static {
+		nf.setMinimumFractionDigits(1);
+		nf.setMaximumFractionDigits(3);
+	}
+	
+	private double attraction = 0.7;
 
 	private int fontSize = 20;
 
-	private int height = 1800;
+	private int height = 4000;
 
 	private Color homologyColor = new Color(120, 0, 0);
 
@@ -69,7 +77,7 @@ public class GraphImageWriter {
 
 	private int vertexSize = 60;
 
-	private int width = 1800;
+	private int width = 4000;
 
 	private int xMargin = 60;
 
@@ -115,7 +123,7 @@ public class GraphImageWriter {
 	}
 
 	public GraphImageWriter() {
-		this(1800, 1800);
+		this(4000, 4000);
 	}
 
 	public GraphImageWriter(int width, int height) {
@@ -244,7 +252,7 @@ public class GraphImageWriter {
 				}
 				String prefix = "<html><font color=\"" + color + "\">";
 				String suffix = "</font></html>";
-				return prefix + String.valueOf(edge.getWeight()) + suffix;
+				return prefix + nf.format(edge.getWeight()) + suffix;
 			}
 		};
 		vv.getRenderContext().setEdgeLabelTransformer(edgeLabeler);

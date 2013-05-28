@@ -83,9 +83,6 @@ public class ReportGenerator {
 
 	private final String DIR = "src/main/resources/web/";
 
-	private int width = 1800;
-	private int height = 1800;
-
 	private String outputDir;
 	private File outputFile;
 
@@ -110,7 +107,7 @@ public class ReportGenerator {
 		crossed.setNVertices(graph.getVertexCount());
 		crossed.setNHomologies(graph.getHomologyCount());
 		crossed.setNInteractions(graph.getInteractionCount());
-		GraphImageWriter writer = new GraphImageWriter(width, height);
+		GraphImageWriter writer = new GraphImageWriter();
 		try {
 			writer.writeGraph(graph, png);
 		} catch (IOException e) {
@@ -124,7 +121,7 @@ public class ReportGenerator {
 		merged.setNVertices(graph.getVertexCount());
 		merged.setNHomologies(graph.getHomologyCount());
 		merged.setNInteractions(graph.getInteractionCount());
-		GraphImageWriter writer = new GraphImageWriter(width, height);
+		GraphImageWriter writer = new GraphImageWriter();
 		try {
 			writer.writeGraph(graph, png);
 		} catch (IOException e) {
@@ -138,7 +135,7 @@ public class ReportGenerator {
 		weighted.setNVertices(graph.getVertexCount());
 		weighted.setNHomologies(graph.getHomologyCount());
 		weighted.setNInteractions(graph.getInteractionCount());
-		GraphImageWriter writer = new GraphImageWriter(width, height);
+		GraphImageWriter writer = new GraphImageWriter();
 		try {
 			writer.writeGraph(graph, png);
 		} catch (IOException e) {
