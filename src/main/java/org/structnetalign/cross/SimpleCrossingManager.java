@@ -33,6 +33,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.structnetalign.CleverGraph;
 import org.structnetalign.InteractionEdge;
+import org.structnetalign.ReportGenerator;
 import org.structnetalign.util.GraphMLAdaptor;
 import org.xml.sax.SAXException;
 
@@ -78,7 +79,7 @@ public class SimpleCrossingManager implements CrossingManager {
 		ExecutorService pool = Executors.newFixedThreadPool(nCores);
 
 		try {
-
+			
 			// depressingly, this used to be List<Future<Pair<Map<Integer,Double>>>>
 			// I'm glad that's no longer the case
 			CompletionService<InteractionUpdate> completion = new ExecutorCompletionService<>(pool);
@@ -96,6 +97,9 @@ public class SimpleCrossingManager implements CrossingManager {
 			 * We'll make a list of updates to do when we're finished.
 			 * Otherwise, we can run into some ugly concurrency issues and get the wrong answer.
 			 */
+			
+			int nUpdates = 0;
+			
 			HashMap<InteractionEdge, Double> edgesToUpdate = new HashMap<>();
 
 			for (Future<InteractionUpdate> future : futures) {
@@ -120,6 +124,7 @@ public class SimpleCrossingManager implements CrossingManager {
 				}
 
 				// we have an update to make!
+				nUpdates += update.getnUpdates();
 				InteractionEdge edge = update.getRootInteraction(); // don't make a copy here!!
 				edgesToUpdate.put(edge, edge.getWeight() + update.getScore() - edge.getWeight() * update.getScore());
 				logger.debug("Updated interaction " + edge.getId() + " to " + nf.format(edge.getWeight()));
@@ -131,6 +136,10 @@ public class SimpleCrossingManager implements CrossingManager {
 			for (InteractionEdge edge : edgesToUpdate.keySet()) {
 				edge.setWeight(edgesToUpdate.get(edge));
 			}
+			
+			ReportGenerator.getInstance().putInCrossed("manager", this.getClass().getSimpleName());
+			ReportGenerator.getInstance().putInCrossed("n_updates", nUpdates);
+			ReportGenerator.getInstance().putInCrossed("n_updated", edgesToUpdate.size());
 
 		} finally {
 			pool.shutdownNow();

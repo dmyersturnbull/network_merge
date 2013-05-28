@@ -24,6 +24,16 @@ public class InteractionUpdate {
 	private final int interactorA;
 	private final int interactorB;
 	
+	private int nUpdates;
+	
+	public int getnUpdates() {
+		return nUpdates;
+	}
+
+	public void setnUpdates(int nUpdates) {
+		this.nUpdates = nUpdates;
+	}
+
 	public InteractionUpdate(InteractionEdge rootInteraction, int interactorA, int interactorB) {
 		super();
 		this.rootInteraction = rootInteraction;

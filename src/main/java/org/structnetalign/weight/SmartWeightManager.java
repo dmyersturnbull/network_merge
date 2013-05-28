@@ -33,6 +33,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.structnetalign.CleverGraph;
 import org.structnetalign.HomologyEdge;
+import org.structnetalign.ReportGenerator;
 
 /**
  * An intelligent multithreaded {@link WeightManager} that uses sequence information if and only if the corresponding
@@ -67,7 +68,9 @@ public class SmartWeightManager implements WeightManager {
 
 	@Override
 	public void assignWeights(CleverGraph graph, Map<Integer, String> uniProtIds) {
-
+		
+		ReportGenerator.getInstance().putInWeighted("manager", this.getClass().getSimpleName());
+		
 		// this is a bit annoying, but we need a map going from UniProt Ids to our Ids
 		// this is only because we're doing this concurrently
 		Map<String, Integer> graphIds = new HashMap<>();
@@ -160,7 +163,13 @@ public class SmartWeightManager implements WeightManager {
 
 			logger.info("Submitted " + futures.size() + " jobs to " + nCores + " cores");
 
-			// now respond to completion
+			
+			/*
+			 *  Now respond to completion.
+			 */
+			
+			int nUpdates = 0;
+			
 			int createdIndex = 0; // there shouldn't be any homology edges yet
 			forfutures: for (Future<WeightResult> future : futures) {
 
@@ -243,11 +252,28 @@ public class SmartWeightManager implements WeightManager {
 					graph.addHomologies(edge, vertices);
 					logger.debug("Added homology edge (" + vertexA + ", " + vertexB + ", " + nf.format(weight) + ")");
 				}
+				nUpdates++;
 
 			}
 
 			logger.info("Added " + graph.getHomologyCount() + " homology edges");
+			ReportGenerator.getInstance().putInWeighted("n_updates", nUpdates);
 
+			int maxHomologyDegree = 0;
+			for (int v : graph.getVertices()) {
+				int x = graph.getHomology().getIncidentEdges(v).size();
+				if (x > maxHomologyDegree) maxHomologyDegree = x;
+			}
+			ReportGenerator.getInstance().putInWeighted("max_homology_degree", maxHomologyDegree);
+			
+			int maxInteractionDegree = 0;
+			for (int v : graph.getVertices()) {
+				int x = graph.getInteraction().getIncidentEdges(v).size();
+				if (x > maxInteractionDegree) maxInteractionDegree = x;
+			}
+			ReportGenerator.getInstance().putInWeighted("max_interaction_degree", maxInteractionDegree);
+
+			
 		} finally {
 			pool.shutdownNow();
 

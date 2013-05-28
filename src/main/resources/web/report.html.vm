@@ -11,10 +11,21 @@
 			<header>
 				<h1>Struct-NA 0.1 report</h1>
 				<h2>$run_date</h2>
-				<nav>
-					<a href="https://github.com/dmyersturnbull/network_merge/blob/master/description.pdf?raw=true">documentation</a>
-				</nav>
 			</header>
+			<section id="main">
+				<p class="top">Run with:</p>
+    			<ul>
+					<li>nCores = $n_cores</li>
+					<li>β = $beta</li>
+					<li>τ = $tau</li>
+					<li>ζ = $zeta</li>
+					<li>ξ = $xi</li>
+    			</ul>
+				<p>
+					See the relevant <a href="https://github.com/dmyersturnbull/network_merge/blob/master/description.pdf?raw=true">documentation</a> for more details.
+				</p>
+			</section>
+			#if ($weighted):
 			<section class="weighted">
 				<h2>Weighted graph</h2>
 				<div class="left">
@@ -27,6 +38,10 @@
     					</thead>
     					<tbody class="properties">
     						<tr class="properties">
+    							<td class="properties">Manager</td>
+    							<td class="properties">${weighted.manager}</td>
+    						</tr>
+    						<tr class="properties">
     							<td class="properties">N vertices</td>
     							<td class="properties">${weighted.n_vertices}</td>
     						</tr>
@@ -37,6 +52,18 @@
     						<tr class="properties">
     							<td class="properties">N homology edges</td>
     							<td class="properties">${weighted.n_homologies}</td>
+    						</tr>
+    						<tr class="properties">
+    							<td class="properties">Maximum interaction degree</td>
+    							<td class="properties">${weighted.max_interaction_degree}</td>
+    						</tr>
+    						<tr class="properties">
+    							<td class="properties">Maximum homology degree</td>
+    							<td class="properties">${weighted.max_homology_degree}</td>
+    						</tr>
+    						<tr class="properties">
+    							<td class="properties">N homology relations</td>
+    							<td class="properties">${weighted.n_updates}</td>
     						</tr>
     					</tbody>
     				</table>
@@ -50,6 +77,8 @@
     				</figure>
 				</div>
 			</section>
+			#end
+			#if ($crossed):
 			<section class="crossed">
 				<h2>Crossed graph</h2>
 				<div class="left">
@@ -62,6 +91,10 @@
     					</thead>
     					<tbody class="properties">
     						<tr class="properties">
+    							<td class="properties">Manager</td>
+    							<td class="properties">${crossed.manager}</td>
+    						</tr>
+    						<tr class="properties">
     							<td class="properties">N vertices</td>
     							<td class="properties">${crossed.n_vertices}</td>
     						</tr>
@@ -72,6 +105,14 @@
     						<tr class="properties">
     							<td class="properties">N homology edges</td>
     							<td class="properties">${crossed.n_homologies}</td>
+    						</tr>
+    						<tr class="properties">
+    							<td class="properties">N edges updated</td>
+    							<td class="properties">${crossed.n_updated}</td>
+    						</tr>
+    						<tr class="properties">
+    							<td class="properties">N updates</td>
+    							<td class="properties">${crossed.n_updates}</td>
     						</tr>
     					</tbody>
     				</table>
@@ -85,6 +126,8 @@
     				</figure>
 				</div>
 			</section>
+			#end
+			#if ($merged):
 			<section class="merged">
 				<h2>Merged graph</h2>
 				<div class="left">
@@ -97,6 +140,10 @@
     					</thead>
     					<tbody class="properties">
     						<tr class="properties">
+    							<td class="properties">Manager</td>
+    							<td class="properties">${merged.manager}</td>
+    						</tr>
+    						<tr class="properties">
     							<td class="properties">N vertices</td>
     							<td class="properties">${merged.n_vertices}</td>
     						</tr>
@@ -107,6 +154,14 @@
     						<tr class="properties">
     							<td class="properties">N homology edges</td>
     							<td class="properties">${merged.n_homologies}</td>
+    						</tr>
+    						<tr class="properties">
+    							<td class="properties">N connected components</td>
+    							<td class="properties">${merged.n_ccs}</td>
+    						</tr>
+    						<tr class="properties">
+    							<td class="properties">N nontrivial degenerate vertex sets</td>
+    							<td class="properties">${merged.n_nontrivial_degenerate_sets}</td>
     						</tr>
     					</tbody>
     				</table>
@@ -120,6 +175,7 @@
     				</figure>
 				</div>
 			</section>
+			#end
 		</div>
 	</body>
 </html>

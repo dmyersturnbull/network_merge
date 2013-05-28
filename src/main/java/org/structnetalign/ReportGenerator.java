@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
@@ -47,30 +48,50 @@ public class ReportGenerator {
 		private int nInteractions;
 		private int nVertices;
 
+		private boolean on = false;
+
+		Map<String, Object> map = new HashMap<>();
 		public void setImageSource(String imageSource) {
 			this.imageSource = imageSource;
+			on = true;
 		}
 
 		public void setNHomologies(int nHomologies) {
 			this.nHomologies = nHomologies;
+			on = true;
 		}
 
 		public void setNInteractions(int nInteractions) {
 			this.nInteractions = nInteractions;
+			on = true;
 		}
 
 		public void setNVertices(int nVertices) {
 			this.nVertices = nVertices;
+			on = true;
 		}
 
 		Map<String, Object> getMap() {
-			Map<String, Object> map = new HashMap<>();
+			if (!on) return null;
 			map.put("img_src", imageSource);
 			map.put("n_vertices", nVertices);
 			map.put("n_homologies", nHomologies);
 			map.put("n_interactions", nInteractions);
 			return map;
 		}
+	}
+
+	public void putInWeighted(String name, Object value) {
+		value = format(value);
+		weighted.map.put(name, value);
+	}
+	public void putInCrossed(String name, Object value) {
+		value = format(value);
+		crossed.map.put(name, value);
+	}
+	public void putInMerged(String name, Object value) {
+		value = format(value);
+		merged.map.put(name, value);
 	}
 
 	private static ReportGenerator instance;
@@ -141,6 +162,31 @@ public class ReportGenerator {
 		} catch (IOException e) {
 			throw new RuntimeException("Could not save graph image file to " + png, e);
 		}
+	}
+
+	private Map<String,Object> mainInfo = new TreeMap<String,Object>();
+
+	/**
+	 * Yes, I really am that OCD.
+	 */
+	private static Object format(Object value) {
+		if (value == null) return null;
+		if (value.getClass().isAssignableFrom(Double.class)) {
+			double x = Math.abs((double) value);
+			String minus = "";
+			if (x < 0) minus = "−";
+			if (Double.isInfinite(x)) {
+				value = minus + "∞";
+			} else {
+				value = minus + x;
+			}
+		}
+		return value;
+	}
+
+	public Object put(String key, Object value) {
+		value = format(value);
+		return mainInfo.put(key, value);
 	}
 
 	public void write() {
@@ -224,6 +270,11 @@ public class ReportGenerator {
 
 		VelocityContext context = new VelocityContext();
 
+		// put any user-defined values
+		for (Map.Entry<String,Object> entry : mainInfo.entrySet()) {
+			context.put(entry.getKey(), entry.getValue());
+		}
+
 		String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 		context.put("run_date", timestamp);
 
@@ -250,7 +301,7 @@ public class ReportGenerator {
 		} catch (IOException e) {
 			throw new RuntimeException("Couldn't write HTML to file " + outputFile.getPath(), e);
 		}
-		
+
 		// copy CSS
 		try {
 			FileUtils.copyFile(new File(DIR + "main.css"), new File(outputDir + "main.css"));

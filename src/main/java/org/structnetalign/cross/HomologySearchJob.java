@@ -61,6 +61,7 @@ public class HomologySearchJob implements Callable<InteractionUpdate> {
 	@Override
 	public InteractionUpdate call() throws Exception {
 		double score = 0;
+		int nUpdates = 0;
 		InteractionUpdate update = new InteractionUpdate(root, rootA, rootB);
 		Map<Integer, Double> distancesToA = findDistances(rootA, graph.getHomology());
 		Map<Integer, Double> distancesToB = findDistances(rootB, graph.getHomology());
@@ -78,10 +79,12 @@ public class HomologySearchJob implements Callable<InteractionUpdate> {
 					double aScore = interaction.getWeight() * (1 - scoreA - scoreB + scoreA*scoreB);
 					logger.debug("Updating " + root + " (" + rootA + ", " + rootB + ")" + " with score " + nf.format(aScore) + " due to " + interaction + " (" + a.getKey() + ", " + b.getKey() + ")");
 					score += aScore - score * aScore;
+					nUpdates++;
 				}
 			}
 		}
 		update.setScore(score);
+		update.setnUpdates(nUpdates);
 		return update;
 	}
 

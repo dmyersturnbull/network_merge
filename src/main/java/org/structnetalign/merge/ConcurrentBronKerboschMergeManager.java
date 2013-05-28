@@ -31,6 +31,7 @@ import org.structnetalign.CleverGraph;
 import org.structnetalign.Edge;
 import org.structnetalign.HomologyEdge;
 import org.structnetalign.InteractionEdge;
+import org.structnetalign.ReportGenerator;
 
 import edu.uci.ics.jung.algorithms.cluster.WeakComponentClusterer;
 import edu.uci.ics.jung.graph.UndirectedGraph;
@@ -104,6 +105,11 @@ public class ConcurrentBronKerboschMergeManager extends BronKerboschMergeManager
 		Set<Set<Integer>> ccs = alg.transform(combined);
 		logger.info("Submitting " + ccs.size() + " connected components as jobs");
 
+		ReportGenerator.getInstance().putInMerged("manager", this.getClass().getSimpleName());
+		ReportGenerator.getInstance().putInMerged("n_ccs", ccs.size());
+		
+		int nNonTrivialDegenSets = 0;
+		
 		// submit jobs
 		ExecutorService pool = Executors.newFixedThreadPool(nCores);
 		CompletionService<List<NavigableSet<Integer>>> completion = new ExecutorCompletionService<>(pool);
@@ -122,14 +128,14 @@ public class ConcurrentBronKerboschMergeManager extends BronKerboschMergeManager
 
 			// now respond to completion
 			for (Future<List<NavigableSet<Integer>>> future : futures) {
-				List<NavigableSet<Integer>> cliqueGroups = null;
+				List<NavigableSet<Integer>> degenerateSets = null;
 				try {
 					// We should do this in case the job gets interrupted
 					// Sometimes the OS or JVM might do this
 					// Use the flag instead of future == null because future.get() may actually return null
-					while (cliqueGroups == null) {
+					while (degenerateSets == null) {
 						try {
-							cliqueGroups = future.get();
+							degenerateSets = future.get();
 						} catch (InterruptedException e1) {
 							logger.warn(
 									"A thread was interrupted while waiting for a connected component merging process. Retrying.",
@@ -141,10 +147,13 @@ public class ConcurrentBronKerboschMergeManager extends BronKerboschMergeManager
 				}
 
 				// now add the result to the clevergraph
-				contract(graph, cliqueGroups);
+				nNonTrivialDegenSets += degenerateSets.size();
+				contract(graph, degenerateSets);
 
 			}
 
+			ReportGenerator.getInstance().putInMerged("n_nontrivial_degenerate_sets", nNonTrivialDegenSets);
+			
 		} finally {
 			pool.shutdownNow();
 

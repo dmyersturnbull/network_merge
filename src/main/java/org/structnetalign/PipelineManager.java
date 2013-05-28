@@ -128,6 +128,13 @@ public class PipelineManager {
 		if (report || writeSteps) new File(path).mkdir(); // don't make a new directory if we're not reporting
 		File reportFile = new File(path + "report.html");
 		ReportGenerator.setInstance(new ReportGenerator(reportFile));
+		if (report) {
+			ReportGenerator.getInstance().put("n_cores", nCores);
+			ReportGenerator.getInstance().put("beta", beta);
+			ReportGenerator.getInstance().put("tau", tau);
+			ReportGenerator.getInstance().put("zeta", zeta);
+			ReportGenerator.getInstance().put("xi", xi);
+		}
 
 		CleverGraph graph;
 		{

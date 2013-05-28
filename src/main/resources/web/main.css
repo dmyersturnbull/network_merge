@@ -6,6 +6,21 @@
 		font-family: sans-serif;
 		max-width: 100%;
 	}
+	#main {
+		background-color: #fefefe;
+		display: block;
+		margin: 0 auto;
+		margin-top: 1em;
+		text-align: center;
+	}
+	.top {
+		font-weight: bold;
+	}
+	ul {
+		padding-left: 2em;
+		margin-top: 0.2em;
+		margin-bottom: 0.4em;
+	}
 	body {
 		overflow: auto;
 		overflow-y: scroll;
