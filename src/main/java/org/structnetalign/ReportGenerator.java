@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.velocity.Template;
@@ -100,7 +101,7 @@ public class ReportGenerator {
 		super();
 		this.outputFile = outputFile;
 		outputDir = outputFile.getParent();
-		if (!outputDir.endsWith(File.separator)) outputDir += "/";
+		if (!outputDir.endsWith(File.separator)) outputDir += File.separator;
 	}
 
 	public void saveCrossed(CleverGraph graph) {
@@ -251,6 +252,13 @@ public class ReportGenerator {
 			}
 		} catch (IOException e) {
 			throw new RuntimeException("Couldn't write HTML to file " + outputFile.getPath(), e);
+		}
+		
+		// copy CSS
+		try {
+			FileUtils.copyFile(new File(DIR + "main.css"), new File(outputDir + "main.css"));
+		} catch (IOException e) {
+			logger.warn("Couldn't copy CSS file", e);
 		}
 
 		logger.info("Saved final report to " + outputFile);
