@@ -120,12 +120,11 @@ public class PipelineManager {
 		// handle reporting
 		// always do this even if we're not generating the report, since MergeManager etc. needs it
 		String timestamp = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-		File reportFile = new File("./report_" + timestamp + "/report.html");
-		if (report) reportFile.getParentFile().mkdir(); // don't make a new directory if we're not reporting
-		ReportGenerator.setInstance(new ReportGenerator(reportFile));
-
 		String path = output.getParent();
 		if (!path.endsWith(File.separator)) path += File.separator;
+		if (report || writeSteps) new File(path).mkdir(); // don't make a new directory if we're not reporting
+		File reportFile = new File(path + "report.html");
+		ReportGenerator.setInstance(new ReportGenerator(reportFile));
 
 		CleverGraph graph;
 		{
