@@ -40,10 +40,10 @@ public class PipelineManager {
 
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");
 
-	public static final double BETA = 1;
+	public static final double BETA = Double.POSITIVE_INFINITY;
 	public static final int N_CORES = Math.max(Runtime.getRuntime().availableProcessors() - 1, 1);
 	public static final double TAU = 0.5;
-	public static final int XI = 5;
+	public static final int XI = 2;
 	public static final double ZETA = 0.7;
 
 	private CrossingManager crossingManager;
