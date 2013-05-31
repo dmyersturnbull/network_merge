@@ -119,7 +119,7 @@ StructNetAlign($G$, $\beta$, $\tau$, $\zeta$, $\xi$):
 
 \NI Interactions are given initial probabilities according to the number and type of experiment that identified them. In particular, we assign an interaction $X$ a probability of:
 
-\NI $Prob(X) = \displaystyle \bigvee_{x \in X} x = \prod_{x \in X} \left( \kappa(x) Prob(x) \right)$,
+\NI $Prob(X) = \displaystyle \bigvee_{x \in X} x = 1 - \prod_{x \in X} \left[1 - \kappa(x) Prob(x) \right]$,
 
 \NI where each $x \in X$ is an experiment that determined interaction $X$, and $\kappa(x) \in [0,1]$ is the quality of the experiment that determined $x$.
 
