@@ -15,6 +15,8 @@
 package org.structnetalign.util;
 
 import java.io.File;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -60,6 +62,15 @@ public class NetworkPreparer {
 	
 	public static final double SINGLE_INTERACTION_PROBABILITY = 0.2;
 
+	private static NumberFormat nfWrite = new DecimalFormat();
+	private static NumberFormat nfPrint = new DecimalFormat();
+	static {
+		nfPrint.setMinimumFractionDigits(1);
+		nfPrint.setMaximumFractionDigits(3);
+		nfWrite.setMinimumFractionDigits(1);
+		nfWrite.setMaximumFractionDigits(7);
+	}
+	
 	public static void main(String[] args) {
 		if (args.length != 2) {
 			System.err.println("Usage: NetworkPreparer input-file output-dir");
@@ -167,8 +178,8 @@ public class NetworkPreparer {
 					
 					double prevValue = Double.parseDouble(confidences.get(pair).getValue());
 					double newValue = prevValue + p0 - prevValue * p0;
-					confidences.get(pair).setValue(String.valueOf(newValue));
-					logger.debug("Updated initial confidence of interaction Id#" + interaction.getId() + " from " + prevValue + " to " + newValue);
+					confidences.get(pair).setValue(nfWrite.format(newValue));
+					logger.debug("Updated initial confidence of interaction Id#" + interaction.getId() + " from " + nfPrint.format(prevValue) + " to " + nfPrint.format(newValue));
 					
 				} else {
 					

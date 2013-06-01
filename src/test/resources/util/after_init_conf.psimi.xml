@@ -88,7 +88,7 @@
 								<primaryRef db="psi-mi" dbAc="MI:0488" id="IamaLABEL" refType="identity" refTypeAc="MI:0356"/>
 							</xref>
 						</unit>
-						<value>0.8322278399999999</value>
+						<value>0.8322278</value>
 					</confidence>
 				</confidenceList>
 			</interaction>
@@ -119,7 +119,7 @@
 								<primaryRef db="psi-mi" dbAc="MI:0488" id="IamaLABEL" refType="identity" refTypeAc="MI:0356"/>
 							</xref>
 						</unit>
-						<value>0.8322278399999999</value>
+						<value>0.8322278</value>
 					</confidence>
 				</confidenceList>
 			</interaction>
