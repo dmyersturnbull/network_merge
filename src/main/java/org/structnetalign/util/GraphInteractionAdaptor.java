@@ -18,20 +18,25 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.NavigableSet;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.structnetalign.InteractionEdge;
 
+import psidev.psi.mi.xml.model.Attribute;
 import psidev.psi.mi.xml.model.Confidence;
 import psidev.psi.mi.xml.model.Entry;
 import psidev.psi.mi.xml.model.EntrySet;
 import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.model.Interactor;
+import psidev.psi.mi.xml.model.PsiFactory;
 import edu.uci.ics.jung.graph.UndirectedGraph;
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
+import edu.uci.ics.jung.graph.util.Pair;
 
 /**
  * An adaptor that converts between PSI-MI XML data and graph representations.
@@ -44,16 +49,21 @@ public class GraphInteractionAdaptor {
 
 	public static final String CONFIDENCE_SHORT_LABEL = "struct-NA confidence";
 
+	public static final String NO_EXIST = "removed by Struct-NA";
+	
 	public static final double DEFAULT_PROBABILITY = 0.5;
 
 	public static final String INITIAL_CONFIDENCE_LABEL = "struct-NA intial weighting";
 
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");
 
-	private static NumberFormat nf = new DecimalFormat();
+	private static NumberFormat printNf = new DecimalFormat();
+	private static NumberFormat writeNf = new DecimalFormat();
 	static {
-		nf.setMinimumFractionDigits(1);
-		nf.setMaximumFractionDigits(3);
+		printNf.setMinimumFractionDigits(1);
+		printNf.setMaximumFractionDigits(3);
+		writeNf.setMinimumFractionDigits(1);
+		writeNf.setMaximumFractionDigits(7);
 	}
 	
 	public static void main(String[] args) throws IOException {
@@ -67,8 +77,8 @@ public class GraphInteractionAdaptor {
 		GraphMLAdaptor.writeInteractionGraph(graph, new File(args[1]));
 	}
 
-	public static void modifyProbabilites(EntrySet entrySet, UndirectedGraph<Integer, InteractionEdge> graph) {
-		modifyProbabilites(entrySet, graph, CONFIDENCE_SHORT_LABEL, CONFIDENCE_FULL_NAME);
+	public static List<InteractionUpdate> modifyProbabilites(EntrySet entrySet, UndirectedGraph<Integer, InteractionEdge> graph) {
+		return modifyProbabilites(entrySet, graph, CONFIDENCE_SHORT_LABEL, CONFIDENCE_FULL_NAME);
 	}
 
 	/**
@@ -79,9 +89,11 @@ public class GraphInteractionAdaptor {
 	 * @param confidenceLabel
 	 * @param confidenceFullName
 	 */
-	public static void modifyProbabilites(EntrySet entrySet, UndirectedGraph<Integer, InteractionEdge> graph,
+	public static List<InteractionUpdate> modifyProbabilites(EntrySet entrySet, UndirectedGraph<Integer, InteractionEdge> graph,
 			String confidenceLabel, String confidenceFullName) {
 
+		List<InteractionUpdate> updates = new ArrayList<>();
+		
 		logger.info("Modifying probabilities of " + graph.getEdgeCount() + " interactions in "
 				+ entrySet.getEntries().size() + " entries");
 		int entryIndex = 1;
@@ -94,8 +106,14 @@ public class GraphInteractionAdaptor {
 				final NavigableSet<Integer> ids = NetworkUtils.getVertexIds(interaction);
 				InteractionEdge edge = graph.findEdge(ids.first(), ids.last());
 				
+				// this is only true if we edge-contracted that vertex
 				if (edge == null) {
 					logger.debug("No edge for " + interaction.getId());
+					Pair<Interactor> interactors = NetworkUtils.getInteractors(interaction);
+					Attribute removal = PsiFactory.createAttribute(NO_EXIST, "true");
+					interaction.getAttributes().add(removal);
+					interactors.getFirst().getAttributes().add(removal);
+					interactors.getSecond().getAttributes().add(removal);
 					continue;
 				}
 
@@ -111,16 +129,28 @@ public class GraphInteractionAdaptor {
 					interaction.getConfidences().remove(alreadyExists);
 				}
 
+				// we're also interested in the initial confidence so we can report it
+				Confidence initialConf = NetworkUtils.getExistingConfidence(interaction, NetworkPreparer.INITIAL_CONFIDENCE_LABEL, NetworkPreparer.INITIAL_CONFIDENCE_FULL_NAME);
+				Double initialProb = null;
+				if (initialConf != null) {
+					initialProb = Double.parseDouble(initialConf.getValue());
+				}
+				Pair<String> uniProtIds = NetworkUtils.getUniProtId(interaction);
+				InteractionUpdate update = new InteractionUpdate(uniProtIds, initialProb, edge);
+				updates.add(update);
+				
 				// make a new Confidence
 				Confidence confidence = NetworkUtils.makeConfidence(edge.getWeight(), confidenceLabel,
-						confidenceFullName, confidenceLabel);
+						confidenceFullName, confidenceLabel); // TODO this should be writeNf.format()
 
 				interaction.getConfidences().add(confidence);
-				logger.debug("Updated interaction Id#" + interaction.getId() + " with probablility " + nf.format(edge.getWeight()));
+				logger.debug("Updated interaction Id#" + interaction.getId() + " with probablility " + printNf.format(edge.getWeight()));
 
 			}
 			entryIndex++;
 		}
+		
+		return updates;
 
 	}
 

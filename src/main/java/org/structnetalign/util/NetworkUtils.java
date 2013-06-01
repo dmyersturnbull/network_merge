@@ -50,6 +50,7 @@ import psidev.psi.mi.xml.model.Participant;
 import psidev.psi.mi.xml.model.PsiFactory;
 import psidev.psi.mi.xml.model.Unit;
 import psidev.psi.mi.xml.model.Xref;
+import edu.uci.ics.jung.graph.util.Pair;
 
 public class NetworkUtils {
 
@@ -57,6 +58,10 @@ public class NetworkUtils {
 
 	public static final PsimiXmlVersion XML_VERSION = PsimiXmlVersion.VERSION_254;
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");
+	private final static String UNIPROT_ACCESSION = "MI:0486";
+
+	private final static String UNIPROT_ACCESSION_TYPE = "MI:0356";
+
 	static {
 		NEWLINE = System.getProperty("line.separator");
 	}
@@ -84,9 +89,26 @@ public class NetworkUtils {
 
 	}
 
-	private final static String UNIPROT_ACCESSION = "MI:0486";
-	private final static String UNIPROT_ACCESSION_TYPE = "MI:0356";
-	
+	public static Pair<Interactor> getInteractors(Interaction interaction) {
+		Collection<Participant> participants = interaction.getParticipants();
+		if (participants.size() != 2) throw new IllegalArgumentException(
+				"Cannot handle interactions involving more than 2 participants");
+		NavigableSet<Interactor> set = new TreeSet<>();
+		for (Participant participant : participants) {
+			set.add(participant.getInteractor());
+		}
+		Pair<Interactor> pair = new Pair<>(set.first(), set.last());
+		return pair;
+	}
+
+	public static Pair<String> getUniProtId(Interaction interaction) {
+		Pair<Interactor> interactors = getInteractors(interaction);
+		String uniProtId1 = getUniProtId(interactors.getFirst());
+		String uniProtId2 = getUniProtId(interactors.getSecond());
+		Pair<String> pair = new Pair<>(uniProtId1, uniProtId2);
+		return pair;
+	}
+
 	/**
 	 * Returns the UniProtId corresponding to this interactor, or null if it isn't defined.
 	 */
@@ -102,7 +124,7 @@ public class NetworkUtils {
 		}
 		return null;
 	}
-	
+
 	public static Map<Integer, String> getUniProtIds(EntrySet entrySet) {
 		HashMap<Integer, String> map = new HashMap<>();
 		for (Entry entry : entrySet.getEntries()) {
@@ -244,7 +266,7 @@ public class NetworkUtils {
 	public static void writeNetwork(EntrySet entrySet, File file) {
 
 		logger.info("Writing network to " + file);
-		
+
 		PsimiXmlWriter psimiXmlWriter = new PsimiXmlWriter(XML_VERSION);
 		try {
 			psimiXmlWriter.write(entrySet, file);
@@ -263,7 +285,7 @@ public class NetworkUtils {
 		}
 
 		logger.info("Wrote network to " + file);
-		
+
 	}
 
 	public static void writeNetwork(EntrySet entrySet, String file) {

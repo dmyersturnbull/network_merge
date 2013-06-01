@@ -17,6 +17,7 @@ package org.structnetalign;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -29,6 +30,7 @@ import org.structnetalign.util.EdgeTrimmer;
 import org.structnetalign.util.EdgeWeighter;
 import org.structnetalign.util.GraphInteractionAdaptor;
 import org.structnetalign.util.GraphMLAdaptor;
+import org.structnetalign.util.InteractionUpdate;
 import org.structnetalign.util.NetworkUtils;
 import org.structnetalign.weight.SmartWeightManager;
 import org.structnetalign.weight.WeightManager;
@@ -202,7 +204,7 @@ public class PipelineManager {
 
 		// now output
 		EntrySet entrySet = NetworkUtils.readNetwork(input);
-		GraphInteractionAdaptor.modifyProbabilites(entrySet, graph.getInteraction());
+		List<InteractionUpdate> updates = GraphInteractionAdaptor.modifyProbabilites(entrySet, graph.getInteraction());
 		NetworkUtils.writeNetwork(entrySet, output);
 
 		int endTime = (int) (System.currentTimeMillis() / 1000L);
