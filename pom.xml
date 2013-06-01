@@ -23,14 +23,23 @@
 			<url>http://repository.springsource.com/maven/bundles/external</url>
 		</repository>
 		<repository>
-			<id>psidev.psi</id>
+			<id>psidev.psi.mi</id>
 			<name>EBI psidev</name>
-			<url>http://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo/psidev/psi/</url>
+			<url>http://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo/</url>
 			<snapshots>
 				<enabled>true</enabled>
 				<updatePolicy>daily</updatePolicy>
 			</snapshots>
 		</repository>
+        <repository>
+            <id>org.biojava</id>
+            <name>BioJava</name>
+            <url>http://biojava.org/download/maven/</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>daily</updatePolicy>
+			</snapshots>
+        </repository>
 	</repositories>
 	<dependencies>
 		<dependency>
