@@ -15,6 +15,8 @@
 package org.structnetalign.weight;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 import org.biojava.bio.structure.Atom;
 import org.biojava.bio.structure.StructureException;
@@ -28,6 +30,38 @@ import org.biojava.bio.structure.align.util.AtomCache;
 import org.structnetalign.util.IdentifierMappingFactory;
 
 public class CeWeight implements AlignmentWeight {
+
+	private static Double SEQUENCE_WEIGHT = 2.0;
+	private static Double GAP_OPEN;
+	private static Double GAP_EXTEND;
+	private static Integer MAX_GAP_SIZE;
+	
+	static {
+		Properties props = new Properties();
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		InputStream stream = loader.getResourceAsStream("weight/ce_weights.properties");
+		try {
+			props.load(stream);
+		} catch (IOException e) {
+			throw new RuntimeException("Couldn't open databases property file", e);
+		}
+		String sequenceWeight = props.getProperty("sequence_weight");
+		if (sequenceWeight != null) {
+			SEQUENCE_WEIGHT = Double.parseDouble(sequenceWeight);
+		}
+		String gapOpen = props.getProperty("gap_open");
+		if (gapOpen != null) {
+			GAP_OPEN = Double.parseDouble(gapOpen);
+		}
+		String gapExtend = props.getProperty("gap_extend");
+		if (gapExtend != null) {
+			GAP_EXTEND = Double.parseDouble(gapExtend);
+		}
+		String maxGapSize = props.getProperty("max_gap_size");
+		if (maxGapSize != null) {
+			MAX_GAP_SIZE = Integer.parseInt(maxGapSize);
+		}
+	}
 
 	/**
 	 * A factory that instantiates a new StructureAlignment for each new alignment. Useful for concurrency: use
@@ -43,8 +77,10 @@ public class CeWeight implements AlignmentWeight {
 					if (params instanceof CeParameters) {
 						CeParameters ceparams = (CeParameters) params;
 						ceparams.setScoringStrategy(CeParameters.SEQUENCE_CONSERVATION);
-						ceparams.setSeqWeight(2); // note the use of sequence weight
-						ceparams.setScoringStrategy(CeParameters.SIDE_CHAIN_SCORING);
+						if (SEQUENCE_WEIGHT != null) ceparams.setSeqWeight(SEQUENCE_WEIGHT); // note the use of sequence weight
+						if (GAP_OPEN != null) ceparams.setGapOpen(GAP_OPEN);
+						if (GAP_EXTEND != null) ceparams.setGapExtension(GAP_EXTEND);
+						if (MAX_GAP_SIZE != null) ceparams.setMaxGapSize(MAX_GAP_SIZE);
 						ceSymm.setParameters(ceparams);
 					}
 					return ceSymm;
