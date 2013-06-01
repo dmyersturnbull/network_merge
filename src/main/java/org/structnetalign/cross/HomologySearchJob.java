@@ -39,7 +39,7 @@ import org.structnetalign.util.EdgeWeighter;
 import edu.uci.ics.jung.graph.UndirectedGraph;
 import edu.uci.ics.jung.graph.util.Pair;
 
-public class HomologySearchJob implements Callable<InteractionUpdate> {
+public class HomologySearchJob implements Callable<InteractionEdgeUpdate> {
 
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");
 
@@ -59,10 +59,10 @@ public class HomologySearchJob implements Callable<InteractionUpdate> {
 	}
 
 	@Override
-	public InteractionUpdate call() throws Exception {
+	public InteractionEdgeUpdate call() throws Exception {
 		double score = 0;
 		int nUpdates = 0;
-		InteractionUpdate update = new InteractionUpdate(root, rootA, rootB);
+		InteractionEdgeUpdate update = new InteractionEdgeUpdate(root, rootA, rootB);
 		Map<Integer, Double> distancesToA = findDistances(rootA, graph.getHomology());
 		Map<Integer, Double> distancesToB = findDistances(rootB, graph.getHomology());
 		for (Map.Entry<Integer, Double> a : distancesToA.entrySet()) {

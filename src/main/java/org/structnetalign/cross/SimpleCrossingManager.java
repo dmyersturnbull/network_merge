@@ -82,14 +82,14 @@ public class SimpleCrossingManager implements CrossingManager {
 			
 			// depressingly, this used to be List<Future<Pair<Map<Integer,Double>>>>
 			// I'm glad that's no longer the case
-			CompletionService<InteractionUpdate> completion = new ExecutorCompletionService<>(pool);
-			List<Future<InteractionUpdate>> futures = new ArrayList<>();
+			CompletionService<InteractionEdgeUpdate> completion = new ExecutorCompletionService<>(pool);
+			List<Future<InteractionEdgeUpdate>> futures = new ArrayList<>();
 
 			// submit the jobs
 			for (InteractionEdge interaction : graph.getInteraction().getEdges()) {
 				HomologySearchJob job = new HomologySearchJob(interaction, graph);
 				job.setMaxDepth(maxDepth);
-				Future<InteractionUpdate> result = completion.submit(job);
+				Future<InteractionEdgeUpdate> result = completion.submit(job);
 				futures.add(result);
 			}
 
@@ -102,10 +102,10 @@ public class SimpleCrossingManager implements CrossingManager {
 			
 			HashMap<InteractionEdge, Double> edgesToUpdate = new HashMap<>();
 
-			for (Future<InteractionUpdate> future : futures) {
+			for (Future<InteractionEdgeUpdate> future : futures) {
 
 				// now wait for completion
-				InteractionUpdate update = null;
+				InteractionEdgeUpdate update = null;
 				try {
 					// We should do this in case the job gets interrupted
 					// Sometimes the OS or JVM might do this
