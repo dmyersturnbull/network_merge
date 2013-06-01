@@ -17,13 +17,8 @@ package org.structnetalign.weight;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
-import java.util.Random;
-import java.util.Set;
 
-import org.apache.commons.math3.distribution.GammaDistribution;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.biojava3.alignment.FractionalIdentityScorer;
@@ -37,43 +32,54 @@ import org.biojava3.alignment.template.SubstitutionMatrix;
 import org.biojava3.core.sequence.ProteinSequence;
 import org.biojava3.core.sequence.compound.AminoAcidCompound;
 import org.biojava3.core.sequence.io.FastaReaderHelper;
-import org.structnetalign.util.IdentifierMappingFactory;
-import org.structnetalign.util.MartinIdentifierMapping;
 
 public class NeedlemanWunschWeight implements AlignmentWeight {
 
-	/**
-	 * Scores with a gamma distribution as per Webber and Barton 2001, Bioinformatics. The authors used (among other
-	 * scoring schemes) the BLOSUM62 matrix with a gap opening penalty of 12 and extension penalty of 1. The paper is <a
-	 * href="http://bioinformatics.oxfordjournals.org/content/17/12/1158.full.pdf+html">available</a>.
-	 * 
-	 * @author dmyersturnbull
-	 * 
-	 */
-	private static class GammaScorer {
-		private double alpha = 25.54; // shape (normally theta)
-		private double beta = 4.96; // scale
-		private double lambda = 0.200;
+	private static final Logger logger = LogManager.getLogger(NeedlemanWunschWeight.class.getName());
+	
+	private static GammaScorer GAMMA = GammaScorer.forBlosum62();
 
-		public GammaScorer() {
-			super();
+	private static GapPenalty GAP_PENALTY = new SimpleGapPenalty((short) 12, (short) 1);
+
+	private static SubstitutionMatrix<AminoAcidCompound> MATRIX = SubstitutionMatrixHelper.getBlosum62();
+
+	private static String URL;
+
+	private String uniProtId1;
+
+	private String uniProtId2;
+
+	int nSamples;
+
+	static {
+		Properties props = new Properties();
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		InputStream stream = loader.getResourceAsStream("weight/nw_weights.properties");
+		try {
+			props.load(stream);
+		} catch (IOException e) {
+			throw new RuntimeException("Couldn't open needleman-wunsch property file", e);
 		}
-
-		public GammaScorer(double alpha, double beta, double lambda) {
-			super();
-			this.alpha = alpha;
-			this.beta = beta;
-			this.lambda = lambda;
+		String matrix = props.getProperty("matrix");
+		if (matrix != null) {
+			MATRIX = SubstitutionMatrixHelper.getMatrixFromAAINDEX(matrix);
+			if (MATRIX == null) throw new IllegalArgumentException("Matrix " + matrix + " was not found");
 		}
-
-		public double score(SequencePair<ProteinSequence, AminoAcidCompound> pair, double score) {
-			GammaDistribution dist = new GammaDistribution(alpha, lambda);
-			return dist.density(score + beta);
+		String gapOpen = props.getProperty("gap_open");
+		String gapExtend = props.getProperty("gap_extend");
+		if (gapOpen != null || gapExtend != null) {
+			GAP_PENALTY = new SimpleGapPenalty(Short.parseShort(gapOpen), Short.parseShort(gapExtend));
+		}
+		String alpha = props.getProperty("gamma_shape");
+		String beta = props.getProperty("gamma_scale");
+		String lambda = props.getProperty("gamma_shift");
+		if (alpha != null || beta != null || lambda != null) {
+			GAMMA = new GammaScorer(Double.parseDouble(alpha), Double.parseDouble(beta), Double.parseDouble(lambda));
+			logger.info("Setting new gamma distribution (" + alpha + "," + beta + "," + lambda + ")");
 		}
 
 	}
 
-	static String url;
 	static {
 		Properties props = new Properties();
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
@@ -83,74 +89,7 @@ public class NeedlemanWunschWeight implements AlignmentWeight {
 		} catch (IOException e) {
 			throw new RuntimeException("Couldn't open databases property file", e);
 		}
-		url = props.getProperty("uniprot_url");
-	}
-	
-	private static final String URL = url;
-	
-	private static GapPenalty GAP_PENALTY = new SimpleGapPenalty((short) 12, (short) 1);
-
-	private static final Logger logger = LogManager.getLogger(NeedlemanWunschWeight.class.getName());
-
-	private static SubstitutionMatrix<AminoAcidCompound> MATRIX = SubstitutionMatrixHelper.getBlosum62();
-	
-	private String uniProtId1;
-
-	private String uniProtId2;
-
-	int nSamples;
-
-	/**
-	 * @param args
-	 * @throws Exception
-	 */
-	@Deprecated
-	public static void main(String[] args) throws Exception {
-		if (args.length != 1) {
-			System.err.println("Usage: NeedlemanWunschWeight n-samples");
-			return;
-		}
-		int nSamples = Integer.parseInt(args[0]);
-		double lambda = run(nSamples);
-		System.out.println(lambda);
-	}
-
-	@Deprecated
-	public static double run(int nSamples) {
-		Random random = new Random();
-		MartinIdentifierMapping mapping = (MartinIdentifierMapping) IdentifierMappingFactory.getMapping();
-		Set<String> sdf = mapping.getChainIds().keySet();
-		List<String> ids = new ArrayList<String>(sdf.size());
-		ids.addAll(sdf);
-		int size = mapping.size();
-		logger.info("Running " + nSamples + " with population size " + size);
-		double total = 0;
-		for (int i = 0; i < nSamples; i++) {
-			String uniProtId1 = ids.get(random.nextInt(size));
-			String uniProtId2 = ids.get(random.nextInt(size));
-			ProteinSequence a, b;
-			try {
-				a = NeedlemanWunschWeight.getSequenceForId(uniProtId1);
-			} catch (Exception e) {
-				logger.error("Couldn't get sequence for " + uniProtId1, e);
-				i--;
-				continue;
-			}
-			try {
-				b = NeedlemanWunschWeight.getSequenceForId(uniProtId2);
-			} catch (Exception e) {
-				logger.error("Couldn't get sequence for " + uniProtId1, e);
-				i--;
-				continue;
-			}
-			NeedlemanWunsch<ProteinSequence, AminoAcidCompound> alg = new NeedlemanWunsch<>(a, b, GAP_PENALTY, MATRIX);
-			SequencePair<ProteinSequence, AminoAcidCompound> pair = alg.getPair();
-			PairwiseSequenceScorer<ProteinSequence, AminoAcidCompound> scorer = new FractionalIdentityScorer<>(pair);
-			double score = (double) scorer.getScore() / (double) scorer.getMaxScore();
-			logger.debug("Got score " + score + " for (" + uniProtId1 + "," + uniProtId2 + ")");
-			total += score;
-		}
-		return total / nSamples;
+		URL = props.getProperty("uniprot_url");
 	}
 
 	private static ProteinSequence getSequenceForId(String uniProtId) throws Exception {
@@ -171,19 +110,22 @@ public class NeedlemanWunschWeight implements AlignmentWeight {
 		try {
 			a = getSequenceForId(uniProtId1);
 		} catch (Exception e) {
-			throw new WeightException("Could not get FASTA sequence for " + uniProtId1, uniProtId1, uniProtId2, true, false);
+			throw new WeightException("Could not get FASTA sequence for " + uniProtId1, uniProtId1, uniProtId2, true,
+					false);
 		}
 		try {
 			b = getSequenceForId(uniProtId2);
 		} catch (Exception e) {
-			throw new WeightException("Could not get FASTA sequence for " + uniProtId1, uniProtId1, uniProtId2, true, false);
+			throw new WeightException("Could not get FASTA sequence for " + uniProtId1, uniProtId1, uniProtId2, true,
+					false);
 		}
 		NeedlemanWunsch<ProteinSequence, AminoAcidCompound> alg = new NeedlemanWunsch<>(a, b, GAP_PENALTY, MATRIX);
+		alg.setQuery(a);
+		alg.setTarget(b);
 		SequencePair<ProteinSequence, AminoAcidCompound> pair = alg.getPair();
 		PairwiseSequenceScorer<ProteinSequence, AminoAcidCompound> scorer = new FractionalIdentityScorer<>(pair);
 		double score = (double) scorer.getScore() / (double) scorer.getMaxScore();
-		GammaScorer gamma = new GammaScorer();
-		double prob = gamma.score(pair, score);
+		double prob = GAMMA.score(pair, score);
 		return new WeightResult(prob, uniProtId1, uniProtId2, this.getClass());
 	}
 
