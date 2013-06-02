@@ -104,7 +104,16 @@ public class GraphInteractionAdaptor {
 			for (Interaction interaction : entry.getInteractions()) {
 
 				final NavigableSet<Integer> ids = NetworkUtils.getVertexIds(interaction);
+				final Pair<Integer> idsPair = new Pair<>(ids.first(), ids.last());
 				InteractionEdge edge = graph.findEdge(ids.first(), ids.last());
+				Pair<String> uniProtIds = NetworkUtils.getUniProtId(interaction);
+
+				// we're also interested in the initial confidence so we can report it
+				Confidence initialConf = NetworkUtils.getExistingConfidence(interaction, NetworkPreparer.INITIAL_CONFIDENCE_LABEL, NetworkPreparer.INITIAL_CONFIDENCE_FULL_NAME);
+				Double initialProb = null;
+				if (initialConf != null) {
+					initialProb = Double.parseDouble(initialConf.getValue());
+				}
 				
 				// this is only true if we edge-contracted that vertex
 				if (edge == null) {
@@ -114,6 +123,8 @@ public class GraphInteractionAdaptor {
 					interaction.getAttributes().add(removal);
 					interactors.getFirst().getAttributes().add(removal);
 					interactors.getSecond().getAttributes().add(removal);
+					InteractionUpdate update = new InteractionUpdate(idsPair, uniProtIds, initialProb, edge, true); // report the deletion
+					updates.add(update);
 					continue;
 				}
 
@@ -129,14 +140,8 @@ public class GraphInteractionAdaptor {
 					interaction.getConfidences().remove(alreadyExists);
 				}
 
-				// we're also interested in the initial confidence so we can report it
-				Confidence initialConf = NetworkUtils.getExistingConfidence(interaction, NetworkPreparer.INITIAL_CONFIDENCE_LABEL, NetworkPreparer.INITIAL_CONFIDENCE_FULL_NAME);
-				Double initialProb = null;
-				if (initialConf != null) {
-					initialProb = Double.parseDouble(initialConf.getValue());
-				}
-				Pair<String> uniProtIds = NetworkUtils.getUniProtId(interaction);
-				InteractionUpdate update = new InteractionUpdate(uniProtIds, initialProb, edge);
+				// report the update
+				InteractionUpdate update = new InteractionUpdate(idsPair, uniProtIds, initialProb, edge, false);
 				updates.add(update);
 				
 				// make a new Confidence

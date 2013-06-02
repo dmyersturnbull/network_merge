@@ -20,11 +20,15 @@ import edu.uci.ics.jung.graph.util.Pair;
 
 public class InteractionUpdate {
 
+	private Pair<Integer> ids;
+	
 	private Pair<String> uniProtIds;
 	
 	private double initialProbability;
 	
 	private InteractionEdge edge;
+	
+	private boolean removed;
 
 	public Pair<String> getUniProtIds() {
 		return uniProtIds;
@@ -50,13 +54,32 @@ public class InteractionUpdate {
 		this.edge = edge;
 	}
 
-	public InteractionUpdate(Pair<String> uniProtIds, double initialProbability, InteractionEdge edge) {
+	public boolean isRemoved() {
+		return removed;
+	}
+
+	public void setRemoved(boolean removed) {
+		this.removed = removed;
+	}
+
+	public Pair<Integer> getIds() {
+		return ids;
+	}
+
+	public void setIds(Pair<Integer> ids) {
+		this.ids = ids;
+	}
+
+	public InteractionUpdate(Pair<Integer> ids, Pair<String> uniProtIds, double initialProbability,
+			InteractionEdge edge, boolean removed) {
 		super();
+		this.ids = ids;
 		this.uniProtIds = uniProtIds;
 		this.initialProbability = initialProbability;
 		this.edge = edge;
+		this.removed = removed;
 	}
-	
+
 	public InteractionUpdate() {
 		
 	}
