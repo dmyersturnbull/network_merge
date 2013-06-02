@@ -16,8 +16,6 @@ package org.structnetalign.util;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -26,6 +24,7 @@ import java.util.NavigableSet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.structnetalign.InteractionEdge;
+import org.structnetalign.PipelineProperties;
 
 import psidev.psi.mi.xml.model.Attribute;
 import psidev.psi.mi.xml.model.Confidence;
@@ -45,26 +44,7 @@ import edu.uci.ics.jung.graph.util.Pair;
  */
 public class GraphInteractionAdaptor {
 
-	public static final String CONFIDENCE_FULL_NAME = "probability predicted by struct-NA";
-
-	public static final String CONFIDENCE_SHORT_LABEL = "struct-NA confidence";
-
-	public static final String NO_EXIST = "removed by Struct-NA";
-	
-	public static final double DEFAULT_PROBABILITY = 0.5;
-
-	public static final String INITIAL_CONFIDENCE_LABEL = "struct-NA intial weighting";
-
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");
-
-	private static NumberFormat printNf = new DecimalFormat();
-	private static NumberFormat writeNf = new DecimalFormat();
-	static {
-		printNf.setMinimumFractionDigits(1);
-		printNf.setMaximumFractionDigits(3);
-		writeNf.setMinimumFractionDigits(1);
-		writeNf.setMaximumFractionDigits(7);
-	}
 	
 	public static void main(String[] args) throws IOException {
 		if (args.length != 2) {
@@ -78,7 +58,7 @@ public class GraphInteractionAdaptor {
 	}
 
 	public static List<InteractionUpdate> modifyProbabilites(EntrySet entrySet, UndirectedGraph<Integer, InteractionEdge> graph) {
-		return modifyProbabilites(entrySet, graph, CONFIDENCE_SHORT_LABEL, CONFIDENCE_FULL_NAME);
+		return modifyProbabilites(entrySet, graph, PipelineProperties.getInstance().getOutputConfName(), PipelineProperties.getInstance().getOutputConfName());
 	}
 
 	/**
@@ -109,7 +89,7 @@ public class GraphInteractionAdaptor {
 				Pair<String> uniProtIds = NetworkUtils.getUniProtId(interaction);
 
 				// we're also interested in the initial confidence so we can report it
-				Confidence initialConf = NetworkUtils.getExistingConfidence(interaction, NetworkPreparer.INITIAL_CONFIDENCE_LABEL, NetworkPreparer.INITIAL_CONFIDENCE_FULL_NAME);
+				Confidence initialConf = NetworkUtils.getExistingConfidence(interaction, PipelineProperties.getInstance().getInitialConfLabel(), PipelineProperties.getInstance().getInitialConfName());
 				Double initialProb = null;
 				if (initialConf != null) {
 					initialProb = Double.parseDouble(initialConf.getValue());
@@ -119,7 +99,7 @@ public class GraphInteractionAdaptor {
 				if (edge == null) {
 					logger.debug("No edge for " + interaction.getId());
 					Pair<Interactor> interactors = NetworkUtils.getInteractors(interaction);
-					Attribute removal = PsiFactory.createAttribute(NO_EXIST, "true");
+					Attribute removal = PsiFactory.createAttribute(PipelineProperties.getInstance().getRemovedAttributeLabel(), "true");
 					interaction.getAttributes().add(removal);
 					interactors.getFirst().getAttributes().add(removal);
 					interactors.getSecond().getAttributes().add(removal);
@@ -146,10 +126,10 @@ public class GraphInteractionAdaptor {
 				
 				// make a new Confidence
 				Confidence confidence = NetworkUtils.makeConfidence(edge.getWeight(), confidenceLabel,
-						confidenceFullName, confidenceLabel); // TODO this should be writeNf.format()
+						confidenceFullName, confidenceLabel);
 
 				interaction.getConfidences().add(confidence);
-				logger.debug("Updated interaction Id#" + interaction.getId() + " with probablility " + printNf.format(edge.getWeight()));
+				logger.debug("Updated interaction Id#" + interaction.getId() + " with probablility " + PipelineProperties.getInstance().getDisplayFormatter().format(edge.getWeight()));
 
 			}
 			entryIndex++;
@@ -160,18 +140,16 @@ public class GraphInteractionAdaptor {
 	}
 
 	public static UndirectedGraph<Integer, InteractionEdge> toGraph(EntrySet entrySet) {
-		return toGraph(entrySet, INITIAL_CONFIDENCE_LABEL, DEFAULT_PROBABILITY);
+		return toGraph(entrySet, PipelineProperties.getInstance().getInitialConfLabel(), PipelineProperties.getInstance().getInitialConfName());
 	}
 
 	/**
 	 * Converts a PSI-MI XML EntrySet to an undirected graph, using the value of the confidence with short label
 	 * {@code confidenceLabel} to weight edges, and using {@code defaultProbability} othewsie.
 	 */
-	public static UndirectedGraph<Integer, InteractionEdge> toGraph(EntrySet entrySet, String confidenceLabel,
-			double defaultProbability) {
+	public static UndirectedGraph<Integer, InteractionEdge> toGraph(EntrySet entrySet, String confidenceLabel, String confidenceName) {
 
-		logger.info("Converting PSI-MI to a graph using confidence short label " + confidenceLabel
-				+ " and default probability " + defaultProbability);
+		logger.info("Converting PSI-MI to a graph using confidence short label " + confidenceLabel);
 
 		UndirectedGraph<Integer, InteractionEdge> graph = new UndirectedSparseGraph<Integer, InteractionEdge>();
 
@@ -197,12 +175,13 @@ public class GraphInteractionAdaptor {
 			for (Interaction interaction : entry.getInteractions()) {
 
 				// note that using confidenceLabel twice here is weird
-				double probability = defaultProbability;
-				Confidence conf = NetworkUtils.getExistingConfidence(interaction, confidenceLabel, confidenceLabel);
-				if (conf != null) {
-					logger.trace("Prob(interaction)=" + probability);
-					probability = Double.parseDouble(conf.getValue());
+				double probability = -1;
+				Confidence conf = NetworkUtils.getExistingConfidence(interaction, confidenceLabel, confidenceName);
+				if (conf == null) {
+					throw new IllegalArgumentException("Initial confidence " + confidenceLabel + " missing for " + interaction.getId());
 				}
+				logger.trace("Prob(interaction)=" + probability);
+				probability = Double.parseDouble(conf.getValue());
 
 				InteractionEdge edge = new InteractionEdge(interaction.getId(), probability);
 

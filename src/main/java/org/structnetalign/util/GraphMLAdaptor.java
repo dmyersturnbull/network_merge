@@ -32,6 +32,7 @@ import org.structnetalign.CleverGraph;
 import org.structnetalign.Edge;
 import org.structnetalign.HomologyEdge;
 import org.structnetalign.InteractionEdge;
+import org.structnetalign.PipelineProperties;
 import org.xml.sax.SAXException;
 
 import edu.uci.ics.jung.graph.DirectedSparseGraph;
@@ -70,12 +71,6 @@ public class GraphMLAdaptor {
 		return readGraph(interactionFile.getPath(), homologyFile.getPath());
 	}
 
-	private static NumberFormat nf = new DecimalFormat();
-	static {
-		nf.setMinimumFractionDigits(1);
-		nf.setMaximumFractionDigits(7);
-	}
-	
 	/**
 	 * Just a simple graph reader. Does <em>not</em> read edge weights, etc.
 	 * 
@@ -223,7 +218,7 @@ public class GraphMLAdaptor {
 		return new Transformer<E, String>() {
 			@Override
 			public String transform(E edge) {
-				return nf.format(edge.getWeight());
+				return PipelineProperties.getInstance().getDisplayFormatter().format(edge.getWeight());
 			}
 		};
 	}

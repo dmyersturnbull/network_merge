@@ -15,10 +15,7 @@ package org.structnetalign.cross;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.WeakHashMap;
 import java.util.concurrent.CompletionService;
@@ -34,6 +31,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.structnetalign.CleverGraph;
 import org.structnetalign.InteractionEdge;
+import org.structnetalign.PipelineProperties;
 import org.structnetalign.ReportGenerator;
 import org.structnetalign.util.GraphMLAdaptor;
 import org.xml.sax.SAXException;
@@ -62,11 +60,6 @@ public class SimpleCrossingManager implements CrossingManager {
 
 		GraphMLAdaptor.writeInteractionGraph(graph.getInteraction(), output);
 
-	}
-	private static NumberFormat nf = new DecimalFormat();
-	static {
-		nf.setMinimumFractionDigits(1);
-		nf.setMaximumFractionDigits(3);
 	}
 
 	public SimpleCrossingManager(int nCores, int maxDepth) {
@@ -129,7 +122,7 @@ public class SimpleCrossingManager implements CrossingManager {
 				if (nUpdates > 0) { // don't bother if we didn't change anything
 					InteractionEdge edge = update.getRootInteraction(); // don't make a copy here!!
 					edgesToUpdate.put(edge, edge.getWeight() + update.getScore() - edge.getWeight() * update.getScore());
-					logger.debug("Updated interaction " + edge.getId() + " to " + nf.format(edge.getWeight()));
+					logger.debug("Updated interaction " + edge.getId() + " to " + PipelineProperties.getInstance().getDisplayFormatter().format(edge.getWeight()));
 				}
 			}
 

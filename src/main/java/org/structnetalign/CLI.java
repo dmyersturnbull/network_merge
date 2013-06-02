@@ -25,7 +25,6 @@ import org.apache.commons.cli.ParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.biojava.bio.structure.align.ce.AbstractUserArgumentProcessor;
-import org.structnetalign.util.GraphInteractionAdaptor;
 import org.structnetalign.weight.AtomCacheFactory;
 
 public class CLI {
@@ -54,10 +53,8 @@ public class CLI {
 
 	private static void runPipeline(CommandLine cmd) {
 		String pdbDir = cmd.getOptionValue("pdb_dir");
-		String inputCertainty = cmd.getOptionValue("input_confidence");
 		File input = new File(cmd.getOptionValue("input"));
 		File output = new File(cmd.getOptionValue("output"));
-		double defaultWeight = cmd.hasOption("default_weight")? Double.parseDouble(cmd.getOptionValue("default_weight")) : GraphInteractionAdaptor.DEFAULT_PROBABILITY;
 		int nCores = cmd.hasOption("cores")? Integer.parseInt(cmd.getOptionValue("cores")) : PipelineManager.N_CORES;
 		int xi = cmd.hasOption("xi")? Integer.parseInt(cmd.getOptionValue("xi")) : PipelineManager.XI;
 		double tau = cmd.hasOption("tau")? Double.parseDouble(cmd.getOptionValue("tau")) : PipelineManager.TAU;
@@ -67,9 +64,9 @@ public class CLI {
 		boolean writeSteps = cmd.hasOption("write_steps");
 		boolean noCross = cmd.hasOption("no_cross");
 		boolean noMerge = cmd.hasOption("no_merge");
-		runPipeline(pdbDir, nCores, input, output, inputCertainty, defaultWeight, tau, zeta, xi, beta, noCross, noMerge, writeSteps, report);
+		runPipeline(pdbDir, nCores, input, output, tau, zeta, xi, beta, noCross, noMerge, writeSteps, report);
 	}
-	private static void runPipeline(String pdbDir, int nCores, File input, File output, String inputCertainty, double defaultWeight, double tau, double zeta, int xi, double beta, boolean noCross, boolean noMerge, boolean writeSteps, boolean report) {
+	private static void runPipeline(String pdbDir, int nCores, File input, File output, double tau, double zeta, int xi, double beta, boolean noCross, boolean noMerge, boolean writeSteps, boolean report) {
 		if (pdbDir != null) {
 			System.setProperty(AbstractUserArgumentProcessor.PDB_DIR, pdbDir);
 			AtomCacheFactory.setCache(pdbDir);
@@ -82,8 +79,6 @@ public class CLI {
 		man.setBeta(beta);
 		man.setReport(report);
 		man.setWriteSteps(writeSteps);
-		man.setDefaultProbability(defaultWeight);
-		if (inputCertainty != null) man.setInitialConfidenceLabel(inputCertainty);
 		man.setNoCross(noCross);
 		man.setNoMerge(noMerge);
 		man.run(input, output);
@@ -134,12 +129,12 @@ public class CLI {
 		options.addOption(OptionBuilder.hasArg(true)
 				.withDescription("Required. The output PSI-MI25 XML file.").isRequired(true)
 				.create("output"));
-		options.addOption(OptionBuilder.hasArg(true)
-				.withDescription("The name of the PSI-MI25 confidence short label to use to give the initial weighting (probability) of an interaction as input to " + CLI.PROGRAM_NAME + ". Defaults to " + GraphInteractionAdaptor.INITIAL_CONFIDENCE_LABEL).isRequired(false)
-				.create("input_conf"));
-		options.addOption(OptionBuilder.hasArg(true)
-				.withDescription("The default weighting (probability) of an interaction if the interaction does not have a weight described by input_conf. Defaults to " + GraphInteractionAdaptor.DEFAULT_PROBABILITY).isRequired(false)
-				.create("default_weight"));
+//		options.addOption(OptionBuilder.hasArg(true)
+//				.withDescription("The name of the PSI-MI25 confidence short label to use to give the initial weighting (probability) of an interaction as input to " + CLI.PROGRAM_NAME + ". Defaults to " + GraphInteractionAdaptor.INITIAL_CONFIDENCE_LABEL).isRequired(false)
+//				.create("input_conf"));
+//		options.addOption(OptionBuilder.hasArg(true)
+//				.withDescription("The default weighting (probability) of an interaction if the interaction does not have a weight described by input_conf. Defaults to " + GraphInteractionAdaptor.DEFAULT_PROBABILITY).isRequired(false)
+//				.create("default_weight"));
 //		options.addOption(OptionBuilder.hasArg(true)
 //				.withDescription("The name of the PSI-MI25 confidence short label to use to describe the certainty of an interaction as determined by " + CLI.PROGRAM_NAME + ". Defaults to " + GraphInteractionAdaptor.CONFIDENCE_SHORT_LABEL).isRequired(false)
 //				.create("output_conf_label"));

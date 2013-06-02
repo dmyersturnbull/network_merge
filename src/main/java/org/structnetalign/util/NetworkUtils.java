@@ -24,7 +24,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +34,7 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.structnetalign.PipelineProperties;
 
 import psidev.psi.mi.xml.PsimiXmlReader;
 import psidev.psi.mi.xml.PsimiXmlReaderException;
@@ -79,7 +79,7 @@ public class NetworkUtils {
 			Unit existingUnit = exisiting.getUnit();
 			if (existingUnit != null) {
 				Names existingNames = existingUnit.getNames();
-				if (existingUnit != null) {
+				if (existingNames != null) {
 					if (confidenceLabel.equals(existingNames.getShortLabel())
 							|| confidenceFullName.equals(existingNames.getFullName())) {
 						return exisiting;
@@ -185,7 +185,8 @@ public class NetworkUtils {
 
 	public static Confidence makeConfidence(double value, String confidenceLabel, String confidenceFullName,
 			String xRefId) {
-		Confidence confidence = PsiFactory.createConfidence(String.valueOf(value), xRefId, confidenceLabel);
+		String theValue = PipelineProperties.getInstance().getOutputFormatter().format(value);
+		Confidence confidence = PsiFactory.createConfidence(theValue, xRefId, confidenceLabel);
 		confidence.getUnit().getNames().setFullName(confidenceFullName);
 		return confidence;
 	}

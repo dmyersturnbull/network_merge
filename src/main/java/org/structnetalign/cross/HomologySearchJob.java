@@ -15,8 +15,6 @@
 
 package org.structnetalign.cross;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.HashMap;
@@ -24,7 +22,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.NavigableMap;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.Callable;
 
@@ -32,9 +29,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.structnetalign.CleverGraph;
 import org.structnetalign.Edge;
-import org.structnetalign.HomologyEdge;
 import org.structnetalign.InteractionEdge;
-import org.structnetalign.util.EdgeWeighter;
+import org.structnetalign.PipelineProperties;
 
 import edu.uci.ics.jung.graph.UndirectedGraph;
 import edu.uci.ics.jung.graph.util.Pair;
@@ -77,7 +73,7 @@ public class HomologySearchJob implements Callable<InteractionEdgeUpdate> {
 					double scoreA = 1 - Math.exp(distToA);
 					double scoreB = 1 - Math.exp(distToB);
 					double aScore = interaction.getWeight() * (1 - scoreA - scoreB + scoreA*scoreB);
-					logger.debug("Updating " + root + " (" + rootA + ", " + rootB + ")" + " with score " + nf.format(aScore) + " due to " + interaction + " (" + a.getKey() + ", " + b.getKey() + ")");
+					logger.debug("Updating " + root + " (" + rootA + ", " + rootB + ")" + " with score " + PipelineProperties.getInstance().getDisplayFormatter().format(aScore) + " due to " + interaction + " (" + a.getKey() + ", " + b.getKey() + ")");
 					score += aScore - score * aScore;
 					nUpdates++;
 				}
@@ -92,12 +88,6 @@ public class HomologySearchJob implements Callable<InteractionEdgeUpdate> {
 		this.maxDepth = maxDepth;
 	}
 
-	private static NumberFormat nf = new DecimalFormat();
-	static {
-		nf.setMinimumFractionDigits(1);
-		nf.setMaximumFractionDigits(3);
-	}
-	
 	private <V, E extends Edge> NavigableMap<V, Double> findDistances(V root, UndirectedGraph<V, E> graph) {
 
 		NavigableMap<V, Double> map = new TreeMap<>();
@@ -134,7 +124,7 @@ public class HomologySearchJob implements Callable<InteractionEdgeUpdate> {
 				double weight = Math.log(edge.getWeight());
 				totalWeight = map.get(parent) + weight;
 			}
-			logger.trace("Weight for " + vertex + " is " + nf.format(totalWeight));
+			logger.trace("Weight for " + vertex + " is " + PipelineProperties.getInstance().getDisplayFormatter().format(totalWeight));
 			map.put(vertex, totalWeight);
 			
 			Collection<V> neighbors = graph.getNeighbors(vertex);
@@ -151,7 +141,7 @@ public class HomologySearchJob implements Callable<InteractionEdgeUpdate> {
 		}
 
 		for (Map.Entry<V, Double> entry : map.entrySet()) {
-			logger.trace("Prob(" + root + ", " + entry.getKey() + ") = " + nf.format(Math.exp(entry.getValue())));
+			logger.trace("Prob(" + root + ", " + entry.getKey() + ") = " + PipelineProperties.getInstance().getDisplayFormatter().format(Math.exp(entry.getValue())));
 		}
 		return map;
 

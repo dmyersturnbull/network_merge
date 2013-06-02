@@ -15,8 +15,6 @@
 package org.structnetalign.util;
 
 import java.io.File;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -29,17 +27,18 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.structnetalign.InteractionEdge;
+import org.structnetalign.PipelineProperties;
 
 import psidev.psi.mi.xml.model.Confidence;
 import psidev.psi.mi.xml.model.Entry;
 import psidev.psi.mi.xml.model.EntrySet;
+import psidev.psi.mi.xml.model.ExperimentDescription;
 import psidev.psi.mi.xml.model.Interaction;
+import psidev.psi.mi.xml.model.InteractionDetectionMethod;
 import psidev.psi.mi.xml.model.Interactor;
 import psidev.psi.mi.xml.model.Names;
 import psidev.psi.mi.xml.model.Participant;
-import psidev.psi.mi.xml.model.PsiFactory;
 import psidev.psi.mi.xml.model.Source;
-import psidev.psi.mi.xml.model.Unit;
 import edu.uci.ics.jung.algorithms.cluster.WeakComponentClusterer;
 import edu.uci.ics.jung.graph.UndirectedGraph;
 import edu.uci.ics.jung.graph.util.Pair;
@@ -55,21 +54,6 @@ import edu.uci.ics.jung.graph.util.Pair;
 public class NetworkPreparer {
 
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");
-
-	public static final String INITIAL_CONFIDENCE_LABEL = "struct-NA intial weighting";
-
-	public static final String INITIAL_CONFIDENCE_FULL_NAME = "struct-NA intial weighting";
-	
-	public static final double SINGLE_INTERACTION_PROBABILITY = 0.2;
-
-	private static NumberFormat nfWrite = new DecimalFormat();
-	private static NumberFormat nfPrint = new DecimalFormat();
-	static {
-		nfPrint.setMinimumFractionDigits(1);
-		nfPrint.setMaximumFractionDigits(3);
-		nfWrite.setMinimumFractionDigits(1);
-		nfWrite.setMaximumFractionDigits(7);
-	}
 	
 	public static void main(String[] args) {
 		if (args.length != 2) {
@@ -140,15 +124,29 @@ public class NetworkPreparer {
 	public void prepare(File input, File output) {
 		EntrySet entrySet = NetworkUtils.readNetwork(input);
 		entrySet = simplify(entrySet);
-		entrySet = initConfidences(entrySet, INITIAL_CONFIDENCE_LABEL, INITIAL_CONFIDENCE_FULL_NAME, SINGLE_INTERACTION_PROBABILITY);
+		entrySet = initConfidences(entrySet, PipelineProperties.getInstance().getInitialConfLabel(), PipelineProperties.getInstance().getInitialConfName());
 		NetworkUtils.writeNetwork(entrySet, output);
 	}
 
+	private double getWeight(Interaction interaction) {
+		Collection<ExperimentDescription> experiments = interaction.getExperiments();
+		for (ExperimentDescription experiment : experiments) {
+			InteractionDetectionMethod method = experiment.getInteractionDetectionMethod();
+			if (method != null) {
+				Names theNames = method.getNames();
+				if (theNames != null) {
+					return Experiments.getInstance().getWeight(theNames.getFullName());
+				}
+			}
+		}
+		return Experiments.getInstance().getWeight(null);
+	}
+	
 	/**
 	 * Gives a new confidence to each interaction based on its number of occurrences.
 	 * Specifically, the confidence value is the probability of any interaction given that each single interaction is assigned a probability of {@code p0}.
 	 */
-	public EntrySet initConfidences(EntrySet entrySet, String confidenceLabel, String confidenceFullName, double p0) {
+	public EntrySet initConfidences(EntrySet entrySet, String confidenceLabel, String confidenceFullName) {
 
 		// first, only copy the essential information (e.g. version number)
 		EntrySet myEntrySet = new EntrySet();
@@ -174,12 +172,14 @@ public class NetworkPreparer {
 				NavigableSet<Integer> participants = NetworkUtils.getVertexIds(interaction);
 				Pair<Integer> pair = new Pair<>(participants.first(), participants.last());
 				
+				double experimentWeight = getWeight(interaction);
+				
 				if (exisitingEdges.contains(pair)) {
 					
 					double prevValue = Double.parseDouble(confidences.get(pair).getValue());
-					double newValue = prevValue + p0 - prevValue * p0;
-					confidences.get(pair).setValue(nfWrite.format(newValue));
-					logger.debug("Updated initial confidence of interaction Id#" + interaction.getId() + " from " + nfPrint.format(prevValue) + " to " + nfPrint.format(newValue));
+					double newValue = prevValue + experimentWeight - prevValue * experimentWeight;
+					confidences.get(pair).setValue(PipelineProperties.getInstance().getOutputFormatter().format(newValue));
+					logger.debug("Updated initial confidence of interaction Id#" + interaction.getId() + " from " + PipelineProperties.getInstance().getDisplayFormatter().format(prevValue) + " to " + PipelineProperties.getInstance().getDisplayFormatter().format(newValue));
 					
 				} else {
 					
@@ -198,10 +198,10 @@ public class NetworkPreparer {
 					}
 
 					// make a new Confidence
-					Confidence confidence = NetworkUtils.makeConfidence(p0, confidenceLabel, confidenceFullName, confidenceLabel);
+					Confidence confidence = NetworkUtils.makeConfidence(experimentWeight, confidenceLabel, confidenceFullName, confidenceLabel);
 
 					confidences.put(pair, confidence);
-					logger.debug("Set initial confidence of interaction Id#" + interaction.getId() + " to " + p0);
+					logger.debug("Set initial confidence of interaction Id#" + interaction.getId() + " to " + experimentWeight);
 				}
 				
 				entryIndex++;

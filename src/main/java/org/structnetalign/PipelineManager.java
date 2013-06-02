@@ -62,8 +62,6 @@ public class PipelineManager {
 	private int nCores;
 	private boolean report = false;
 	private WeightManager weightManager;
-	private String initialConfidenceLabel = GraphInteractionAdaptor.INITIAL_CONFIDENCE_LABEL;
-	public double defaultProbability = GraphInteractionAdaptor.DEFAULT_PROBABILITY;
 	private boolean writeSteps = false;
 	private boolean noMerge;
 	private boolean noCross;
@@ -89,20 +87,8 @@ public class PipelineManager {
 		this.noCross = noCross;
 	}
 
-	public double getDefaultProbability() {
-		return defaultProbability;
-	}
-
-	public void setDefaultProbability(double defaultProbability) {
-		this.defaultProbability = defaultProbability;
-	}
-
 	public double getBeta() {
 		return beta;
-	}
-
-	public String getInitialConfidenceLabel() {
-		return initialConfidenceLabel;
 	}
 
 	/**
@@ -152,7 +138,7 @@ public class PipelineManager {
 		{
 			// build the graph
 			EntrySet entrySet = NetworkUtils.readNetwork(input);
-			UndirectedGraph<Integer, InteractionEdge> interaction = GraphInteractionAdaptor.toGraph(entrySet, initialConfidenceLabel, defaultProbability);
+			UndirectedGraph<Integer, InteractionEdge> interaction = GraphInteractionAdaptor.toGraph(entrySet);
 			graph = new CleverGraph(interaction);
 
 			// assign weights
@@ -290,10 +276,6 @@ public class PipelineManager {
 
 	public void setCrossingManager(CrossingManager crossingManager) {
 		this.crossingManager = crossingManager;
-	}
-
-	public void setInitialConfidenceLabel(String initialConfidenceLabel) {
-		this.initialConfidenceLabel = initialConfidenceLabel;
 	}
 
 	public void setMergeManager(MergeManager mergeManager) {
