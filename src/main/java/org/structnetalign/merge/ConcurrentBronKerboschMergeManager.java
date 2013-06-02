@@ -98,18 +98,22 @@ public class ConcurrentBronKerboschMergeManager extends BronKerboschMergeManager
 	}
 
 	@Override
-	public void merge(CleverGraph graph) {
+	public List<MergeUpdate> merge(CleverGraph graph) {
+
+		List<MergeUpdate> updates = new ArrayList<>();
 
 		WeakComponentClusterer<Integer, Edge> alg = new WeakComponentClusterer<>();
 		UndirectedGraph<Integer, Edge> combined = graph.buildCombinedGraph();
 		Set<Set<Integer>> ccs = alg.transform(combined);
 		logger.info("Submitting " + ccs.size() + " connected components as jobs");
 
-		ReportGenerator.getInstance().putInMerged("manager", this.getClass().getSimpleName());
-		ReportGenerator.getInstance().putInMerged("n_ccs", ccs.size());
-		
+		if (ReportGenerator.getInstance() != null) {
+			ReportGenerator.getInstance().putInMerged("manager", this.getClass().getSimpleName());
+			ReportGenerator.getInstance().putInMerged("n_ccs", ccs.size());
+		}
+
 		int nNonTrivialDegenSets = 0;
-		
+
 		// submit jobs
 		ExecutorService pool = Executors.newFixedThreadPool(nCores);
 		CompletionService<List<NavigableSet<Integer>>> completion = new ExecutorCompletionService<>(pool);
@@ -148,12 +152,15 @@ public class ConcurrentBronKerboschMergeManager extends BronKerboschMergeManager
 
 				// now add the result to the clevergraph
 				nNonTrivialDegenSets += degenerateSets.size();
-				contract(graph, degenerateSets);
+				List<MergeUpdate> newUpdates = contract(graph, degenerateSets);
+				updates.addAll(newUpdates);
 
 			}
 
-			ReportGenerator.getInstance().putInMerged("n_nontrivial_degenerate_sets", nNonTrivialDegenSets);
-			
+			if (ReportGenerator.getInstance() != null) {
+				ReportGenerator.getInstance().putInMerged("n_nontrivial_degenerate_sets", nNonTrivialDegenSets);
+			}
+
 		} finally {
 			pool.shutdownNow();
 
@@ -162,6 +169,9 @@ public class ConcurrentBronKerboschMergeManager extends BronKerboschMergeManager
 				logger.warn("There are " + count + " lingering threads");
 			}
 		}
+
+		return updates;
+
 	}
 
 }

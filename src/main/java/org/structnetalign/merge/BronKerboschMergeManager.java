@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NavigableSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -68,7 +69,7 @@ public class BronKerboschMergeManager implements MergeManager {
 	}
 
 	private static <E extends Edge> void move(UndirectedGraph<Integer, E> graph, int v, int v0, AtomicInteger removed,
-			AtomicInteger added) {
+			AtomicInteger added, Set<E> edgesRemovedOrMoved) {
 
 		// move edges
 		List<E> edgesToRemove = new ArrayList<>();
@@ -83,6 +84,7 @@ public class BronKerboschMergeManager implements MergeManager {
 			// as long as it's not an edge within this degenerate set
 			// make sure to include v0 in this! don't draw an edge from v to v0
 			if (neighbor != v0 && !graph.getNeighbors(v0).contains(neighbor)) {
+				edgesRemovedOrMoved.add(edge);
 				edgesToAdd.add(edge);
 				edgePairsToAdd.add(new Pair<>(v0, neighbor));
 			}
@@ -114,13 +116,15 @@ public class BronKerboschMergeManager implements MergeManager {
 	 *            A map where the key is any value, and the value is a set of vertices to be merged (can include the key
 	 *            vertex)
 	 */
-	protected static void contract(CleverGraph graph, List<NavigableSet<Integer>> cliqueGroups) {
+	protected static List<MergeUpdate> contract(CleverGraph graph, List<NavigableSet<Integer>> cliqueGroups) {
 
 		if (cliqueGroups.size() > 0) {
 			logger.info("Performing edge contraction on " + cliqueGroups.size() + " degenerate sets");
 		} else {
 			logger.info("No degenerate sets were found");
 		}
+		
+		List<MergeUpdate> updates = new ArrayList<>(cliqueGroups.size());
 
 		for (NavigableSet<Integer> group : cliqueGroups) {
 
@@ -128,6 +132,8 @@ public class BronKerboschMergeManager implements MergeManager {
 
 			int v0 = group.first(); // the vertex label we'll actually use
 
+			MergeUpdate update = new MergeUpdate(v0);
+			
 			int nVerticesRemoved = group.size() - 1;
 
 			// okay, this isn't exactly what AtomicInteger is for
@@ -137,9 +143,10 @@ public class BronKerboschMergeManager implements MergeManager {
 			AtomicInteger nIntAdded = new AtomicInteger(0);
 
 			for (int v : group) {
+				update.addVertex(v);
 				if (v != v0) {
-					move(graph.getInteraction(), v, v0, nHomRemoved, nIntRemoved);
-					move(graph.getHomology(), v, v0, nHomAdded, nIntAdded);
+					move(graph.getInteraction(), v, v0, nHomRemoved, nIntRemoved, update.getInteractionEdges());
+					move(graph.getHomology(), v, v0, nHomAdded, nIntAdded, update.getHomologyEdges());
 				}
 			}
 
@@ -151,6 +158,9 @@ public class BronKerboschMergeManager implements MergeManager {
 					+ " interaction edges contracted into vertex Id#" + v0 + " for degenerate set " + group);
 
 		}
+		
+		return updates;
+		
 	}
 
 	public BronKerboschMergeManager() {
@@ -158,11 +168,11 @@ public class BronKerboschMergeManager implements MergeManager {
 	}
 
 	@Override
-	public void merge(CleverGraph graph) {
+	public List<MergeUpdate> merge(CleverGraph graph) {
 		BronKerboschMergeJob job = new BronKerboschMergeJob(graph, 1);
 		try {
 			List<NavigableSet<Integer>> cliqueSets = job.call();
-			contract(graph, cliqueSets);
+			return contract(graph, cliqueSets);
 		} catch (Exception e) {
 			throw new RuntimeException("The merging process failed", e);
 		}

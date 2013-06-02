@@ -13,9 +13,11 @@
  */
 package org.structnetalign.merge;
 
+import java.util.List;
+
 import org.structnetalign.CleverGraph;
 
 
 public interface MergeManager {
-	public void merge(CleverGraph graph);
+	public List<MergeUpdate> merge(CleverGraph graph);
 }
