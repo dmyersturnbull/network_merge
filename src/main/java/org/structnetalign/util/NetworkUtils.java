@@ -24,6 +24,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableSet;
@@ -93,11 +95,8 @@ public class NetworkUtils {
 		Collection<Participant> participants = interaction.getParticipants();
 		if (participants.size() != 2) throw new IllegalArgumentException(
 				"Cannot handle interactions involving more than 2 participants");
-		NavigableSet<Interactor> set = new TreeSet<>();
-		for (Participant participant : participants) {
-			set.add(participant.getInteractor());
-		}
-		Pair<Interactor> pair = new Pair<>(set.first(), set.last());
+		Iterator<Participant> iter = participants.iterator();
+		Pair<Interactor> pair = new Pair<>(iter.next().getInteractor(), iter.next().getInteractor());
 		return pair;
 	}
 
