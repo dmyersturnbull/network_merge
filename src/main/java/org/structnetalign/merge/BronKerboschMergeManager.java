@@ -133,6 +133,7 @@ public class BronKerboschMergeManager implements MergeManager {
 			int v0 = group.first(); // the vertex label we'll actually use
 
 			MergeUpdate update = new MergeUpdate(v0);
+			updates.add(update);
 			
 			int nVerticesRemoved = group.size() - 1;
 

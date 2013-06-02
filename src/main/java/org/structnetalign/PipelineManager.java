@@ -15,21 +15,29 @@
 package org.structnetalign;
 
 import java.io.File;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.structnetalign.ReportGenerator.DegenerateSetEntry;
+import org.structnetalign.ReportGenerator.UpdateTableEntry;
 import org.structnetalign.cross.CrossingManager;
 import org.structnetalign.cross.SimpleCrossingManager;
 import org.structnetalign.merge.ConcurrentBronKerboschMergeManager;
 import org.structnetalign.merge.MergeManager;
+import org.structnetalign.merge.MergeUpdate;
 import org.structnetalign.util.EdgeTrimmer;
 import org.structnetalign.util.EdgeWeighter;
 import org.structnetalign.util.GraphInteractionAdaptor;
 import org.structnetalign.util.GraphMLAdaptor;
+import org.structnetalign.util.IdentifierMapping;
+import org.structnetalign.util.IdentifierMappingFactory;
 import org.structnetalign.util.InteractionUpdate;
 import org.structnetalign.util.NetworkUtils;
 import org.structnetalign.weight.SmartWeightManager;
@@ -185,9 +193,10 @@ public class PipelineManager {
 		}
 		
 		// merge
+		List<MergeUpdate> merges = null;
 		trimmer.trim(graph.getHomology(), zeta);
 		if (!noMerge) {
-			mergeManager.merge(graph);
+			merges = mergeManager.merge(graph);
 		}
 		if (writeSteps) {
 			GraphMLAdaptor.writeHomologyGraph(graph.getHomology(), new File(path + "hom_merged.graphml.xml"));
@@ -209,6 +218,8 @@ public class PipelineManager {
 
 		int endTime = (int) (System.currentTimeMillis() / 1000L);
 		if (report) {
+			putUpdates(updates);
+			putMerges(merges, entrySet);
 			ReportGenerator.getInstance().put("time_taken", (endTime - startTime));
 			ReportGenerator.getInstance().write();
 		}
@@ -217,6 +228,59 @@ public class PipelineManager {
 		if (count > 0) {
 			logger.warn("There are " + count + " lingering threads. Exiting anyway.");
 			System.exit(0);
+		}
+	}
+	
+	private void putMerges(List<MergeUpdate> merges, EntrySet entrySet) {
+		Map<Integer,String> uniProtIds = NetworkUtils.getUniProtIds(entrySet);
+		final IdentifierMapping mapping = IdentifierMappingFactory.getMapping();
+		List<DegenerateSetEntry> entries = new ArrayList<>();
+		for (MergeUpdate update : merges) {
+			DegenerateSetEntry entry = new DegenerateSetEntry();
+			entry.v0 = update.getV0();
+			entry.uniProtId0 = uniProtIds.get(update.getV0());
+			for (int v : update.getVertices()) {
+				entry.getIds().add(v);
+				final String uniProtId = uniProtIds.get(v);
+				entry.getUniProtIds().add(uniProtId);
+				entry.getPdbIds().add(mapping.uniProtToPdb(uniProtId));
+				entry.getScopIds().add(mapping.uniProtToScop(uniProtId));
+			}
+			entries.add(entry);
+		}
+		if (!entries.isEmpty()) {
+			ReportGenerator.getInstance().put("degenerate_sets", entries);
+		}
+	}
+
+	private void putUpdates(List<InteractionUpdate> updates) {
+		NumberFormat nf = new DecimalFormat(); // we do it this way because our code knows better, weirdly
+		nf.setMaximumFractionDigits(3);
+		final IdentifierMapping mapping = IdentifierMappingFactory.getMapping();
+		List<UpdateTableEntry> updated = new ArrayList<>();
+		for (InteractionUpdate update : updates) {
+			if (update.isRemoved()) continue;
+			UpdateTableEntry entry1 = new UpdateTableEntry();
+			entry1.before = nf.format(update.getInitialProbability());
+			entry1.after = nf.format(update.getEdge().getWeight());
+			entry1.id = update.getIds().getFirst();
+			entry1.uniProtId = update.getUniProtIds().getFirst();
+			entry1.pdbId = mapping.uniProtToPdb(entry1.uniProtId);
+			entry1.pdbId = entry1.pdbId.substring(0, entry1.pdbId.length()-2);
+			entry1.scopId = mapping.uniProtToScop(entry1.uniProtId);
+			updated.add(entry1);
+			UpdateTableEntry entry2 = new UpdateTableEntry();
+			entry2.before = nf.format(update.getInitialProbability());
+			entry2.after = nf.format(update.getEdge().getWeight());
+			entry2.id = update.getIds().getSecond();
+			entry2.uniProtId = update.getUniProtIds().getSecond();
+			entry2.pdbId = mapping.uniProtToPdb(entry2.uniProtId);
+			entry2.pdbId = entry2.pdbId.substring(0, entry2.pdbId.length()-2);
+			entry2.scopId = mapping.uniProtToScop(entry2.uniProtId);
+			updated.add(entry2);
+		}
+		if (!updated.isEmpty()) {
+			ReportGenerator.getInstance().put("updated", updated);
 		}
 	}
 

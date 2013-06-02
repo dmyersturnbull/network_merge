@@ -20,8 +20,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -42,6 +44,60 @@ import org.structnetalign.util.GraphImageWriter;
 
 public class ReportGenerator {
 
+	public static class DegenerateSetEntry {
+		public int v0;
+		public String uniProtId0;
+		public List<String> scopIds = new ArrayList<String>();
+		public List<Integer> ids = new ArrayList<Integer>();
+		public List<String> uniProtIds = new ArrayList<String>();
+		public List<String> pdbIds = new ArrayList<String>();
+		public int getV0() {
+			return v0;
+		}
+		public String getUniProtId0() {
+			return uniProtId0;
+		}
+		public List<String> getScopIds() {
+			return scopIds;
+		}
+		public List<Integer> getIds() {
+			return ids;
+		}
+		public List<String> getUniProtIds() {
+			return uniProtIds;
+		}
+		public List<String> getPdbIds() {
+			return pdbIds;
+		}
+	}
+	
+	public static class UpdateTableEntry {
+		public int id;
+		public String uniProtId;
+		public String pdbId;
+		public String scopId;
+		public String before;
+		public String after;
+		public int getId() {
+			return id;
+		}
+		public String getUniProtId() {
+			return uniProtId;
+		}
+		public String getBefore() {
+			return before;
+		}
+		public String getAfter() {
+			return after;
+		}
+		public String getPdbId() {
+			return pdbId;
+		}
+		public String getScopId() {
+			return scopId;
+		}
+	}
+	
 	private static class Properties {
 		private String imageSource;
 		private int nHomologies;

@@ -114,7 +114,7 @@ public class SmartWeightManager implements WeightManager {
 					AlignmentWeight alignment;
 					try {
 						// try to use structure
-						alignment = new CeWeight();
+						alignment = new NeedlemanWunschWeight();
 						alignment.setIds(uniProtIdA, uniProtIdB);
 					} catch (WeightException e) {
 						logger.warn("Couldn't get CE weight for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")", e);

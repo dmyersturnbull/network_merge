@@ -31,41 +31,41 @@
 			<section class="weighted">
 				<h2>Weighted graph</h2>
 				<div class="left">
-    				<table class="properties">
-    					<thead class="properties">
-    						<tr class="properties">
-    							<th class="properties">property name</th>
-    							<th class="properties">property value</th>
+    				<table>
+    					<thead>
+    						<tr>
+    							<th>property name</th>
+    							<th>property value</th>
     						</tr>
     					</thead>
-    					<tbody class="properties">
-    						<tr class="properties">
-    							<td class="properties">Manager</td>
-    							<td class="properties">${weighted.manager}</td>
+    					<tbody>
+    						<tr>
+    							<td>Manager</td>
+    							<td>${weighted.manager}</td>
     						</tr>
-    						<tr class="properties">
-    							<td class="properties">N vertices</td>
-    							<td class="properties">${weighted.n_vertices}</td>
+    						<tr>
+    							<td>N vertices</td>
+    							<td>${weighted.n_vertices}</td>
     						</tr>
-    						<tr class="properties">
-    							<td class="properties">N interactions</td>
-    							<td class="properties">${weighted.n_interactions}</td>
+    						<tr>
+    							<td>N interactions</td>
+    							<td>${weighted.n_interactions}</td>
     						</tr>
-    						<tr class="properties">
-    							<td class="properties">N homology edges</td>
-    							<td class="properties">${weighted.n_homologies}</td>
+    						<tr>
+    							<td>N homology edges</td>
+    							<td>${weighted.n_homologies}</td>
     						</tr>
-    						<tr class="properties">
-    							<td class="properties">Maximum interaction degree</td>
-    							<td class="properties">${weighted.max_interaction_degree}</td>
+    						<tr>
+    							<td>Maximum interaction degree</td>
+    							<td>${weighted.max_interaction_degree}</td>
     						</tr>
-    						<tr class="properties">
-    							<td class="properties">Maximum homology degree</td>
-    							<td class="properties">${weighted.max_homology_degree}</td>
+    						<tr>
+    							<td>Maximum homology degree</td>
+    							<td>${weighted.max_homology_degree}</td>
     						</tr>
-    						<tr class="properties">
-    							<td class="properties">N homology relations</td>
-    							<td class="properties">${weighted.n_updates}</td>
+    						<tr>
+    							<td>N homology relations</td>
+    							<td>${weighted.n_updates}</td>
     						</tr>
     					</tbody>
     				</table>
@@ -84,40 +84,69 @@
 			<section class="crossed">
 				<h2>Crossed graph</h2>
 				<div class="left">
-    				<table class="properties">
-    					<thead class="properties">
-    						<tr class="properties">
-    							<th class="properties">property name</th>
-    							<th class="properties">property value</th>
+    				<table>
+    					<thead>
+    						<tr>
+    							<th>property name</th>
+    							<th>property value</th>
     						</tr>
     					</thead>
-    					<tbody class="properties">
-    						<tr class="properties">
-    							<td class="properties">Manager</td>
-    							<td class="properties">${crossed.manager}</td>
+    					<tbody>
+    						<tr>
+    							<td>Manager</td>
+    							<td>${crossed.manager}</td>
     						</tr>
-    						<tr class="properties">
-    							<td class="properties">N vertices</td>
-    							<td class="properties">${crossed.n_vertices}</td>
+    						<tr>
+    							<td>N vertices</td>
+    							<td>${crossed.n_vertices}</td>
     						</tr>
-    						<tr class="properties">
-    							<td class="properties">N interactions</td>
-    							<td class="properties">${crossed.n_interactions}</td>
+    						<tr>
+    							<td>N interactions</td>
+    							<td>${crossed.n_interactions}</td>
     						</tr>
-    						<tr class="properties">
-    							<td class="properties">N homology edges</td>
-    							<td class="properties">${crossed.n_homologies}</td>
+    						<tr>
+    							<td>N homology edges</td>
+    							<td>${crossed.n_homologies}</td>
     						</tr>
-    						<tr class="properties">
-    							<td class="properties">N edges updated</td>
-    							<td class="properties">${crossed.n_updated}</td>
+    						<tr>
+    							<td>N edges updated</td>
+    							<td>${crossed.n_updated}</td>
     						</tr>
-    						<tr class="properties">
-    							<td class="properties">N updates</td>
-    							<td class="properties">${crossed.n_updates}</td>
+    						<tr>
+    							<td>N updates</td>
+    							<td>${crossed.n_updates}</td>
     						</tr>
     					</tbody>
     				</table>
+					#if ($updated)
+					<h3>Updated vertices</h3>
+					<table>
+    					<thead>
+    						<tr>
+    							<th>Id</th>
+    							<th>UniProt Id</th>
+    							<th>PDB Id</th>
+    							<th>SCOP Id</th>
+    							<th>initial</th>
+    							<th>updated</th>
+    						</tr>
+    					</thead>
+    					<tbody>
+							#foreach ($update in $updated)
+							#if ($update.before != $update.after)
+							<tr>
+								<td>$update.id</td>
+								<td><a href="http://www.uniprot.org/uniprot/$update.uniProtId">$update.uniProtId</a></td>
+								<td><a href="http://www.pdb.org/pdb/explore/explore.do?structureId=$update.pdbId">$update.pdbId</a></td>
+								<td><a href="http://scop.berkeley.edu/search/?ver=1.75B&key=$update.scopId">$update.scopId</a></td>
+								<td>$update.before</td>
+								<td>$update.after</td>
+							</tr>
+							#end
+							#end
+    					</tbody>
+					</table>
+					#end
 				</div>
     			<div class="right">
     				<figure>
@@ -133,40 +162,63 @@
 			<section class="merged">
 				<h2>Merged graph</h2>
 				<div class="left">
-    				<table class="properties">
-    					<thead class="properties">
-    						<tr class="properties">
-    							<th class="properties">property name</th>
-    							<th class="properties">property value</th>
+    				<table>
+    					<thead>
+    						<tr>
+    							<th>property name</th>
+    							<th>property value</th>
     						</tr>
     					</thead>
-    					<tbody class="properties">
-    						<tr class="properties">
-    							<td class="properties">Manager</td>
-    							<td class="properties">${merged.manager}</td>
+    					<tbody>
+    						<tr>
+    							<td>Manager</td>
+    							<td>${merged.manager}</td>
     						</tr>
-    						<tr class="properties">
-    							<td class="properties">N vertices</td>
-    							<td class="properties">${merged.n_vertices}</td>
+    						<tr>
+    							<td>N vertices</td>
+    							<td>${merged.n_vertices}</td>
     						</tr>
-    						<tr class="properties">
-    							<td class="properties">N interactions</td>
-    							<td class="properties">${merged.n_interactions}</td>
+    						<tr>
+    							<td>N interactions</td>
+    							<td>${merged.n_interactions}</td>
     						</tr>
-    						<tr class="properties">
-    							<td class="properties">N homology edges</td>
-    							<td class="properties">${merged.n_homologies}</td>
+    						<tr>
+    							<td>N homology edges</td>
+    							<td>${merged.n_homologies}</td>
     						</tr>
-    						<tr class="properties">
-    							<td class="properties">N connected components</td>
-    							<td class="properties">${merged.n_ccs}</td>
+    						<tr>
+    							<td>N connected components</td>
+    							<td>${merged.n_ccs}</td>
     						</tr>
-    						<tr class="properties">
-    							<td class="properties">N nontrivial degenerate vertex sets</td>
-    							<td class="properties">${merged.n_nontrivial_degenerate_sets}</td>
+    						<tr>
+    							<td>N nontrivial degenerate vertex sets</td>
+    							<td>${merged.n_nontrivial_degenerate_sets}</td>
     						</tr>
     					</tbody>
     				</table>
+					#if ($degenerate_sets)
+					<h3>Degenerate sets</h3>
+					<table>
+    					<thead>
+    						<tr>
+    							<th>Main vertex</th>
+    							<th>Vertices removed</th>
+    						</tr>
+    					</thead>
+    					<tbody>
+							#foreach ($update in $degenerate_sets)
+							<tr>
+								<td>$update.v0 <a href="http://www.uniprot.org/uniprot/$update.uniProtId0">$update.uniProtId0</a></td>
+								<td>
+									#foreach ($v in ${update.uniProtIds})
+									<a href="http://www.uniprot.org/uniprot/$v">$v</a>, 
+									#end
+								</td>
+							</tr>
+							#end
+    					</tbody>
+					</table>
+					#end
 				</div>
     			<div class="right">
     				<figure>

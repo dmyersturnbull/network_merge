@@ -46,7 +46,7 @@ public class HomologySearchJobTest {
 		graph.addHomology(new HomologyEdge(4, 0.8), 4, 7);
 		HomologySearchJob job = new HomologySearchJob(rootInteraction, graph);
 		job.setMaxDepth(100);
-		InteractionUpdate update = job.call();
+		InteractionEdgeUpdate update = job.call();
 		assertEquals("Wrong vertex", 1, update.getInteractorA());
 		assertEquals("Wrong vertex", 3, update.getInteractorB());
 		assertEquals("Wrong root interaction", rootInteraction, update.getRootInteraction());
