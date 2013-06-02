@@ -12,3 +12,6 @@ It is comparable to a network alignment algorithm but offers three advantages:
 
 StructNA is semi-stable but is nonetheless a work in progress currently not suitable for outside use.
 It is distributed under the terms of the Apache License version 2.
+
+### Build Status
+[![Build Status](https://travis-ci.org/dmyersturnbull/network_merge.png)](https://travis-ci.org/dmyersturnbull/network_merge)
