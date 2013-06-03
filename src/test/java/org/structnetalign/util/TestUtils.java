@@ -18,7 +18,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.RandomStringUtils;
@@ -45,25 +44,70 @@ public class TestUtils {
 		XMLUnit.setIgnoreAttributeOrder(true);
 	}
 
-	public static class IgnoringDifferenceListener implements DifferenceListener {
+	public static class ElementIgnoringDifferenceListener implements DifferenceListener {
 
-		private List<Integer> ignoreValues;
+		private String[] ignoredNames;
 
-		public IgnoringDifferenceListener() {
-			this(Arrays.asList(DifferenceConstants.ATTR_VALUE.getId()));
+		public ElementIgnoringDifferenceListener(String... ignoredNames) {
+			this.ignoredNames = ignoredNames;
 		}
 
-		public IgnoringDifferenceListener(List<Integer> ignoreValues) {
-			this.ignoreValues = ignoreValues;
+		public ElementIgnoringDifferenceListener(List<String> ignoredNames) {
+			this.ignoredNames = new String[ignoredNames.size()];
+			for (int i = 0; i < ignoredNames.size(); i++) {
+				this.ignoredNames[i] = ignoredNames.get(i);
+			}
 		}
 
 		@Override
 		public int differenceFound(Difference difference) {
-			if (ignoreValues.contains(difference.getId())) {
-				return RETURN_IGNORE_DIFFERENCE_NODES_IDENTICAL;
-			} else {
-				return RETURN_ACCEPT_DIFFERENCE;
+			Node controlNode = difference.getControlNodeDetail().getNode();
+			String name = null;
+			if (controlNode != null) {
+				name = controlNode.getNodeName();
 			}
+			for (String ignoredName : ignoredNames) {
+				if (ignoredName.equals(name)) {
+					return RETURN_IGNORE_DIFFERENCE_NODES_IDENTICAL;
+				}
+			}
+			return RETURN_ACCEPT_DIFFERENCE;
+		}
+
+		@Override
+		public void skippedComparison(Node control, Node test) {
+		}
+
+	}
+
+	public static class ElementTextIgnoringDifferenceListener implements DifferenceListener {
+
+		private String[] ignoredNames;
+
+		public ElementTextIgnoringDifferenceListener(String... ignoredNames) {
+			this.ignoredNames = ignoredNames;
+		}
+
+		public ElementTextIgnoringDifferenceListener(List<String> ignoredNames) {
+			this.ignoredNames = new String[ignoredNames.size()];
+			for (int i = 0; i < ignoredNames.size(); i++) {
+				this.ignoredNames[i] = ignoredNames.get(i);
+			}
+		}
+
+		@Override
+		public int differenceFound(Difference difference) {
+			Node controlNode = difference.getControlNodeDetail().getNode();
+			String name = null;
+			if (controlNode != null) {
+				name = controlNode.getParentNode().getNodeName();
+			}
+			for (String ignoredName : ignoredNames) {
+				if (ignoredName.equals(name)) {
+					return RETURN_IGNORE_DIFFERENCE_NODES_IDENTICAL;
+				}
+			}
+			return RETURN_ACCEPT_DIFFERENCE;
 		}
 
 		@Override
@@ -104,6 +148,7 @@ public class TestUtils {
 			// ignore order
 			// look at element, id, and weight (weight is a nested element)
 			diff.overrideElementQualifier(new RecursiveElementNameAndTextQualifier());
+			diff.overrideDifferenceListener(new ElementIgnoringDifferenceListener("source"));
 			final boolean isSimilar = diff.similar();
 			if (!isSimilar) printDetailedDiff(diff, System.err);
 			expectedFr.close();
