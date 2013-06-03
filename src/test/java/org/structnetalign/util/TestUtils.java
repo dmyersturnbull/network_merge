@@ -24,7 +24,6 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.custommonkey.xmlunit.DetailedDiff;
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.Difference;
-import org.custommonkey.xmlunit.DifferenceConstants;
 import org.custommonkey.xmlunit.DifferenceListener;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.custommonkey.xmlunit.examples.RecursiveElementNameAndTextQualifier;
@@ -35,6 +34,10 @@ import org.xml.sax.SAXException;
 
 import edu.uci.ics.jung.graph.UndirectedGraph;
 
+/**
+ * A collection of static utilities to aid in testing.
+ * @author dmyersturnbull
+ */
 public class TestUtils {
 
 	static {
@@ -44,6 +47,11 @@ public class TestUtils {
 		XMLUnit.setIgnoreAttributeOrder(true);
 	}
 
+	/**
+	 * A DifferenceListener that ignores elements and their attributes based on the element name.
+	 * @author dmyersturnbull
+	 *
+	 */
 	public static class ElementIgnoringDifferenceListener implements DifferenceListener {
 
 		private String[] ignoredNames;
@@ -66,7 +74,6 @@ public class TestUtils {
 			if (controlNode != null) {
 				name = controlNode.getNodeName();
 			}
-			System.err.println(name);
 			for (String ignoredName : ignoredNames) {
 				if (ignoredName.equals(name)) {
 					return RETURN_IGNORE_DIFFERENCE_NODES_IDENTICAL;
@@ -81,6 +88,11 @@ public class TestUtils {
 
 	}
 
+	/**
+	 * A DifferenceListener that ignores free text based on the name of the parent element.
+	 * @author dmyersturnbull
+	 *
+	 */
 	public static class ElementTextIgnoringDifferenceListener implements DifferenceListener {
 
 		private String[] ignoredNames;
@@ -141,6 +153,10 @@ public class TestUtils {
 		return ok;
 	}
 	
+	/**
+	 * Compares two XML files without regard to the order of elements or attributes, and ignoring any element named \"releaseDate\".
+	 * @return Whether the files are \"similar\"
+	 */
 	public static boolean compareXml(File expectedFile, File actualFile) {
 		try {
 			FileReader expectedFr = new FileReader(expectedFile);
