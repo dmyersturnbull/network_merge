@@ -68,9 +68,11 @@ public class SmartWeightManager implements WeightManager {
 
 	@Override
 	public void assignWeights(CleverGraph graph, Map<Integer, String> uniProtIds) {
-		
-		ReportGenerator.getInstance().putInWeighted("manager", this.getClass().getSimpleName());
-		
+
+		if (ReportGenerator.getInstance() != null) {
+			ReportGenerator.getInstance().putInWeighted("manager", this.getClass().getSimpleName());
+		}
+
 		// this is a bit annoying, but we need a map going from UniProt Ids to our Ids
 		// this is only because we're doing this concurrently
 		Map<String, Integer> graphIds = new HashMap<>();
@@ -83,7 +85,7 @@ public class SmartWeightManager implements WeightManager {
 		ExecutorService pool = Executors.newFixedThreadPool(nCores);
 
 		try {
-			
+
 			CompletionService<WeightResult> completion = new ExecutorCompletionService<>(pool);
 			List<Future<WeightResult>> futures = new ArrayList<>();
 
@@ -163,13 +165,13 @@ public class SmartWeightManager implements WeightManager {
 
 			logger.info("Submitted " + futures.size() + " jobs to " + nCores + " cores");
 
-			
+
 			/*
 			 *  Now respond to completion.
 			 */
-			
+
 			int nUpdates = 0;
-			
+
 			int createdIndex = 0; // there shouldn't be any homology edges yet
 			forfutures: for (Future<WeightResult> future : futures) {
 
@@ -257,23 +259,29 @@ public class SmartWeightManager implements WeightManager {
 			}
 
 			logger.info("Added " + graph.getHomologyCount() + " homology edges");
-			ReportGenerator.getInstance().putInWeighted("n_updates", nUpdates);
+			if (ReportGenerator.getInstance() != null) {
+				ReportGenerator.getInstance().putInWeighted("n_updates", nUpdates);
+			}
 
 			int maxHomologyDegree = 0;
 			for (int v : graph.getVertices()) {
 				int x = graph.getHomology().getIncidentEdges(v).size();
 				if (x > maxHomologyDegree) maxHomologyDegree = x;
 			}
-			ReportGenerator.getInstance().putInWeighted("max_homology_degree", maxHomologyDegree);
-			
+			if (ReportGenerator.getInstance() != null) {
+				ReportGenerator.getInstance().putInWeighted("max_homology_degree", maxHomologyDegree);
+			}
+
 			int maxInteractionDegree = 0;
 			for (int v : graph.getVertices()) {
 				int x = graph.getInteraction().getIncidentEdges(v).size();
 				if (x > maxInteractionDegree) maxInteractionDegree = x;
 			}
-			ReportGenerator.getInstance().putInWeighted("max_interaction_degree", maxInteractionDegree);
+			if (ReportGenerator.getInstance() != null) {
+				ReportGenerator.getInstance().putInWeighted("max_interaction_degree", maxInteractionDegree);
+			}
 
-			
+
 		} finally {
 			pool.shutdownNow();
 

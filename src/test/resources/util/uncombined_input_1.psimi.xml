@@ -10,62 +10,86 @@
 		<experimentList/>
 		<interactorList>
 			<interactor id="21">
+				<xref>
+					<primaryRef db="psi-mi" dbAc="MI:0488a" id="a2" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="a2" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
 				<interactorType>
 					<names>
 						<fullName>protein</fullName>
 					</names>
 					<xref>
-						<primaryRef db="psi-mi" dbAc="MI:0488a" id="a2" refType="identity" refTypeAc="MI:0356"/>
+						<primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0326" dbAc="MI:0488" db="psi-mi"/>
 					</xref>
 				</interactorType>
 			</interactor>
 			<interactor id="22">
+				<xref>
+					<primaryRef db="psi-mi" dbAc="MI:0465" id="b2" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="b2" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
 				<interactorType>
 					<names>
 						<fullName>protein</fullName>
 					</names>
 					<xref>
-						<primaryRef db="psi-mi" dbAc="MI:0465" id="b2" refType="identity" refTypeAc="MI:0356"/>
+						<primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0326" dbAc="MI:0488" db="psi-mi"/>
 					</xref>
 				</interactorType>
 			</interactor>
 			<interactor id="23">
+				<xref>
+					<primaryRef db="psi-mi" dbAc="MI:0465" id="c2" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="c2" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
 				<interactorType>
 					<names>
 						<fullName>protein</fullName>
 					</names>
 					<xref>
-						<primaryRef db="psi-mi" dbAc="MI:0465" id="c2" refType="identity" refTypeAc="MI:0356"/>
+						<primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0326" dbAc="MI:0488" db="psi-mi"/>
 					</xref>
 				</interactorType>
 			</interactor>
 			<interactor id="24">
+				<xref>
+					<primaryRef db="psi-mi" dbAc="MI:0488b" id="d2" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="d2" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
 				<interactorType>
 					<names>
 						<fullName>protein</fullName>
 					</names>
 					<xref>
-						<primaryRef db="psi-mi" dbAc="MI:0488b" id="d2" refType="identity" refTypeAc="MI:0356"/>
+						<primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0326" dbAc="MI:0488" db="psi-mi"/>
 					</xref>
 				</interactorType>
 			</interactor>
 			<interactor id="25">
+				<xref>
+					<primaryRef db="psi-mi" dbAc="MI:0488" id="e2" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="e2" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
 				<interactorType>
 					<names>
 						<fullName>protein</fullName>
 					</names>
 					<xref>
-						<primaryRef db="psi-mi" dbAc="MI:0488" id="e2" refType="identity" refTypeAc="MI:0356"/>
+						<primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0326" dbAc="MI:0488" db="psi-mi"/>
 					</xref>
 				</interactorType>
 			</interactor>
 			<interactor id="26">
+				<xref>
+					<primaryRef db="psi-mi" dbAc="MI:0488" id="f2" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="f2" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
 				<interactorType>
 					<names>
 						<fullName>protein</fullName>
 					</names>
 					<xref>
-						<primaryRef db="psi-mi" dbAc="MI:0488" id="f2" refType="identity" refTypeAc="MI:0356"/>
+						<primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0326" dbAc="MI:0488" db="psi-mi"/>
 					</xref>
 				</interactorType>
 			</interactor>

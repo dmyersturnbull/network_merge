@@ -60,6 +60,10 @@ public class Experiments {
 		}
 	}
 	
+	public double getDefaultWeight() {
+		return defaultWeight;
+	}
+
 	private Experiments() {
 		weights = new HashMap<>();
 	}
@@ -67,6 +71,14 @@ public class Experiments {
 	private double defaultWeight;
 	private Map<String,Double> weights;
 	
+	public Map<String, Double> getWeights() {
+		return weights;
+	}
+
+	public void setDefaultWeight(double defaultWeight) {
+		this.defaultWeight = defaultWeight;
+	}
+
 	public Double getWeight(String name) {
 		if (name == null) return defaultWeight;
 		if (!weights.containsKey(name)) return defaultWeight;

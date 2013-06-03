@@ -33,7 +33,7 @@ public class NetworkCombinerTest {
 		File expected = new File(RESOURCE_DIR + "combined_output.psimi.xml");
 		File output = new File("combinedoutput.psimi.xml.tmp");
 		output.deleteOnExit();
-		NetworkCombiner combiner = new NetworkCombiner(0);
+		NetworkCombiner combiner = new NetworkCombiner(1);
 		combiner.combine(output, input1, input2);
 		boolean similar = TestUtils.compareXml(expected, output);
 		assertTrue("XML differs from expected", similar);

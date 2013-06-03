@@ -20,8 +20,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.TreeSet;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -218,7 +216,7 @@ public class GraphMLAdaptor {
 		return new Transformer<E, String>() {
 			@Override
 			public String transform(E edge) {
-				return PipelineProperties.getInstance().getDisplayFormatter().format(edge.getWeight());
+				return PipelineProperties.getInstance().getOutputFormatter().format(edge.getWeight());
 			}
 		};
 	}

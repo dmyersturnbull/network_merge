@@ -30,7 +30,7 @@ import psidev.psi.mi.xml.model.EntrySet;
 public class NetworkPreparerTest {
 
 	private static final String RESOURCE_DIR = "src/test/resources/util/";
-	
+
 	@Test
 	public void testSimplify() throws IOException {
 		final File expected = new File(RESOURCE_DIR + "simplified_network.psimi.xml");
@@ -47,20 +47,26 @@ public class NetworkPreparerTest {
 
 	@Test
 	public void testInitConfidence() {
-		final File input = new File(RESOURCE_DIR + "before_init_conf.psimi.xml");
-		NetworkPreparer prep = new NetworkPreparer();
-		EntrySet entrySet = NetworkUtils.readNetwork(input);
-		entrySet = prep.initConfidences(entrySet, "IamaLABEL", "andImaNAME", 0.2);
-		File actual = new File("withinitconf.psimi.xml.tmp");
-		actual.deleteOnExit();
-		NetworkUtils.writeNetwork(entrySet, actual);
-		final File expected = new File(RESOURCE_DIR + "after_init_conf.psimi.xml");
-		boolean similar = TestUtils.compareXml(actual, expected);
-		assertTrue("Graph is wrong", similar);
-		actual.delete();
+		double originalWeight = Experiments.getInstance().getDefaultWeight();
+		Experiments.getInstance().setDefaultWeight(0.2);
+		try {
+			final File input = new File(RESOURCE_DIR + "before_init_conf.psimi.xml");
+			NetworkPreparer prep = new NetworkPreparer();
+			EntrySet entrySet = NetworkUtils.readNetwork(input);
+			entrySet = prep.initConfidences(entrySet, "IamaLABEL", "andImaNAME");
+			File actual = new File("withinitconf.psimi.xml.tmp");
+			actual.deleteOnExit();
+			NetworkUtils.writeNetwork(entrySet, actual);
+			final File expected = new File(RESOURCE_DIR + "after_init_conf.psimi.xml");
+			boolean similar = TestUtils.compareXml(actual, expected);
+			assertTrue("Graph is wrong", similar);
+			actual.delete();
+		} finally { // for other tests!
+			Experiments.getInstance().setDefaultWeight(originalWeight);
+		}
 	}
-	
-//	@Test
+
+	//	@Test
 	public void testGetCcs() throws IOException {
 		final File input = new File(RESOURCE_DIR + "simplified_network.psimi.xml");
 		final File output = new File("cc.xml");
@@ -69,7 +75,7 @@ public class NetworkPreparerTest {
 		NetworkPreparer prep = new NetworkPreparer();
 		EntrySet entrySet = NetworkUtils.readNetwork(input);
 		List<EntrySet> ccs = prep.getConnnectedComponents(entrySet);
-		
+
 		assertEquals("Found the wrong number of connected components", 2, ccs.size());
 		for (int i = 0; i < ccs.size(); i++) {
 			NetworkUtils.writeNetwork(ccs.get(i), output);
@@ -79,5 +85,5 @@ public class NetworkPreparerTest {
 			output.delete();
 		}
 	}
-	
+
 }

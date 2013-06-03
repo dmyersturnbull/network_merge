@@ -14,11 +14,11 @@
  */
 package org.structnetalign.merge;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
-import org.junit.Test;
 import org.structnetalign.CleverGraph;
 import org.structnetalign.util.GraphMLAdaptor;
 import org.structnetalign.util.TestUtils;

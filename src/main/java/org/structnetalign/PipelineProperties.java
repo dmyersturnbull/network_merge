@@ -71,9 +71,11 @@ public class PipelineProperties {
 		instance.removedAttributeLabel = props.getProperty("removed_attribute_label", REMOVED_ATTRIBUTE_LABEL);
 		int maxOutputDigits = Integer.parseInt(props.getProperty("max_output_digits", MAX_OUTPUT_DIGITS));
 		instance.outputFormatter = new DecimalFormat();
+		instance.outputFormatter.setMinimumFractionDigits(1);
 		instance.outputFormatter.setMaximumFractionDigits(maxOutputDigits);
 		int maxDisplayDigits = Integer.parseInt(props.getProperty("max_display_digits", MAX_DISPLAY_DIGITS));
 		instance.displayFormatter = new DecimalFormat();
+		instance.displayFormatter.setMinimumFractionDigits(1);
 		instance.displayFormatter.setMaximumFractionDigits(maxDisplayDigits);
 	}
 

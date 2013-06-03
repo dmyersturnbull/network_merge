@@ -37,7 +37,7 @@ public class SimpleWeightManagerTest {
 		assertEquals("Wrong number of homology edges", 15, hom.getEdgeCount());
 		
 		// gets an alignment score of 0.507 and a SCOP score of 0.4
-		assertEquals(0.704, hom.findEdge(4, 5).getWeight(), PRECISION);
+		assertEquals(0.6988820186030443, hom.findEdge(4, 5).getWeight(), PRECISION);
 	}
 	
 }

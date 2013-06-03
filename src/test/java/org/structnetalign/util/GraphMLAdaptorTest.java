@@ -91,7 +91,6 @@ public class GraphMLAdaptorTest {
 		CleverGraph clever = new CleverGraph();
 		clever.addVertex(0);
 		clever.addVertex(2);
-		clever.addVertex(3);
 		clever.addVertex(4);
 		clever.addVertex(5);
 		clever.addInteraction(new InteractionEdge(0, 0.1), 0, 5);

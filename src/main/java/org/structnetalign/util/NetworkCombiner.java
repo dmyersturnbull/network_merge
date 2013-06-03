@@ -216,7 +216,7 @@ public class NetworkCombiner {
 	/**
 	 * 
 	 * @param probability
-	 *            The probability that an interactor/vertex will be removed
+	 *            The probability that an interactor/vertex will be retained
 	 */
 	public NetworkCombiner(double probability) {
 		super();

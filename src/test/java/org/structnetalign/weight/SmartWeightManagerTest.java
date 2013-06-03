@@ -35,7 +35,7 @@ public class SmartWeightManagerTest {
 		
 		// gets an alignment score of 0.507 and a SCOP score of 0.4
 		// note that we don't know the Id in a multithreaded environment
-		assertEquals(0.704, hom.findEdge(4, 5).getWeight(), PRECISION);
+		assertEquals(0.6309827640820483, hom.findEdge(4, 5).getWeight(), PRECISION);
 	}
 	
 }

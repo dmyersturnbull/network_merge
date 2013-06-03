@@ -45,7 +45,7 @@ import edu.uci.ics.jung.graph.util.Pair;
 public class GraphInteractionAdaptor {
 
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");
-	
+
 	public static void main(String[] args) throws IOException {
 		if (args.length != 2) {
 			System.err.println("Usage: " + GraphInteractionAdaptor.class.getSimpleName()
@@ -73,7 +73,7 @@ public class GraphInteractionAdaptor {
 			String confidenceLabel, String confidenceFullName) {
 
 		List<InteractionUpdate> updates = new ArrayList<>();
-		
+
 		logger.info("Modifying probabilities of " + graph.getEdgeCount() + " interactions in "
 				+ entrySet.getEntries().size() + " entries");
 		int entryIndex = 1;
@@ -94,7 +94,7 @@ public class GraphInteractionAdaptor {
 				if (initialConf != null) {
 					initialProb = Double.parseDouble(initialConf.getValue());
 				}
-				
+
 				// this is only true if we edge-contracted that vertex
 				if (edge == null) {
 					logger.debug("No edge for " + interaction.getId());
@@ -123,7 +123,7 @@ public class GraphInteractionAdaptor {
 				// report the update
 				InteractionUpdate update = new InteractionUpdate(idsPair, uniProtIds, initialProb, edge, false);
 				updates.add(update);
-				
+
 				// make a new Confidence
 				Confidence confidence = NetworkUtils.makeConfidence(edge.getWeight(), confidenceLabel,
 						confidenceFullName, confidenceLabel);
@@ -134,7 +134,7 @@ public class GraphInteractionAdaptor {
 			}
 			entryIndex++;
 		}
-		
+
 		return updates;
 
 	}
@@ -176,12 +176,16 @@ public class GraphInteractionAdaptor {
 
 				// note that using confidenceLabel twice here is weird
 				double probability = -1;
-				Confidence conf = NetworkUtils.getExistingConfidence(interaction, confidenceLabel, confidenceName);
-				if (conf == null) {
-					throw new IllegalArgumentException("Initial confidence " + confidenceLabel + " missing for " + interaction.getId());
+				if (confidenceLabel == null && confidenceName == null) {
+					probability = 1.0; // we're probably just testing (or otherwise don't need real probabilities
+				} else {
+					Confidence conf = NetworkUtils.getExistingConfidence(interaction, confidenceLabel, confidenceName);
+					if (conf == null) {
+						throw new IllegalArgumentException("Initial confidence " + confidenceLabel + " missing for " + interaction.getId());
+					}
+					probability = Double.parseDouble(conf.getValue());
 				}
 				logger.trace("Prob(interaction)=" + probability);
-				probability = Double.parseDouble(conf.getValue());
 
 				InteractionEdge edge = new InteractionEdge(interaction.getId(), probability);
 

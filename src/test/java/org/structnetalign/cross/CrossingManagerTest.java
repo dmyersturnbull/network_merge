@@ -13,13 +13,12 @@
  */
 package org.structnetalign.cross;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
-import org.junit.Test;
 import org.structnetalign.CleverGraph;
-import org.structnetalign.merge.MergeManager;
 import org.structnetalign.util.GraphMLAdaptor;
 import org.structnetalign.util.TestUtils;
 
@@ -31,8 +30,12 @@ public class CrossingManagerTest {
 		assertEquals(nHomologies, graph.getHomologyCount()); // just a sanity check for the test itself
 		assertEquals(nInteractions, graph.getInteractionCount()); // just a sanity check for the test itself
 		crosser.cross(graph);
-		GraphMLAdaptor.writeHomologyGraph(graph.getHomology(), new File("ahom.xml.tmp"));
-		GraphMLAdaptor.writeInteractionGraph(graph.getInteraction(), new File("aint.xml.tmp"));
+		File ahom = new File("ahom.xml.tmp");
+		ahom.deleteOnExit();
+		GraphMLAdaptor.writeHomologyGraph(graph.getHomology(), ahom);
+		File aint = new File("aint.xml.tmp");
+		aint.deleteOnExit();
+		GraphMLAdaptor.writeInteractionGraph(graph.getInteraction(), aint);
 		boolean inter = TestUtils.compareInteractionGraph(graph.getInteraction(), interactionOutput);
 		assertTrue("Interaction graph differs from expected", inter);
 		boolean hom = TestUtils.compareHomologyGraph(graph.getHomology(), homologyOutput);

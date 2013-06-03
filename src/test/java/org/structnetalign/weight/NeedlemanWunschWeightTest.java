@@ -33,7 +33,7 @@ public class NeedlemanWunschWeightTest {
 		 * EBU reports 16.9% identity.
 		 */
 		double prob = weight.assignWeight("P02185", "P00720");
-		assertEquals(0.39176030, prob, PRECISION);
+		assertEquals(0.3828903187777678, prob, PRECISION);
 	}
 	
 }

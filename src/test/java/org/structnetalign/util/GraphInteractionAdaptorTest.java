@@ -34,7 +34,7 @@ public class GraphInteractionAdaptorTest {
 	@Test
 	public void testToGraphEasy() {
 		EntrySet entrySet = NetworkUtils.readNetwork(RESOURCE_DIR + "psimi_input.psimi.xml");
-		UndirectedGraph<Integer, InteractionEdge> interaction = GraphInteractionAdaptor.toGraph(entrySet, null, 1);
+		UndirectedGraph<Integer, InteractionEdge> interaction = GraphInteractionAdaptor.toGraph(entrySet, null, null);
 		assertEquals(5, interaction.getVertexCount());
 		assertEquals(3, interaction.getEdgeCount());
 		File expectedFile = new File(RESOURCE_DIR + "expected_graphml_output.graphml.xml");
