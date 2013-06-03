@@ -66,6 +66,7 @@ public class TestUtils {
 			if (controlNode != null) {
 				name = controlNode.getNodeName();
 			}
+			System.err.println(name);
 			for (String ignoredName : ignoredNames) {
 				if (ignoredName.equals(name)) {
 					return RETURN_IGNORE_DIFFERENCE_NODES_IDENTICAL;
@@ -148,7 +149,7 @@ public class TestUtils {
 			// ignore order
 			// look at element, id, and weight (weight is a nested element)
 			diff.overrideElementQualifier(new RecursiveElementNameAndTextQualifier());
-			diff.overrideDifferenceListener(new ElementIgnoringDifferenceListener("source"));
+			diff.overrideDifferenceListener(new ElementIgnoringDifferenceListener("releaseDate"));
 			final boolean isSimilar = diff.similar();
 			if (!isSimilar) printDetailedDiff(diff, System.err);
 			expectedFr.close();
