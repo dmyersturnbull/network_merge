@@ -41,7 +41,7 @@ public class NetworkPreparerTest {
 		EntrySet entrySet = NetworkUtils.readNetwork(input);
 		entrySet = prep.simplify(entrySet);
 		NetworkUtils.writeNetwork(entrySet, output);
-		assertTrue("Simplified file is wrong", FileUtils.contentEquals(expected, output));
+		assertTrue("Simplified file is wrong", TestUtils.compareXml(expected, output));
 		output.delete();
 	}
 
