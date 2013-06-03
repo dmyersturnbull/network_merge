@@ -87,13 +87,12 @@
 \subsection{Algorithm}
 
 Pre- and post-processing steps are not included in the formal description but are listed below.\\
-StructNetAlign($G$, $\beta$, $\tau$, $\zeta$, $\xi$):
+StructNetAlign($G$, $A$, $\tau$, $\zeta$, $\xi$):
 
 \begin{enumerate}
 \NS
 \item Parse network.
-\item For every pair of vertices $(a,b)$, add an edge $(a,b)$ to $Hom(G)$, with label $\beta \cdot \rho(a,b)$.
-\item For every pair of vertices $(a,b)$ not joined by an edge in $Hom(G)$), align $a$ against $b$ and add an edge to $Hom(G)$, with label $\alpha(a,b)$.
+\item For every pair of vertices $(a,b)$, add an edge $(a,b)$ to $Hom(G)$, with label $\beta \cdot \rho_{A}(a,b)$.
 \item For every edge $e \in G$ such that $S(e) < \tau$, remove $e$.
 \item For every edge $(u,v) \in Int(G)$:
 \begin{enumerate}
@@ -140,11 +139,15 @@ $0.0$ & $0.1$ & $0.4$ & $0.8$ & $1.0$ \\
 
 \NI For Needleman--Wunsch, we use BLOSUM62, a gap opening penalty of $-12$, and a gap extension penalty of $-1$. We then score homology relationships using percentage identity applied to a gamma distribution with shape $k=25.54$, scale $\theta=4.96$, and a linear shift of $0.2$, which was found by Weber et. al. \cite{webber} to give the best results for global alignment.
 
-\subsection{Defining homology by alignment}
-
 \subsection{Using homology to score interactions}
 
-Define
+\NI The central idea here is very simple. Suppose we have four proteins $a$, $b$, $c$, and $d$ in the situtation shown in the figure. $a$ and $b$ interact, and $c$ and $d$ interact. Since $a$ is homologous to $c$ and $b$ is homologous to $d$, we now know with greater probability that $a$ and $b$ interact, and that $c$ and $d$ interact. (Indeed, we could also suggest that $a$ and $c$ interact.)
+
+\NI We wish to use $y$ to increase $Prob(x)$. However, it would be inappropriate to let $x'\,\! := x \; \vee \; y$ and thereby $Prob(x)'\,\! := Prob(x) + Prob(y|\neg x)$, since this would not take into account the probabilities given by $\alpha$ and $\beta$. Instead, we let $x'\,\! := x \; \vee \; \alpha \beta y$ and thereby $Prob(x'\,\!) := Prob(x) + Prob(y | \neg x) Prob(\alpha) Prob(\beta)$. This way, we take into account both the probablity of an interaction and the probability that the interaction is homologous.
+
+\NI We should favor to be liberal when incorperating additional information into our model to alter probability. We can imagine a situtation in which $a$ has some interaction $x$, and $a$ is homologous to $b$ which is then homologous to $c$, but due to some limitation in our method or an underlying algorithm or database used in the above section, we do not have an edge from $a$ to $c$. If $c$ has some interaction $y$ that is similar to $x$, we would like to use $y$ to update the probability of $x$. This leads to the formulation below:
+
+\NI Define
 $R_{i,j}^{(u,v)} = Prob(i,j) \left(1 - \displaystyle Q_{u,i} - Q_{v,j} + Q_{u,i} \cdot Q_{v,j} \right)$
 
 \NI Define $Q_{a,b} = \displaystyle \prod_{\text{paths } \pi \text{ from a to b}} \left( 1 - \prod_{k} S(\pi_k) \right)$
@@ -153,7 +156,7 @@ $R_{i,j}^{(u,v)} = Prob(i,j) \left(1 - \displaystyle Q_{u,i} - Q_{v,j} + Q_{u,i}
 
 \NI $Prob((u,v))'\,\! = Prob((u,v)) + 1 - \displaystyle \prod_{i,j}(1 - R_{i,j}^{(u,v)})$
 
-\NI Unfortunately, this would require use to enumerate all possible paths. Since these paths describe homology, we expect the shortest path to give the highest probability. Indeed, a violation of this property is a violation of the idea of homology, so such cases should not be receive better scores than their shortest path gives. Therefore, we approximate the above by taking only the shortest path rather than all paths. With this in mind, we simplify the definition of $Prob((u,v))$ to:
+\NI Unfortunately, this would require use to enumerate all possible paths. Therefore, we need to be satisfied with the assumption that our homology graph contains every edge that it should. Under this assumption, a case like the one described above is a violation of the idea of homology, since homology should be a metric on our graph and thus obey the triangle inequality. With this in mind, we approximate the above by taking only the shortest path rather than all paths. This simplifies the definition of $Prob((u,v))$ to:
 
 \NI $Prob((u,v))'\,\! = Prob((u,v)) + \displaystyle Prob((i,j)) \left( \prod_{\pi_k \in \pi^i}(S(\pi_k^i) \prod_{\pi_k \in \pi^j}(S(\pi_k^j) - Prob((x,y)) \prod_{\pi_k \in \pi^i}(S(\pi_k^i) \prod_{\pi_k \in \pi^j}(S(\pi_k^j) \right)$,
 
