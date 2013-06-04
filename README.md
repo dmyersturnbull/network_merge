@@ -70,7 +70,7 @@ Struct-NA uses [Log4J](http://logging.apache.org/log4j/) version 2. Modify the f
 
 ###How do I obtain a checkout?###
 Struct-NA is most easily built using [Maven](http://maven.apache.org/). Here are three methods:
-*```mvn scm:checkout -DconnectionUrl=https://github.com/dmyersturnbull/network_merge.git -DcheckoutDirectory=./StructNA```
+*Run: ```mvn scm:checkout -DconnectionUrl=https://github.com/dmyersturnbull/network_merge.git -DcheckoutDirectory=./StructNA```
 *Use [Eclipse](http://eclipse.org) and [m2eclipse](http://m2eclipse.codehaus.org/) with a Git m2eclipse discovery backend
 *Checkout the Maven project directly from the [Maven central repository](http://search.maven.org/)
 * Use Git, then Maven:
