@@ -56,7 +56,7 @@ public class GraphInteractionAdaptorTest {
 		GraphInteractionAdaptor.modifyProbabilites(entrySet, graph, new HashMap<Integer,Integer>(), new HashMap<Integer,Integer>());
 		File expected = new File(RESOURCE_DIR + "modified_probabilities.psimi.xml");
 		File output = new File("modifiedprobs.psimi.tmp");
-		output.deleteOnExit();
+//		output.deleteOnExit();
 		NetworkUtils.writeNetwork(entrySet, output);
 		assertTrue("Modified graph is wrong", TestUtils.compareXml(expected, output));
 	}

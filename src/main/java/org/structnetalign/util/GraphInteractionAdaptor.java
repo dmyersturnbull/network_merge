@@ -143,17 +143,6 @@ public class GraphInteractionAdaptor {
 				}
 
 				/*
-				 * If there's nothing to update, don't bother.
-				 * This skip is to avoid bad reporting.
-				 */
-				if (initialProb != null) {
-					if (initialProb == edge.getWeight()) {
-						logger.trace("Skipping " + edge.getId() + " as unmodified");
-						continue;
-					}
-				}
-
-				/*
 				 *  A confidence with this label or full name shouldn't already exist.
 				 *  If it does, it probably means we've already run before, so we'll just delete it from the output.
 				 *  This is critical because otherwise we'd lose our new confidence.
@@ -166,9 +155,17 @@ public class GraphInteractionAdaptor {
 					interaction.getConfidences().remove(alreadyExists);
 				}
 
-				// report the update to the calling client
-				InteractionUpdate update = new InteractionUpdate(idsPair, uniProtIds, initialProb, edge, false);
-				updates.add(update);
+				/*
+				 * Report the update to the calling client
+				 * If there's nothing to update, don't bother.
+				 * This skip is to avoid bad reporting.
+				 */
+				if (initialProb != null) {
+					if (initialProb == edge.getWeight()) {
+						InteractionUpdate update = new InteractionUpdate(idsPair, uniProtIds, initialProb, edge, false);
+						updates.add(update);
+					}
+				}
 
 				// make a new Confidence
 				Confidence confidence = NetworkUtils.makeConfidence(edge.getWeight(), confidenceLabel,
