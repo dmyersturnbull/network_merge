@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -198,8 +199,14 @@ public class PipelineManager {
 		trimmer = null;
 
 		// now output
+		Map<Integer,Integer> interactionsRemoved = new WeakHashMap<>();
+		for (MergeUpdate update : merges) {
+			for (InteractionEdge e : update.getInteractionEdges()) {
+				interactionsRemoved.put(e.getId(), update.getV0());
+			}
+		}
 		EntrySet entrySet = NetworkUtils.readNetwork(input);
-		List<InteractionUpdate> updates = GraphInteractionAdaptor.modifyProbabilites(entrySet, graph.getInteraction());
+		List<InteractionUpdate> updates = GraphInteractionAdaptor.modifyProbabilites(entrySet, graph.getInteraction(), interactionsRemoved);
 		NetworkUtils.writeNetwork(entrySet, output);
 
 		int endTime = (int) (System.currentTimeMillis() / 1000L);

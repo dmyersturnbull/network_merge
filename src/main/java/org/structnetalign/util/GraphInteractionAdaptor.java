@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.NavigableSet;
 
 import org.apache.logging.log4j.LogManager;
@@ -57,8 +58,8 @@ public class GraphInteractionAdaptor {
 		GraphMLAdaptor.writeInteractionGraph(graph, new File(args[1]));
 	}
 
-	public static List<InteractionUpdate> modifyProbabilites(EntrySet entrySet, UndirectedGraph<Integer, InteractionEdge> graph) {
-		return modifyProbabilites(entrySet, graph, PipelineProperties.getInstance().getOutputConfName(), PipelineProperties.getInstance().getOutputConfName());
+	public static List<InteractionUpdate> modifyProbabilites(EntrySet entrySet, UndirectedGraph<Integer, InteractionEdge> graph, Map<Integer,Integer> ER) {
+		return modifyProbabilites(entrySet, graph, PipelineProperties.getInstance().getOutputConfLabel(), PipelineProperties.getInstance().getOutputConfName(), ER);
 	}
 
 	/**
@@ -70,7 +71,7 @@ public class GraphInteractionAdaptor {
 	 * @param confidenceFullName
 	 */
 	public static List<InteractionUpdate> modifyProbabilites(EntrySet entrySet, UndirectedGraph<Integer, InteractionEdge> graph,
-			String confidenceLabel, String confidenceFullName) {
+			String confidenceLabel, String confidenceFullName, Map<Integer,Integer> ER) {
 
 		List<InteractionUpdate> updates = new ArrayList<>();
 
@@ -99,10 +100,15 @@ public class GraphInteractionAdaptor {
 				if (edge == null) {
 					logger.debug("No edge for " + interaction.getId());
 					Pair<Interactor> interactors = NetworkUtils.getInteractors(interaction);
-					Attribute removal = PsiFactory.createAttribute(PipelineProperties.getInstance().getRemovedAttributeLabel(), "true");
-					interaction.getAttributes().add(removal);
-					interactors.getFirst().getAttributes().add(removal);
-					interactors.getSecond().getAttributes().add(removal);
+					// create a new Attribute stating this has been removed, and given it the Id of V0
+					String v0 = "unknown"; // here's the Id
+					if (ER != null) {
+						v0 = String.valueOf(ER.get(interaction.getId()));
+					}
+					Attribute removal = PsiFactory.createAttribute(PipelineProperties.getInstance().getRemovedAttributeLabel(), v0);
+					interaction.getAttributes().add(removal); // add to interaction
+					interactors.getFirst().getAttributes().add(removal); // add to interactor0
+					interactors.getSecond().getAttributes().add(removal); // add to interactor1
 					InteractionUpdate update = new InteractionUpdate(idsPair, uniProtIds, initialProb, edge, true); // report the deletion
 					updates.add(update);
 					continue;
