@@ -49,8 +49,11 @@ This is useful if you are only interested in the most simplified form of a netwo
 
 ###Using the results###
 Running ```structna``` outputs a new MIF25 XML file that is identical to the first except for three new features:
-1. A new “struct-NA confidence” [confidence](http://psidev.sourceforge.net/molecular_interactions//rel25/doc/#element_confidence_Link03B1CBD8) is included for most interactions. This is a floating-point number ranging from 0 to 1 that is Struct-NA’s estimate for the probability of that interaction
+
+1. A new “struct-NA confidence” [confidence](http://psidev.sourceforge.net/molecular_interactions//rel25/doc/#element_confidence_Link03B1CBD8) is included for most interactions. This is a floating-point number ranging from 0 to 1 that is Struct-NA’s estimate for the probability of that interaction.
+
 2. A new annotation “removed by Struct-NA” has been added to some [interactions](http://psidev.sourceforge.net/molecular_interactions//rel25/doc/#element_interactionList_Link03B121D0) and [interactors](http://psidev.sourceforge.net/molecular_interactions//rel25/doc/#element_interactorList_Link03B11D10). It is present for every interactor belonging to a *degenerate set* that is not *representative*. For precise definitions of these terms, please refer to [the paper](https://github.com/dmyersturnbull/network_merge/blob/master/doc/description.pdf?raw=true). The value of this annotation is the representative interactor for that degenerate set. The annotation was also added to interactions for whom one or more participant is a non-representative member of degenerate set.
+
 3. New interactions have been added to representative members of non-trivial degenerate sets. Specifically, one interaction was added for each interaction labeled for that degenerate set according to feature (2). These new interactions are those interactions that have been moved from non-representative interactors to representative interactors. 
 
 Understanding report files
