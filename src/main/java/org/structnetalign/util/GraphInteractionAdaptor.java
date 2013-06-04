@@ -69,9 +69,10 @@ public class GraphInteractionAdaptor {
 	 * @param graph
 	 * @param confidenceLabel
 	 * @param confidenceFullName
+	 * @param A map of non-representative interaction Ids to their representative interaction Ids ER; can be null
 	 */
 	public static List<InteractionUpdate> modifyProbabilites(EntrySet entrySet, UndirectedGraph<Integer, InteractionEdge> graph,
-			String confidenceLabel, String confidenceFullName, Map<Integer,Integer> ER) {
+			String confidenceLabel, String confidenceFullName, Map<Integer,Integer> representativeIds) {
 
 		List<InteractionUpdate> updates = new ArrayList<>();
 
@@ -95,15 +96,15 @@ public class GraphInteractionAdaptor {
 				if (initialConf != null) {
 					initialProb = Double.parseDouble(initialConf.getValue());
 				}
-
+				
 				// this is only true if we edge-contracted that vertex
 				if (edge == null) {
 					logger.debug("No edge for " + interaction.getId());
 					Pair<Interactor> interactors = NetworkUtils.getInteractors(interaction);
 					// create a new Attribute stating this has been removed, and given it the Id of V0
 					String v0 = "unknown"; // here's the Id
-					if (ER != null) {
-						v0 = String.valueOf(ER.get(interaction.getId()));
+					if (representativeIds != null) {
+						v0 = String.valueOf(representativeIds.get(interaction.getId()));
 					}
 					Attribute removal = PsiFactory.createAttribute(PipelineProperties.getInstance().getRemovedAttributeLabel(), v0);
 					interaction.getAttributes().add(removal); // add to interaction
@@ -112,6 +113,15 @@ public class GraphInteractionAdaptor {
 					InteractionUpdate update = new InteractionUpdate(idsPair, uniProtIds, initialProb, edge, true); // report the deletion
 					updates.add(update);
 					continue;
+				}
+				
+				// don't update if we don't need to
+				// this skipping is mostly for reporting
+				if (initialProb != null) {
+					if (initialProb == edge.getWeight()) {
+						logger.trace("Skipping " + edge.getId() + " as unmodified");
+						continue;
+					}
 				}
 
 				// a confidence with this label or full name shouldn't already exist
