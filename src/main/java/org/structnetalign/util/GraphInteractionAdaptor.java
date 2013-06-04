@@ -92,6 +92,7 @@ public class GraphInteractionAdaptor {
 					String v0 = String.valueOf(representativeInteractorIds.get(interactor.getId()));
 					Attribute removal = PsiFactory.createAttribute(PipelineProperties.getInstance().getRemovedAttributeLabel(), v0);
 					interactor.getAttributes().add(removal);
+					logger.debug("Found nonrepresentative degenerate interactor " + interactor.getId() + " with representative " + v0);
 				}
 			}
 
@@ -121,15 +122,23 @@ public class GraphInteractionAdaptor {
 				 * However, there can be vertices that are non-representative degenerate but which are not associated with any interaction.
 				 * Thus, we mark interactors above and only mark interactions here.
 				 */
-				if (edge == null) {
-					logger.debug("No edge for " + interaction.getId());
+				if (representativeInteractionIds.containsKey(interaction.getId())) {
 					// create a new Attribute stating this has been removed, and given it the Id of V0
 					String v0 = "unknown"; // here's the representative Id
 					v0 = String.valueOf(representativeInteractionIds.get(interaction.getId()));
+					if (edge != null) {
+						logger.warn("Nonrepresentative degenerate interaction " + interaction.getId() + " for representative " + v0 + " has an edge anyway");
+					} else {
+						logger.debug("Found nonrepresentative degenerate interaction " + interaction.getId() + " for representative " + v0);
+					}
 					Attribute removal = PsiFactory.createAttribute(PipelineProperties.getInstance().getRemovedAttributeLabel(), v0);
 					interaction.getAttributes().add(removal);
 					InteractionUpdate update = new InteractionUpdate(idsPair, uniProtIds, initialProb, edge, true); // report the deletion
 					updates.add(update);
+					continue;
+				}
+				if (edge == null) {
+					logger.warn("Edge for interaction " + interaction.getId() + " does not exist, but should. Not modifying interaction.");
 					continue;
 				}
 
