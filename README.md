@@ -73,7 +73,8 @@ Struct-NA is most easily built using [Maven](http://maven.apache.org/). Here are
 *```mvn scm:checkout -DconnectionUrl=https://github.com/dmyersturnbull/network_merge.git -DcheckoutDirectory=./StructNA```
 *Use [Eclipse](http://eclipse.org) and [m2eclipse](http://m2eclipse.codehaus.org/) with a Git m2eclipse discovery backend
 *Checkout the Maven project directly from the [Maven central repository](http://search.maven.org/)
-*```git clone https://github.com/dmyersturnbull/network_merge.git
+* Use Git, then Maven:
+```git clone https://github.com/dmyersturnbull/network_merge.git
 	cd network_merge
 	mvn install
 ```
