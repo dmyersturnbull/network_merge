@@ -200,13 +200,17 @@ public class PipelineManager {
 
 		// now output
 		Map<Integer,Integer> interactionsRemoved = new WeakHashMap<>();
+		Map<Integer,Integer> interactorsRemoved = new WeakHashMap<>();
 		for (MergeUpdate update : merges) {
 			for (InteractionEdge e : update.getInteractionEdges()) {
 				interactionsRemoved.put(e.getId(), update.getV0());
 			}
+			for (int v : update.getVertices()) {
+				interactorsRemoved.put(v, update.getV0());
+			}
 		}
 		EntrySet entrySet = NetworkUtils.readNetwork(input);
-		List<InteractionUpdate> updates = GraphInteractionAdaptor.modifyProbabilites(entrySet, graph.getInteraction(), interactionsRemoved);
+		List<InteractionUpdate> updates = GraphInteractionAdaptor.modifyProbabilites(entrySet, graph.getInteraction(), interactionsRemoved, interactorsRemoved);
 		NetworkUtils.writeNetwork(entrySet, output);
 
 		int endTime = (int) (System.currentTimeMillis() / 1000L);

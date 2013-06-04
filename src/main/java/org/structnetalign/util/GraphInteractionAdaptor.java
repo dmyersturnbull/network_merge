@@ -58,8 +58,8 @@ public class GraphInteractionAdaptor {
 		GraphMLAdaptor.writeInteractionGraph(graph, new File(args[1]));
 	}
 
-	public static List<InteractionUpdate> modifyProbabilites(EntrySet entrySet, UndirectedGraph<Integer, InteractionEdge> graph, Map<Integer,Integer> ER) {
-		return modifyProbabilites(entrySet, graph, PipelineProperties.getInstance().getOutputConfLabel(), PipelineProperties.getInstance().getOutputConfName(), ER);
+	public static List<InteractionUpdate> modifyProbabilites(EntrySet entrySet, UndirectedGraph<Integer, InteractionEdge> graph, Map<Integer,Integer> representativeInteractionIds, Map<Integer,Integer> representativeInteractorIds) {
+		return modifyProbabilites(entrySet, graph, PipelineProperties.getInstance().getOutputConfLabel(), PipelineProperties.getInstance().getOutputConfName(), representativeInteractionIds, representativeInteractorIds);
 	}
 
 	/**
@@ -69,19 +69,31 @@ public class GraphInteractionAdaptor {
 	 * @param graph
 	 * @param confidenceLabel
 	 * @param confidenceFullName
-	 * @param A map of non-representative interaction Ids to their representative interaction Ids ER; can be null
+	 * @param representativeInteractionIds A map of non-representative interaction Ids to their representative interaction Ids
 	 */
 	public static List<InteractionUpdate> modifyProbabilites(EntrySet entrySet, UndirectedGraph<Integer, InteractionEdge> graph,
-			String confidenceLabel, String confidenceFullName, Map<Integer,Integer> representativeIds) {
+			String confidenceLabel, String confidenceFullName, Map<Integer,Integer> representativeInteractionIds, Map<Integer,Integer> representativeInteractorIds) {
 
 		List<InteractionUpdate> updates = new ArrayList<>();
 
 		logger.info("Modifying probabilities of " + graph.getEdgeCount() + " interactions in "
 				+ entrySet.getEntries().size() + " entries");
 		int entryIndex = 1;
+
 		for (Entry entry : entrySet.getEntries()) {
 
 			logger.info("Updating entry " + entryIndex);
+
+			/*
+			 * We want to mark non-representative degenerate interactors as such.
+			 */
+			for (Interactor interactor : entry.getInteractors()) {
+				if (representativeInteractorIds.containsKey(interactor.getId())) {
+					String v0 = String.valueOf(representativeInteractorIds.get(interactor.getId()));
+					Attribute removal = PsiFactory.createAttribute(PipelineProperties.getInstance().getRemovedAttributeLabel(), v0);
+					interactor.getAttributes().add(removal);
+				}
+			}
 
 			for (Interaction interaction : entry.getInteractions()) {
 
@@ -90,33 +102,41 @@ public class GraphInteractionAdaptor {
 				InteractionEdge edge = graph.findEdge(ids.first(), ids.last());
 				Pair<String> uniProtIds = NetworkUtils.getUniProtId(interaction);
 
-				// we're also interested in the initial confidence so we can report it
+				/*
+				 * We need the initial confidence for reporting.
+				 * If the confidence doesn't exist, keep it as null.
+				 * This might be the case if we're in a test case.
+				 */
 				Confidence initialConf = NetworkUtils.getExistingConfidence(interaction, PipelineProperties.getInstance().getInitialConfLabel(), PipelineProperties.getInstance().getInitialConfName());
 				Double initialProb = null;
 				if (initialConf != null) {
 					initialProb = Double.parseDouble(initialConf.getValue());
 				}
-				
-				// this is only true if we edge-contracted that vertex
+
+				/*
+				 * Edge is null iff we edge-contracted that vertex
+				 * We want to mark this interaction as non-representative degenerate.
+				 * In addition, any interactor that is associated with this interaction must also be degenerate.
+				 * Thus, we can mark the interactors as degenerate as well.
+				 * However, there can be vertices that are non-representative degenerate but which are not associated with any interaction.
+				 * Thus, we mark interactors above and only mark interactions here.
+				 */
 				if (edge == null) {
 					logger.debug("No edge for " + interaction.getId());
-					Pair<Interactor> interactors = NetworkUtils.getInteractors(interaction);
 					// create a new Attribute stating this has been removed, and given it the Id of V0
-					String v0 = "unknown"; // here's the Id
-					if (representativeIds != null) {
-						v0 = String.valueOf(representativeIds.get(interaction.getId()));
-					}
+					String v0 = "unknown"; // here's the representative Id
+					v0 = String.valueOf(representativeInteractionIds.get(interaction.getId()));
 					Attribute removal = PsiFactory.createAttribute(PipelineProperties.getInstance().getRemovedAttributeLabel(), v0);
-					interaction.getAttributes().add(removal); // add to interaction
-					interactors.getFirst().getAttributes().add(removal); // add to interactor0
-					interactors.getSecond().getAttributes().add(removal); // add to interactor1
+					interaction.getAttributes().add(removal);
 					InteractionUpdate update = new InteractionUpdate(idsPair, uniProtIds, initialProb, edge, true); // report the deletion
 					updates.add(update);
 					continue;
 				}
-				
-				// don't update if we don't need to
-				// this skipping is mostly for reporting
+
+				/*
+				 * If there's nothing to update, don't bother.
+				 * This skip is to avoid bad reporting.
+				 */
 				if (initialProb != null) {
 					if (initialProb == edge.getWeight()) {
 						logger.trace("Skipping " + edge.getId() + " as unmodified");
@@ -124,11 +144,12 @@ public class GraphInteractionAdaptor {
 					}
 				}
 
-				// a confidence with this label or full name shouldn't already exist
-				// if it does, it probably means we've already run before
-				// so, we'll just delete it from the output
-				// it can always be recovered from the input file
-				// but this is critical because otherwise we'd lose our new confidence
+				/*
+				 *  A confidence with this label or full name shouldn't already exist.
+				 *  If it does, it probably means we've already run before, so we'll just delete it from the output.
+				 *  This is critical because otherwise we'd lose our new confidence.
+				 *  It can always be recovered from the input file.
+				 */
 				Confidence alreadyExists = NetworkUtils.getExistingConfidence(interaction, confidenceLabel,
 						confidenceFullName);
 				if (alreadyExists != null) {
@@ -136,7 +157,7 @@ public class GraphInteractionAdaptor {
 					interaction.getConfidences().remove(alreadyExists);
 				}
 
-				// report the update
+				// report the update to the calling client
 				InteractionUpdate update = new InteractionUpdate(idsPair, uniProtIds, initialProb, edge, false);
 				updates.add(update);
 
