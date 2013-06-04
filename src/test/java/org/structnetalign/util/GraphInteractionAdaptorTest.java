@@ -18,6 +18,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Test;
 import org.structnetalign.InteractionEdge;
@@ -51,9 +53,30 @@ public class GraphInteractionAdaptorTest {
 			if (i % 2 == 0) e.setWeight(e.getWeight() + 1); // goes up to 1.36
 			i++;
 		}
-		GraphInteractionAdaptor.modifyProbabilites(entrySet, graph, null);
+		GraphInteractionAdaptor.modifyProbabilites(entrySet, graph, new HashMap<Integer,Integer>(), new HashMap<Integer,Integer>());
 		File expected = new File(RESOURCE_DIR + "modified_probabilities.psimi.xml");
 		File output = new File("modifiedprobs.psimi.tmp");
+		output.deleteOnExit();
+		NetworkUtils.writeNetwork(entrySet, output);
+		assertTrue("Modified graph is wrong", TestUtils.compareXml(expected, output));
+	}
+	
+	@Test
+	public void testDeleteProbabilities() {
+		EntrySet entrySet = NetworkUtils.readNetwork(RESOURCE_DIR + "unmodified_probabilities.psimi.xml");
+		UndirectedGraph<Integer, InteractionEdge> graph = GraphInteractionAdaptor.toGraph(entrySet, "struct-NA intial weighting", "struct-NA intial weighting");
+		Map<Integer, Integer> degenerateVertices = new HashMap<>();
+		// 26588 is our only non-representative degenerate vertex not corresponding to an interaction
+		degenerateVertices.put(26588, 26463);
+		degenerateVertices.put(25173, 26463);
+		degenerateVertices.put(24603, 26463);
+		Map<Integer, Integer> degenerateEdges = new HashMap<>();
+		// 40581 has interactors 25173 and 24603
+		// since the graph contains an edge, this will print a warning
+		degenerateEdges.put(40581, 26463);
+		GraphInteractionAdaptor.modifyProbabilites(entrySet, graph, degenerateEdges, degenerateVertices);
+		File expected = new File(RESOURCE_DIR + "deleted_probabilities.psimi.xml");
+		File output = new File("deletedprobs.psimi.tmp");
 		output.deleteOnExit();
 		NetworkUtils.writeNetwork(entrySet, output);
 		assertTrue("Modified graph is wrong", TestUtils.compareXml(expected, output));
