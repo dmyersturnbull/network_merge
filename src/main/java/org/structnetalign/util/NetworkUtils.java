@@ -41,6 +41,8 @@ import psidev.psi.mi.xml.PsimiXmlReaderException;
 import psidev.psi.mi.xml.PsimiXmlVersion;
 import psidev.psi.mi.xml.PsimiXmlWriter;
 import psidev.psi.mi.xml.PsimiXmlWriterException;
+import psidev.psi.mi.xml.model.Attribute;
+import psidev.psi.mi.xml.model.AttributeContainer;
 import psidev.psi.mi.xml.model.Confidence;
 import psidev.psi.mi.xml.model.DbReference;
 import psidev.psi.mi.xml.model.Entry;
@@ -66,6 +68,32 @@ public class NetworkUtils {
 
 	static {
 		NEWLINE = System.getProperty("line.separator");
+	}
+
+	public static Double getExistingAnnotationValue(AttributeContainer container, String attributeName) {
+		Attribute attribute = getExistingAnnotation(container, attributeName);
+		if (attribute != null && attribute.getValue() != null) {
+			return Double.parseDouble(attribute.getName());
+		}
+		return null;
+	}
+	
+	public static Attribute getExistingAnnotation(AttributeContainer container, String attributeName) {
+		for (Attribute attribute : container.getAttributes()) {
+			if (attributeName.equals(attribute.getName())) {
+				return attribute;
+			}
+		}
+		return null;
+	}
+
+	public static Double getExistingConfidenceValue(Interaction interaction, String confidenceLabel,
+			String confidenceFullName) {
+		Confidence conf = getExistingConfidence(interaction, confidenceLabel, confidenceFullName);
+		if (conf != null && conf.getValue() != null) {
+			return Double.parseDouble(conf.getValue());
+		}
+		return null;
 	}
 
 	/**
@@ -103,7 +131,9 @@ public class NetworkUtils {
 	public static Pair<String> getUniProtId(Interaction interaction) {
 		Pair<Interactor> interactors = getInteractors(interaction);
 		String uniProtId1 = getUniProtId(interactors.getFirst());
+		if (uniProtId1 == null) throw new IllegalArgumentException("Couldn't find UniProt Id for " + interactors.getFirst().getId());
 		String uniProtId2 = getUniProtId(interactors.getSecond());
+		if (uniProtId2 == null) throw new IllegalArgumentException("Couldn't find UniProt Id for " + interactors.getSecond().getId());
 		Pair<String> pair = new Pair<>(uniProtId1, uniProtId2);
 		return pair;
 	}
