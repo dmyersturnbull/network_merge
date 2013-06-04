@@ -39,7 +39,24 @@ public class GraphInteractionAdaptorTest {
 		assertEquals(3, interaction.getEdgeCount());
 		File expectedFile = new File(RESOURCE_DIR + "expected_graphml_output.graphml.xml");
 		boolean similar = TestUtils.compareInteractionGraph(interaction, expectedFile);
-		assertTrue("Graphs don't match", similar);
+		assertTrue("Graph from PSI-MI is wrong", similar);
+	}
+	
+	@Test
+	public void testModifyProbabilities() {
+		EntrySet entrySet = NetworkUtils.readNetwork(RESOURCE_DIR + "unmodified_probabilities.psimi.xml");
+		UndirectedGraph<Integer, InteractionEdge> graph = GraphInteractionAdaptor.toGraph(entrySet, "struct-NA intial weighting", "struct-NA intial weighting");
+		int i = 0;
+		for (InteractionEdge e : graph.getEdges()) {
+			if (i % 2 == 0) e.setWeight(e.getWeight() + 1); // goes up to 1.36
+			i++;
+		}
+		GraphInteractionAdaptor.modifyProbabilites(entrySet, graph, null);
+		File expected = new File(RESOURCE_DIR + "modified_probabilities.psimi.xml");
+		File output = new File("modifiedprobs.psimi.tmp");
+		output.deleteOnExit();
+		NetworkUtils.writeNetwork(entrySet, output);
+		assertTrue("Modified graph is wrong", TestUtils.compareXml(expected, output));
 	}
 	
 }

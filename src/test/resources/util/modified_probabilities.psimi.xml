@@ -1,0 +1,3164 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<entrySet level="2" version="5" minorVersion="4" xsi:schemaLocation="http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd" xmlns="http://psi.hupo.org/mi/mif" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<entry>
+		<source releaseDate="2013-01-31-08:00">
+			<names>
+				<shortLabel>DIP</shortLabel>
+				<fullName>Database of Interacting Proteins</fullName>
+			</names>
+			<bibref>
+				<xref>
+					<primaryRef db="pubmed" dbAc="MI:0446" id="14681454" refType="primary-reference" refTypeAc="MI:0358"/>
+				</xref>
+			</bibref>
+			<xref>
+				<primaryRef db="psi-mi" dbAc="MI:0448" id="MI:0465" refType="primary-reference" refTypeAc="MI:0358"/>
+			</xref>
+			<attributeList>
+				<attribute name="url">http://dip.doe-mbi.ucla.edu</attribute>
+				<attribute name="postalAddress">611 Young Drive East; Los Angeles, CA 90095; USA</attribute>
+				<attribute name="email">dip@mbi.ucla.edu</attribute>
+			</attributeList>
+		</source>
+		<experimentList>
+			<experimentDescription id="0">
+				<bibref>
+					<xref>
+						<primaryRef db="pubmed" dbAc="MI:0446" id="9027312" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</bibref>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-75X" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactionDetectionMethod>
+					<names>
+						<fullName>coimmunoprecipitation</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0019" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionDetectionMethod>
+				<attributeList>
+					<attribute name="dip:evidence-for-ac">MI:0218</attribute>
+					<attribute name="dip:evidence-for-name">physical interaction</attribute>
+					<attribute name="dip:evidence-scale-ac">dip:0002</attribute>
+					<attribute name="dip:evidence-scale-name">small scale</attribute>
+					<attribute name="dip:evidence-processing-status-ac"></attribute>
+					<attribute name="dip:evidence-processing-status-name"></attribute>
+				</attributeList>
+			</experimentDescription>
+		</experimentList>
+		<interactorList>
+			<interactor id="26463">
+				<names>
+					<fullName>collagen</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-26463N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_496362" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q20136" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="174687" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="26588">
+				<names>
+					<fullName>aminopeptidase</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-26588N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_491489" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="O44750" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="172118" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="24500">
+				<names>
+					<shortLabel>dsh-1</shortLabel>
+					<fullName>dishevelled-like protein</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-24500N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_494979" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q95ZX3" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="173894" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="26062">
+				<names>
+					<fullName>malic enzyme nadp-dependent (2O518) </fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-26062N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_496968" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q9U296" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="175079" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="25926">
+				<names>
+					<shortLabel>icp-1</shortLabel>
+					<fullName>Incenp-like protein ICP-1</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-25926N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_490956" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q9GSQ0" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="171788" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="26113">
+				<names>
+					<fullName>putative nuclear protein (44.8 kD) (3H990) </fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-26113N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_498502" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q22311" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="175962" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="25031">
+				<names>
+					<shortLabel>pqn-54</shortLabel>
+					<fullName>prion-like Q/N-rich domain protein PQN-54, Prion-like Q/N-rich domain protein (pqn-54) </fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-25031N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_503423" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="O44606" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="187728" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="26756">
+				<names>
+					<fullName>putative protein family member (XI757) </fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-26756N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_509371" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q11093" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="182104" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="24397">
+				<names>
+					<shortLabel>lin-5</shortLabel>
+					<fullName>putative protein, with a coiled coil domain, of ancient origin, abnormal cell LINeage LIN-5 (93.4 kD) (lin-5) </fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-24397N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_495654" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="P45970" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="174267" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="25173">
+				<names>
+					<shortLabel>ikb-1</shortLabel>
+					<fullName>uncharacterized protein ikb-1</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-25173N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_492575" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q9U3S0" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="172817" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="24934">
+				<names>
+					<fullName>putative endoplasmic reticulum protein, with at least 3 transmembrane domains (24.5 kD) (5N738) </fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-24934N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_506291" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q18433" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="179807" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="24289">
+				<names>
+					<fullName>sacm21 (76.4 kD) (XI185) </fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-24289N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_509282" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q19201" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="181018" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="25259">
+				<names>
+					<fullName>Transthyretin-like family</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-25259N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_501855" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q22499" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="188506" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="25216">
+				<names>
+					<shortLabel>gsk-3</shortLabel>
+					<fullName>uncharacterized protein gsk-3</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-25216N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_493243" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q9U2Q9" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="173149" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="24603">
+				<names>
+					<fullName>ATPase subunit</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-24603N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_508412" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q22494" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="180534" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="25275">
+				<names>
+					<shortLabel>klp-15</shortLabel>
+					<fullName>kinesins</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-25275N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_491633" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="P91400" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="172213" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="27038">
+				<names>
+					<shortLabel>mig-5</shortLabel>
+					<fullName>uncharacterized protein mig-5</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-27038N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_001022316" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q22227" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="174317" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="25066">
+				<names>
+					<fullName>putative protein (XD488) </fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-25066N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_508497" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q20712" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="180577" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="27129">
+				<names>
+					<fullName>hypothetical protein F40H3.2 (Predicted)</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-27129N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q9TZK3" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="185571" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="25547">
+				<names>
+					<fullName>Zinc finger, C2H2 type (2 domains)</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-25547N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_495656" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="P45972" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="174269" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="27359">
+				<names>
+					<fullName>cytochrome b5</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-27359N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_510335" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q93315" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="181510" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="27125">
+				<names>
+					<fullName>uncharacterized protein</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-27125N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_501528" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q22847" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="177697" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="25011">
+				<names>
+					<shortLabel>chp-1</shortLabel>
+					<fullName>CHORD protein, with cysteine and histidine-rich domain, zinc-binding (36.0 kD) (chp-1) </fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-25011N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_491519" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q9U4A6" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="172138" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="25460">
+				<names>
+					<fullName>cuticular collagen</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-25460N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_499905" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="O45105" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="176854" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="27410">
+				<names>
+					<shortLabel>pdr-1</shortLabel>
+					<fullName>uncharacterized protein pdr-1</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-27410N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_499846" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q9XUS3" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="176816" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="24785">
+				<names>
+					<shortLabel>rpl-2</shortLabel>
+					<fullName>Ribosomal Proteins L2</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-24785N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_507940" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q9XVF7" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="180343" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="26934">
+				<names>
+					<shortLabel>klp-7</shortLabel>
+					<fullName>uncharacterized protein klp-7</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-26934N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_001022677" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q9XU12" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="176511" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="25083">
+				<names>
+					<fullName>cleavage polyadenylation specific factor 5 (25.9 kD) (1J193) </fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-25083N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_492334" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q93716" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="172657" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="26878">
+				<names>
+					<fullName>putative protein, with at least 13 transmembrane domains, of eukaryotic origin (3E596) </fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-26878N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_497723" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q21453" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="175457" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="24765">
+				<names>
+					<fullName>putative protein family member of bilaterial origin (17.5 kD) (2G537) </fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-24765N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_495248" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q22757" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="174032" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="26718">
+				<names>
+					<fullName>ArsA</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-26718N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_498965" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="P30632" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="176254" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="25064">
+				<names>
+					<fullName>nascent polypeptide-associated complex NAC and Ubiquitin-associated domain containing protein (21.8 kD) (1B9) </fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-25064N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_490749" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q9N2Z8" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="171646" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="25037">
+				<names>
+					<shortLabel>daf-21</shortLabel>
+					<fullName>Heat shock protein 90</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-25037N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_506626" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q18688" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="179971" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="25290">
+				<names>
+					<fullName>uncharacterized protein</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-25290N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_501086" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q17746" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="177467" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="25300">
+				<names>
+					<fullName>uncharacterized protein</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-25300N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_494661" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q9TZ84" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="173728" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="24949">
+				<names>
+					<fullName>A Crystal Structure of like family member (4E34) </fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-24949N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_500308" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="O61858" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="177096" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="24565">
+				<names>
+					<fullName>f-box only protein 11 family member (3C136) </fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-24565N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_497325" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q965N2" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="182047" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="24841">
+				<names>
+					<fullName>elongation factor 1-gamma</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-24841N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_505800" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="P54412" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="179522" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="24396">
+				<names>
+					<fullName>hypoxanthine-guanine phosphoribosyltransferase (23.8 kD) (1P253) </fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-24396N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_493545" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q9NF11" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="173323" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="26634">
+				<names>
+					<shortLabel>his-71</shortLabel>
+					<fullName>Histone H3</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-26634N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_509344" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q10453" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="181057" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="25671">
+				<names>
+					<fullName>putative nuclear protein (23.7 kD) (XO281) </fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-25671N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_510288" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="O17567" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="181486" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="27438">
+				<names>
+					<fullName>ARRestin and ARRestin family member (2M359) </fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-27438N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_496568" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q9XXI0" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="189457" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="26842">
+				<names>
+					<shortLabel>lys-8</shortLabel>
+					<fullName>Lysozyme protein 8</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-26842N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_495083" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q09975" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="173944" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="26175">
+				<names>
+					<fullName>putative nuclear protein (31.1 kD) (3K142) </fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-26175N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_499004" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="P32743" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="176279" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="24461">
+				<names>
+					<shortLabel>spe-26</shortLabel>
+					<fullName>MIPP repeats</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-24461N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_501919" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q10579" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="177929" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="24326">
+				<names>
+					<shortLabel>nsf-1</shortLabel>
+					<fullName>Vesicle-fusing ATPase</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-24326N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q94392" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="266842" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="25677">
+				<names>
+					<fullName>putative protein (22.2 kD) (4C876) </fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-25677N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_500163" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="O61828" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="177007" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="27087">
+				<names>
+					<fullName>signal sequence receptor delta (17.4 kD) (3N11) </fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-27087N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_499554" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q9U238" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="176626" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="25329">
+				<names>
+					<shortLabel>cpr-5</shortLabel>
+					<fullName>thiol protease</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-25329N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_503383" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="P43509" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="178612" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="25633">
+				<names>
+					<fullName>arginine kinase</fullName>
+				</names>
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-25633N" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_492714" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="uniprot knowledge base" dbAc="MI:0486" id="Q27535" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="entrez gene/locuslink" dbAc="MI:0477" id="172907" refType="gene product" refTypeAc="MI:0251"/>
+				</xref>
+				<interactorType>
+					<names>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="6239">
+					<names>
+						<shortLabel>Caenorhabditis elegans</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+		</interactorList>
+		<interactionList>
+			<interaction id="40581">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-40581E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<shortLabel>ikb-1</shortLabel>
+							<fullName>uncharacterized protein ikb-1</fullName>
+						</names>
+						<interactorRef>25173</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<fullName>ATPase subunit</fullName>
+						</names>
+						<interactorRef>24603</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA confidence</shortLabel>
+								<fullName>probability predicted by struct-NA</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>1.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="41221">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-41221E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<fullName>putative nuclear protein (31.1 kD) (3K142) </fullName>
+						</names>
+						<interactorRef>26175</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<fullName>sacm21 (76.4 kD) (XI185) </fullName>
+						</names>
+						<interactorRef>24289</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="41222">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-41222E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<shortLabel>mig-5</shortLabel>
+							<fullName>uncharacterized protein mig-5</fullName>
+						</names>
+						<interactorRef>27038</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<fullName>sacm21 (76.4 kD) (XI185) </fullName>
+						</names>
+						<interactorRef>24289</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA confidence</shortLabel>
+								<fullName>probability predicted by struct-NA</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>1.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="41682">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-41682E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<fullName>ArsA</fullName>
+						</names>
+						<interactorRef>26718</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<fullName>hypothetical protein F40H3.2 (Predicted)</fullName>
+						</names>
+						<interactorRef>27129</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA confidence</shortLabel>
+								<fullName>probability predicted by struct-NA</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>1.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="41767">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-41767E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<fullName>elongation factor 1-gamma</fullName>
+						</names>
+						<interactorRef>24841</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<fullName>cleavage polyadenylation specific factor 5 (25.9 kD) (1J193) </fullName>
+						</names>
+						<interactorRef>25083</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA confidence</shortLabel>
+								<fullName>probability predicted by struct-NA</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>1.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="41831">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-41831E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<shortLabel>his-71</shortLabel>
+							<fullName>Histone H3</fullName>
+						</names>
+						<interactorRef>26634</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<fullName>putative nuclear protein (23.7 kD) (XO281) </fullName>
+						</names>
+						<interactorRef>25671</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="42183">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-42183E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<shortLabel>rpl-2</shortLabel>
+							<fullName>Ribosomal Proteins L2</fullName>
+						</names>
+						<interactorRef>24785</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<shortLabel>pdr-1</shortLabel>
+							<fullName>uncharacterized protein pdr-1</fullName>
+						</names>
+						<interactorRef>27410</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="42296">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-42296E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<shortLabel>klp-7</shortLabel>
+							<fullName>uncharacterized protein klp-7</fullName>
+						</names>
+						<interactorRef>26934</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<fullName>collagen</fullName>
+						</names>
+						<interactorRef>26463</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="42314">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-42314E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<shortLabel>cpr-5</shortLabel>
+							<fullName>thiol protease</fullName>
+						</names>
+						<interactorRef>25329</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<shortLabel>klp-15</shortLabel>
+							<fullName>kinesins</fullName>
+						</names>
+						<interactorRef>25275</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="42320">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-42320E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<fullName>putative protein, with at least 13 transmembrane domains, of eukaryotic origin (3E596) </fullName>
+						</names>
+						<interactorRef>26878</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<fullName>cuticular collagen</fullName>
+						</names>
+						<interactorRef>25460</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="42460">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-42460E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<shortLabel>pqn-54</shortLabel>
+							<fullName>prion-like Q/N-rich domain protein PQN-54, Prion-like Q/N-rich domain protein (pqn-54) </fullName>
+						</names>
+						<interactorRef>25031</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<shortLabel>lys-8</shortLabel>
+							<fullName>Lysozyme protein 8</fullName>
+						</names>
+						<interactorRef>26842</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="42471">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-42471E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<fullName>putative protein (XD488) </fullName>
+						</names>
+						<interactorRef>25066</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<shortLabel>pqn-54</shortLabel>
+							<fullName>prion-like Q/N-rich domain protein PQN-54, Prion-like Q/N-rich domain protein (pqn-54) </fullName>
+						</names>
+						<interactorRef>25031</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA confidence</shortLabel>
+								<fullName>probability predicted by struct-NA</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>1.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="42484">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-42484E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<fullName>putative nuclear protein (44.8 kD) (3H990) </fullName>
+						</names>
+						<interactorRef>26113</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<shortLabel>pqn-54</shortLabel>
+							<fullName>prion-like Q/N-rich domain protein PQN-54, Prion-like Q/N-rich domain protein (pqn-54) </fullName>
+						</names>
+						<interactorRef>25031</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA confidence</shortLabel>
+								<fullName>probability predicted by struct-NA</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>1.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="42498">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-42498E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<fullName>ArsA</fullName>
+						</names>
+						<interactorRef>26718</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<shortLabel>pqn-54</shortLabel>
+							<fullName>prion-like Q/N-rich domain protein PQN-54, Prion-like Q/N-rich domain protein (pqn-54) </fullName>
+						</names>
+						<interactorRef>25031</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA confidence</shortLabel>
+								<fullName>probability predicted by struct-NA</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>1.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="42775">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-42775E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<shortLabel>mig-5</shortLabel>
+							<fullName>uncharacterized protein mig-5</fullName>
+						</names>
+						<interactorRef>27038</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<fullName>uncharacterized protein</fullName>
+						</names>
+						<interactorRef>25290</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA confidence</shortLabel>
+								<fullName>probability predicted by struct-NA</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>1.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="42783">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-42783E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<fullName>putative endoplasmic reticulum protein, with at least 3 transmembrane domains (24.5 kD) (5N738) </fullName>
+						</names>
+						<interactorRef>24934</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<shortLabel>mig-5</shortLabel>
+							<fullName>uncharacterized protein mig-5</fullName>
+						</names>
+						<interactorRef>27038</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA confidence</shortLabel>
+								<fullName>probability predicted by struct-NA</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>1.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="42784">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-42784E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<shortLabel>dsh-1</shortLabel>
+							<fullName>dishevelled-like protein</fullName>
+						</names>
+						<interactorRef>24500</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<shortLabel>mig-5</shortLabel>
+							<fullName>uncharacterized protein mig-5</fullName>
+						</names>
+						<interactorRef>27038</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="42799">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-42799E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<shortLabel>mig-5</shortLabel>
+							<fullName>uncharacterized protein mig-5</fullName>
+						</names>
+						<interactorRef>27038</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<fullName>putative protein (XD488) </fullName>
+						</names>
+						<interactorRef>25066</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA confidence</shortLabel>
+								<fullName>probability predicted by struct-NA</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>1.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="42802">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-42802E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<fullName>uncharacterized protein</fullName>
+						</names>
+						<interactorRef>25300</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<shortLabel>mig-5</shortLabel>
+							<fullName>uncharacterized protein mig-5</fullName>
+						</names>
+						<interactorRef>27038</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="42809">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-42809E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<shortLabel>nsf-1</shortLabel>
+							<fullName>Vesicle-fusing ATPase</fullName>
+						</names>
+						<interactorRef>24326</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<shortLabel>mig-5</shortLabel>
+							<fullName>uncharacterized protein mig-5</fullName>
+						</names>
+						<interactorRef>27038</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA confidence</shortLabel>
+								<fullName>probability predicted by struct-NA</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>1.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="42819">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-42819E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<fullName>Zinc finger, C2H2 type (2 domains)</fullName>
+						</names>
+						<interactorRef>25547</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<shortLabel>mig-5</shortLabel>
+							<fullName>uncharacterized protein mig-5</fullName>
+						</names>
+						<interactorRef>27038</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="42821">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-42821E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<shortLabel>mig-5</shortLabel>
+							<fullName>uncharacterized protein mig-5</fullName>
+						</names>
+						<interactorRef>27038</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<fullName>A Crystal Structure of like family member (4E34) </fullName>
+						</names>
+						<interactorRef>24949</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="42884">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-42884E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<shortLabel>lin-5</shortLabel>
+							<fullName>putative protein, with a coiled coil domain, of ancient origin, abnormal cell LINeage LIN-5 (93.4 kD) (lin-5) </fullName>
+						</names>
+						<interactorRef>24397</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<shortLabel>spe-26</shortLabel>
+							<fullName>MIPP repeats</fullName>
+						</names>
+						<interactorRef>24461</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA confidence</shortLabel>
+								<fullName>probability predicted by struct-NA</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>1.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="42991">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-42991E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<shortLabel>pdr-1</shortLabel>
+							<fullName>uncharacterized protein pdr-1</fullName>
+						</names>
+						<interactorRef>27410</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<fullName>Transthyretin-like family</fullName>
+						</names>
+						<interactorRef>25259</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA confidence</shortLabel>
+								<fullName>probability predicted by struct-NA</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>1.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="43289">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-43289E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<fullName>aminopeptidase</fullName>
+						</names>
+						<interactorRef>26588</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<fullName>cytochrome b5</fullName>
+						</names>
+						<interactorRef>27359</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA confidence</shortLabel>
+								<fullName>probability predicted by struct-NA</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>1.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="43655">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-43655E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<fullName>hypoxanthine-guanine phosphoribosyltransferase (23.8 kD) (1P253) </fullName>
+						</names>
+						<interactorRef>24396</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<shortLabel>cpr-5</shortLabel>
+							<fullName>thiol protease</fullName>
+						</names>
+						<interactorRef>25329</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="43674">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-43674E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<fullName>cleavage polyadenylation specific factor 5 (25.9 kD) (1J193) </fullName>
+						</names>
+						<interactorRef>25083</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<shortLabel>chp-1</shortLabel>
+							<fullName>CHORD protein, with cysteine and histidine-rich domain, zinc-binding (36.0 kD) (chp-1) </fullName>
+						</names>
+						<interactorRef>25011</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="43696">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-43696E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<fullName>f-box only protein 11 family member (3C136) </fullName>
+						</names>
+						<interactorRef>24565</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<fullName>ARRestin and ARRestin family member (2M359) </fullName>
+						</names>
+						<interactorRef>27438</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="43722">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-43722E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<fullName>putative protein family member of bilaterial origin (17.5 kD) (2G537) </fullName>
+						</names>
+						<interactorRef>24765</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<shortLabel>gsk-3</shortLabel>
+							<fullName>uncharacterized protein gsk-3</fullName>
+						</names>
+						<interactorRef>25216</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="43801">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-43801E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<fullName>uncharacterized protein</fullName>
+						</names>
+						<interactorRef>27125</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<shortLabel>icp-1</shortLabel>
+							<fullName>Incenp-like protein ICP-1</fullName>
+						</names>
+						<interactorRef>25926</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA confidence</shortLabel>
+								<fullName>probability predicted by struct-NA</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>1.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="43987">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-43987E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<fullName>signal sequence receptor delta (17.4 kD) (3N11) </fullName>
+						</names>
+						<interactorRef>27087</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<fullName>putative protein (22.2 kD) (4C876) </fullName>
+						</names>
+						<interactorRef>25677</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA confidence</shortLabel>
+								<fullName>probability predicted by struct-NA</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>1.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="44052">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-44052E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<fullName>putative protein family member (XI757) </fullName>
+						</names>
+						<interactorRef>26756</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<fullName>nascent polypeptide-associated complex NAC and Ubiquitin-associated domain containing protein (21.8 kD) (1B9) </fullName>
+						</names>
+						<interactorRef>25064</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA confidence</shortLabel>
+								<fullName>probability predicted by struct-NA</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>1.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="44181">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-44181E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<fullName>arginine kinase</fullName>
+						</names>
+						<interactorRef>25633</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<shortLabel>daf-21</shortLabel>
+							<fullName>Heat shock protein 90</fullName>
+						</names>
+						<interactorRef>25037</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA confidence</shortLabel>
+								<fullName>probability predicted by struct-NA</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>1.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="44184">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-44184E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<fullName>malic enzyme nadp-dependent (2O518) </fullName>
+						</names>
+						<interactorRef>26062</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<fullName>arginine kinase</fullName>
+						</names>
+						<interactorRef>25633</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+			<interaction id="44185">
+				<xref>
+					<primaryRef db="dip" dbAc="MI:0465" id="DIP-44185E" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<experimentList>
+					<experimentRef>0</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="1">
+						<names>
+							<fullName>arginine kinase</fullName>
+						</names>
+						<interactorRef>25633</interactorRef>
+					</participant>
+					<participant id="2">
+						<names>
+							<fullName>ArsA</fullName>
+						</names>
+						<interactorRef>26718</interactorRef>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<modelled>false</modelled>
+				<intraMolecular>false</intraMolecular>
+				<negative>false</negative>
+				<confidenceList>
+					<confidence>
+						<unit>
+							<names>
+								<shortLabel>struct-NA intial weighting</shortLabel>
+								<fullName>struct-NA intial weighting</fullName>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA intial weighting" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</unit>
+						<value>0.36</value>
+					</confidence>
+				</confidenceList>
+			</interaction>
+		</interactionList>
+	</entry>
+</entrySet>
