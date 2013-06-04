@@ -66,17 +66,23 @@ manager.run(myInputFile, myOutputFile);
 That should be it! The other major steps of Struct-NA, merging and crossing both are similarly easy to alter by implementing *MergeManager* and *CrossingManager*, respectively.
 
 ###How do I stop it from throwing log records at my face?###
-Struct-NA uses [Log4J](http://logging.apache.org/log4j/) version 2. Modify the file src/main/resources/log4j-test.xml and change the attribute *level* from *trace* to *debug*, *info*, or *warn*.
+Struct-NA uses [Log4J](http://logging.apache.org/log4j/) version 2. Modify the file *src/main/resources/log4j-test.xml* and change the attribute *level* from *trace* to *debug*, *info*, or *warn*.
 
 ###How do I obtain a checkout?###
 Struct-NA is most easily built using [Maven](http://maven.apache.org/). Here are three methods:
-*Run: ```mvn scm:checkout -DconnectionUrl=https://github.com/dmyersturnbull/network_merge.git -DcheckoutDirectory=./StructNA```
-*Use [Eclipse](http://eclipse.org) and [m2eclipse](http://m2eclipse.codehaus.org/) with a Git m2eclipse discovery backend
-*Checkout the Maven project directly from the [Maven central repository](http://search.maven.org/)
-* Use Git, then Maven:
-```git clone https://github.com/dmyersturnbull/network_merge.git
-	cd network_merge
-	mvn install
+
+Run
+```mvn scm:checkout -DconnectionUrl=https://github.com/dmyersturnbull/network_merge.git -DcheckoutDirectory=./StructNA```
+
+Use [Eclipse](http://eclipse.org) and [m2eclipse](http://m2eclipse.codehaus.org/) with a Git m2eclipse discovery backend.
+
+Checkout the Maven project directly from the [Maven central repository](http://search.maven.org/)
+
+Use Git, then Maven:
+```
+git clone https://github.com/dmyersturnbull/network_merge.git
+cd network_merge
+mvn install
 ```
 
 ###How does this method work?###
