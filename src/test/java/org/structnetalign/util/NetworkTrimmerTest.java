@@ -33,7 +33,7 @@ public class NetworkTrimmerTest {
 		EntrySet entrySet = NetworkUtils.readNetwork(RESOURCE_DIR + "untrimmed_network.psimi.xml");
 		entrySet = NetworkTrimmer.trim(entrySet, 0.5);
 		File output = new File("trimmed.psimi.tmp");
-//		output.deleteOnExit();
+		output.deleteOnExit();
 		NetworkUtils.writeNetwork(entrySet, output);
 		File expected = new File(RESOURCE_DIR + "trimmed_network.psimi.xml");
 		boolean similar = TestUtils.compareXml(expected, output);
