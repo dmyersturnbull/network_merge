@@ -46,6 +46,7 @@ import org.structnetalign.weight.WeightManager;
 
 import psidev.psi.mi.xml.model.EntrySet;
 import edu.uci.ics.jung.graph.UndirectedGraph;
+import edu.uci.ics.jung.graph.util.Pair;
 
 public class PipelineManager {
 
@@ -257,24 +258,21 @@ public class PipelineManager {
 		List<UpdateTableEntry> updated = new ArrayList<>();
 		for (InteractionUpdate update : updates) {
 			if (update.isRemoved()) continue;
-			UpdateTableEntry entry1 = new UpdateTableEntry();
-			entry1.before = nf.format(update.getInitialProbability());
-			entry1.after = nf.format(update.getEdge().getWeight());
-			entry1.id = update.getIds().getFirst();
-			entry1.uniProtId = update.getUniProtIds().getFirst();
-			entry1.pdbId = mapping.uniProtToPdb(entry1.uniProtId);
-			entry1.pdbId = entry1.pdbId.substring(0, entry1.pdbId.length()-2);
-			entry1.scopId = mapping.uniProtToScop(entry1.uniProtId);
-			updated.add(entry1);
-			UpdateTableEntry entry2 = new UpdateTableEntry();
-			entry2.before = nf.format(update.getInitialProbability());
-			entry2.after = nf.format(update.getEdge().getWeight());
-			entry2.id = update.getIds().getSecond();
-			entry2.uniProtId = update.getUniProtIds().getSecond();
-			entry2.pdbId = mapping.uniProtToPdb(entry2.uniProtId);
-			entry2.pdbId = entry2.pdbId.substring(0, entry2.pdbId.length()-2);
-			entry2.scopId = mapping.uniProtToScop(entry2.uniProtId);
-			updated.add(entry2);
+			UpdateTableEntry entry = new UpdateTableEntry();
+			entry.interaction = update.getEdge().getId();
+			entry.before = Double.parseDouble(nf.format(update.getInitialProbability()));
+			entry.after = Double.parseDouble(nf.format(update.getEdge().getWeight()));
+			entry.ids = update.getIds();
+			entry.uniProtIds = update.getUniProtIds();
+			String pdb1 = mapping.uniProtToPdb(update.getUniProtIds().getFirst());
+			pdb1 = pdb1.substring(0, pdb1.length()-2);
+			String pdb2 =  mapping.uniProtToPdb(update.getUniProtIds().getSecond());
+			pdb2 = pdb2.substring(0, pdb2.length()-2);
+			entry.pdbIds = new Pair<String>(pdb1, pdb2);
+			String scop1 = mapping.uniProtToScop(update.getUniProtIds().getFirst());
+			String scop2 = mapping.uniProtToScop(update.getUniProtIds().getSecond());
+			entry.scopIds = new Pair<String>(scop1, scop2);
+			updated.add(entry);
 		}
 		if (!updated.isEmpty()) {
 			ReportGenerator.getInstance().put("updated", updated);

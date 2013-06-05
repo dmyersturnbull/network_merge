@@ -42,6 +42,8 @@ import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.runtime.log.LogChute;
 import org.structnetalign.util.GraphImageWriter;
 
+import edu.uci.ics.jung.graph.util.Pair;
+
 public class ReportGenerator {
 
 	public static class DegenerateSetEntry {
@@ -72,29 +74,33 @@ public class ReportGenerator {
 	}
 	
 	public static class UpdateTableEntry {
-		public int id;
-		public String uniProtId;
-		public String pdbId;
-		public String scopId;
-		public String before;
-		public String after;
-		public int getId() {
-			return id;
+		public int interaction;
+		public Pair<Integer> ids;
+		public Pair<String> uniProtIds;
+		public Pair<String> pdbIds;
+		public Pair<String> scopIds;
+		public double before;
+		public double after;
+		public int getInteraction() {
+			return interaction;
 		}
-		public String getUniProtId() {
-			return uniProtId;
+		public Pair<Integer> getIds() {
+			return ids;
 		}
-		public String getBefore() {
+		public Pair<String> getUniProtIds() {
+			return uniProtIds;
+		}
+		public double getBefore() {
 			return before;
 		}
-		public String getAfter() {
+		public double getAfter() {
 			return after;
 		}
-		public String getPdbId() {
-			return pdbId;
+		public Pair<String> getPdbIds() {
+			return pdbIds;
 		}
-		public String getScopId() {
-			return scopId;
+		public Pair<String> getScopIds() {
+			return scopIds;
 		}
 	}
 	

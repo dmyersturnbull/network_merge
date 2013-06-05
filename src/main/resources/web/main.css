@@ -64,11 +64,15 @@
 		padding: 1em;
 	}
 	.left {
-		width: 40%;
+		margin: 0;
+		padding: 0;
+		width: 50%;
 		float: left;
 	}
 	.right {
-		width: 60%;
+		margin: 0;
+		padding: 0;
+		width: 50%;
 		float: right;
 	}
 	.weighted {
@@ -81,13 +85,14 @@
 		background-color: #fcfcff;
 	}
 	figure {
-		max-width: 50%;
-		width: 50%;
+		max-width: 98%;
+		width: 96%;
 		height: auto;
 		margin: 1em;
 		text-align: center;
 	}
 	img {
+		width: 100%;
 		border: 1px solid black;
 	}
 	h2 {
@@ -123,5 +128,26 @@
 	}
 	.clearfix {
 		clear: both;
+	}
+	.verylow {
+		color: black;
+	}
+	.low {
+		color: #004;
+	}
+	.mediumlow {
+		color: #022;
+	}
+	.medium {
+		color: #040;
+	}
+	.mediumhigh {
+		color: #220;
+	}
+	.high {
+		color: #400;
+	}
+	.veryhigh {
+		color: #600;
 	}
 }

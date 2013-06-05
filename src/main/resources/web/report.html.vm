@@ -27,7 +27,7 @@
     				</p>
 				</div>
 			</section>
-			#if ($weighted)
+#if ($weighted)
 			<section class="weighted">
 				<h2>Weighted graph</h2>
 				<div class="left">
@@ -79,8 +79,8 @@
     				</figure>
 				</div>
 			</section>
-			#end
-			#if ($crossed)
+#end
+#if ($crossed)
 			<section class="crossed">
 				<h2>Crossed graph</h2>
 				<div class="left">
@@ -118,35 +118,64 @@
     						</tr>
     					</tbody>
     				</table>
-					#if ($updated)
-					<h3>Updated vertices</h3>
+#if ($updated)
+					<h3>Updated interactions</h3>
 					<table>
     					<thead>
     						<tr>
-    							<th>Id</th>
-    							<th>UniProt Id</th>
-    							<th>PDB Id</th>
-    							<th>SCOP Id</th>
+    							<th>Interaction Id</th>
     							<th>initial</th>
     							<th>updated</th>
+    							<th>Ids</th>
+    							<th>UniProt Ids</th>
+    							<th>PDB Ids</th>
+    							<th>SCOP Ids</th>
     						</tr>
     					</thead>
     					<tbody>
-							#foreach ($update in $updated)
-							#if ($update.before != $update.after)
-							<tr>
-								<td>$update.id</td>
-								<td><a href="http://www.uniprot.org/uniprot/$update.uniProtId">$update.uniProtId</a></td>
-								<td><a href="http://www.pdb.org/pdb/explore/explore.do?structureId=$update.pdbId">$update.pdbId</a></td>
-								<td><a href="http://scop.berkeley.edu/search/?ver=1.75B&key=$update.scopId">$update.scopId</a></td>
+#foreach ($update in $updated)
+#if ($update.before != $update.after)
+#if ($update.after - $update.before > 0.35)
+#set ($color="veryhigh")
+#elseif ($update.after - $update.before > 0.3)
+#set ($color="high")
+#elseif ($update.after - $update.before > 0.25)
+#set ($color="mediumhigh")
+#elseif ($update.after - $update.before > 0.2)
+#set ($color="medium")
+#elseif ($update.after - $update.before > 0.15)
+#set ($color="mediumlow")
+#elseif ($update.after - $update.before > 0.1)
+#set ($color="low")
+#else
+#set ($color="verylow")
+#end
+							<tr class="$color">
+								<td>$update.interaction</td>
 								<td>$update.before</td>
 								<td>$update.after</td>
+								<td>
+									$update.ids.getFirst()<br/>
+									$update.ids.getSecond()
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/$update.uniProtIds.getFirst()">$update.uniProtIds.getFirst()</a><br/>
+									<a href="http://www.uniprot.org/uniprot/$update.uniProtIds.getSecond()">$update.uniProtIds.getSecond()</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=$update.pdbIds.getFirst()">$update.pdbIds.getFirst()</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=$update.pdbIds.getSecond()">$update.pdbIds.getSecond()</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=$update.scopIds.getFirst()">$update.scopIds.getFirst()</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=$update.scopIds.getSecond()">$update.scopIds.getSecond()</a>
+								</td>
 							</tr>
-							#end
-							#end
+#end
+#end
     					</tbody>
 					</table>
-					#end
+#end
 				</div>
     			<div class="right">
     				<figure>
@@ -157,8 +186,8 @@
     				</figure>
 				</div>
 			</section>
-			#end
-			#if ($merged)
+#end
+#if ($merged)
 			<section class="merged">
 				<h2>Merged graph</h2>
 				<div class="left">
@@ -196,29 +225,38 @@
     						</tr>
     					</tbody>
     				</table>
-					#if ($degenerate_sets)
+#if ($degenerate_sets)
 					<h3>Degenerate sets</h3>
 					<table>
     					<thead>
     						<tr>
-    							<th>Main vertex</th>
+    							<th>V0 Id</th>
+    							<th>V0 UniProt Id</th>
     							<th>Vertices removed</th>
     						</tr>
     					</thead>
     					<tbody>
-							#foreach ($update in $degenerate_sets)
+#foreach ($update in $degenerate_sets)
 							<tr>
-								<td>$update.v0 <a href="http://www.uniprot.org/uniprot/$update.uniProtId0">$update.uniProtId0</a></td>
+								<td>$update.v0</td>
+								<td><a href="http://www.uniprot.org/uniprot/$update.uniProtId0">$update.uniProtId0</a></td>
 								<td>
-									#foreach ($v in ${update.uniProtIds})
-									<a href="http://www.uniprot.org/uniprot/$v">$v</a>, 
-									#end
+#set ($i = 1)
+#foreach ($v in $update.uniProtIds)
+#if ($i < $update.uniProtIds.size())
+#set ($comma = ",")
+#else
+#set ($comma = "")
+#end
+									<a href="http://www.uniprot.org/uniprot/$v">$v</a>$comma
+#set ($i = $i + 1)
+#end
 								</td>
 							</tr>
-							#end
+#end
     					</tbody>
 					</table>
-					#end
+#end
 				</div>
     			<div class="right">
     				<figure>
@@ -229,7 +267,7 @@
     				</figure>
 				</div>
 			</section>
-			#end
+#end
 		</div>
 	</body>
 </html>
