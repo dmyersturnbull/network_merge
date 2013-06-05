@@ -49,10 +49,15 @@ public class ReportGenerator {
 	public static class DegenerateSetEntry {
 		public int v0;
 		public String uniProtId0;
-		public List<String> scopIds = new ArrayList<String>();
-		public List<Integer> ids = new ArrayList<Integer>();
-		public List<String> uniProtIds = new ArrayList<String>();
-		public List<String> pdbIds = new ArrayList<String>();
+		public List<String> scopIds = new ArrayList<>();
+		public List<Integer> ids = new ArrayList<>();
+		public List<String> uniProtIds = new ArrayList<>();
+		public List<String> pdbIds = new ArrayList<>();
+		public List<Integer> interactionIds = new ArrayList<>();
+		
+		public List<Integer> getInteractionIds() {
+			return interactionIds;
+		}
 		public int getV0() {
 			return v0;
 		}

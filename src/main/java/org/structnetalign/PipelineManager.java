@@ -234,15 +234,20 @@ public class PipelineManager {
 		final IdentifierMapping mapping = IdentifierMappingFactory.getMapping();
 		List<DegenerateSetEntry> entries = new ArrayList<>();
 		for (MergeUpdate update : merges) {
+			final int v0 = update.getV0();
 			DegenerateSetEntry entry = new DegenerateSetEntry();
 			entry.v0 = update.getV0();
-			entry.uniProtId0 = uniProtIds.get(update.getV0());
+			entry.uniProtId0 = uniProtIds.get(v0);
 			for (int v : update.getVertices()) {
+				if (v == v0) continue; // for reporting, we only want non-representative degenerate vertices
 				entry.getIds().add(v);
 				final String uniProtId = uniProtIds.get(v);
 				entry.getUniProtIds().add(uniProtId);
 				entry.getPdbIds().add(mapping.uniProtToPdb(uniProtId));
 				entry.getScopIds().add(mapping.uniProtToScop(uniProtId));
+			}
+			for (InteractionEdge edge : update.getInteractionEdges()) {
+				entry.getInteractionIds().add(edge.getId());
 			}
 			entries.add(entry);
 		}
