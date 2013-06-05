@@ -120,7 +120,7 @@ public class SimpleCrossingManager implements CrossingManager {
 
 				// we have an update to make!
 				nUpdates += update.getnUpdates();
-				if (nUpdates > 0) { // don't bother if we didn't change anything
+				if (update.getnUpdates() > 0) { // don't bother if we didn't change anything
 					nEdgesUpdated++;
 					InteractionEdge edge = update.getRootInteraction(); // don't make a copy here!!
 					edgesToUpdate.put(edge, edge.getWeight() + update.getScore() - edge.getWeight() * update.getScore());
