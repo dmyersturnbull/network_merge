@@ -61,6 +61,25 @@ Understanding report files
 This section assumes the reader has read [the paper](https://github.com/dmyersturnbull/network_merge/blob/master/doc/description.pdf?raw=true).
 The report.html file ```structna -report``` generates details the three steps major steps of the algorithm: “weighting”, “merging”, and “crossing”. Graphs are displayed for each. In these graphs, interactors are shown as vertices whose labels are the MIF25 interactor identifiers. Solid black lines denote interactions, and dashed red lines denote homology.
 
+###Weighted###
+The first section simply shows the graph after homology edges have been added, with some basic information on the left.
+
+###Crossed###
+The graph displayed is after probabilities of interactions have been updated. This is done after applying the threshold τ to the homology graph, which is why there are probably fewer dashed red edges in the graph.
+There are a couple confusing properties:
+* *N edges updated*: the number of interactions whose probabilities were increased
+* *N updates*: the number of interactions that were used to increase the probabilities of other interactions
+The table that follows is a list of interactions that have been updated. Each row gives the MIF25 interaction Id that was updated, the initial probability as determined by ```prepare```, the probability that ```structna``` decided, and information about the interaction participants.
+
+###Merged###
+The graph displayed is after probabilities of interactions have been updated. This is done after applying the threshold ζ to the homology graph.
+
+To understand this section, you need a vague understanding of how this process works.
+The term *degenerate set* is defined in the [paper](https://github.com/dmyersturnbull/network_merge/blob/master/doc/description.pdf). It is simply a set of vertices that form a clique and that all have precisely the same interactions. Non-trivial degeneracy (degeneracy involving more than one interaction) is the relation Struct-NA requires to merge multiple vertices into one. A single vertex is designated the *representative* of the degenerate set, and every other vertex is called *non-representative*. Each non-representative degenerate vertex is moved into its representative, and every interaction and homology edge incident to that vertex is likewise moved from to from the non-representative to the representative. (Strictly speaking, the original edges aren’t moved; they’re just copied. You can actually remove those edges using ```trim```.)
+
+So now you can understand what all the properties are.
+The table that follows shows the exact degenerate sets and their representatives, which are denoted “V0”.
+
 Configuring
 ---------------------
 
@@ -89,7 +108,7 @@ That should be it! The other major steps of Struct-NA, merging and crossing both
 Struct-NA uses [Log4J](http://logging.apache.org/log4j/) version 2. Modify the file *src/main/resources/log4j-test.xml* and change the attribute *level* from *trace* to *debug*, *info*, or *warn*.
 
 ###How does it work?###
-There is [additional documentation](https://github.com/dmyersturnbull/network_merge/blob/master/doc/description.tex) available. Like the code, this documentation is a work in progress. Unlike the code, it is not distributed under the Apache License (which is only applicable to software anyway).
+There is [additional documentation](https://github.com/dmyersturnbull/network_merge/blob/master/doc/description.pdf) available. Like the code, this documentation is a work in progress. Unlike the code, it is not distributed under the Apache License (which is only applicable to software anyway).
 
 ###I found a bug!###
 Please [report it](https://github.com/dmyersturnbull/network_merge/issues), and I’ll try to fix it.

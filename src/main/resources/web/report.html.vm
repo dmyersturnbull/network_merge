@@ -23,7 +23,7 @@
     					<li>ξ = $xi</li>
         			</ul>
     				<p>
-    					See the relevant <a href="https://github.com/dmyersturnbull/network_merge/blob/master/description.pdf?raw=true">documentation</a> for more details.
+    					See the <a href="https://github.com/dmyersturnbull/network_merge/blob/master/README.md">readme</a> or <a href="https://github.com/dmyersturnbull/network_merge/blob/master/description.pdf?raw=true">paper</a> for more details.
     				</p>
 				</div>
 			</section>
@@ -220,7 +220,7 @@
     							<td>${merged.n_ccs}</td>
     						</tr>
     						<tr>
-    							<td>N nontrivial degenerate vertex sets</td>
+    							<td>N nontrivial degenerate sets</td>
     							<td>${merged.n_nontrivial_degenerate_sets}</td>
     						</tr>
     					</tbody>
