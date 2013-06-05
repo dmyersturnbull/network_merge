@@ -337,11 +337,7 @@ public class NetworkCombiner {
 
 	private Entry includeVertices(Entry entry) {
 
-		Entry myEntry = new Entry();
-		myEntry.setSource(entry.getSource());
-		myEntry.getAttributes().addAll(entry.getAttributes());
-		myEntry.getAvailabilities().addAll(entry.getAvailabilities());
-		myEntry.getExperiments().addAll(entry.getExperiments());
+		Entry myEntry = NetworkUtils.skeletonClone(entry);
 
 		Set<Integer> set = new HashSet<Integer>();
 		Collection<Interactor> interactors = entry.getInteractors();
@@ -367,6 +363,7 @@ public class NetworkCombiner {
 			}
 
 			myEntry.getInteractions().add(interaction);
+			logger.debug("Included interaction Id#" + interaction.getId());
 
 		}
 		
