@@ -161,7 +161,7 @@ public class GraphInteractionAdaptor {
 				 * This skip is to avoid bad reporting.
 				 */
 				if (initialProb != null) {
-					if (initialProb == edge.getWeight()) {
+					if (initialProb != edge.getWeight()) {
 						InteractionUpdate update = new InteractionUpdate(idsPair, uniProtIds, initialProb, edge, false);
 						updates.add(update);
 					}
