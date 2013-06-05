@@ -93,6 +93,7 @@ public class SimpleCrossingManager implements CrossingManager {
 			 */
 
 			int nUpdates = 0;
+			int nEdgesUpdated = 0;
 
 			WeakHashMap<InteractionEdge, Double> edgesToUpdate = new WeakHashMap<>(futures.size());
 
@@ -120,6 +121,7 @@ public class SimpleCrossingManager implements CrossingManager {
 				// we have an update to make!
 				nUpdates += update.getnUpdates();
 				if (nUpdates > 0) { // don't bother if we didn't change anything
+					nEdgesUpdated++;
 					InteractionEdge edge = update.getRootInteraction(); // don't make a copy here!!
 					edgesToUpdate.put(edge, edge.getWeight() + update.getScore() - edge.getWeight() * update.getScore());
 					logger.debug("Updated interaction " + edge.getId() + " to " + PipelineProperties.getInstance().getDisplayFormatter().format(edge.getWeight()));
@@ -136,7 +138,7 @@ public class SimpleCrossingManager implements CrossingManager {
 			if (ReportGenerator.getInstance() != null) {
 				ReportGenerator.getInstance().putInCrossed("manager", this.getClass().getSimpleName());
 				ReportGenerator.getInstance().putInCrossed("n_updates", nUpdates);
-				ReportGenerator.getInstance().putInCrossed("n_updated", edgesToUpdate.size());
+				ReportGenerator.getInstance().putInCrossed("n_updated", nEdgesUpdated);
 			}
 
 		} finally {
