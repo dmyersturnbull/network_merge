@@ -28,9 +28,11 @@ This section assumes familiarity with this specification.
 
 ###Standard pipeline###
 There are two critical components general users will need. Both are distributed as Java ARchive (JAR) files:
-1. ```prepare.jar (NetworkPreparer.java)```, which is used to prepare a network for use by ```structna```. First, it removes unimolecular and multimolecular interactions, which Struct-NA doesn’t understand. It also assigns initial confidences to interactions. To use *prepare*:
+
+1. ```prepare.jar (NetworkPreparer.java)```, which is used to prepare a network for use by ```structna```. First, it removes unimolecular and multimolecular interactions, which Struct-NA doesn’t understand. It also assigns initial confidences to interactions. To use ```prepare```:
 ```java -jar prepare.jar input_network.mif25 prepared_network.mif25```
 This will create a new file *prepared_network.mif25*.
+
 2. ```structna.jar (CLI.java)```, which runs Struct-NA on a prepared MIF25 file. To use it:
 ```java -jar structna.jar -report -input prepared_network.mif25 -output ./output.mif25```
 Interactions in the output MIF25 will be assigned a confidence, unless Struct-NA has marked them as degenerate; interactions and interactors are marked as degenerate with an annotation instead.
@@ -39,10 +41,12 @@ Run ```java -jar structna.jar --help``` to see the full options.
 
 ###Utilities##
 Two useful but nonessential utilities are provided:
+
 * ```combine.jar (NetworkCombiner.java)```, which can be used to mix and match networks, or to subsample a network or combination of networks. For example:
 ```java -jar combine.jar -output combined_network.mif25 -probability 1 -require_pdb -require_scop -require_fasta INPUT FILES```
 The ```-probability``` parameter gives the probability that each interactor will be included. Interactions are then included only if all of their participants exist. The ```-require_pdb```, ```-require_scop```, and ```-require_fasta``` switches remove all interactors that do not have [Protein Data Bank](http://pdb.org/) structures, SCOP domains, and FASTA sequences at [NCBI](http://www.ncbi.nlm.nih.gov/), respectively. ```combine``` can be run before ```prepare```.
 Try ```java -jar combine.jar --help``` to see the full options.
+
 * ```trim.jar (NetworkTrimmer.java)```, which actually removes interactions and interactors marked with *removed by Struct-NA* from a network. Run:
 ```java -jar trim.jar result_network.mif25 trimmed_network.mif25```
 This is useful if you are only interested in the most simplified form of a network for your research. It can also be useful for visualization.
@@ -77,8 +81,7 @@ The graph displayed is after probabilities of interactions have been updated. Th
 To understand this section, you need a vague understanding of how this process works.
 The term *degenerate set* is defined in the [paper](https://github.com/dmyersturnbull/network_merge/blob/master/doc/description.pdf). It is simply a set of vertices that form a clique and that all have precisely the same interactions. Non-trivial degeneracy (degeneracy involving more than one interaction) is the relation Struct-NA requires to merge multiple vertices into one. A single vertex is designated the *representative* of the degenerate set, and every other vertex is called *non-representative*. Each non-representative degenerate vertex is moved into its representative, and every interaction and homology edge incident to that vertex is likewise moved from to from the non-representative to the representative. (Strictly speaking, the original edges aren’t moved; they’re just copied. You can actually remove those edges using ```trim```.)
 
-So now you can understand what all the properties are.
-The table that follows shows the exact degenerate sets and their representatives, which are denoted “V0”.
+The table shows the exact degenerate sets and their representatives. Representatives are denoted “V0”.
 
 Configuring
 ---------------------
