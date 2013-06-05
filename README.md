@@ -60,6 +60,17 @@ Running ```structna``` outputs a new MIF25 XML file that is identical to the fir
 
 3. New interactions have been added to representative members of non-trivial degenerate sets. Specifically, one interaction was added for each interaction labeled for that degenerate set according to feature (2). These new interactions are those interactions that have been moved from non-representative interactors to representative interactors. 
 
+###What general-use datasets can I run on?###
+Here’s the current breakdown:
+
+* [IntAct](http://www.ebi.ac.uk/intact/) seems to work very well! Please [report](https://github.com/dmyersturnbull/network_merge/issues/new) any issues.
+
+* [DIP](http://dip.doe-mbi.ucla.edu/) does not correctly follow the MI25 specification, so parsing is problematic but may work. Please see [issue #7](https://github.com/dmyersturnbull/network_merge/issues/7).
+
+* [BIOGRID](http://thebiogrid.org/) does not correctly follow the MI25 specification, and parsing doesn’t work at all. Please see [issue #8](https://github.com/dmyersturnbull/network_merge/issues/8).
+
+More information will follow.
+
 Understanding report files
 ------------------------------------
 This section assumes the reader has read [the paper](https://github.com/dmyersturnbull/network_merge/blob/master/doc/description.pdf?raw=true).
@@ -113,32 +124,28 @@ Struct-NA uses [Log4J](http://logging.apache.org/log4j/) version 2. Modify the f
 ###How does it work?###
 There is [additional documentation](https://github.com/dmyersturnbull/network_merge/blob/master/doc/description.pdf) available. Like the code, this documentation is a work in progress. Unlike the code, it is not distributed under the Apache License (which is only applicable to software anyway).
 
-###I found a bug!###
-Please [report it](https://github.com/dmyersturnbull/network_merge/issues), and I’ll try to fix it.
-
 ###How well is it working?###
 [![Build Status](https://travis-ci.org/dmyersturnbull/network_merge.png)](https://travis-ci.org/dmyersturnbull/network_merge)
+Please [report bugs](https://github.com/dmyersturnbull/network_merge/issues), because I will try to fix them.
 
 Note that the software is probably not complete or stable enough for general use yet.
 
-How do I obtain a checkout?
----------------------------
+###How do I obtain a checkout?###
 The project is most easily built using [Maven](http://maven.apache.org/).
 Here are three methods to obtain a checkout and build it with Maven:
 
-###Use Maven SCM###
+First, you can try:
 Run
 ```mvn scm:checkout -DconnectionUrl=https://github.com/dmyersturnbull/network_merge.git -DcheckoutDirectory=./StructNA```
 
-###Use Git, then Maven###
+Otherwise, you can use Git and then Maven:
 ```
 git clone https://github.com/dmyersturnbull/network_merge.git
 cd network_merge
 mvn install
 ```
 
-###Use Eclipse###
-Use [Eclipse](http://eclipse.org) and [m2eclipse](http://m2eclipse.codehaus.org/) with a Git m2eclipse discovery backend.
+If you use [Eclipse](http://eclipse.org), you can install [m2eclipse](http://m2eclipse.codehaus.org/) with a Git m2eclipse discovery backend. Fro there, you can simply navigate to *create new → Checkout Maven projects from SCM* and input *https://github.com/dmyersturnbull/network_merge.git*.
 
 License
 -------
