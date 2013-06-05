@@ -36,7 +36,7 @@ public class NetworkPreparerTest {
 		final File expected = new File(RESOURCE_DIR + "simplified_network.psimi.xml");
 		final File input = new File(RESOURCE_DIR + "unsimplified_network.psimi.xml");
 		final File output = new File("simplifiednetwork.psimi.xml.tmp");
-		output.deleteOnExit();
+//		output.deleteOnExit();
 		NetworkPreparer prep = new NetworkPreparer();
 		EntrySet entrySet = NetworkUtils.readNetwork(input);
 		entrySet = prep.simplify(entrySet);

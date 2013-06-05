@@ -64,6 +64,7 @@ public class NetworkPreparer {
 		preparer.prepare(new File(args[0]), new File(args[1]));
 	}
 
+	@Deprecated
 	public List<EntrySet> getConnnectedComponents(EntrySet entrySet) {
 
 		// first, find the connected components as sets of vertices
@@ -130,16 +131,19 @@ public class NetworkPreparer {
 
 	private double getWeight(Interaction interaction) {
 		Collection<ExperimentDescription> experiments = interaction.getExperiments();
+		double weight = 0;
 		for (ExperimentDescription experiment : experiments) {
 			InteractionDetectionMethod method = experiment.getInteractionDetectionMethod();
 			if (method != null) {
 				Names theNames = method.getNames();
 				if (theNames != null) {
-					return Experiments.getInstance().getWeight(theNames.getFullName());
+					double newWeight = Experiments.getInstance().getWeight(theNames.getFullName());
+					weight += newWeight - weight*newWeight;
 				}
 			}
 		}
-		return Experiments.getInstance().getWeight(null);
+		if (weight > 0) return weight;
+		return  Experiments.getInstance().getWeight(null);
 	}
 	
 	/**
@@ -232,10 +236,7 @@ public class NetworkPreparer {
 	public EntrySet simplify(EntrySet entrySet) {
 
 		// first, only copy the essential information (e.g. version number)
-		EntrySet myEntrySet = new EntrySet();
-		myEntrySet.setVersion(entrySet.getVersion());
-		myEntrySet.setMinorVersion(entrySet.getMinorVersion());
-		myEntrySet.setLevel(entrySet.getLevel());
+		EntrySet myEntrySet = NetworkUtils.skeletonClone(entrySet);
 
 		int numInteractionsInit = 0;
 		int numInteractionsRemoved = 0;
@@ -245,22 +246,20 @@ public class NetworkPreparer {
 
 			numInteractionsInit += entry.getInteractions().size();
 
-			Entry myEntry = new Entry();
-			myEntry.setSource(entry.getSource());
+			Entry myEntry = NetworkUtils.skeletonClone(entry);
 
 			// only include interactions that have exactly 2 participants
-			Collection<Interaction> myInteractions = myEntry.getInteractions();
 			for (Interaction interaction : entry.getInteractions()) {
+
 				Collection<Participant> participants = interaction.getParticipants();
 				if (participants.size() == 2) {
-					myInteractions.add(interaction);
+					myEntry.getInteractions().add(interaction);
 				} else {
 					numInteractionsRemoved++;
 					logger.debug("Removing interaction " + interaction.getId() + " because it has " + participants.size() + " participants");
 				}
 			}
 
-			myEntry.getInteractions().addAll(myInteractions);
 			myEntry.getInteractors().addAll(entry.getInteractors());
 			myEntrySet.getEntries().add(myEntry);
 			
