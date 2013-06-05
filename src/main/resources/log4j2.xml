@@ -6,10 +6,10 @@
 		</Console>
 	</appenders>
 	<loggers>
-		<root level="debug">
+		<root level="info">
 			<appender-ref ref="Console"/>
 		</root>
-		<logger name="org.structnetalign" level="debug" additivity="false">
+		<logger name="org.structnetalign" level="info" additivity="false">
 			<appender-ref ref="Console"/>
 		</logger>
 	</loggers>
