@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletionService;
@@ -110,8 +111,10 @@ public class SmarterWeightManager implements WeightManager {
 			int nUpdates = 0;
 
 			int createdIndex = 0; // there shouldn't be any homology edges yet
-			forfutures: for (Future<WeightResult> future : futures) {
+			forfutures: for (int i = 0; i < futures.size(); i++) {
 
+				Future<WeightResult> future = futures.get(i);
+				
 				WeightResult result = null;
 				try {
 
