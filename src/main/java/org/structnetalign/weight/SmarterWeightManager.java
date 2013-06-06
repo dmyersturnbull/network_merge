@@ -44,6 +44,12 @@ public class SmarterWeightManager implements WeightManager {
 
 	private int nCores;
 
+	public SmarterWeightManager(WeightCreator creator, int nCores) {
+		super();
+		this.creator = creator;
+		this.nCores = nCores;
+	}
+
 	@Override
 	public void assignWeights(CleverGraph graph, Map<Integer, String> uniProtIds) {
 
@@ -161,6 +167,17 @@ public class SmarterWeightManager implements WeightManager {
 				int a = result.getV1();
 				int b = result.getV2();
 				double prob = result.getWeight();
+
+				// the creator might want to add another even if it didn't fail
+				int n = nAttempted.get(new Pair<Integer>(a, b)) + 1;
+				nAttempted.put(new Pair<Integer>(a, b), n);
+				Weight weight = creator.nextWeight(a, b, result.getA(), result.getB(), n);
+				if (weight != null) { // null means "we're done"
+					Future<WeightResult> newFuture = completion.submit(weight);
+					futures.add(newFuture);
+					logger.debug("Running relation " + weight.getClass().getSimpleName() + " for " + result.getA()
+							+ " against " + result.getB() + " (" + a + ", " + b + ")");
+				}
 
 				Collection<Integer> vertices = Arrays.asList(a, b);
 
