@@ -31,6 +31,6 @@ public interface WeightCreator {
 	 * code.
 	 * @param failed The class of the {@link Weight} that failed or null if its unknown
 	 */
-	Weight nextWeight(int a, int b, String uniProtIdA, String uniProtIdB, int n, Class<? extends Weight> failed);
+	Weight nextWeight(int a, int b, String uniProtIdA, String uniProtIdB, int n, boolean isFail, Class<? extends Weight> failed);
 
 }

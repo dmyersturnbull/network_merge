@@ -154,7 +154,7 @@ public class SmarterWeightManager implements WeightManager {
 						logger.trace("Failed on " + uniProtIdA
 								+ " against " + uniProtIdB + " (" + a + ", " + b + ")");
 						
-						Weight weight = creator.nextWeight(a, b, uniProtIdA, uniProtIdB, n, null);
+						Weight weight = creator.nextWeight(a, b, uniProtIdA, uniProtIdB, n, true, null);
 						if (weight != null) { // null means "we're done"
 							Future<WeightResult> newFuture = completion.submit(weight);
 							futures.add(newFuture);
@@ -179,7 +179,7 @@ public class SmarterWeightManager implements WeightManager {
 				// the creator might want to add another even if it didn't fail
 				int n = nAttempted.get(new Pair<Integer>(a, b)) + 1;
 				nAttempted.put(new Pair<Integer>(a, b), n);
-				Weight weight = creator.nextWeight(a, b, result.getA(), result.getB(), n, null);
+				Weight weight = creator.nextWeight(a, b, result.getA(), result.getB(), n, false, null);
 				if (weight != null) { // null means "we're done"
 					Future<WeightResult> newFuture = completion.submit(weight);
 					futures.add(newFuture);

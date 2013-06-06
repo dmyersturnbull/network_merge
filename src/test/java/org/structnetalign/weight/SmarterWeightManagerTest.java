@@ -39,7 +39,7 @@ public class SmarterWeightManagerTest {
 	public void testWithScop() {
 		WeightCreator creator = new WeightCreator() {
 			@Override
-			public Weight nextWeight(int a, int b, String uniProtIdA, String uniProtIdB, int n, Class<? extends Weight> failed) {
+			public Weight nextWeight(int a, int b, String uniProtIdA, String uniProtIdB, int n, boolean isFail, Class<? extends Weight> failed) {
 				if (n > 0) return null;
 				Weight weight = new ScopRelationWeight();
 				try {
@@ -52,7 +52,7 @@ public class SmarterWeightManagerTest {
 			@Override
 			public List<Weight> initialWeights(int a, int b, String uniProtIdA, String uniProtIdB) {
 				List<Weight> weight = new ArrayList<Weight>(1);
-				weight.add(nextWeight(a, b, uniProtIdA, uniProtIdB, 0, null));
+				weight.add(nextWeight(a, b, uniProtIdA, uniProtIdB, 0, false, null));
 				return weight;
 			}
 		};
@@ -69,7 +69,7 @@ public class SmarterWeightManagerTest {
 	public void testMultiple() {
 		WeightCreator creator = new WeightCreator() {
 			@Override
-			public Weight nextWeight(int a, int b, String uniProtIdA, String uniProtIdB, int n, Class<? extends Weight> failed) {
+			public Weight nextWeight(int a, int b, String uniProtIdA, String uniProtIdB, int n, boolean isFail, Class<? extends Weight> failed) {
 				return null;
 			}
 			@Override
@@ -112,7 +112,7 @@ public class SmarterWeightManagerTest {
 	public void testWithFailure() {
 		WeightCreator creator = new WeightCreator() {
 			@Override
-			public Weight nextWeight(int a, int b, String uniProtIdA, String uniProtIdB, int n, Class<? extends Weight> failed) {
+			public Weight nextWeight(int a, int b, String uniProtIdA, String uniProtIdB, int n, boolean isFail, Class<? extends Weight> failed) {
 				if (n == 1) {
 					Set<Pair<Integer>> failOn = new HashSet<>();
 					// we won't get to add the 0.4

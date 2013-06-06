@@ -35,22 +35,24 @@ public class SimpleWeightCreator implements WeightCreator {
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");
 
 	@Override
-	public Weight nextWeight(int a, int b, String uniProtIdA, String uniProtIdB, int n, Class<? extends Weight> failed) {
+	public Weight nextWeight(int a, int b, String uniProtIdA, String uniProtIdB, int n, boolean isFail, Class<? extends Weight> failed) {
 
+		if (!isFail) return null;
+		
 		Weight weight = null;
 
 		// try SCOP
-		if (weight == null && n < 1) {
+		if (n == 1) {
 			weight = init(new ScopRelationWeight(), a, b, uniProtIdA, uniProtIdB);
 		}
 
 		// try NW
-		if (weight == null && n < 2) {
+		if (n == 2) {
 			weight = init(new NeedlemanWunschWeight(), a, b, uniProtIdA, uniProtIdB);
 		}
 
 		// try CE
-		if (weight == null && n < 3) {
+		if (n == 3) {
 			weight = init(new CeWeight(), a, b, uniProtIdA, uniProtIdB);
 		}
 		
