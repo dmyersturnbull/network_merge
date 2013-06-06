@@ -41,7 +41,8 @@ import org.structnetalign.util.IdentifierMapping;
 import org.structnetalign.util.IdentifierMappingFactory;
 import org.structnetalign.util.InteractionUpdate;
 import org.structnetalign.util.NetworkUtils;
-import org.structnetalign.weight.SmartWeightManager;
+import org.structnetalign.weight.SimpleWeightCreator;
+import org.structnetalign.weight.SmarterWeightManager;
 import org.structnetalign.weight.WeightManager;
 
 import psidev.psi.mi.xml.model.EntrySet;
@@ -63,7 +64,6 @@ public class PipelineManager {
 
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");
 
-	public static final double BETA = Double.POSITIVE_INFINITY;
 	public static final int N_CORES = Math.max(Runtime.getRuntime().availableProcessors() - 1, 1);
 	public static final double TAU = 0.5;
 	public static final int XI = 2;
@@ -81,7 +81,6 @@ public class PipelineManager {
 
 	private int xi = XI;
 	private double zeta = ZETA;
-	private double beta = BETA;
 	private double tau = TAU;
 
 	public boolean isNoMerge() {
@@ -100,16 +99,11 @@ public class PipelineManager {
 		this.noCross = noCross;
 	}
 
-	public double getBeta() {
-		return beta;
-	}
-
 	/**
 	 * Initializes a new PipelineManager using the default parameters. Once this has been performed, setting of variables will have no effect.
 	 */
 	private void init() {
-		SmartWeightManager weightManager = new SmartWeightManager(nCores);
-		weightManager.setBeta(beta);
+		SmarterWeightManager weightManager = new SmarterWeightManager(new SimpleWeightCreator(), nCores);
 		this.weightManager = weightManager;
 		crossingManager = new SimpleCrossingManager(nCores, xi);
 		mergeManager = new ConcurrentBronKerboschMergeManager(nCores);
@@ -141,7 +135,6 @@ public class PipelineManager {
 		ReportGenerator.setInstance(new ReportGenerator(reportFile));
 		if (report) {
 			ReportGenerator.getInstance().put("n_cores", nCores);
-			ReportGenerator.getInstance().put("beta", beta);
 			ReportGenerator.getInstance().put("tau", tau);
 			ReportGenerator.getInstance().put("zeta", zeta);
 			ReportGenerator.getInstance().put("xi", xi);
@@ -301,10 +294,6 @@ public class PipelineManager {
 		if (!updated.isEmpty()) {
 			ReportGenerator.getInstance().put("updated", updated);
 		}
-	}
-
-	public void setBeta(double beta) {
-		this.beta = beta;
 	}
 
 	public void setCrossingManager(CrossingManager crossingManager) {

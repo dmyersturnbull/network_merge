@@ -64,14 +64,13 @@ public class CLI {
 		int xi = cmd.hasOption("xi")? Integer.parseInt(cmd.getOptionValue("xi")) : PipelineManager.XI;
 		double tau = cmd.hasOption("tau")? Double.parseDouble(cmd.getOptionValue("tau")) : PipelineManager.TAU;
 		double zeta = cmd.hasOption("zeta")? Double.parseDouble(cmd.getOptionValue("zeta")) : PipelineManager.ZETA;
-		double beta = cmd.hasOption("beta")? Double.parseDouble(cmd.getOptionValue("beta")) : PipelineManager.BETA;
 		boolean report = cmd.hasOption("report");
 		boolean writeSteps = cmd.hasOption("write_steps");
 		boolean noCross = cmd.hasOption("no_cross");
 		boolean noMerge = cmd.hasOption("no_merge");
-		runPipeline(pdbDir, nCores, input, output, tau, zeta, xi, beta, noCross, noMerge, writeSteps, report);
+		runPipeline(pdbDir, nCores, input, output, tau, zeta, xi, noCross, noMerge, writeSteps, report);
 	}
-	private static void runPipeline(String pdbDir, int nCores, File input, File output, double tau, double zeta, int xi, double beta, boolean noCross, boolean noMerge, boolean writeSteps, boolean report) {
+	private static void runPipeline(String pdbDir, int nCores, File input, File output, double tau, double zeta, int xi, boolean noCross, boolean noMerge, boolean writeSteps, boolean report) {
 		if (pdbDir != null) {
 			System.setProperty(AbstractUserArgumentProcessor.PDB_DIR, pdbDir);
 			AtomCacheFactory.setCache(pdbDir);
@@ -81,7 +80,6 @@ public class CLI {
 		man.setNCores(nCores);
 		man.setTau(tau);
 		man.setZeta(zeta);
-		man.setBeta(beta);
 		man.setReport(report);
 		man.setWriteSteps(writeSteps);
 		man.setNoCross(noCross);
@@ -116,9 +114,6 @@ public class CLI {
 		options.addOption(OptionBuilder.hasArg(true)
 				.withDescription("A threshold probability prior for running the merging process. Prior to merging, any homology edge with probability less than zeta will be removed. Note that this is performed after a similar process for tau, so zeta should be no greater than tau. Defaults to " + PipelineManager.ZETA + ".").isRequired(false)
 				.create("zeta"));
-		options.addOption(OptionBuilder.hasArg(true)
-				.withDescription("The relative importance of databases over alignment. A homology edge will be assigned a weight of the sum of the alignment scores plus the beta times the sum of the database scores. Defaults to " + PipelineManager.BETA + ".").isRequired(false)
-				.create("beta"));
 		options.addOption(OptionBuilder.hasArg(false)
 				.withDescription("If set, generates an HTML report page with accompanying graph visualizations in the specified directory.").isRequired(false)
 				.create("report"));
