@@ -53,9 +53,7 @@ public class GraphImageWriter {
 		nf.setMaximumFractionDigits(3);
 	}
 	
-	private double attraction = 0.7;
-
-	private int fontSize = 20;
+	private int fontSize = 16;
 
 	private int height = 4000;
 
@@ -68,10 +66,6 @@ public class GraphImageWriter {
 	private float interactionDash[] = { 10000f };
 
 	private int labelOffset = 25;
-
-	private double repulsion = 0.9;
-
-	private float thickness = 3f;
 
 	private Color vertexColor = new Color(100, 200, 250);
 
@@ -132,10 +126,6 @@ public class GraphImageWriter {
 		this.height = height;
 	}
 
-	public void setAttraction(double attraction) {
-		this.attraction = attraction;
-	}
-
 	public void setFontSize(int fontSize) {
 		this.fontSize = fontSize;
 	}
@@ -162,14 +152,6 @@ public class GraphImageWriter {
 
 	public void setLabelOffset(int labelOffset) {
 		this.labelOffset = labelOffset;
-	}
-
-	public void setRepulsion(double repulsion) {
-		this.repulsion = repulsion;
-	}
-
-	public void setThickness(float thickness) {
-		this.thickness = thickness;
 	}
 
 	public void setVertexColor(Color vertexColor) {
@@ -219,18 +201,16 @@ public class GraphImageWriter {
 		};
 		vv.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
 
-		final Stroke interactionStroke = new BasicStroke(thickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
-				10.0f, interactionDash, 0.0f);
-		final Stroke homologyStroke = new BasicStroke(thickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f,
-				homologyDash, 0.0f);
-
 		Transformer<Edge, Stroke> edgeStrokeTransformer = new Transformer<Edge, Stroke>() {
 			@Override
 			public Stroke transform(Edge edge) {
+				final float thickness = (float) edge.getWeight() * 2.0f;
 				if (edge instanceof HomologyEdge) {
-					return homologyStroke;
+					return new BasicStroke(thickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f,
+									homologyDash, 0.0f);
 				} else if (edge instanceof InteractionEdge) {
-					return interactionStroke;
+					return new BasicStroke(thickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
+							10.0f, interactionDash, 0.0f);
 				}
 				throw new IllegalArgumentException("Unknown edge type");
 			}
