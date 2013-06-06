@@ -24,6 +24,10 @@ public class WeightResult {
 	private String a;
 
 	private String b;
+	
+	private int v1;
+	
+	private int v2;
 
 	private Class<? extends Weight> submitter;
 
@@ -34,12 +38,22 @@ public class WeightResult {
 		nf.setMaximumFractionDigits(3);
 	}
 
-	public WeightResult(double weight, String a, String b, Class<? extends Weight> submitter) {
+	public WeightResult(double weight, int v1, int v2, String a, String b, Class<? extends Weight> submitter) {
 		super();
+		this.v1 = v1;
+		this.v2 = v2;
 		this.weight = weight;
 		this.a = a;
 		this.b = b;
 		this.submitter = submitter;
+	}
+
+	public int getV1() {
+		return v1;
+	}
+
+	public int getV2() {
+		return v2;
 	}
 
 	public String getA() {

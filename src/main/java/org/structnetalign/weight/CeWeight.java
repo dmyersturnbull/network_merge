@@ -35,7 +35,7 @@ public class CeWeight implements AlignmentWeight {
 	private static Double GAP_OPEN;
 	private static Double GAP_EXTEND;
 	private static Integer MAX_GAP_SIZE;
-	
+
 	static {
 		Properties props = new Properties();
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
@@ -93,6 +93,9 @@ public class CeWeight implements AlignmentWeight {
 
 	private AlgorithmGiver algorithm;
 
+	private int v1;
+	private int v2;
+
 	private String pdbIdAndChain1;
 	private String pdbIdAndChain2;
 
@@ -122,8 +125,8 @@ public class CeWeight implements AlignmentWeight {
 	}
 
 	@Override
-	public double assignWeight(String uniProtId1, String uniProtId2) throws Exception {
-		setIds(uniProtId1, uniProtId2);
+	public double assignWeight(int v1, int v2, String uniProtId1, String uniProtId2) throws Exception {
+		setIds(v1, v2, uniProtId1, uniProtId2);
 		return call().getWeight();
 	}
 
@@ -151,12 +154,14 @@ public class CeWeight implements AlignmentWeight {
 		}
 		if (afpChain.getTMScore() == -1) throw new WeightException("TM-score not calculated for the alignment of "
 				+ pdbIdAndChain1 + " against " + pdbIdAndChain2, uniProtId1, uniProtId2, true, true);
-		return new WeightResult(afpChain.getTMScore(), uniProtId1, uniProtId2, this.getClass());
+		return new WeightResult(afpChain.getTMScore(), v1, v2, uniProtId1, uniProtId2, this.getClass());
 	}
 
 	@Override
-	public void setIds(String uniProtId1, String uniProtId2) throws WeightException {
+	public void setIds(int v1, int v2, String uniProtId1, String uniProtId2) throws WeightException {
 
+		this.v1 = v1;
+		this.v2 = v2;
 		this.uniProtId1 = uniProtId1;
 		this.uniProtId2 = uniProtId2;
 

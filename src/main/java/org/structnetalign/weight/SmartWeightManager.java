@@ -117,13 +117,13 @@ public class SmartWeightManager implements WeightManager {
 					try {
 						// try to use structure
 						alignment = new NeedlemanWunschWeight();
-						alignment.setIds(uniProtIdA, uniProtIdB);
+						alignment.setIds(a, b, uniProtIdA, uniProtIdB);
 					} catch (WeightException e) {
 						logger.warn("Couldn't get CE weight for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")", e);
 						// okay, try to use sequence
 						alignment = new NeedlemanWunschWeight();
 						try {
-							alignment.setIds(uniProtIdA, uniProtIdB);
+							alignment.setIds(a, b, uniProtIdA, uniProtIdB);
 						} catch (WeightException e1) {
 							logger.warn("Couldn't get alignment-based weight for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")", e1);
 							alignment = null;
@@ -135,13 +135,13 @@ public class SmartWeightManager implements WeightManager {
 					try {
 						// try to use structure
 						relation = new ScopRelationWeight();
-						relation.setIds(uniProtIdA, uniProtIdB);
+						relation.setIds(a, b, uniProtIdA, uniProtIdB);
 					} catch (WeightException e) {
 						logger.warn("Couldn't get SCOP weight for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")", e);
 						// okay, try to use sequence
 						relation = new PfamWeight();
 						try {
-							relation.setIds(uniProtIdA, uniProtIdB);
+							relation.setIds(a, b, uniProtIdA, uniProtIdB);
 						} catch (WeightException e1) {
 							logger.warn("Couldn't get relation-based weight for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")", e1);
 							relation = null;
@@ -187,8 +187,8 @@ public class SmartWeightManager implements WeightManager {
 						try {
 							WeightResult result = future.get();
 							weight = result.getWeight();
-							vertexA = graphIds.get(result.getA());
-							vertexB = graphIds.get(result.getB());
+							vertexA = result.getV1();
+							vertexB = result.getV2();
 							logger.trace("Job (" + vertexA + ", " + vertexB + ") returned with weight " + nf.format(weight));
 							if (weight == 0) {
 								continue forfutures; // don't both updating with 0
@@ -213,7 +213,7 @@ public class SmartWeightManager implements WeightManager {
 								logger.warn("Structure-based alignment weight failed for (" + myA + ", " + myB + "). Attempting to use a sequence alignment.", e);
 								try {
 									AlignmentWeight alignment = new NeedlemanWunschWeight();
-									alignment.setIds(myA, myB);
+									alignment.setIds(vertexA, vertexB, myA, myB);
 									completion.submit(alignment);
 								} catch (WeightException e1) {
 
@@ -222,7 +222,7 @@ public class SmartWeightManager implements WeightManager {
 								logger.warn("Structure-based relation weight failed for (" + myA + ", " + myB + ") Attempting to use sequence a relation.", e);
 								try {
 									RelationWeight relation = new PfamWeight();
-									relation.setIds(myA, myB);
+									relation.setIds(vertexA, vertexB, myA, myB);
 									completion.submit(relation);
 								} catch (WeightException e1) {
 

@@ -17,11 +17,11 @@ import java.util.concurrent.Callable;
 
 public interface Weight extends Callable<WeightResult> {
 
-	void setIds(String uniProtId1, String uniProtId2) throws WeightException;
+	void setIds(int v1, int v2, String uniProtId1, String uniProtId2) throws WeightException;
 
 	/**
 	 * A convenience method for single runs. Equivalent to calling {@link #setIds(String, String)} followed by {@link #call()}.
 	 */
-	double assignWeight(String uniProtId1, String uniProtId2) throws Exception;
+	double assignWeight(int v1, int v2, String uniProtId1, String uniProtId2) throws Exception;
 	
 }

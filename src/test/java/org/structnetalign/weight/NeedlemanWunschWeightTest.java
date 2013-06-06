@@ -32,7 +32,7 @@ public class NeedlemanWunschWeightTest {
 		 * Make sure to set extend penalty to 1, and to check gap end penalty.
 		 * EBU reports 16.9% identity.
 		 */
-		double prob = weight.assignWeight("P02185", "P00720");
+		double prob = weight.assignWeight(0, 1, "P02185", "P00720");
 		assertEquals(0.3828903187777678, prob, PRECISION);
 	}
 	

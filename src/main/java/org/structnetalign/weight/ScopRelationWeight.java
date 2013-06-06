@@ -45,6 +45,9 @@ public class ScopRelationWeight implements RelationWeight {
 
 	private String scopId1;
 	private String scopId2;
+	
+	private int v1;
+	private int v2;
 
 	private Map<ScopCategory, Double> weights;
 
@@ -94,8 +97,8 @@ public class ScopRelationWeight implements RelationWeight {
 	}
 
 	@Override
-	public double assignWeight(String uniProtId1, String uniProtId2) throws Exception {
-		setIds(uniProtId1, uniProtId2);
+	public double assignWeight(int v1, int v2, String uniProtId1, String uniProtId2) throws Exception {
+		setIds(v1, v2, uniProtId1, uniProtId2);
 		return call().getWeight();
 	}
 
@@ -115,17 +118,19 @@ public class ScopRelationWeight implements RelationWeight {
 			int categoryId1 = sunIdOfCategory(domain1, category);
 			int categoryId2 = sunIdOfCategory(domain2, category);
 			if (categoryId1 == categoryId2 && weights.get(category) != null) {
-				return new WeightResult(weights.get(category), uniProtId1, uniProtId2, this.getClass());
+				return new WeightResult(weights.get(category), v1, v2, uniProtId1, uniProtId2, this.getClass());
 			}
 		}
 
-		return new WeightResult(0.0, uniProtId1, uniProtId2, this.getClass());
+		return new WeightResult(0.0, v1, v2, uniProtId1, uniProtId2, this.getClass());
 
 	}
 
 	@Override
-	public void setIds(String uniProtId1, String uniProtId2) throws WeightException {
+	public void setIds(int v1, int v2, String uniProtId1, String uniProtId2) throws WeightException {
 
+		this.v1 = v1;
+		this.v2 = v2;
 		this.uniProtId1 = uniProtId1;
 		this.uniProtId2 = uniProtId2;
 		

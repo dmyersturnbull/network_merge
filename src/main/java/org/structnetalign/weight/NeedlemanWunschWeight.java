@@ -45,6 +45,9 @@ public class NeedlemanWunschWeight implements AlignmentWeight {
 
 	private static String URL;
 
+	private int v1;
+	private int v2;
+
 	private String uniProtId1;
 
 	private String uniProtId2;
@@ -99,8 +102,8 @@ public class NeedlemanWunschWeight implements AlignmentWeight {
 	}
 
 	@Override
-	public double assignWeight(String uniProtId1, String uniProtId2) throws Exception {
-		setIds(uniProtId1, uniProtId2);
+	public double assignWeight(int v1, int v2, String uniProtId1, String uniProtId2) throws Exception {
+		setIds(v1, v2, uniProtId1, uniProtId2);
 		return call().getWeight();
 	}
 
@@ -126,11 +129,13 @@ public class NeedlemanWunschWeight implements AlignmentWeight {
 		PairwiseSequenceScorer<ProteinSequence, AminoAcidCompound> scorer = new FractionalIdentityScorer<>(pair);
 		double score = (double) scorer.getScore() / (double) scorer.getMaxScore();
 		double prob = GAMMA.score(pair, score);
-		return new WeightResult(prob, uniProtId1, uniProtId2, this.getClass());
+		return new WeightResult(prob, v1, v2, uniProtId1, uniProtId2, this.getClass());
 	}
 
 	@Override
-	public void setIds(String uniProtId1, String uniProtId2) throws WeightException {
+	public void setIds(int v1, int v2, String uniProtId1, String uniProtId2) throws WeightException {
+		this.v1 = v1;
+		this.v2 = v2;
 		this.uniProtId1 = uniProtId1;
 		this.uniProtId2 = uniProtId2;
 	}
