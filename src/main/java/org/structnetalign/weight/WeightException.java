@@ -22,8 +22,10 @@ package org.structnetalign.weight;
 @SuppressWarnings("serial")
 public class WeightException extends Exception {
 
-	private String a;
-	private String b;
+	private int a;
+	private int b;
+	private String uniProtIdA;
+	private String uniProtIdB;
 	private boolean isAlignment;
 	private boolean isStructure;
 
@@ -31,36 +33,42 @@ public class WeightException extends Exception {
 		super();
 	}
 
-	public WeightException(String message, String a, String b, boolean isAlignment, boolean isStructure) {
+	public WeightException(String message, int a, int b, String uniProtIdA, String uniProtIdB, boolean isAlignment, boolean isStructure) {
 		super(message);
 		this.a = a;
 		this.b = b;
+		this.uniProtIdA = uniProtIdA;
+		this.uniProtIdB = uniProtIdB;
 		this.isAlignment = isAlignment;
 		this.isStructure = isStructure;
 	}
 
-	public WeightException(String message, Throwable cause, String a, String b, boolean isAlignment, boolean isStructure) {
+	public WeightException(String message, Throwable cause, int a, int b, String uniProtIdA, String uniProtIdB, boolean isAlignment, boolean isStructure) {
 		super(message, cause);
 		this.a = a;
 		this.b = b;
+		this.uniProtIdA = uniProtIdA;
+		this.uniProtIdB = uniProtIdB;
 		this.isAlignment = isAlignment;
 		this.isStructure = isStructure;
 	}
 
-	public WeightException(Throwable cause, String a, String b, boolean isAlignment, boolean isStructure) {
+	public WeightException(Throwable cause, int a, int b, String uniProtIdA, String uniProtIdB, boolean isAlignment, boolean isStructure) {
 		super(cause);
 		this.a = a;
 		this.b = b;
+		this.uniProtIdA = uniProtIdA;
+		this.uniProtIdB = uniProtIdB;
 		this.isAlignment = isAlignment;
 		this.isStructure = isStructure;
 	}
 
-	public String getA() {
-		return a;
+	public String getUniProtIdA() {
+		return uniProtIdA;
 	}
 
-	public String getB() {
-		return b;
+	public String getUniProtIdB() {
+		return uniProtIdB;
 	}
 
 	public boolean isAlignment() {
@@ -69,6 +77,14 @@ public class WeightException extends Exception {
 
 	public boolean isStructure() {
 		return isStructure;
+	}
+
+	public int getA() {
+		return a;
+	}
+
+	public int getB() {
+		return b;
 	}
 
 }

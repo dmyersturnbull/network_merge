@@ -202,24 +202,24 @@ public class SmartWeightManager implements WeightManager {
 					if (e.getCause() != null && e.getCause() instanceof WeightException) {
 						WeightException myE = (WeightException) e.getCause();
 						if (myE.isStructure()) {
-							String myA = myE.getA();
-							String myB = myE.getB();
+							String uniProtIdA = myE.getUniProtIdA();
+							String uniProtIdB = myE.getUniProtIdB();
 							if (myE.isAlignment()) {
-								logger.warn("Structure-based alignment weight failed for (" + myA + ", " + myB
+								logger.warn("Structure-based alignment weight failed for (" + uniProtIdA + ", " + uniProtIdB
 										+ "). Attempting to use a sequence alignment.", e);
 								try {
 									AlignmentWeight alignment = new NeedlemanWunschWeight();
-									alignment.setIds(vertexA, vertexB, myA, myB);
+									alignment.setIds(myE.getA(), myE.getB(), uniProtIdA, uniProtIdB);
 									completion.submit(alignment);
 								} catch (WeightException e1) {
 
 								}
 							} else {
-								logger.warn("Structure-based relation weight failed for (" + myA + ", " + myB
+								logger.warn("Structure-based relation weight failed for (" + uniProtIdA + ", " + uniProtIdB
 										+ ") Attempting to use sequence a relation.", e);
 								try {
 									RelationWeight relation = new PfamWeight();
-									relation.setIds(vertexA, vertexB, myA, myB);
+									relation.setIds(myE.getA(), myE.getB(), uniProtIdA, uniProtIdB);
 									completion.submit(relation);
 								} catch (WeightException e1) {
 

@@ -120,13 +120,13 @@ public class NeedlemanWunschWeight implements AlignmentWeight {
 		try {
 			a = getSequenceForId(uniProtId1);
 		} catch (Exception e) {
-			throw new WeightException("Could not get FASTA sequence for " + uniProtId1, uniProtId1, uniProtId2, true,
+			throw new WeightException("Could not get FASTA sequence for " + uniProtId1, v1, v2, uniProtId1, uniProtId2, true,
 					false);
 		}
 		try {
 			b = getSequenceForId(uniProtId2);
 		} catch (Exception e) {
-			throw new WeightException("Could not get FASTA sequence for " + uniProtId1, uniProtId1, uniProtId2, true,
+			throw new WeightException("Could not get FASTA sequence for " + uniProtId1, v1, v2, uniProtId1, uniProtId2, true,
 					false);
 		}
 		NeedlemanWunsch<ProteinSequence, AminoAcidCompound> alg = new NeedlemanWunsch<>(a, b, GAP_PENALTY, MATRIX);

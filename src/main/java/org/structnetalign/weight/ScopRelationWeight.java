@@ -115,10 +115,10 @@ public class ScopRelationWeight implements RelationWeight {
 
 		final ScopDatabase scop = ScopRelationWeight.getSCOP();
 		ScopDomain domain1 = scop.getDomainByScopID(scopId1);
-		if (domain1 == null) throw new WeightException("Could not find SCOP id for " + uniProtId1, uniProtId1,
+		if (domain1 == null) throw new WeightException("Could not find SCOP id for " + uniProtId1, v1, v2, uniProtId1,
 				uniProtId2, false, true);
 		ScopDomain domain2 = scop.getDomainByScopID(scopId2);
-		if (domain2 == null) throw new WeightException("Could not find SCOP id for " + uniProtId2, uniProtId1,
+		if (domain2 == null) throw new WeightException("Could not find SCOP id for " + uniProtId2, v1, v2, uniProtId1,
 				uniProtId2, false, true);
 
 		// we need to iterate in reverse order (most specific first)
@@ -145,10 +145,10 @@ public class ScopRelationWeight implements RelationWeight {
 		this.uniProtId2 = uniProtId2;
 
 		scopId1 = IdentifierMappingFactory.getMapping().uniProtToScop(uniProtId1);
-		if (scopId1 == null) throw new WeightException("Could not find SCOP id for " + uniProtId1, uniProtId1,
+		if (scopId1 == null) throw new WeightException("Could not find SCOP id for " + uniProtId1, v1, v2, uniProtId1,
 				uniProtId2, false, true);
 		scopId2 = IdentifierMappingFactory.getMapping().uniProtToScop(uniProtId2);
-		if (scopId2 == null) throw new WeightException("Could not find SCOP id for " + uniProtId2, uniProtId1,
+		if (scopId2 == null) throw new WeightException("Could not find SCOP id for " + uniProtId2, v1, v2, uniProtId1,
 				uniProtId2, false, true);
 
 	}
