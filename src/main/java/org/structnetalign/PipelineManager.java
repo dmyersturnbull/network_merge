@@ -136,6 +136,15 @@ public class PipelineManager {
 			ReportGenerator.getInstance().put("xi", xi);
 		}
 
+		// make a trimmer
+		EdgeWeighter<HomologyEdge> weighter = new EdgeWeighter<HomologyEdge>() {
+			@Override
+			public double getWeight(HomologyEdge e) {
+				return e.getWeight();
+			}
+		};
+		EdgeTrimmer<Integer, HomologyEdge> trimmer = new EdgeTrimmer<>(weighter);
+		
 		CleverGraph graph;
 		{
 			// build the graph
@@ -148,15 +157,10 @@ public class PipelineManager {
 			weightManager.assignWeights(graph, uniProtIds);
 		}
 		System.gc();
-
-		// make a trimmer
-		EdgeWeighter<HomologyEdge> weighter = new EdgeWeighter<HomologyEdge>() {
-			@Override
-			public double getWeight(HomologyEdge e) {
-				return e.getWeight();
-			}
-		};
 		
+		// trim with tau
+		trimmer.trim(graph.getHomology(), tau);
+
 		if (report) {
 			ReportGenerator.getInstance().saveWeighted(graph);
 		}
@@ -165,13 +169,16 @@ public class PipelineManager {
 			GraphMLAdaptor.writeInteractionGraph(graph.getInteraction(), new File(path + "int_weighted.graphml.xml"));
 		}
 		
-		EdgeTrimmer<Integer, HomologyEdge> trimmer = new EdgeTrimmer<>(weighter);
 		
 		// cross
-		trimmer.trim(graph.getHomology(), tau);
 		if (!noCross) {
 			crossingManager.cross(graph);
 		}
+		
+		// trim with zeta
+		trimmer.trim(graph.getHomology(), zeta);
+
+		// report progress
 		if (writeSteps) {
 			GraphMLAdaptor.writeHomologyGraph(graph.getHomology(), new File(path + "hom_crossed.graphml.xml"));
 			GraphMLAdaptor.writeInteractionGraph(graph.getInteraction(), new File(path + "int_crossed.graphml.xml"));
@@ -182,19 +189,20 @@ public class PipelineManager {
 		
 		// merge
 		List<MergeUpdate> merges = null;
-		trimmer.trim(graph.getHomology(), zeta);
 		if (!noMerge) {
 			merges = mergeManager.merge(graph);
 		}
+		
+		// report progress
 		if (writeSteps) {
 			GraphMLAdaptor.writeHomologyGraph(graph.getHomology(), new File(path + "hom_merged.graphml.xml"));
 			GraphMLAdaptor.writeInteractionGraph(graph.getInteraction(), new File(path + "int_merged.graphml.xml"));
 		}
-		
 		if (report) {
 			ReportGenerator.getInstance().saveMerged(graph);
 		}
 
+		// just to free up memory
 		crossingManager = null;
 		mergeManager = null;
 		trimmer = null;
