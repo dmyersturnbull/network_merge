@@ -79,7 +79,7 @@ public class PipelineManager {
 	private boolean noMerge;
 	private boolean noCross;
 
-	private int xi = XI;
+	private Integer xi; // depends on CrossingManager
 	private double zeta = ZETA;
 	private double tau = TAU;
 
@@ -99,11 +99,15 @@ public class PipelineManager {
 		this.noCross = noCross;
 	}
 
+	private String phi;
+	
 	/**
 	 * Initializes a new PipelineManager using the default parameters. Once this has been performed, setting of variables will have no effect.
 	 */
 	private void init() {
+		if (xi == null) xi = XI;
 		SmarterWeightManager weightManager = new SmarterWeightManager(new SimpleWeightCreator(), nCores);
+		phi = weightManager.getCreator().getClass().getSimpleName();
 		this.weightManager = weightManager;
 		crossingManager = new SimpleCrossingManager(nCores, xi);
 		mergeManager = new ConcurrentBronKerboschMergeManager(nCores);
@@ -135,9 +139,10 @@ public class PipelineManager {
 		ReportGenerator.setInstance(new ReportGenerator(reportFile));
 		if (report) {
 			ReportGenerator.getInstance().put("n_cores", nCores);
+			if (phi != null) ReportGenerator.getInstance().put("phi", phi);
 			ReportGenerator.getInstance().put("tau", tau);
 			ReportGenerator.getInstance().put("zeta", zeta);
-			ReportGenerator.getInstance().put("xi", xi);
+			if (xi != null) ReportGenerator.getInstance().put("xi", xi);
 		}
 
 		// make a trimmer

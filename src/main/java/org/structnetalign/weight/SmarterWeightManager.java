@@ -151,9 +151,8 @@ public class SmarterWeightManager implements WeightManager {
 						int n = nAttempted.get(new Pair<Integer>(myE.getA(), myE.getB())) + 1;
 						nAttempted.put(new Pair<Integer>(myE.getA(), myE.getB()), n);
 
-						logger.trace("Failed on " + uniProtIdA
-								+ " against " + uniProtIdB + " (" + a + ", " + b + ")");
-						
+						logger.trace("Failed on " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")");
+
 						Weight weight = creator.nextWeight(a, b, uniProtIdA, uniProtIdB, n, true, null);
 						if (weight != null) { // null means "we're done"
 							Future<WeightResult> newFuture = completion.submit(weight);
@@ -196,7 +195,7 @@ public class SmarterWeightManager implements WeightManager {
 					existing.setWeight(existing.getWeight() + prob - existing.getWeight() * prob);
 					logger.debug("["
 							+ PipelineProperties.getInstance().getOutputFormatter()
-									.format(((float) createdIndex / (float) (futures.size() + createdIndex) * 100.0))
+									.format((float) createdIndex / (float) (futures.size() + createdIndex) * 100.0)
 							+ "%] Updated homology edge (" + a + ", " + b + ", "
 							+ PipelineProperties.getInstance().getOutputFormatter().format(existing.getWeight())
 							+ ") with weight " + PipelineProperties.getInstance().getOutputFormatter().format(prob));
@@ -240,6 +239,18 @@ public class SmarterWeightManager implements WeightManager {
 				logger.warn("There are " + count + " lingering threads");
 			}
 		}
+	}
+
+	public WeightCreator getCreator() {
+		return creator;
+	}
+
+	public int getnCores() {
+		return nCores;
+	}
+
+	public void setCreator(WeightCreator creator) {
+		this.creator = creator;
 	}
 
 }

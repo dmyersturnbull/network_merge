@@ -17,7 +17,7 @@
 					<p class="top">Run with:</p>
         			<ul>
     					<li>nCores = $n_cores</li>
-    					<li>β = $beta</li>
+    					<li>φ = $phi</li>
     					<li>τ = $tau</li>
     					<li>ζ = $zeta</li>
     					<li>ξ = $xi</li>
