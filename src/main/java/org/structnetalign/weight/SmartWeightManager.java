@@ -39,8 +39,9 @@ import org.structnetalign.ReportGenerator;
  * structural information is missing.
  * 
  * @author dmyersturnbull
- * 
+ * @deprecated {@link SmarterWeightManager} replaces this class
  */
+@Deprecated
 public class SmartWeightManager implements WeightManager {
 
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");
