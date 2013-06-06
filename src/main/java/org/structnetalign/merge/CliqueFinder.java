@@ -22,6 +22,13 @@ import org.apache.commons.collections15.Transformer;
 
 import edu.uci.ics.jung.graph.UndirectedGraph;
 
+/**
+ * A Transformation that can find maximal and maximum cliques in an undirected graph.
+ * @author dmyersturnbull
+ *
+ * @param <V>
+ * @param <E>
+ */
 public interface CliqueFinder<V,E> extends Transformer<UndirectedGraph<V,E>, NavigableSet<Set<V>>> {
 
 	NavigableSet<Set<V>> getMaximumCliques(UndirectedGraph<V,E> graph);

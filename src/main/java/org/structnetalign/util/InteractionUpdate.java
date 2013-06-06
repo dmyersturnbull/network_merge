@@ -18,6 +18,10 @@ import org.structnetalign.InteractionEdge;
 
 import edu.uci.ics.jung.graph.util.Pair;
 
+/**
+ * The <em>result</em> of updating the probability of an interaction according to the weights of edges in a graph.
+ * @author dmyersturnbull
+ */
 public class InteractionUpdate {
 
 	private Pair<Integer> ids;

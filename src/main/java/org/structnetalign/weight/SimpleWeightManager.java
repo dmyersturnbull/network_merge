@@ -26,6 +26,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.structnetalign.CleverGraph;
 import org.structnetalign.HomologyEdge;
+import org.structnetalign.PipelineProperties;
 
 /**
  * A simple {@link WeightManager} that keeps a list of {@link Weight Weights} and sums over each weight. If a Weight
@@ -58,12 +59,6 @@ public class SimpleWeightManager implements WeightManager {
 		return weights.add(e);
 	}
 
-	private static final NumberFormat nf = new DecimalFormat();
-	static {
-		nf.setMinimumFractionDigits(1);
-		nf.setMaximumFractionDigits(3);
-	}
-
 	@Override
 	public void assignWeights(CleverGraph graph, Map<Integer, String> uniProtIds) {
 
@@ -91,7 +86,7 @@ public class SimpleWeightManager implements WeightManager {
 				Collection<Integer> vertices = Arrays.asList(a, b);
 				HomologyEdge edge = new HomologyEdge(createdIndex++, score);
 				graph.addHomologies(edge, vertices);
-				logger.debug("Added homology edge (" + a + ", " + b + ", " + nf.format(score) + ")");
+				logger.debug("Added homology edge (" + a + ", " + b + ", " + PipelineProperties.getInstance().getOutputFormatter().format(score) + ")");
 				
 			}
 		}

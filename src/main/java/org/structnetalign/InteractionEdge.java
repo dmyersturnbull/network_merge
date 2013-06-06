@@ -17,6 +17,11 @@ package org.structnetalign;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
+/**
+ * An {@link Edge} that denotes an interaction between two macromolecules.
+ * @author dmyersturnbull
+ *
+ */
 public class InteractionEdge implements Edge {
 
 	private static NumberFormat nf = new DecimalFormat();
@@ -24,11 +29,6 @@ public class InteractionEdge implements Edge {
 	private int id;
 
 	private double weight;
-
-	static {
-		nf.setMinimumFractionDigits(1);
-		nf.setMaximumFractionDigits(3);
-	}
 
 	public InteractionEdge() {
 	}

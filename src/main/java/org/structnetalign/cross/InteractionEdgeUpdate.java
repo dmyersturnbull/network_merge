@@ -17,6 +17,11 @@ package org.structnetalign.cross;
 
 import org.structnetalign.InteractionEdge;
 
+/**
+ * The <em>result</em> corresponding to the total update of a single interaction.
+ * @author dmyersturnbull
+ * @see HomologySearchJob
+ */
 public class InteractionEdgeUpdate {
 
 	private final InteractionEdge rootInteraction;

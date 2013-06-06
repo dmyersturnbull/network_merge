@@ -36,6 +36,12 @@ import org.structnetalign.ReportGenerator;
 import org.structnetalign.util.GraphMLAdaptor;
 import org.xml.sax.SAXException;
 
+/**
+ * A simple multithreaded {@link CrossingManager} that delegates each interaction to a job in a thread pool.
+ * @author dmyersturnbull
+ * @see HomologySearchJob
+ * @see InteractionEdgeUpdate
+ */
 public class SimpleCrossingManager implements CrossingManager {
 
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");

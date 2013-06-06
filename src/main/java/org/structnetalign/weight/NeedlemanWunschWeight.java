@@ -33,24 +33,31 @@ import org.biojava3.core.sequence.ProteinSequence;
 import org.biojava3.core.sequence.compound.AminoAcidCompound;
 import org.biojava3.core.sequence.io.FastaReaderHelper;
 
+/**
+ * A {@link Weight} that uses the <a href="http://linkinghub.elsevier.com/retrieve/pii/0022-2836(70)90057-4">global
+ * sequence alignment</a> algorithm of Needleman and Wunsch and a {@link GammaScorer gamma distribution} for scoring.
+ * 
+ * @author dmyersturnbull
+ * 
+ */
 public class NeedlemanWunschWeight implements AlignmentWeight {
 
-	private static final Logger logger = LogManager.getLogger(NeedlemanWunschWeight.class.getName());
-	
 	private static GammaScorer GAMMA = GammaScorer.forBlosum62();
 
 	private static GapPenalty GAP_PENALTY = new SimpleGapPenalty((short) 12, (short) 1);
+
+	private static final Logger logger = LogManager.getLogger(NeedlemanWunschWeight.class.getName());
 
 	private static SubstitutionMatrix<AminoAcidCompound> MATRIX = SubstitutionMatrixHelper.getBlosum62();
 
 	private static String URL;
 
-	private int v1;
-	private int v2;
-
 	private String uniProtId1;
-
 	private String uniProtId2;
+
+	private int v1;
+
+	private int v2;
 
 	int nSamples;
 

@@ -38,12 +38,13 @@ import edu.uci.ics.jung.graph.UndirectedGraph;
 import edu.uci.ics.jung.graph.util.Pair;
 
 /**
- * A {@link MergeManager} that finds cliques whose members share interactions, using a
- * {@link ProbabilisticDistanceCluster} and a modification of the Bron–Kerbosch algorithm for Max-Clique. The runtime is
- * approximately
+ * A {@link MergeManager} that finds degenerate sets, using a modification of the Bron–Kerbosch algorithm for
+ * Max-Clique. This implementation is multithreaded, and delegates each connected component of the graph to a
+ * unique {@link BronKerboschMergeJob}.
  * 
  * @author dmyersturnbull
  * @see BronKerboschCliqueFinder
+ * @see BronKerboschMergeManager
  */
 public class ConcurrentBronKerboschMergeManager extends BronKerboschMergeManager {
 

@@ -14,5 +14,9 @@
 package org.structnetalign.weight;
 
 
+/**
+ * A {@link Weight} that uses an alignment method to determine scores.
+ * @author dmyersturnbull
+ */
 public interface AlignmentWeight extends Weight {
 }

@@ -28,32 +28,31 @@ import org.biojava.bio.structure.scop.ScopDomain;
 import org.structnetalign.util.BasicScop;
 import org.structnetalign.util.IdentifierMappingFactory;
 
+/**
+ * A {@link Weight} that uses the <a href="http://scop.berkeley.edu">Structural Classification of Proteins</a> to
+ * determine weights.
+ * 
+ * @author dmyersturnbull
+ * 
+ */
 public class ScopRelationWeight implements RelationWeight {
 
-	/**
-	 * Thread safety is required here.
-	 * @return
-	 */
-	private static synchronized ScopDatabase getSCOP() {
-		return BasicScop.getScop();
-	}
-	
 	public static final Map<ScopCategory, Double> DEFAULT_WEIGHTS = new HashMap<ScopCategory, Double>();
 
-	private String uniProtId1;
-	private String uniProtId2;
-
 	private String scopId1;
-	private String scopId2;
-	
-	private int v1;
-	private int v2;
 
+	private String scopId2;
+	private String uniProtId1;
+
+	private String uniProtId2;
+	private int v1;
+
+	private int v2;
 	private Map<ScopCategory, Double> weights;
 
 	static {
 		Properties props = new Properties();
-		ClassLoader loader = Thread.currentThread().getContextClassLoader();           
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		InputStream stream = loader.getResourceAsStream("weight/scop_weights.properties");
 		try {
 			props.load(stream);
@@ -66,7 +65,16 @@ public class ScopRelationWeight implements RelationWeight {
 		DEFAULT_WEIGHTS.put(ScopCategory.Family, Double.parseDouble(props.getProperty("family")));
 		DEFAULT_WEIGHTS.put(ScopCategory.Px, Double.parseDouble(props.getProperty("species")));
 	}
-	
+
+	/**
+	 * Thread safety is required here.
+	 * 
+	 * @return
+	 */
+	private static synchronized ScopDatabase getSCOP() {
+		return BasicScop.getScop();
+	}
+
 	private static int sunIdOfCategory(ScopDomain domain, ScopCategory category) {
 		switch (category) {
 		case Class:
@@ -107,10 +115,12 @@ public class ScopRelationWeight implements RelationWeight {
 
 		final ScopDatabase scop = ScopRelationWeight.getSCOP();
 		ScopDomain domain1 = scop.getDomainByScopID(scopId1);
-		if (domain1 == null) throw new WeightException("Could not find SCOP id for " + uniProtId1, uniProtId1, uniProtId2, false, true);
+		if (domain1 == null) throw new WeightException("Could not find SCOP id for " + uniProtId1, uniProtId1,
+				uniProtId2, false, true);
 		ScopDomain domain2 = scop.getDomainByScopID(scopId2);
-		if (domain2 == null) throw new WeightException("Could not find SCOP id for " + uniProtId2, uniProtId1, uniProtId2, false, true);
-		
+		if (domain2 == null) throw new WeightException("Could not find SCOP id for " + uniProtId2, uniProtId1,
+				uniProtId2, false, true);
+
 		// we need to iterate in reverse order (most specific first)
 		ScopCategory[] categories = ScopCategory.values();
 		Collections.reverse(Arrays.asList(categories));
@@ -133,11 +143,13 @@ public class ScopRelationWeight implements RelationWeight {
 		this.v2 = v2;
 		this.uniProtId1 = uniProtId1;
 		this.uniProtId2 = uniProtId2;
-		
+
 		scopId1 = IdentifierMappingFactory.getMapping().uniProtToScop(uniProtId1);
-		if (scopId1 == null) throw new WeightException("Could not find SCOP id for " + uniProtId1, uniProtId1, uniProtId2, false, true);
+		if (scopId1 == null) throw new WeightException("Could not find SCOP id for " + uniProtId1, uniProtId1,
+				uniProtId2, false, true);
 		scopId2 = IdentifierMappingFactory.getMapping().uniProtToScop(uniProtId2);
-		if (scopId2 == null) throw new WeightException("Could not find SCOP id for " + uniProtId2, uniProtId1, uniProtId2, false, true);
+		if (scopId2 == null) throw new WeightException("Could not find SCOP id for " + uniProtId2, uniProtId1,
+				uniProtId2, false, true);
 
 	}
 

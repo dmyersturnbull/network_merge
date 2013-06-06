@@ -13,6 +13,10 @@
  */
 package org.structnetalign.util;
 
+/**
+ * A simple factory for {@link IdentifierMapping}.
+ * @author dmyersturnbull
+ */
 public class IdentifierMappingFactory {
 
 	private static IdentifierMapping mapping = new MartinIdentifierMapping();

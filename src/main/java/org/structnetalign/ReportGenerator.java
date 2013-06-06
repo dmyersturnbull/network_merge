@@ -44,6 +44,11 @@ import org.structnetalign.util.GraphImageWriter;
 
 import edu.uci.ics.jung.graph.util.Pair;
 
+/**
+ * A pretty HTML report for the results of {@link PipelineManager}.
+ * Uses Apache Velocity to generate the reports.
+ * @author dmyersturnbull
+ */
 public class ReportGenerator {
 
 	public static class DegenerateSetEntry {

@@ -23,6 +23,11 @@ import java.util.Properties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * A container of Struct-NA configurable settings.
+ * Reads the settings on initialization from {@code src/main/resources/structna.properties}.
+ * @author dmyersturnbull
+ */
 public class PipelineProperties {
 
 	private static final String INITIAL_CONF_LABEL = "struct-NA intial weighting";

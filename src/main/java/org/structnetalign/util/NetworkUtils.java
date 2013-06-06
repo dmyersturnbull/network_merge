@@ -56,6 +56,11 @@ import psidev.psi.mi.xml.model.Unit;
 import psidev.psi.mi.xml.model.Xref;
 import edu.uci.ics.jung.graph.util.Pair;
 
+/**
+ * A collection of static utilities related to PSI-MI XML files and data.
+ * @author dmyersturnbull
+ *
+ */
 public class NetworkUtils {
 
 	public static final String NEWLINE;
@@ -87,6 +92,14 @@ public class NetworkUtils {
 		return null;
 	}
 
+	/**
+	 * Finds a confidence with label {@code confidenceLabel} <strong>or</strong> full name
+	 * {@code confidenceFullName}.
+	 * @param interaction
+	 * @param confidenceLabel
+	 * @param confidenceFullName
+	 * @return The numerical value of the Confidence if it exists; null otherwise
+	 */
 	public static Double getExistingConfidenceValue(Interaction interaction, String confidenceLabel,
 			String confidenceFullName) {
 		Confidence conf = getExistingConfidence(interaction, confidenceLabel, confidenceFullName);
@@ -97,8 +110,9 @@ public class NetworkUtils {
 	}
 
 	/**
-	 * Returns the first Confidence with <em>either</em> label {@code confidenceLabel} <em>or</em> full name
+	 * Returns the first Confidence with <em>either</em> label {@code confidenceLabel} <strong>or</strong> full name
 	 * {@code confidenceFullName}.
+	 * @return The Confidence if it exists; null otherwise
 	 */
 	public static Confidence getExistingConfidence(Interaction interaction, String confidenceLabel,
 			String confidenceFullName) {
@@ -119,6 +133,10 @@ public class NetworkUtils {
 
 	}
 
+	/**
+	 * Returns the Interactors acting as Participants in {@code interaction}.
+	 * @throws IllegalArgumentException If {@link interaction} does not contain exactly 2 participants
+	 */
 	public static Pair<Interactor> getInteractors(Interaction interaction) {
 		Collection<Participant> participants = interaction.getParticipants();
 		if (participants.size() != 2) throw new IllegalArgumentException(
@@ -128,6 +146,10 @@ public class NetworkUtils {
 		return pair;
 	}
 
+	/**
+	 * Returns the UniProt Ids of the the Interactors acting as Participants in {@code interaction}.
+	 * @throws IllegalArgumentException If {@link interaction} does not contain exactly 2 participants
+	 */
 	public static Pair<String> getUniProtId(Interaction interaction) {
 		Pair<Interactor> interactors = getInteractors(interaction);
 		String uniProtId1 = getUniProtId(interactors.getFirst());
@@ -139,7 +161,7 @@ public class NetworkUtils {
 	}
 
 	/**
-	 * Returns the UniProtId corresponding to this interactor, or null if it isn't defined.
+	 * Returns the UniProtId corresponding to this interactor, or null if it doesn't exist.
 	 */
 	public static String getUniProtId(Interactor interactor) {
 		Xref xref = interactor.getXref();
@@ -154,6 +176,9 @@ public class NetworkUtils {
 		return null;
 	}
 
+	/**
+	 * @return A map of the Ids of each interactor in {@code entrySet} to their UniProt Ids; note that this map is <em>not</em> injective
+	 */
 	public static Map<Integer, String> getUniProtIds(EntrySet entrySet) {
 		HashMap<Integer, String> map = new HashMap<>();
 		for (Entry entry : entrySet.getEntries()) {
@@ -170,6 +195,9 @@ public class NetworkUtils {
 		return map;
 	}
 
+	/**
+	 * @return A map of the Ids of each interactor in the PSI-MI file {@code file} to their UniProt Ids; note that this map is <em>not</em> injective
+	 */
 	public static Map<Integer, String> getUniProtIds(File file) {
 		return getUniProtIds(NetworkUtils.readNetwork(file));
 	}
@@ -186,6 +214,10 @@ public class NetworkUtils {
 		return set;
 	}
 
+	/**
+	 * Returns an MD5 hash of the element {@link #toString() toString()s} of {@code collection}.
+	 * @throws IllegalArgumentException If {@code collection} contains an element whose {@link #toString()} contains a semicolon
+	 */
 	@SuppressWarnings("rawtypes")
 	public static String hash(Collection collection) {
 		MessageDigest md;
@@ -204,6 +236,10 @@ public class NetworkUtils {
 		return new String(Hex.encodeHex(bytes));
 	}
 
+	/**
+	 * Returns an MD5 hash of the element {@link #toString() toString()s} of {@code array}.
+	 * @throws IllegalArgumentException If {@code array} contains an element whose {@link #toString()} contains a semicolon
+	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static String hash(Object... array) {
 		List list = new ArrayList();
@@ -236,6 +272,9 @@ public class NetworkUtils {
 		return readNetwork(new File(string));
 	}
 
+	/**
+	 * @return {@code s} repeated {@code n} times
+	 */
 	public static String repeat(String s, int n) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < n; i++) {
@@ -244,6 +283,9 @@ public class NetworkUtils {
 		return sb.toString();
 	}
 
+	/**
+	 * @return A new Entry with the same Source, Attributes, Availabilities, and Experiments, but no Interactions or Interactors
+	 */
 	public static Entry skeletonClone(Entry entry) {
 		Entry myEntry = new Entry();
 		myEntry.setSource(entry.getSource());
@@ -253,6 +295,9 @@ public class NetworkUtils {
 		return myEntry;
 	}
 
+	/**
+	 * @return A new EntrySet with the same version, minor version, and level
+	 */
 	public static EntrySet skeletonClone(EntrySet entrySet) {
 		EntrySet myEntrySet = new EntrySet();
 		myEntrySet.setVersion(entrySet.getVersion());
@@ -263,11 +308,7 @@ public class NetworkUtils {
 
 	/**
 	 * Converts space indentation to tab indentation, assuming no lines have trailing whitespace.
-	 * 
-	 * @param input
-	 * @param output
-	 * @param nSpaces
-	 * @throws IOException
+	 * Useful for keeping file size down.
 	 */
 	public static void spacesToTabs(File input, File output, int nSpaces) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(input));
@@ -282,6 +323,10 @@ public class NetworkUtils {
 		pw.close();
 	}
 
+	/**
+	 * Converts space indentation to tab indentation, assuming no lines have trailing whitespace.
+	 * Useful for keeping file size down.
+	 */
 	public static String spacesToTabs(String input, int nSpaces) throws IOException {
 		StringBuilder sb = new StringBuilder();
 		String[] lines = input.split(NEWLINE);

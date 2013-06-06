@@ -35,6 +35,10 @@ import org.structnetalign.PipelineProperties;
 import edu.uci.ics.jung.graph.UndirectedGraph;
 import edu.uci.ics.jung.graph.util.Pair;
 
+/**
+ * A single interaction conservation detection job for a single interaction. Finds interactions that are similar to its interaction.
+ * @author dmyersturnbull
+ */
 public class HomologySearchJob implements Callable<InteractionEdgeUpdate> {
 
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");

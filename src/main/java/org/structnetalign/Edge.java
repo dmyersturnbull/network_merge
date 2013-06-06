@@ -14,6 +14,10 @@
  */
 package org.structnetalign;
 
+/**
+ * An edge with a numerical {@link #getId() identifier} and a floating-point {@link #getWeight() weight}.
+ * @author dmyersturnbull
+ */
 public interface Edge {
 
 	int getId();

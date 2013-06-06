@@ -13,6 +13,9 @@
  */
 package org.structnetalign.weight;
 
-
+/**
+ * A {@link Weight} that uses a pre-defined database relation.
+ * @author dmyersturnbull
+ */
 public interface RelationWeight extends Weight {
 }

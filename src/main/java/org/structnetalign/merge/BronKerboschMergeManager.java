@@ -36,9 +36,8 @@ import edu.uci.ics.jung.graph.UndirectedGraph;
 import edu.uci.ics.jung.graph.util.Pair;
 
 /**
- * A {@link MergeManager} that finds cliques whose members share interactions, using a
- * {@link ProbabilisticDistanceCluster} and a modification of the Bron–Kerbosch algorithm for Max-Clique. The runtime is
- * approximately
+ * A {@link MergeManager} that finds degenerate sets, using a modification of the Bron–Kerbosch algorithm for
+ * Max-Clique.
  * 
  * @author dmyersturnbull
  * @see BronKerboschCliqueFinder
@@ -50,7 +49,10 @@ public class BronKerboschMergeManager implements MergeManager {
 	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
 
 		if (args.length != 4) {
-			System.err.println("Usage: " + BronKerboschMergeManager.class.getSimpleName() + " interaction-graph-file homology-graph-file output-interaction-graph-file output-homology-graph-file");
+			System.err
+					.println("Usage: "
+							+ BronKerboschMergeManager.class.getSimpleName()
+							+ " interaction-graph-file homology-graph-file output-interaction-graph-file output-homology-graph-file");
 			return;
 		}
 
@@ -63,7 +65,7 @@ public class BronKerboschMergeManager implements MergeManager {
 
 		BronKerboschMergeManager merge = new BronKerboschMergeManager();
 		merge.merge(graph);
-		
+
 		GraphMLAdaptor.writeInteractionGraph(graph.getInteraction(), outputInteraction);
 		GraphMLAdaptor.writeHomologyGraph(graph.getHomology(), outputHomology);
 	}
@@ -123,7 +125,7 @@ public class BronKerboschMergeManager implements MergeManager {
 		} else {
 			logger.info("No degenerate sets were found");
 		}
-		
+
 		List<MergeUpdate> updates = new ArrayList<>(cliqueGroups.size());
 
 		for (NavigableSet<Integer> group : cliqueGroups) {
@@ -134,7 +136,7 @@ public class BronKerboschMergeManager implements MergeManager {
 
 			MergeUpdate update = new MergeUpdate(v0);
 			updates.add(update);
-			
+
 			int nVerticesRemoved = group.size() - 1;
 
 			// okay, this isn't exactly what AtomicInteger is for
@@ -159,9 +161,9 @@ public class BronKerboschMergeManager implements MergeManager {
 					+ " interaction edges contracted into vertex Id#" + v0 + " for degenerate set " + group);
 
 		}
-		
+
 		return updates;
-		
+
 	}
 
 	public BronKerboschMergeManager() {

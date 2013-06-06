@@ -21,6 +21,11 @@ import java.util.Set;
 import org.structnetalign.HomologyEdge;
 import org.structnetalign.InteractionEdge;
 
+/**
+ * The <em>result</em> corresponding to a single degenerate set.
+ * @author dmyersturnbull
+ *
+ */
 public class MergeUpdate {
 
 	private int v0;
@@ -39,10 +44,16 @@ public class MergeUpdate {
 		this.homologyEdges = new HashSet<>();
 	}
 
+	/**
+	 * @return representative vertex selected for this degenerate set.
+	 */
 	public int getV0() {
 		return v0;
 	}
 
+	/**
+	 * The set of vertices in this degenerate set, including {@link #getV0() V0}.
+	 */
 	public Set<Integer> getVertices() {
 		return vertices;
 	}

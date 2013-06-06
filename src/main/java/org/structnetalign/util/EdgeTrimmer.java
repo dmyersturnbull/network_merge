@@ -24,12 +24,12 @@ import org.structnetalign.Edge;
 import edu.uci.ics.jung.graph.Graph;
 
 /**
- * A simple graph transformation to remove edges with weights above or below a threshold.
+ * A simple graph transformation that removes edges with weights above and/or below a threshold.
  * 
  * @author dmyersturnbull
  * 
- * @param <V>
- * @param <E>
+ * @param <V> The types of the vertices
+ * @param <E> The types of the edges
  */
 public class EdgeTrimmer<V, E> {
 

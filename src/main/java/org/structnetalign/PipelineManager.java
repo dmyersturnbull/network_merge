@@ -48,6 +48,17 @@ import psidev.psi.mi.xml.model.EntrySet;
 import edu.uci.ics.jung.graph.UndirectedGraph;
 import edu.uci.ics.jung.graph.util.Pair;
 
+/**
+ * The main class of Struct-NA. Performs 3 steps:
+ * <ol>
+ * <li>Weighting: identifies homologs</li>
+ * <li>Crossing: updates the probabilities of interactions that are conserved across homologs</li>
+ * <li>Merging: merges degenerate vertex sets into a single representative per set</li>
+ * </ol>
+ * Reads an input MIF25 network and generates an output MIF25 network after performing the above 3 steps.
+ * @author dmyersturnbull
+ * @see CLI
+ */
 public class PipelineManager {
 
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");

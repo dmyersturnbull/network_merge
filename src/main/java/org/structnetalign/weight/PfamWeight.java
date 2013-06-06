@@ -14,6 +14,10 @@
  */
 package org.structnetalign.weight;
 
+/**
+ * A {@link Weight} that uses the <a href="http://pfam.sanger.ac.uk/">Pfam</a> sequence-based protein family database.
+ * @author dmyersturnbull
+ */
 public class PfamWeight implements RelationWeight {
 
 	private int v1;

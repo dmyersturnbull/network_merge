@@ -17,7 +17,11 @@ import java.util.List;
 
 import org.structnetalign.CleverGraph;
 
-
+/**
+ * Something that can identify degenerate vertex sets in a graph.
+ * @author dmyersturnbull
+ *
+ */
 public interface MergeManager {
 	public List<MergeUpdate> merge(CleverGraph graph);
 }

@@ -27,6 +27,11 @@ import org.apache.logging.log4j.Logger;
 import org.biojava.bio.structure.align.ce.AbstractUserArgumentProcessor;
 import org.structnetalign.weight.AtomCacheFactory;
 
+/**
+ * A command-line interface for Struct-NA's main component.
+ * @author dmyersturnbull
+ * @see PipelineManager
+ */
 public class CLI {
 
 	public static final String PROGRAM_NAME = "Struct-NA";

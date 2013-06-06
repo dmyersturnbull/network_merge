@@ -14,29 +14,27 @@
  */
 package org.structnetalign.weight;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
+import org.structnetalign.PipelineProperties;
 
+/**
+ * The result of a single attempt to ascertain degree or probability of homology between two proteins.
+ * 
+ * @author dmyersturnbull
+ * 
+ */
 public class WeightResult {
 
-	private static final NumberFormat nf = new DecimalFormat();
-	
 	private String a;
 
 	private String b;
-	
-	private int v1;
-	
-	private int v2;
 
 	private Class<? extends Weight> submitter;
 
-	private double weight;
+	private int v1;
 
-	static {
-		nf.setMinimumFractionDigits(1);
-		nf.setMaximumFractionDigits(3);
-	}
+	private int v2;
+
+	private double weight;
 
 	public WeightResult(double weight, int v1, int v2, String a, String b, Class<? extends Weight> submitter) {
 		super();
@@ -48,20 +46,27 @@ public class WeightResult {
 		this.submitter = submitter;
 	}
 
-	public int getV1() {
-		return v1;
-	}
-
-	public int getV2() {
-		return v2;
-	}
-
 	public String getA() {
 		return a;
 	}
 
 	public String getB() {
 		return b;
+	}
+
+	/**
+	 * @return class that determined this WeightResult
+	 */
+	public Class<? extends Weight> getSubmitter() {
+		return submitter;
+	}
+
+	public int getV1() {
+		return v1;
+	}
+
+	public int getV2() {
+		return v2;
 	}
 
 	public double getWeight() {
@@ -76,10 +81,6 @@ public class WeightResult {
 		this.b = b;
 	}
 
-	public Class<? extends Weight> getSubmitter() {
-		return submitter;
-	}
-
 	public void setSubmitter(Class<? extends Weight> submitter) {
 		this.submitter = submitter;
 	}
@@ -90,7 +91,8 @@ public class WeightResult {
 
 	@Override
 	public String toString() {
-		return submitter.getSimpleName() + ": (" + a + ", " + b + ") --> " + nf.format(weight);
+		return submitter.getSimpleName() + ": (" + a + ", " + b + ") --> "
+				+ PipelineProperties.getInstance().getOutputFormatter().format(weight);
 	}
 
 }

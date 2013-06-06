@@ -17,7 +17,10 @@ import java.util.Map;
 
 import org.structnetalign.CleverGraph;
 
-
+/**
+ * Something that can identify homologous pairs in a network.
+ * @author dmyersturnbull
+ */
 public interface WeightManager {
 	void assignWeights(CleverGraph graph, Map<Integer,String> uniProtIds);
 }

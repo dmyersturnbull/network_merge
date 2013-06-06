@@ -20,6 +20,11 @@ import edu.uci.ics.jung.graph.UndirectedGraph;
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import edu.uci.ics.jung.graph.util.Pair;
 
+/**
+ * A generalized graph that contains both interaction edges and homology edges.
+ * @author dmyersturnbull
+ *
+ */
 public class CleverGraph {
 
 	private final UndirectedGraph<Integer, HomologyEdge> homology;

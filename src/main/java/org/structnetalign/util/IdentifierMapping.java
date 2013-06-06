@@ -13,7 +13,10 @@
  */
 package org.structnetalign.util;
 
-
+/**
+ * A mapping from UniProt Ids to PDB Ids, and SCOP Ids.
+ * @author dmyersturnbull
+ */
 public interface IdentifierMapping {
 
 	String uniProtToPdb(String uniProtId);

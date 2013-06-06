@@ -27,8 +27,6 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 
 import javax.imageio.ImageIO;
 
@@ -37,6 +35,7 @@ import org.structnetalign.CleverGraph;
 import org.structnetalign.Edge;
 import org.structnetalign.HomologyEdge;
 import org.structnetalign.InteractionEdge;
+import org.structnetalign.PipelineProperties;
 
 import edu.uci.ics.jung.algorithms.layout.KKLayout;
 import edu.uci.ics.jung.graph.UndirectedGraph;
@@ -47,12 +46,6 @@ import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 
 public class GraphImageWriter {
 
-	private static NumberFormat nf = new DecimalFormat();
-	static {
-		nf.setMinimumFractionDigits(1);
-		nf.setMaximumFractionDigits(3);
-	}
-	
 	private int fontSize = 16;
 
 	private int height = 4000;
@@ -232,7 +225,7 @@ public class GraphImageWriter {
 				}
 				String prefix = "<html><font color=\"" + color + "\">";
 				String suffix = "</font></html>";
-				return prefix + nf.format(edge.getWeight()) + suffix;
+				return prefix + PipelineProperties.getInstance().getOutputFormatter().format(edge.getWeight()) + suffix;
 			}
 		};
 		vv.getRenderContext().setEdgeLabelTransformer(edgeLabeler);

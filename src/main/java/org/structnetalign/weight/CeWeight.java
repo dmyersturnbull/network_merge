@@ -29,12 +29,60 @@ import org.biojava.bio.structure.align.util.AFPChainScorer;
 import org.biojava.bio.structure.align.util.AtomCache;
 import org.structnetalign.util.IdentifierMappingFactory;
 
+/**
+ * A {@link Weight} that uses the <a href="http://www.ncbi.nlm.nih.gov/pubmed/9796821">Combinatorial Extension</a>
+ * structural alignment method of Shindyalov and Bourne.
+ * 
+ * @author dmyersturnbull
+ */
 public class CeWeight implements AlignmentWeight {
 
-	private static Double SEQUENCE_WEIGHT = 2.0;
-	private static Double GAP_OPEN;
+	/**
+	 * A factory that instantiates a new StructureAlignment for each new alignment. Useful for concurrency: use
+	 * precisely 1 StructureAlignment object per concurrent alignment.
+	 */
+	public static abstract class AlgorithmGiver {
+		public static AlgorithmGiver getDefault() {
+			return new AlgorithmGiver() {
+				@Override
+				public StructureAlignment getAlgorithm() {
+					CeMain ceSymm = new CeMain();
+					ConfigStrucAligParams params = ceSymm.getParameters();
+					if (params instanceof CeParameters) {
+						CeParameters ceparams = (CeParameters) params;
+						ceparams.setScoringStrategy(CeParameters.SEQUENCE_CONSERVATION);
+						if (SEQUENCE_WEIGHT != null) ceparams.setSeqWeight(SEQUENCE_WEIGHT); // note the use of sequence
+																								// weight
+						if (GAP_OPEN != null) ceparams.setGapOpen(GAP_OPEN);
+						if (GAP_EXTEND != null) ceparams.setGapExtension(GAP_EXTEND);
+						if (MAX_GAP_SIZE != null) ceparams.setMaxGapSize(MAX_GAP_SIZE);
+						ceSymm.setParameters(ceparams);
+					}
+					return ceSymm;
+				}
+			};
+		}
+
+		public abstract StructureAlignment getAlgorithm();
+	}
+
 	private static Double GAP_EXTEND;
+	private static Double GAP_OPEN;
 	private static Integer MAX_GAP_SIZE;
+
+	private static Double SEQUENCE_WEIGHT = 2.0;
+
+	private AlgorithmGiver algorithm;
+
+	private String pdbIdAndChain1;
+
+	private String pdbIdAndChain2;
+	private String uniProtId1;
+
+	private String uniProtId2;
+	private int v1;
+
+	private int v2;
 
 	static {
 		Properties props = new Properties();
@@ -62,46 +110,6 @@ public class CeWeight implements AlignmentWeight {
 			MAX_GAP_SIZE = Integer.parseInt(maxGapSize);
 		}
 	}
-
-	/**
-	 * A factory that instantiates a new StructureAlignment for each new alignment. Useful for concurrency: use
-	 * precisely 1 StructureAlignment object per concurrent alignment.
-	 */
-	public static abstract class AlgorithmGiver {
-		public static AlgorithmGiver getDefault() {
-			return new AlgorithmGiver() {
-				@Override
-				public StructureAlignment getAlgorithm() {
-					CeMain ceSymm = new CeMain();
-					ConfigStrucAligParams params = ceSymm.getParameters();
-					if (params instanceof CeParameters) {
-						CeParameters ceparams = (CeParameters) params;
-						ceparams.setScoringStrategy(CeParameters.SEQUENCE_CONSERVATION);
-						if (SEQUENCE_WEIGHT != null) ceparams.setSeqWeight(SEQUENCE_WEIGHT); // note the use of sequence weight
-						if (GAP_OPEN != null) ceparams.setGapOpen(GAP_OPEN);
-						if (GAP_EXTEND != null) ceparams.setGapExtension(GAP_EXTEND);
-						if (MAX_GAP_SIZE != null) ceparams.setMaxGapSize(MAX_GAP_SIZE);
-						ceSymm.setParameters(ceparams);
-					}
-					return ceSymm;
-				}
-			};
-		}
-
-		public abstract StructureAlignment getAlgorithm();
-	}
-
-	private AlgorithmGiver algorithm;
-
-	private int v1;
-	private int v2;
-
-	private String pdbIdAndChain1;
-	private String pdbIdAndChain2;
-
-	private String uniProtId1;
-
-	private String uniProtId2;
 
 	/**
 	 * Disable on production.
@@ -150,7 +158,8 @@ public class CeWeight implements AlignmentWeight {
 		try {
 			afpChain = align(ca1, ca2);
 		} catch (IOException | StructureException e) {
-			throw new WeightException("Could not align " + pdbIdAndChain1 + " against " + pdbIdAndChain2, e, uniProtId1, uniProtId2, true, true);
+			throw new WeightException("Could not align " + pdbIdAndChain1 + " against " + pdbIdAndChain2, e,
+					uniProtId1, uniProtId2, true, true);
 		}
 		if (afpChain.getTMScore() == -1) throw new WeightException("TM-score not calculated for the alignment of "
 				+ pdbIdAndChain1 + " against " + pdbIdAndChain2, uniProtId1, uniProtId2, true, true);
@@ -166,9 +175,11 @@ public class CeWeight implements AlignmentWeight {
 		this.uniProtId2 = uniProtId2;
 
 		pdbIdAndChain1 = IdentifierMappingFactory.getMapping().uniProtToPdb(uniProtId1);
-		if (pdbIdAndChain1 == null) throw new WeightException("Could not find PDB Id for " + uniProtId1, uniProtId1, uniProtId2, true, true);
+		if (pdbIdAndChain1 == null) throw new WeightException("Could not find PDB Id for " + uniProtId1, uniProtId1,
+				uniProtId2, true, true);
 		pdbIdAndChain2 = IdentifierMappingFactory.getMapping().uniProtToPdb(uniProtId2);
-		if (pdbIdAndChain2 == null) throw new WeightException("Could not find PDB Id for " + uniProtId2, uniProtId1, uniProtId2, true, true);
+		if (pdbIdAndChain2 == null) throw new WeightException("Could not find PDB Id for " + uniProtId2, uniProtId1,
+				uniProtId2, true, true);
 
 	}
 

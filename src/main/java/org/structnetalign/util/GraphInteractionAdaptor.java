@@ -45,13 +45,12 @@ import edu.uci.ics.jung.graph.util.Pair;
  */
 public class GraphInteractionAdaptor {
 
+	private static final Logger logger = LogManager.getLogger("org.structnetalign");
+
 	/**
-	 * Method-based confidence.
-	 * Aka PMID:19010802 or network-based confidence.
+	 * Method-based confidence. Aka PMID:19010802 or network-based confidence.
 	 */
 	private static final String OUTPUT_CONFIDENCE_XREF = "MI:1069";
-
-	private static final Logger logger = LogManager.getLogger("org.structnetalign");
 
 	public static void main(String[] args) throws IOException {
 		if (args.length != 2) {
@@ -64,21 +63,39 @@ public class GraphInteractionAdaptor {
 		GraphMLAdaptor.writeInteractionGraph(graph, new File(args[1]));
 	}
 
-	public static List<InteractionUpdate> modifyProbabilites(EntrySet entrySet, UndirectedGraph<Integer, InteractionEdge> graph, Map<Integer,Integer> representativeInteractionIds, Map<Integer,Integer> representativeInteractorIds) {
-		return modifyProbabilites(entrySet, graph, PipelineProperties.getInstance().getOutputConfLabel(), PipelineProperties.getInstance().getOutputConfName(), representativeInteractionIds, representativeInteractorIds);
+	/**
+	 * Modifies {@code entrySet} by giving interactions a new confidence whose value is the edge weight. In addition,
+	 * gives interactions and interactors that are not present in the network a new annotation. The label of the
+	 * confidence is given by {@link PipelineProperties#getOutputConfLabel()}, and its full name is given by
+	 * {@link PipelineProperties#getOutputConfName()()}.
+	 * 
+	 * @param representativeInteractionIds
+	 *            A map of non-representative interaction Ids to their representative interactor Ids
+	 * @param representativeInteractorIds
+	 *            A map of non-representative interactor Ids to their representative interactor Ids
+	 */
+	public static List<InteractionUpdate> modifyProbabilites(EntrySet entrySet,
+			UndirectedGraph<Integer, InteractionEdge> graph, Map<Integer, Integer> representativeInteractionIds,
+			Map<Integer, Integer> representativeInteractorIds) {
+		return modifyProbabilites(entrySet, graph, PipelineProperties.getInstance().getOutputConfLabel(),
+				PipelineProperties.getInstance().getOutputConfName(), PipelineProperties.getInstance()
+						.getRemovedAttributeLabel(), representativeInteractionIds, representativeInteractorIds);
 	}
 
 	/**
-	 * Modifies {@code entrySet} by giving interactions a new confidence whose value is the edge weight.
+	 * Modifies {@code entrySet} by giving interactions a new confidence whose value is the edge weight. In addition,
+	 * gives interactions and interactors that are not present in the network a new annotation.
 	 * 
-	 * @param entrySet
-	 * @param graph
-	 * @param confidenceLabel
-	 * @param confidenceFullName
-	 * @param representativeInteractionIds A map of non-representative interaction Ids to their representative interaction Ids
+	 * @param representativeInteractionIds
+	 *            A map of non-representative interaction Ids to their representative interactor Ids; only for reporting
+	 * @param representativeInteractorIds
+	 *            A map of non-representative interactor Ids to their representative interactor Ids; only for reporting
+	 * @return A list of the {@link InteractionUpdate updates to interaction probabilities made}.
 	 */
-	public static List<InteractionUpdate> modifyProbabilites(EntrySet entrySet, UndirectedGraph<Integer, InteractionEdge> graph,
-			String confidenceLabel, String confidenceFullName, Map<Integer,Integer> representativeInteractionIds, Map<Integer,Integer> representativeInteractorIds) {
+	public static List<InteractionUpdate> modifyProbabilites(EntrySet entrySet,
+			UndirectedGraph<Integer, InteractionEdge> graph, String confidenceLabel, String confidenceFullName,
+			String removedLabel, Map<Integer, Integer> representativeInteractionIds,
+			Map<Integer, Integer> representativeInteractorIds) {
 
 		List<InteractionUpdate> updates = new ArrayList<>();
 
@@ -96,9 +113,11 @@ public class GraphInteractionAdaptor {
 			for (Interactor interactor : entry.getInteractors()) {
 				if (representativeInteractorIds.containsKey(interactor.getId())) {
 					String v0 = String.valueOf(representativeInteractorIds.get(interactor.getId()));
-					Attribute removal = PsiFactory.createAttribute(PipelineProperties.getInstance().getRemovedAttributeLabel(), v0);
+					Attribute removal = PsiFactory.createAttribute(PipelineProperties.getInstance()
+							.getRemovedAttributeLabel(), v0);
 					interactor.getAttributes().add(removal);
-					logger.debug("Found nonrepresentative degenerate interactor " + interactor.getId() + " with representative " + v0);
+					logger.debug("Found nonrepresentative degenerate interactor " + interactor.getId()
+							+ " with representative " + v0);
 				}
 			}
 
@@ -114,7 +133,8 @@ public class GraphInteractionAdaptor {
 				 * If the confidence doesn't exist, keep it as null.
 				 * This might be the case if we're in a test case.
 				 */
-				Confidence initialConf = NetworkUtils.getExistingConfidence(interaction, PipelineProperties.getInstance().getInitialConfLabel(), PipelineProperties.getInstance().getInitialConfName());
+				Confidence initialConf = NetworkUtils.getExistingConfidence(interaction, PipelineProperties
+						.getInstance().getInitialConfLabel(), PipelineProperties.getInstance().getInitialConfName());
 				Double initialProb = null;
 				if (initialConf != null) {
 					initialProb = Double.parseDouble(initialConf.getValue());
@@ -133,18 +153,24 @@ public class GraphInteractionAdaptor {
 					String v0 = "unknown"; // here's the representative Id
 					v0 = String.valueOf(representativeInteractionIds.get(interaction.getId()));
 					if (edge != null) {
-						logger.warn("Nonrepresentative degenerate interaction " + interaction.getId() + " for representative " + v0 + " has an edge anyway");
+						logger.warn("Nonrepresentative degenerate interaction " + interaction.getId()
+								+ " for representative " + v0 + " has an edge anyway");
 					} else {
-						logger.debug("Found nonrepresentative degenerate interaction " + interaction.getId() + " for representative " + v0);
+						logger.debug("Found nonrepresentative degenerate interaction " + interaction.getId()
+								+ " for representative " + v0);
 					}
-					Attribute removal = PsiFactory.createAttribute(PipelineProperties.getInstance().getRemovedAttributeLabel(), v0);
+					Attribute removal = PsiFactory.createAttribute(PipelineProperties.getInstance()
+							.getRemovedAttributeLabel(), v0);
 					interaction.getAttributes().add(removal);
-					InteractionUpdate update = new InteractionUpdate(idsPair, uniProtIds, initialProb, edge, true); // report the deletion
+					InteractionUpdate update = new InteractionUpdate(idsPair, uniProtIds, initialProb, edge, true); // report
+																													// the
+																													// deletion
 					updates.add(update);
 					continue;
 				}
 				if (edge == null) {
-					logger.warn("Edge for interaction " + interaction.getId() + " does not exist, but should. Not modifying interaction.");
+					logger.warn("Edge for interaction " + interaction.getId()
+							+ " does not exist, but should. Not modifying interaction.");
 					continue;
 				}
 
@@ -178,7 +204,8 @@ public class GraphInteractionAdaptor {
 						confidenceFullName, OUTPUT_CONFIDENCE_XREF);
 
 				interaction.getConfidences().add(confidence);
-				logger.debug("Updated interaction Id#" + interaction.getId() + " with probablility " + PipelineProperties.getInstance().getDisplayFormatter().format(edge.getWeight()));
+				logger.debug("Updated interaction Id#" + interaction.getId() + " with probablility "
+						+ PipelineProperties.getInstance().getDisplayFormatter().format(edge.getWeight()));
 
 			}
 			entryIndex++;
@@ -188,15 +215,22 @@ public class GraphInteractionAdaptor {
 
 	}
 
+	/**
+	 * Converts a PSI-MI XML EntrySet to an undirected graph, using the value of the confidence with short label
+	 * {@code PipelineProperties#getInitialConfLabel()} and {@code PipelineProperties#getInitialConfName()} to weight
+	 * edges.
+	 */
 	public static UndirectedGraph<Integer, InteractionEdge> toGraph(EntrySet entrySet) {
-		return toGraph(entrySet, PipelineProperties.getInstance().getInitialConfLabel(), PipelineProperties.getInstance().getInitialConfName());
+		return toGraph(entrySet, PipelineProperties.getInstance().getInitialConfLabel(), PipelineProperties
+				.getInstance().getInitialConfName());
 	}
 
 	/**
 	 * Converts a PSI-MI XML EntrySet to an undirected graph, using the value of the confidence with short label
-	 * {@code confidenceLabel} to weight edges, and using {@code defaultProbability} othewsie.
+	 * {@code confidenceLabel} and {@code confidenceName} to weight edges.
 	 */
-	public static UndirectedGraph<Integer, InteractionEdge> toGraph(EntrySet entrySet, String confidenceLabel, String confidenceName) {
+	public static UndirectedGraph<Integer, InteractionEdge> toGraph(EntrySet entrySet, String confidenceLabel,
+			String confidenceName) {
 
 		logger.info("Converting PSI-MI to a graph using confidence short label " + confidenceLabel);
 
@@ -230,7 +264,8 @@ public class GraphInteractionAdaptor {
 				} else {
 					Confidence conf = NetworkUtils.getExistingConfidence(interaction, confidenceLabel, confidenceName);
 					if (conf == null) {
-						throw new IllegalArgumentException("Initial confidence " + confidenceLabel + " missing for " + interaction.getId());
+						throw new IllegalArgumentException("Initial confidence " + confidenceLabel + " missing for "
+								+ interaction.getId());
 					}
 					probability = Double.parseDouble(conf.getValue());
 				}

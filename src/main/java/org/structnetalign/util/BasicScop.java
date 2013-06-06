@@ -25,6 +25,14 @@ import org.biojava.bio.structure.scop.RemoteScopInstallation;
 import org.biojava.bio.structure.scop.ScopDatabase;
 import org.biojava.bio.structure.scop.ScopInstallation;
 
+/**
+ * A collection of static utilities to handle interaction with databases of the <a
+ * href="http://scop.berkeley.edu/">Structural Classification of Proteins</a>. On initialization, reads the file
+ * {@code src/main/resources/databases.properties} and creates a new ScopDatabase.
+ * 
+ * @author dmyersturnbull
+ * 
+ */
 public class BasicScop {
 
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");

@@ -44,8 +44,7 @@ import edu.uci.ics.jung.graph.UndirectedGraph;
 import edu.uci.ics.jung.graph.util.Pair;
 
 /**
- * A standalone utility to simplify a PSI-MI XML file by removing information that is not usable in the pipeline.
- * This reduces the sizes of files.
+ * A standalone utility to simplify a PSI-MI XML file by removing information that would break the pipeline.
  * Also assigns initial confidence values to interactions.
  * This <em>should</em> be run before running on any network, although this is not strictly required.
  * @author dmyersturnbull

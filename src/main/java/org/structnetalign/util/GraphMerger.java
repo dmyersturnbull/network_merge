@@ -17,13 +17,19 @@ package org.structnetalign.util;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.util.Pair;
 
+/**
+ * A utility that can merge multiple graphs into one graph by simply combining all of the vertices and edges.
+ * 
+ * @author dmyersturnbull
+ * 
+ */
 public class GraphMerger {
-	
+
 	@SafeVarargs
-	public static <V,E> Graph<V,E> merge(Graph<V,E>... graphs) {
-		Graph<V,E> myGraph = graphs[0];
+	public static <V, E> Graph<V, E> merge(Graph<V, E>... graphs) {
+		Graph<V, E> myGraph = graphs[0];
 		for (int i = 1; i < graphs.length; i++) {
-			Graph<V,E> graph = graphs[i];
+			Graph<V, E> graph = graphs[i];
 			for (V vertex : graph.getVertices()) {
 				myGraph.addVertex(vertex);
 			}
@@ -34,5 +40,5 @@ public class GraphMerger {
 		}
 		return myGraph;
 	}
-	
+
 }

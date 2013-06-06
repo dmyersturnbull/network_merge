@@ -30,8 +30,9 @@ import edu.uci.ics.jung.graph.UndirectedGraph;
  * An implementation of naive Bron–Kerbosch.
  * @author dmyersturnbull
  *
- * @param <V>
- * @param <E>
+ * @param <V> The types of the vertices of the graph
+ * @param <E> The types of the edges of the graph
+ * @see CliqueFinder
  */
 public class BronKerboschCliqueFinder<V,E> implements CliqueFinder<V,E> {
 

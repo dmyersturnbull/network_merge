@@ -15,6 +15,11 @@ package org.structnetalign.weight;
 
 import org.biojava.bio.structure.align.util.AtomCache;
 
+/**
+ * A factory that maintains an AtomCache for getting <a href="http://pdb.org">Protein Data Bank</a> structures.
+ * @author dmyersturnbull
+ *
+ */
 public class AtomCacheFactory {
 
 	private static AtomCache cache;

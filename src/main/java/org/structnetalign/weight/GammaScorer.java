@@ -19,10 +19,9 @@ import org.biojava3.alignment.template.SequencePair;
 import org.biojava3.core.sequence.ProteinSequence;
 import org.biojava3.core.sequence.compound.AminoAcidCompound;
 
-
 /**
- * Scores with a gamma distribution as per Webber and Barton 2001, Bioinformatics. The authors used (among other
- * scoring schemes) the BLOSUM62 matrix with a gap opening penalty of 12 and extension penalty of 1. The paper is <a
+ * Scores with a gamma distribution as per Webber and Barton 2001, Bioinformatics. The authors used (among other scoring
+ * schemes) the BLOSUM62 matrix with a gap opening penalty of 12 and extension penalty of 1. The paper is <a
  * href="http://bioinformatics.oxfordjournals.org/content/17/12/1158.full.pdf+html">available</a>.
  * 
  * @author dmyersturnbull

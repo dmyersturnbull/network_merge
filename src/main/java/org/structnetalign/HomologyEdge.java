@@ -17,6 +17,10 @@ package org.structnetalign;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
+/**
+ * An {@link Edge} that denotes a homologous pair of macromolecules.
+ * @author dmyersturnbull
+ */
 public class HomologyEdge implements Edge {
 
 	public static enum Type {
@@ -28,11 +32,6 @@ public class HomologyEdge implements Edge {
 	private int id;
 
 	private double weight;
-
-	static {
-		nf.setMinimumFractionDigits(1);
-		nf.setMaximumFractionDigits(3);
-	}
 
 	public HomologyEdge() {
 

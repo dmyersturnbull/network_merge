@@ -15,6 +15,12 @@
 
 package org.structnetalign.util;
 
+/**
+ * Something that can find or determine a weight of an edge.
+ * @author dmyersturnbull
+ *
+ * @param <E> The types of the edges
+ */
 public interface EdgeWeighter<E> {
 	double getWeight(E e);
 }

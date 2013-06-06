@@ -34,6 +34,10 @@ import org.structnetalign.CleverGraph;
 import org.structnetalign.HomologyEdge;
 import org.structnetalign.util.NetworkUtils;
 
+/**
+ * A job that takes as input a graph (or subgraph) and returns a list of degenerate vertex sets.
+ * @author dmyersturnbull
+ */
 public class BronKerboschMergeJob implements Callable<List<NavigableSet<Integer>>> {
 
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");

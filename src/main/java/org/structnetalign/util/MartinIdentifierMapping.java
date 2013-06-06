@@ -23,7 +23,6 @@ import java.util.Map;
 
 import org.biojava.bio.structure.scop.ScopDatabase;
 import org.biojava.bio.structure.scop.ScopDomain;
-import org.biojava.bio.structure.scop.ScopFactory;
 
 /**
  * Uses the chain-level mapping from Andrew C.R. Martin at <a href="http://www.bioinf.org.uk/pdbsws/">the Martin Lab</a>.

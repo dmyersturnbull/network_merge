@@ -15,8 +15,15 @@ package org.structnetalign.cross;
 
 import org.structnetalign.CleverGraph;
 
+/**
+ * Something that updates probabilities of interactions based on their conservation among homologs.
+ * @author dmyersturnbull
+ */
 public interface CrossingManager {
 
+	/**
+	 * Changes the weights of {@link InteractionEdge interaction edges} in {@code graph}.
+	 */
 	public void cross(CleverGraph graph);
 	
 }

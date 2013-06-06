@@ -14,8 +14,6 @@
  */
 package org.structnetalign.weight;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -33,13 +31,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.structnetalign.CleverGraph;
 import org.structnetalign.HomologyEdge;
+import org.structnetalign.PipelineProperties;
 import org.structnetalign.ReportGenerator;
 
 /**
  * An intelligent multithreaded {@link WeightManager} that uses sequence information if and only if the corresponding
  * structural information is missing.
- * This is a pretty bad implementation, since the weights it assigns don't correspond to probabilities (and can even
- * exceed 1).
+ * 
  * @author dmyersturnbull
  * 
  */
@@ -47,23 +45,13 @@ public class SmartWeightManager implements WeightManager {
 
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");
 
-	private int nCores;
-
 	private double beta = 1;
 
-	public void setBeta(double beta) {
-		this.beta = beta;
-	}
+	private int nCores;
 
 	public SmartWeightManager(int nCores) {
 		super();
 		this.nCores = nCores;
-	}
-
-	private static final NumberFormat nf = new DecimalFormat();
-	static {
-		nf.setMinimumFractionDigits(1);
-		nf.setMaximumFractionDigits(3);
 	}
 
 	@Override
@@ -119,13 +107,15 @@ public class SmartWeightManager implements WeightManager {
 						alignment = new NeedlemanWunschWeight();
 						alignment.setIds(a, b, uniProtIdA, uniProtIdB);
 					} catch (WeightException e) {
-						logger.warn("Couldn't get CE weight for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")", e);
+						logger.warn("Couldn't get CE weight for " + uniProtIdA + " against " + uniProtIdB + " (" + a
+								+ ", " + b + ")", e);
 						// okay, try to use sequence
 						alignment = new NeedlemanWunschWeight();
 						try {
 							alignment.setIds(a, b, uniProtIdA, uniProtIdB);
 						} catch (WeightException e1) {
-							logger.warn("Couldn't get alignment-based weight for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")", e1);
+							logger.warn("Couldn't get alignment-based weight for " + uniProtIdA + " against "
+									+ uniProtIdB + " (" + a + ", " + b + ")", e1);
 							alignment = null;
 						}
 					}
@@ -137,25 +127,30 @@ public class SmartWeightManager implements WeightManager {
 						relation = new ScopRelationWeight();
 						relation.setIds(a, b, uniProtIdA, uniProtIdB);
 					} catch (WeightException e) {
-						logger.warn("Couldn't get SCOP weight for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")", e);
+						logger.warn("Couldn't get SCOP weight for " + uniProtIdA + " against " + uniProtIdB + " (" + a
+								+ ", " + b + ")", e);
 						// okay, try to use sequence
 						relation = new PfamWeight();
 						try {
 							relation.setIds(a, b, uniProtIdA, uniProtIdB);
 						} catch (WeightException e1) {
-							logger.warn("Couldn't get relation-based weight for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")", e1);
+							logger.warn("Couldn't get relation-based weight for " + uniProtIdA + " against "
+									+ uniProtIdB + " (" + a + ", " + b + ")", e1);
 							relation = null;
 						}
 					}
 
 					// now submit
-					if (alignment != null && !Double.isInfinite(beta)) { // beta == infinity means we're not using alignment
-						logger.debug("Running alignment " + alignment.getClass().getSimpleName() + " for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")");
+					if (alignment != null && !Double.isInfinite(beta)) { // beta == infinity means we're not using
+																			// alignment
+						logger.debug("Running alignment " + alignment.getClass().getSimpleName() + " for " + uniProtIdA
+								+ " against " + uniProtIdB + " (" + a + ", " + b + ")");
 						Future<WeightResult> alignmentWeight = completion.submit(alignment);
 						futures.add(alignmentWeight);
 					}
 					if (relation != null) {
-						logger.debug("Running relation " + relation.getClass().getSimpleName() + " for " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")");
+						logger.debug("Running relation " + relation.getClass().getSimpleName() + " for " + uniProtIdA
+								+ " against " + uniProtIdB + " (" + a + ", " + b + ")");
 						Future<WeightResult> relationWeight = completion.submit(relation);
 						futures.add(relationWeight);
 					}
@@ -164,7 +159,6 @@ public class SmartWeightManager implements WeightManager {
 			}
 
 			logger.info("Submitted " + futures.size() + " jobs to " + nCores + " cores");
-
 
 			/*
 			 *  Now respond to completion.
@@ -189,7 +183,8 @@ public class SmartWeightManager implements WeightManager {
 							weight = result.getWeight();
 							vertexA = result.getV1();
 							vertexB = result.getV2();
-							logger.trace("Job (" + vertexA + ", " + vertexB + ") returned with weight " + nf.format(weight));
+							logger.trace("Job (" + vertexA + ", " + vertexB + ") returned with weight "
+									+ PipelineProperties.getInstance().getOutputFormatter().format(weight));
 							if (weight == 0) {
 								continue forfutures; // don't both updating with 0
 							}
@@ -210,7 +205,8 @@ public class SmartWeightManager implements WeightManager {
 							String myA = myE.getA();
 							String myB = myE.getB();
 							if (myE.isAlignment()) {
-								logger.warn("Structure-based alignment weight failed for (" + myA + ", " + myB + "). Attempting to use a sequence alignment.", e);
+								logger.warn("Structure-based alignment weight failed for (" + myA + ", " + myB
+										+ "). Attempting to use a sequence alignment.", e);
 								try {
 									AlignmentWeight alignment = new NeedlemanWunschWeight();
 									alignment.setIds(vertexA, vertexB, myA, myB);
@@ -219,7 +215,8 @@ public class SmartWeightManager implements WeightManager {
 
 								}
 							} else {
-								logger.warn("Structure-based relation weight failed for (" + myA + ", " + myB + ") Attempting to use sequence a relation.", e);
+								logger.warn("Structure-based relation weight failed for (" + myA + ", " + myB
+										+ ") Attempting to use sequence a relation.", e);
 								try {
 									RelationWeight relation = new PfamWeight();
 									relation.setIds(vertexA, vertexB, myA, myB);
@@ -248,11 +245,15 @@ public class SmartWeightManager implements WeightManager {
 				if (existing != null) {
 					// (a+b-ab) + c - c*(a+b-ab) = a + b + c - ab - ac - bc + abc
 					existing.setWeight(existing.getWeight() + weight - existing.getWeight() * weight);
-					logger.debug("[" + ((double) createdIndex) / ((double) (futures.size() + createdIndex)) + "] Updated homology edge (" + vertexA + ", " + vertexB + ", " + nf.format(existing.getWeight()) + ") with weight " + nf.format(weight));
+					logger.debug("[" + (double) createdIndex / (double) (futures.size() + createdIndex)
+							+ "] Updated homology edge (" + vertexA + ", " + vertexB + ", "
+							+ PipelineProperties.getInstance().getOutputFormatter().format(existing.getWeight())
+							+ ") with weight " + PipelineProperties.getInstance().getOutputFormatter().format(weight));
 				} else {
 					HomologyEdge edge = new HomologyEdge(createdIndex++, weight);
 					graph.addHomologies(edge, vertices);
-					logger.debug("Added homology edge (" + vertexA + ", " + vertexB + ", " + nf.format(weight) + ")");
+					logger.debug("Added homology edge (" + vertexA + ", " + vertexB + ", "
+							+ PipelineProperties.getInstance().getOutputFormatter().format(weight) + ")");
 				}
 				nUpdates++;
 
@@ -281,15 +282,18 @@ public class SmartWeightManager implements WeightManager {
 				ReportGenerator.getInstance().putInWeighted("max_interaction_degree", maxInteractionDegree);
 			}
 
-
 		} finally {
 			pool.shutdownNow();
 
-			int count = Thread.activeCount()-1;
+			int count = Thread.activeCount() - 1;
 			if (count > 0) {
 				logger.warn("There are " + count + " lingering threads");
 			}
 		}
+	}
+
+	public void setBeta(double beta) {
+		this.beta = beta;
 	}
 
 }

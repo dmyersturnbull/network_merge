@@ -56,14 +56,14 @@ import edu.uci.ics.jung.io.graphml.NodeMetadata;
  */
 public class GraphMLAdaptor {
 
-	static final Logger logger = Logger.getLogger(NetworkCombiner.class.getName());
-
 	private interface EdgeFactory<E extends Edge> {
 		E createEmptyEdge();
 	}
 
 	private static final String WEIGHT_DESCRIPTION = "weight";
+
 	private static final String WEIGHT_LABEL = "w";
+	static final Logger logger = Logger.getLogger(NetworkCombiner.class.getName());
 
 	public static CleverGraph readGraph(File interactionFile, File homologyFile) {
 		return readGraph(interactionFile.getPath(), homologyFile.getPath());
@@ -212,15 +212,6 @@ public class GraphMLAdaptor {
 		}
 	}
 
-	private static <E extends Edge> Transformer<E, String> getEdgeWeightTransformer() {
-		return new Transformer<E, String>() {
-			@Override
-			public String transform(E edge) {
-				return PipelineProperties.getInstance().getOutputFormatter().format(edge.getWeight());
-			}
-		};
-	}
-
 	private static <E extends Edge> Transformer<E, String> getEdgeIdTransformer() {
 		return new Transformer<E, String>() {
 			@Override
@@ -233,12 +224,7 @@ public class GraphMLAdaptor {
 	private static <E extends Edge> Transformer<EdgeMetadata, E> getEdgeTransformer(final EdgeFactory<E> factory) {
 		return new Transformer<EdgeMetadata, E>() {
 			private TreeSet<String> sourceDest = new TreeSet<String>();
-			private boolean contains(String source, String target) {
-				String hash = NetworkUtils.hash(source, target);
-				boolean contains = sourceDest.contains(hash);
-				sourceDest.add(hash);
-				return contains;
-			}
+
 			@Override
 			public E transform(EdgeMetadata metadata) {
 				int id;
@@ -254,12 +240,29 @@ public class GraphMLAdaptor {
 					throw new IllegalArgumentException("The graph has an edge whose Id is not a number");
 				}
 				if (contains(metadata.getSource(), metadata.getTarget())) {
-					throw new IllegalArgumentException("Graph already contains an edge (" + metadata.getSource() + ", " + metadata.getTarget());
+					throw new IllegalArgumentException("Graph already contains an edge (" + metadata.getSource() + ", "
+							+ metadata.getTarget());
 				}
 				E edge = factory.createEmptyEdge();
 				edge.setId(id);
 				edge.setWeight(weight);
 				return edge;
+			}
+
+			private boolean contains(String source, String target) {
+				String hash = NetworkUtils.hash(source, target);
+				boolean contains = sourceDest.contains(hash);
+				sourceDest.add(hash);
+				return contains;
+			}
+		};
+	}
+
+	private static <E extends Edge> Transformer<E, String> getEdgeWeightTransformer() {
+		return new Transformer<E, String>() {
+			@Override
+			public String transform(E edge) {
+				return PipelineProperties.getInstance().getOutputFormatter().format(edge.getWeight());
 			}
 		};
 	}
