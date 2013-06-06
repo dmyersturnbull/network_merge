@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletionService;
@@ -66,7 +65,7 @@ public class SmarterWeightManager implements WeightManager {
 
 			CompletionService<WeightResult> completion = new ExecutorCompletionService<>(pool);
 			List<Future<WeightResult>> futures = new ArrayList<>();
-			Map<Pair<Integer>,Integer> nAttempted = new HashMap<>();
+			Map<Pair<Integer>, Integer> nAttempted = new HashMap<>();
 
 			// let's submit the jobs
 			// iterate over all pairs of vertices
@@ -77,6 +76,7 @@ public class SmarterWeightManager implements WeightManager {
 						continue; // homology had damn well better be reflexive and symmetric!
 					}
 
+					// initialize every nAttempted
 					nAttempted.put(new Pair<Integer>(a, b), 0);
 
 					final String uniProtIdA = uniProtIds.get(a);
@@ -93,11 +93,13 @@ public class SmarterWeightManager implements WeightManager {
 
 					logger.trace("Weighting " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")");
 
-					Weight weight = creator.nextWeight(a, b, uniProtIdA, uniProtIdB, 0);
-					Future<WeightResult> future = completion.submit(weight);
-					futures.add(future);
-					logger.debug("Running relation " + weight.getClass().getSimpleName() + " for " + uniProtIdA
-							+ " against " + uniProtIdB + " (" + a + ", " + b + ")");
+					List<Weight> weights = creator.initialWeights(a, b, uniProtIdA, uniProtIdB);
+					for (Weight weight : weights) {
+						Future<WeightResult> future = completion.submit(weight);
+						futures.add(future);
+						logger.debug("Running relation " + weight.getClass().getSimpleName() + " for " + uniProtIdA
+								+ " against " + uniProtIdB + " (" + a + ", " + b + ")");
+					}
 
 				}
 			}
@@ -114,7 +116,7 @@ public class SmarterWeightManager implements WeightManager {
 			forfutures: for (int i = 0; i < futures.size(); i++) {
 
 				Future<WeightResult> future = futures.get(i);
-				
+
 				WeightResult result = null;
 				try {
 
@@ -149,7 +151,10 @@ public class SmarterWeightManager implements WeightManager {
 						int n = nAttempted.get(new Pair<Integer>(myE.getA(), myE.getB())) + 1;
 						nAttempted.put(new Pair<Integer>(myE.getA(), myE.getB()), n);
 
-						Weight weight = creator.nextWeight(a, b, uniProtIdA, uniProtIdB, n);
+						logger.trace("Failed on " + uniProtIdA
+								+ " against " + uniProtIdB + " (" + a + ", " + b + ")");
+						
+						Weight weight = creator.nextWeight(a, b, uniProtIdA, uniProtIdB, n, null);
 						if (weight != null) { // null means "we're done"
 							Future<WeightResult> newFuture = completion.submit(weight);
 							futures.add(newFuture);
@@ -174,7 +179,7 @@ public class SmarterWeightManager implements WeightManager {
 				// the creator might want to add another even if it didn't fail
 				int n = nAttempted.get(new Pair<Integer>(a, b)) + 1;
 				nAttempted.put(new Pair<Integer>(a, b), n);
-				Weight weight = creator.nextWeight(a, b, result.getA(), result.getB(), n);
+				Weight weight = creator.nextWeight(a, b, result.getA(), result.getB(), n, null);
 				if (weight != null) { // null means "we're done"
 					Future<WeightResult> newFuture = completion.submit(weight);
 					futures.add(newFuture);
@@ -189,8 +194,10 @@ public class SmarterWeightManager implements WeightManager {
 				if (existing != null) {
 					// (a+b-ab) + c - c*(a+b-ab) = a + b + c - ab - ac - bc + abc
 					existing.setWeight(existing.getWeight() + prob - existing.getWeight() * prob);
-					logger.debug("[" + (double) createdIndex / (double) (futures.size() + createdIndex)
-							+ "] Updated homology edge (" + a + ", " + b + ", "
+					logger.debug("["
+							+ PipelineProperties.getInstance().getOutputFormatter()
+									.format(((float) createdIndex / (float) (futures.size() + createdIndex) * 100.0))
+							+ "%] Updated homology edge (" + a + ", " + b + ", "
 							+ PipelineProperties.getInstance().getOutputFormatter().format(existing.getWeight())
 							+ ") with weight " + PipelineProperties.getInstance().getOutputFormatter().format(prob));
 				} else {

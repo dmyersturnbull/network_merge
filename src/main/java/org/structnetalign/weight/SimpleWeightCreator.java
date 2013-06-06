@@ -14,6 +14,9 @@
  */
 package org.structnetalign.weight;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,7 +35,7 @@ public class SimpleWeightCreator implements WeightCreator {
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");
 
 	@Override
-	public Weight nextWeight(int a, int b, String uniProtIdA, String uniProtIdB, int n) {
+	public Weight nextWeight(int a, int b, String uniProtIdA, String uniProtIdB, int n, Class<? extends Weight> failed) {
 
 		Weight weight = null;
 
@@ -62,6 +65,14 @@ public class SimpleWeightCreator implements WeightCreator {
 			logger.debug("Couldn't create weight " + weight.getClass().getSimpleName() + " for (" + uniProtIdA + ", " + uniProtIdB + ")");
 			return null;
 		}
+	}
+
+	@Override
+	public List<Weight> initialWeights(int a, int b, String uniProtIdA, String uniProtIdB) {
+		List<Weight> list = new ArrayList<Weight>(1);
+		Weight scop = init(new ScopRelationWeight(), a, b, uniProtIdA, uniProtIdB);
+		list.add(scop);
+		return list;
 	}
 
 }
