@@ -55,6 +55,12 @@ public class NetworkPreparer {
 
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");
 	
+	/**
+	 * Method-based confidence.
+	 * Aka PMID:19420069 or method score
+	 */
+	private static final String CONFIDENCE_XREF = "MI:1072";
+	
 	public static void main(String[] args) {
 		if (args.length != 2) {
 			System.err.println("Usage: NetworkPreparer input-file output-dir");
@@ -202,7 +208,7 @@ public class NetworkPreparer {
 					}
 
 					// make a new Confidence
-					Confidence confidence = NetworkUtils.makeConfidence(experimentWeight, confidenceLabel, confidenceFullName, confidenceLabel);
+					Confidence confidence = NetworkUtils.makeConfidence(experimentWeight, confidenceLabel, confidenceFullName, CONFIDENCE_XREF);
 
 					confidences.put(pair, confidence);
 					logger.debug("Set initial confidence of interaction Id#" + interaction.getId() + " to " + experimentWeight);

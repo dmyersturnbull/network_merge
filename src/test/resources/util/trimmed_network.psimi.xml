@@ -581,7 +581,7 @@
 								<fullName>probability predicted by struct-NA</fullName>
 							</names>
 							<xref>
-								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:1069" refType="identity" refTypeAc="MI:0356"/>
 							</xref>
 						</unit>
 						<value>0.995</value>
@@ -629,7 +629,7 @@
 								<fullName>probability predicted by struct-NA</fullName>
 							</names>
 							<xref>
-								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:1069" refType="identity" refTypeAc="MI:0356"/>
 							</xref>
 						</unit>
 						<value>0.99</value>
@@ -677,7 +677,7 @@
 								<fullName>probability predicted by struct-NA</fullName>
 							</names>
 							<xref>
-								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:1069" refType="identity" refTypeAc="MI:0356"/>
 							</xref>
 						</unit>
 						<value>0.98</value>
@@ -726,7 +726,7 @@
 								<fullName>probability predicted by struct-NA</fullName>
 							</names>
 							<xref>
-								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:1069" refType="identity" refTypeAc="MI:0356"/>
 							</xref>
 						</unit>
 						<value>0.97</value>
@@ -774,7 +774,7 @@
 								<fullName>probability predicted by struct-NA</fullName>
 							</names>
 							<xref>
-								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:1069" refType="identity" refTypeAc="MI:0356"/>
 							</xref>
 						</unit>
 						<value>0.96</value>
@@ -822,7 +822,7 @@
 								<fullName>probability predicted by struct-NA</fullName>
 							</names>
 							<xref>
-								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:1069" refType="identity" refTypeAc="MI:0356"/>
 							</xref>
 						</unit>
 						<value>0.9</value>
@@ -870,7 +870,7 @@
 								<fullName>probability predicted by struct-NA</fullName>
 							</names>
 							<xref>
-								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:1069" refType="identity" refTypeAc="MI:0356"/>
 							</xref>
 						</unit>
 						<value>0.8</value>
@@ -917,7 +917,7 @@
 								<fullName>probability predicted by struct-NA</fullName>
 							</names>
 							<xref>
-								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:1069" refType="identity" refTypeAc="MI:0356"/>
 							</xref>
 						</unit>
 						<value>0.7</value>
@@ -965,7 +965,7 @@
 								<fullName>probability predicted by struct-NA</fullName>
 							</names>
 							<xref>
-								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:1069" refType="identity" refTypeAc="MI:0356"/>
 							</xref>
 						</unit>
 						<value>0.6</value>
@@ -1013,7 +1013,7 @@
 								<fullName>probability predicted by struct-NA</fullName>
 							</names>
 							<xref>
-								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:1069" refType="identity" refTypeAc="MI:0356"/>
 							</xref>
 						</unit>
 						<value>0.6</value>
@@ -1060,7 +1060,7 @@
 								<fullName>probability predicted by struct-NA</fullName>
 							</names>
 							<xref>
-								<primaryRef db="psi-mi" dbAc="MI:0488" id="struct-NA confidence" refType="identity" refTypeAc="MI:0356"/>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:1069" refType="identity" refTypeAc="MI:0356"/>
 							</xref>
 						</unit>
 						<value>0.5</value>

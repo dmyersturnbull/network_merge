@@ -85,7 +85,7 @@
 								<fullName>andImaNAME</fullName>
 							</names>
 							<xref>
-								<primaryRef db="psi-mi" dbAc="MI:0488" id="IamaLABEL" refType="identity" refTypeAc="MI:0356"/>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:1072" refType="identity" refTypeAc="MI:0356"/>
 							</xref>
 						</unit>
 						<value>0.8322278</value>
@@ -116,7 +116,7 @@
 								<fullName>andImaNAME</fullName>
 							</names>
 							<xref>
-								<primaryRef db="psi-mi" dbAc="MI:0488" id="IamaLABEL" refType="identity" refTypeAc="MI:0356"/>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:1072" refType="identity" refTypeAc="MI:0356"/>
 							</xref>
 						</unit>
 						<value>0.8322278</value>
@@ -147,7 +147,7 @@
 								<fullName>andImaNAME</fullName>
 							</names>
 							<xref>
-								<primaryRef db="psi-mi" dbAc="MI:0488" id="IamaLABEL" refType="identity" refTypeAc="MI:0356"/>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:1072" refType="identity" refTypeAc="MI:0356"/>
 							</xref>
 						</unit>
 						<value>0.36</value>

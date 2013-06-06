@@ -45,6 +45,12 @@ import edu.uci.ics.jung.graph.util.Pair;
  */
 public class GraphInteractionAdaptor {
 
+	/**
+	 * Method-based confidence.
+	 * Aka PMID:19010802 or network-based confidence.
+	 */
+	private static final String OUTPUT_CONFIDENCE_XREF = "MI:1069";
+
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");
 
 	public static void main(String[] args) throws IOException {
@@ -169,7 +175,7 @@ public class GraphInteractionAdaptor {
 
 				// make a new Confidence
 				Confidence confidence = NetworkUtils.makeConfidence(edge.getWeight(), confidenceLabel,
-						confidenceFullName, confidenceLabel);
+						confidenceFullName, OUTPUT_CONFIDENCE_XREF);
 
 				interaction.getConfidences().add(confidence);
 				logger.debug("Updated interaction Id#" + interaction.getId() + " with probablility " + PipelineProperties.getInstance().getDisplayFormatter().format(edge.getWeight()));
@@ -234,7 +240,12 @@ public class GraphInteractionAdaptor {
 
 				NavigableSet<Integer> ids = NetworkUtils.getVertexIds(interaction); // a set of size 2
 
-				boolean added = graph.addEdge(edge, ids.first(), ids.last());
+				boolean added = false;
+				try {
+					added = graph.addEdge(edge, ids.first(), ids.last());
+				} catch (IllegalArgumentException e) {
+					logger.error("Couldn't add edge " + edge, e);
+				}
 				if (added) {
 					logger.debug("Added edge Id#" + interaction.getId() + " (" + edgeIndex + "/"
 							+ entry.getInteractions().size() + ") as edge (" + ids.first() + "," + ids.last() + ","
