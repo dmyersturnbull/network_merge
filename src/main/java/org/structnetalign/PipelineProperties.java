@@ -62,11 +62,11 @@ public class PipelineProperties {
 	static {
 		Properties props = new Properties();
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
-		InputStream stream = loader.getResourceAsStream("databases.properties");
+		InputStream stream = loader.getResourceAsStream("struct_na.properties");
 		try {
 			props.load(stream);
 		} catch (IOException e) {
-			throw new RuntimeException("Couldn't open databases property file", e);
+			throw new RuntimeException("Couldn't open Struct-NA property file", e);
 		}
 		instance = new PipelineProperties();
 		instance.initialConfLabel = props.getProperty("initial_conf_label", INITIAL_CONF_LABEL);
