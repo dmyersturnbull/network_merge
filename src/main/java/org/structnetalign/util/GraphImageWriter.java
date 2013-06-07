@@ -27,6 +27,9 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Properties;
 
 import javax.imageio.ImageIO;
 
@@ -46,29 +49,84 @@ import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 
 public class GraphImageWriter {
 
-	private int fontSize = 16;
+	private static Properties props;
+	static {
+		props = new Properties();
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		InputStream stream = loader.getResourceAsStream("graph_image.properties");
+		try {
+			props.load(stream);
+		} catch (IOException e) {
+			throw new RuntimeException("Couldn't open graph image property file", e);
+		}
+	}
+	
+	private int vertexFontSize = Integer.parseInt(props.getProperty("vertex_font_size"));
 
-	private int height = 4000;
+	private int interactionFontSize = Integer.parseInt(props.getProperty("interaction_font_size"));
 
-	private Color homologyColor = new Color(120, 0, 0);
+	private int homologyFontSize = Integer.parseInt(props.getProperty("homology_font_size"));
 
-	private float homologyDash[] = { 10.0f };
+	private int height = Integer.parseInt(props.getProperty("height"));
 
-	private Color interactionColor = Color.BLACK;
+	private Color homologyColor = parseColor(props.getProperty("homology_color"));
 
-	private float interactionDash[] = { 10000f };
+	private float homologyDash[] = { Float.parseFloat(props.getProperty("homology_dash")) };
 
-	private int labelOffset = 25;
+	private Color interactionColor = parseColor(props.getProperty("interaction_color"));
 
-	private Color vertexColor = new Color(100, 200, 250);
+	private float interactionDash[] = { Float.parseFloat(props.getProperty("interaction_dash")) };
 
-	private int vertexSize = 60;
+	private int labelOffset = Integer.parseInt(props.getProperty("edge_label_offset"));
 
-	private int width = 4000;
+	private Color vertexColor = parseColor(props.getProperty("vertex_color"));
 
-	private int xMargin = 60;
+	private int vertexSize = Integer.parseInt(props.getProperty("vertex_size"));
 
-	private int yMargin = 60;
+	private int width = Integer.parseInt(props.getProperty("width"));
+
+	private int xMargin = Integer.parseInt(props.getProperty("x_margin"));
+
+	private int yMargin = Integer.parseInt(props.getProperty("y_margin"));
+	
+	private float interactionThicknessCoeff = Float.parseFloat(props.getProperty("interaction_thickness_coeff"));
+
+	private float homologyThicknessCoeff = Float.parseFloat(props.getProperty("homology_thickness_coeff"));
+
+	public void setInteractionThicknessCoeff(float interactionThicknessCoeff) {
+		this.interactionThicknessCoeff = interactionThicknessCoeff;
+	}
+
+	public void setHomologyThicknessCoeff(float homologyThicknessCoeff) {
+		this.homologyThicknessCoeff = homologyThicknessCoeff;
+	}
+
+	public void setVertexFontSize(int vertexFontSize) {
+		this.vertexFontSize = vertexFontSize;
+	}
+
+	public void setHomologyFontSize(int homologyFontSize) {
+		this.homologyFontSize = homologyFontSize;
+	}
+
+	private static Color parseColor(String s) {
+		String[] p = s.split(",");
+		int red = Integer.parseInt(p[0]);
+		int blue = Integer.parseInt(p[1]);
+		int green = Integer.parseInt(p[2]);
+		return new Color(red, blue, green);
+	}
+	
+	@Override
+	public String toString() {
+		return "GraphImageWriter [vertexFontSize=" + vertexFontSize + ", interactionFontSize=" + interactionFontSize
+				+ ", homologyFontSize=" + homologyFontSize + ", height=" + height + ", homologyColor=" + homologyColor
+				+ ", homologyDash=" + Arrays.toString(homologyDash) + ", interactionColor=" + interactionColor
+				+ ", interactionDash=" + Arrays.toString(interactionDash) + ", labelOffset=" + labelOffset
+				+ ", vertexColor=" + vertexColor + ", vertexSize=" + vertexSize + ", width=" + width + ", xMargin="
+				+ xMargin + ", yMargin=" + yMargin + ", interactionThicknessCoeff=" + interactionThicknessCoeff
+				+ ", homologyThicknessCoeff=" + homologyThicknessCoeff + "]";
+	}
 
 	public static void main(String[] args) throws IOException {
 		if (args.length != 3) {
@@ -118,11 +176,7 @@ public class GraphImageWriter {
 		this.width = width;
 		this.height = height;
 	}
-
-	public void setFontSize(int fontSize) {
-		this.fontSize = fontSize;
-	}
-
+	
 	public void setHeight(int height) {
 		this.height = height;
 	}
@@ -197,11 +251,12 @@ public class GraphImageWriter {
 		Transformer<Edge, Stroke> edgeStrokeTransformer = new Transformer<Edge, Stroke>() {
 			@Override
 			public Stroke transform(Edge edge) {
-				final float thickness = (float) edge.getWeight() * 2.0f;
 				if (edge instanceof HomologyEdge) {
+					final float thickness = (float) edge.getWeight() * homologyThicknessCoeff;
 					return new BasicStroke(thickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f,
 									homologyDash, 0.0f);
 				} else if (edge instanceof InteractionEdge) {
+					final float thickness = (float) edge.getWeight() * interactionThicknessCoeff;
 					return new BasicStroke(thickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
 							10.0f, interactionDash, 0.0f);
 				}
@@ -231,7 +286,7 @@ public class GraphImageWriter {
 		vv.getRenderContext().setEdgeLabelTransformer(edgeLabeler);
 
 		Transformer<Integer, Font> vertexFont = new Transformer<Integer, Font>() {
-			private final Font font = new Font("Serif", Font.BOLD, fontSize);
+			private final Font font = new Font("Serif", Font.BOLD, vertexFontSize);
 
 			@Override
 			public Font transform(Integer edge) {
@@ -241,8 +296,8 @@ public class GraphImageWriter {
 		vv.getRenderContext().setVertexFontTransformer(vertexFont);
 
 		Transformer<Edge, Font> edgeFont = new Transformer<Edge, Font>() {
-			private final Font homologyFont = new Font("Serif", Font.BOLD, fontSize);
-			private final Font interactionFont = new Font("Serif", Font.BOLD, fontSize);
+			private final Font homologyFont = new Font("Serif", Font.BOLD, homologyFontSize);
+			private final Font interactionFont = new Font("Serif", Font.BOLD, interactionFontSize);
 
 			@Override
 			public Font transform(Edge edge) {
