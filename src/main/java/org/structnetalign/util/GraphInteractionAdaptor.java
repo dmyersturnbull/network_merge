@@ -48,7 +48,7 @@ public class GraphInteractionAdaptor {
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");
 
 	/**
-	 * Method-based confidence. Aka PMID:19010802 or network-based confidence.
+	 * Network confidence. Aka PMID:19010802 or network-based confidence.
 	 */
 	private static final String OUTPUT_CONFIDENCE_XREF = "MI:1069";
 
