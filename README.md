@@ -2,10 +2,10 @@ Struct-NA
 =========
 
 Struct-NA is a method to improve noisy protein–protein interaction (PPI) networks by identifying interactions that are conserved among homologs.
-Homologs are identified in a species-independent way using structural rather than sequence information when available. Specifically, it uses from [SCOP](http://scop.berkeley.edu/) and structural alignment algorithms.
+The primary objective is to assign a confidence to each interaction based on its conservation among any homologs of its participants. The secondary objective is to merge analogous interactions to simplify the description of the network. The idea is that these networks will be more useful in research.
+Homologs are identified in a species-independent way using structural rather than sequence information whenever it is available. Specifically, it uses the [Structural Classification of Proteins](http://scop.berkeley.edu/) and structural alignment algorithms.
 
-The goal is to determine the probability of interactions to make PPI networks more useful to researchers.
-It is comparable to a network alignment algorithm but offers three advantages:
+The underlying method is comparable to a network alignment algorithm but offers three advantages:
 * It does not require that homology is one-to-one.
 * It can identify homology relationships within the same species.
 * It is based on structural information rather than sequence information.
@@ -118,17 +118,10 @@ manager.run(myInputFile, myOutputFile);
 ```
 That should be it! The other major steps of Struct-NA, merging and crossing both are similarly easy to alter by implementing *MergeManager* and *CrossingManager*, respectively.
 
-###How do I stop it from throwing log records at my face?###
-Struct-NA uses [Log4J](http://logging.apache.org/log4j/) version 2. Modify the file *src/main/resources/log4j-test.xml* and change the attribute *level* from *trace* to *debug*, *info*, or *warn*.
+###It’s outputting too many log records!###
+Struct-NA uses [Log4J](http://logging.apache.org/log4j/) version 2. Modify the file *src/main/resources/log4j2.xml* and change the attribute *level* from *trace* to *debug*, *info*, or *warn*. If you have a source checkout, you will want to modify both *src/main/resources/log4j2.xml* and *src/main/resources/log4j2-test.xml*.
 
-###How does it work?###
-There is [additional documentation](https://github.com/dmyersturnbull/network_merge/blob/master/doc/description.pdf) available. Like the code, this documentation is a work in progress. Unlike the code, it is not distributed under the Apache License (which is only applicable to software anyway).
-
-###How well is it working?###
-[![Build Status](https://travis-ci.org/dmyersturnbull/network_merge.png)](https://travis-ci.org/dmyersturnbull/network_merge)
-Please [report bugs](https://github.com/dmyersturnbull/network_merge/issues), because I will try to fix them.
-
-Note that the software is probably not complete or stable enough for general use yet.
+The PSI-MI XML parser uses Log4J version 1 and is configured by default to show only warnings and errors. In general, these warnings should not be ignored. However, you can modify the file *src/main/resources/log4j.xml* to disable them.
 
 ###How do I obtain a checkout?###
 The project is most easily built using [Maven](http://maven.apache.org/).
@@ -147,6 +140,22 @@ mvn install
 
 If you use [Eclipse](http://eclipse.org), you can install [m2eclipse](http://m2eclipse.codehaus.org/) with a Git m2eclipse discovery backend. Fro there, you can simply navigate to *create new → Checkout Maven projects from SCM* and input *https://github.com/dmyersturnbull/network_merge.git*.
 
-License
--------
+
+Other information
+---------------
+
+###How does it work?###
+There is [additional documentation](https://github.com/dmyersturnbull/network_merge/blob/master/doc/description.pdf) available. Like the code, this documentation is a work in progress. Unlike the code, it is not distributed under the Apache License (which is only applicable to software anyway).
+
+###How did it get started?###
+[Douglas Myers-Turnbull](https://github.com/dmyersturnbull) wrote it for a bioinformatics class at the [University of California, San Diego](http://ucsd.edu).
+
+###How well is it working?###
+[![Build Status](https://travis-ci.org/dmyersturnbull/network_merge.png)](https://travis-ci.org/dmyersturnbull/network_merge)
+
+Please [report bugs](https://github.com/dmyersturnbull/network_merge/issues), because the developer will try to fix them.
+
+Note that the software is probably not complete or stable enough for general use yet.
+
+###How is it licensed?###
 The software is distributed under the terms of the Apache License, version 2. The documentation, including this ReadMe and all files under the */doc* directory are provided only as a service to users, and may not be re-distributed modified or unmodified without express written permission from the author.
