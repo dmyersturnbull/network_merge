@@ -154,7 +154,7 @@ public class NetworkCombiner {
 		options.addOption(OptionBuilder.hasArg(false)
 				.withDescription("Require each interactor to have a PDB structure").isRequired(false)
 				.create("require_pdb"));
-		options.addOption(OptionBuilder.hasArg(false).withDescription("Require each interacto to haver a SCOP domain")
+		options.addOption(OptionBuilder.hasArg(false).withDescription("Require each interactor to have a SCOP domain")
 				.isRequired(false).create("require_scop"));
 		options.addOption(OptionBuilder.hasArg(false)
 				.withDescription("Require each interactor to have a FASTA sequence").isRequired(false)
