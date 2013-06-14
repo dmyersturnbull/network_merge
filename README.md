@@ -162,7 +162,7 @@ Other information
 There is [additional documentation](https://github.com/dmyersturnbull/network_merge/blob/master/doc/description.pdf) available. Like the code, this documentation is a work in progress. Unlike the code, it is not distributed under the Apache License (which is only applicable to software anyway).
 
 ###How well is it working?###
-<img src="https://travis-ci.org/dmyersturnbull/network_merge.png)" />(https://travis-ci.org/dmyersturnbull/network_merge)
+[![Build Status](https://travis-ci.org/dmyersturnbull/network_merge.png)](https://travis-ci.org/dmyersturnbull/network_merge)
 
 Please [report bugs](https://github.com/dmyersturnbull/network_merge/issues), because the developer will try to fix them.
 
