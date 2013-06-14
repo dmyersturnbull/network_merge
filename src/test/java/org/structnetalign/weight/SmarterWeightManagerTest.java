@@ -41,7 +41,7 @@ public class SmarterWeightManagerTest {
 			@Override
 			public Weight nextWeight(int a, int b, String uniProtIdA, String uniProtIdB, int n, boolean isFail, Class<? extends Weight> failed) {
 				if (n > 0) return null;
-				Weight weight = new ScopRelationWeight();
+				Weight weight = new ScopWeight();
 				try {
 					weight.setIds(a, b, uniProtIdA, uniProtIdB);
 				} catch (WeightException e) {
@@ -75,7 +75,7 @@ public class SmarterWeightManagerTest {
 			@Override
 			public List<Weight> initialWeights(int a, int b, String uniProtIdA, String uniProtIdB) {
 				List<Weight> weights = new ArrayList<Weight>(2);
-				Weight scop = new ScopRelationWeight();
+				Weight scop = new ScopWeight();
 				try {
 					scop.setIds(a, b, uniProtIdA, uniProtIdB);
 				} catch (WeightException e) {

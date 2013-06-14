@@ -125,7 +125,7 @@ public class SmartWeightManager implements WeightManager {
 					RelationWeight relation;
 					try {
 						// try to use structure
-						relation = new ScopRelationWeight();
+						relation = new ScopWeight();
 						relation.setIds(a, b, uniProtIdA, uniProtIdB);
 					} catch (WeightException e) {
 						logger.warn("Couldn't get SCOP weight for " + uniProtIdA + " against " + uniProtIdB + " (" + a

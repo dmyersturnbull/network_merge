@@ -35,7 +35,7 @@ import org.structnetalign.util.IdentifierMappingFactory;
  * @author dmyersturnbull
  * 
  */
-public class ScopRelationWeight implements RelationWeight {
+public class ScopWeight implements RelationWeight {
 
 	public static final Map<ScopCategory, Double> DEFAULT_WEIGHTS = new HashMap<ScopCategory, Double>();
 
@@ -96,11 +96,11 @@ public class ScopRelationWeight implements RelationWeight {
 		}
 	}
 
-	public ScopRelationWeight() {
+	public ScopWeight() {
 		this(DEFAULT_WEIGHTS);
 	}
 
-	public ScopRelationWeight(Map<ScopCategory, Double> weights) {
+	public ScopWeight(Map<ScopCategory, Double> weights) {
 		this.weights = weights;
 	}
 
@@ -113,7 +113,7 @@ public class ScopRelationWeight implements RelationWeight {
 	@Override
 	public WeightResult call() throws Exception {
 
-		final ScopDatabase scop = ScopRelationWeight.getSCOP();
+		final ScopDatabase scop = ScopWeight.getSCOP();
 		ScopDomain domain1 = scop.getDomainByScopID(scopId1);
 		if (domain1 == null) throw new WeightException("Could not find SCOP id for " + uniProtId1, v1, v2, uniProtId1,
 				uniProtId2, false, true);

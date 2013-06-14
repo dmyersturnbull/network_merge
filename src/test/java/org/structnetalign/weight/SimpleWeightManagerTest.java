@@ -31,7 +31,7 @@ public class SimpleWeightManagerTest {
 	public void test() {
 		SimpleWeightManager manager = new SimpleWeightManager();
 		manager.add(new CeWeight(), 1);
-		manager.add(new ScopRelationWeight(), 1);
+		manager.add(new ScopWeight(), 1);
 //		manager.add(new NeedlemanWunschWeight(), 1);
 		UndirectedGraph<Integer,HomologyEdge> hom = WeightManagerTest.testSimple(manager);
 		assertEquals("Wrong number of homology edges", 15, hom.getEdgeCount());

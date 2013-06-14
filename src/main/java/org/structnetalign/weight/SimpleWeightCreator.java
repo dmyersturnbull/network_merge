@@ -23,7 +23,7 @@ import org.apache.logging.log4j.Logger;
 /**
  * A really simple {@link WeightCreator} that tries, in order:
  * <ol>
- * <li>{@link ScopRelationWeight}</li>
+ * <li>{@link ScopWeight}</li>
  * <li>{@link NeedlemanWunschWeight}</li>
  * <li>{@link CeWeight}</li>
  * </ol>
@@ -43,7 +43,7 @@ public class SimpleWeightCreator implements WeightCreator {
 
 		// try SCOP
 		if (n == 1) {
-			weight = init(new ScopRelationWeight(), a, b, uniProtIdA, uniProtIdB);
+			weight = init(new ScopWeight(), a, b, uniProtIdA, uniProtIdB);
 		}
 
 		// try NW
@@ -77,7 +77,7 @@ public class SimpleWeightCreator implements WeightCreator {
 	@Override
 	public List<Weight> initialWeights(int a, int b, String uniProtIdA, String uniProtIdB) {
 		List<Weight> list = new ArrayList<Weight>(1);
-		Weight scop = init(new ScopRelationWeight(), a, b, uniProtIdA, uniProtIdB);
+		Weight scop = init(new ScopWeight(), a, b, uniProtIdA, uniProtIdB);
 		list.add(scop);
 		return list;
 	}
