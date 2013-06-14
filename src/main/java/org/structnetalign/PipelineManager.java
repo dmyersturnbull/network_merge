@@ -43,6 +43,7 @@ import org.structnetalign.util.InteractionUpdate;
 import org.structnetalign.util.NetworkUtils;
 import org.structnetalign.weight.SimpleWeightCreator;
 import org.structnetalign.weight.SmarterWeightManager;
+import org.structnetalign.weight.WeightCreator;
 import org.structnetalign.weight.WeightManager;
 
 import psidev.psi.mi.xml.model.EntrySet;
@@ -57,66 +58,41 @@ import edu.uci.ics.jung.graph.util.Pair;
  * <li>Merging: merges degenerate vertex sets into a single representative per set</li>
  * </ol>
  * Reads an input MIF25 network and generates an output MIF25 network after performing the above 3 steps.
+ * 
  * @author dmyersturnbull
  * @see CLI
  */
 public class PipelineManager {
 
-	private static final Logger logger = LogManager.getLogger("org.structnetalign");
-
 	public static final int N_CORES = Math.max(Runtime.getRuntime().availableProcessors() - 1, 1);
+
 	public static final double TAU = 0.5;
 	public static final int XI = 2;
 	public static final double ZETA = 0.7;
+	private static final Logger logger = LogManager.getLogger("org.structnetalign");
 
 	private CrossingManager crossingManager;
 	private MergeManager mergeManager;
 
 	private int nCores;
-	private boolean report = false;
-	private WeightManager weightManager;
-	private boolean writeSteps = false;
-	private boolean noMerge;
 	private boolean noCross;
-
-	private Integer xi; // depends on CrossingManager
-	private double zeta = ZETA;
+	private boolean noMerge;
+	private WeightCreator phi;
+	private boolean report = false;
 	private double tau = TAU;
 
-	public boolean isNoMerge() {
-		return noMerge;
-	}
+	private WeightManager weightManager;
+	private boolean writeSteps = false;
+	private Integer xi; // depends on CrossingManager
 
-	public void setNoMerge(boolean noMerge) {
-		this.noMerge = noMerge;
-	}
+	private double zeta = ZETA;
 
 	public boolean isNoCross() {
 		return noCross;
 	}
 
-	public void setNoCross(boolean noCross) {
-		this.noCross = noCross;
-	}
-
-	private String phi;
-
-	/**
-	 * Initializes a new PipelineManager using the default parameters. Once this has been performed, setting of variables will have no effect.
-	 */
-	private void init() {
-		if (weightManager == null) {
-			if (xi == null) xi = XI;
-			SmarterWeightManager weightManager = new SmarterWeightManager(new SimpleWeightCreator(), nCores);
-			phi = weightManager.getCreator().getClass().getSimpleName();
-			this.weightManager = weightManager;
-		}
-		if (crossingManager == null) {
-			crossingManager = new SimpleCrossingManager(nCores, xi);
-		}
-		if (mergeManager == null) {
-			mergeManager = new ConcurrentBronKerboschMergeManager(nCores);
-		}
+	public boolean isNoMerge() {
+		return noMerge;
 	}
 
 	public boolean isReport() {
@@ -145,7 +121,7 @@ public class PipelineManager {
 		ReportGenerator.setInstance(new ReportGenerator(reportFile));
 		if (report) {
 			ReportGenerator.getInstance().put("n_cores", nCores);
-			if (phi != null) ReportGenerator.getInstance().put("phi", phi);
+			if (phi != null) ReportGenerator.getInstance().put("phi", phi.getClass().getSimpleName());
 			ReportGenerator.getInstance().put("tau", tau);
 			ReportGenerator.getInstance().put("zeta", zeta);
 			if (xi != null) ReportGenerator.getInstance().put("xi", xi);
@@ -183,7 +159,6 @@ public class PipelineManager {
 			GraphMLAdaptor.writeHomologyGraph(graph.getHomology(), new File(path + "hom_weighted.graphml.xml"));
 			GraphMLAdaptor.writeInteractionGraph(graph.getInteraction(), new File(path + "int_weighted.graphml.xml"));
 		}
-
 
 		// cross
 		if (!noCross) {
@@ -223,8 +198,8 @@ public class PipelineManager {
 		trimmer = null;
 
 		// now output
-		Map<Integer,Integer> interactionsRemoved = new WeakHashMap<>();
-		Map<Integer,Integer> interactorsRemoved = new WeakHashMap<>();
+		Map<Integer, Integer> interactionsRemoved = new WeakHashMap<>();
+		Map<Integer, Integer> interactorsRemoved = new WeakHashMap<>();
 		for (MergeUpdate update : merges) {
 			for (InteractionEdge e : update.getInteractionEdges()) {
 				interactionsRemoved.put(e.getId(), update.getV0());
@@ -234,26 +209,107 @@ public class PipelineManager {
 			}
 		}
 		EntrySet entrySet = NetworkUtils.readNetwork(input);
-		List<InteractionUpdate> updates = GraphInteractionAdaptor.modifyProbabilites(entrySet, graph.getInteraction(), interactionsRemoved, interactorsRemoved);
+		List<InteractionUpdate> updates = GraphInteractionAdaptor.modifyProbabilites(entrySet, graph.getInteraction(),
+				interactionsRemoved, interactorsRemoved);
 		NetworkUtils.writeNetwork(entrySet, output);
 
 		int endTime = (int) (System.currentTimeMillis() / 1000L);
 		if (report) {
 			putUpdates(updates);
 			putMerges(merges, entrySet);
-			ReportGenerator.getInstance().put("time_taken", (endTime - startTime));
+			ReportGenerator.getInstance().put("time_taken", endTime - startTime);
 			ReportGenerator.getInstance().write();
 		}
 
-		int count = Thread.activeCount()-1;
+		int count = Thread.activeCount() - 1;
 		if (count > 0) {
 			logger.warn("There are " + count + " lingering threads. Exiting anyway.");
 			System.exit(0);
 		}
 	}
 
+	public void setCrossingManager(CrossingManager crossingManager) {
+		this.crossingManager = crossingManager;
+	}
+
+	public void setMergeManager(MergeManager mergeManager) {
+		this.mergeManager = mergeManager;
+	}
+
+	public void setNCores(int nCores) {
+		this.nCores = nCores;
+	}
+
+	public void setNoCross(boolean noCross) {
+		this.noCross = noCross;
+	}
+
+	public void setNoMerge(boolean noMerge) {
+		this.noMerge = noMerge;
+	}
+
+	public void setPhi(WeightCreator phi) {
+		this.phi = phi;
+	}
+
+	public void setReport(boolean report) {
+		this.report = report;
+	}
+
+	/**
+	 * @param tau
+	 *            The minimum threshold to apply to homology edges before doing crossing.
+	 */
+	public void setTau(double tau) {
+		this.tau = tau;
+	}
+
+	public void setWeightManager(WeightManager weightManager) {
+		this.weightManager = weightManager;
+	}
+
+	public void setWriteSteps(boolean writeSteps) {
+		this.writeSteps = writeSteps;
+	}
+
+	/**
+	 * @param xi
+	 *            The maximum search depth for traversal during crossing.
+	 */
+	public void setXi(int xi) {
+		this.xi = xi;
+	}
+
+	/**
+	 * @param zeta
+	 *            The minimum threshold to apply to homology edges before doing merging
+	 */
+	public void setZeta(double zeta) {
+		this.zeta = zeta;
+	}
+
+	/**
+	 * Initializes a new PipelineManager using the default parameters. Once this has been performed, setting of
+	 * variables will have no effect.
+	 */
+	private void init() {
+		if (nCores == 0) nCores = Runtime.getRuntime().availableProcessors() - 1;
+		if (weightManager == null) {
+			if (xi == null) xi = XI;
+			if (phi == null) phi = new SimpleWeightCreator();
+			SmarterWeightManager weightManager = new SmarterWeightManager(phi, nCores);
+			this.weightManager = weightManager;
+		}
+		if (crossingManager == null) {
+			crossingManager = new SimpleCrossingManager(nCores, xi);
+		}
+		if (mergeManager == null) {
+			mergeManager = new ConcurrentBronKerboschMergeManager(nCores);
+		}
+	}
+
 	private void putMerges(List<MergeUpdate> merges, EntrySet entrySet) {
-		Map<Integer,String> uniProtIds = NetworkUtils.getUniProtIds(entrySet);
+		Map<Integer, String> uniProtIds = NetworkUtils.getUniProtIds(entrySet);
 		final IdentifierMapping mapping = IdentifierMappingFactory.getMapping();
 		List<DegenerateSetEntry> entries = new ArrayList<>();
 		for (MergeUpdate update : merges) {
@@ -293,9 +349,9 @@ public class PipelineManager {
 			entry.ids = update.getIds();
 			entry.uniProtIds = update.getUniProtIds();
 			String pdb1 = mapping.uniProtToPdb(update.getUniProtIds().getFirst());
-			pdb1 = pdb1.substring(0, pdb1.length()-2);
-			String pdb2 =  mapping.uniProtToPdb(update.getUniProtIds().getSecond());
-			pdb2 = pdb2.substring(0, pdb2.length()-2);
+			pdb1 = pdb1.substring(0, pdb1.length() - 2);
+			String pdb2 = mapping.uniProtToPdb(update.getUniProtIds().getSecond());
+			pdb2 = pdb2.substring(0, pdb2.length() - 2);
 			entry.pdbIds = new Pair<String>(pdb1, pdb2);
 			String scop1 = mapping.uniProtToScop(update.getUniProtIds().getFirst());
 			String scop2 = mapping.uniProtToScop(update.getUniProtIds().getSecond());
@@ -305,54 +361,6 @@ public class PipelineManager {
 		if (!updated.isEmpty()) {
 			ReportGenerator.getInstance().put("updated", updated);
 		}
-	}
-
-	public void setCrossingManager(CrossingManager crossingManager) {
-		this.crossingManager = crossingManager;
-	}
-
-	public void setMergeManager(MergeManager mergeManager) {
-		this.mergeManager = mergeManager;
-	}
-
-	public void setNCores(int nCores) {
-		this.nCores = nCores;
-	}
-
-	public void setReport(boolean report) {
-		this.report = report;
-	}
-
-	/**
-	 * @param tau
-	 *            The minimum threshold to apply to homology edges before doing crossing.
-	 */
-	public void setTau(double tau) {
-		this.tau = tau;
-	}
-
-	public void setWeightManager(WeightManager weightManager) {
-		this.weightManager = weightManager;
-	}
-
-	public void setWriteSteps(boolean writeSteps) {
-		this.writeSteps = writeSteps;
-	}
-
-	/**
-	 * @param xi
-	 *            The maximum search depth for traversal during crossing.
-	 */
-	public void setXi(int xi) {
-		this.xi = xi;
-	}
-
-	/**
-	 * @param zeta
-	 *            The minimum threshold to apply to homology edges before doing merging
-	 */
-	public void setZeta(double zeta) {
-		this.zeta = zeta;
 	}
 
 }
