@@ -25,6 +25,7 @@ import org.apache.logging.log4j.Logger;
  * <ol>
  * <li>{@link ScopWeight}</li>
  * <li>{@link NeedlemanWunschWeight}</li>
+ * <li>{@link PrecalculatedFatcatWeight}</li>
  * <li>{@link CeWeight}</li>
  * </ol>
  * @author dmyersturnbull
@@ -77,7 +78,12 @@ public class SimpleWeightCreator implements WeightCreator {
 	@Override
 	public List<Weight> initialWeights(int a, int b, String uniProtIdA, String uniProtIdB) {
 		List<Weight> list = new ArrayList<Weight>(1);
-		Weight scop = init(new ScopWeight(), a, b, uniProtIdA, uniProtIdB);
+		Weight scop = null;
+		int i = 1;
+		while (scop == null) { // keep trying until we are successful
+			scop = nextWeight(a, b, uniProtIdA, uniProtIdB, i, true, null);
+			i++;
+		}
 		list.add(scop);
 		return list;
 	}
