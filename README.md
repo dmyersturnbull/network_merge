@@ -6,6 +6,7 @@ The primary objective is to assign a confidence to each interaction based on its
 Homologs are identified in a species-independent way using structural rather than sequence information whenever it is available. Specifically, it uses the [Structural Classification of Proteins](http://scop.berkeley.edu/) and structural alignment algorithms.
 
 The underlying method is comparable to a network alignment algorithm but offers three advantages:
+
 * It does not require that homology is one-to-one.
 * It can identify homology relationships within the same species.
 * It is based on structural information rather than sequence information.
@@ -17,6 +18,7 @@ Who might use it?
 -----------------------
 
 There are two expected use cases:
+
 * Distributors of high-throughput PPI networks who want a reliable computational method to estimate the confidence of each interaction.
 * Researchers who are relying on PPI networks and who need estimates for interaction confidences. This includes researchers who have developed algorithms that accept PPIs as input (there are many).
 
@@ -29,11 +31,13 @@ This section assumes familiarity with this specification.
 ###Standard pipeline###
 There are two critical components general users will need. Both are distributed as Java ARchive (JAR) files:
 
-1. ```prepare.jar (NetworkPreparer.java)```, which is used to prepare a network for use by ```structna```. First, it removes unimolecular and multimolecular interactions, which Struct-NA doesn’t understand. It also assigns initial confidences to interactions. To use ```prepare```:
+####prepare.jar (NetworkPreparer.java)####
+Is used to prepare a network for use by ```structna```. First, it removes unimolecular and multimolecular interactions, which Struct-NA doesn’t understand. It also assigns initial confidences to interactions. To use ```prepare```:
 ```java -jar prepare.jar input_network.mif25 prepared_network.mif25```
 This will create a new file *prepared_network.mif25*.
 
-2. ```structna.jar (CLI.java)```, which runs Struct-NA on a prepared MIF25 file. To use it:
+####structna.jar (CLI.java)####
+Runs Struct-NA on a prepared MIF25 file. To use it:
 ```java -jar structna.jar -report -input prepared_network.mif25 -output ./output.mif25```
 Interactions in the output MIF25 will be assigned a confidence, unless Struct-NA has marked them as degenerate; interactions and interactors are marked as degenerate with an annotation instead.
 The *-report* switch is optional but recommended for new users. It creates a file at *(the location of output.mif25)/current-date-report/report.html* that details the results.
@@ -42,13 +46,19 @@ Run ```java -jar structna.jar --help``` to see the full options.
 ###Utilities##
 Two useful but nonessential utilities are provided:
 
-* ```combine.jar (NetworkCombiner.java)```, which can be used to mix and match networks, or to subsample a network or combination of networks. For example:
-```java -jar combine.jar -output combined_network.mif25 -probability 1 -require_pdb -require_scop -require_fasta INPUT FILES```
+#### combine.jar (NetworkCombiner.java)####
+Is used to mix and match networks, or to subsample a network or combination of networks. For example:
+
+```java -jar combine.jar -output combined_network.mif25 -probability 1 -require_pdb``` ```-require_scop -require_fasta INPUT FILES```
+
 The ```-probability``` parameter gives the probability that each interactor will be included. Interactions are then included only if all of their participants exist. The ```-require_pdb```, ```-require_scop```, and ```-require_fasta``` switches remove all interactors that do not have [Protein Data Bank](http://pdb.org/) structures, SCOP domains, and FASTA sequences at [NCBI](http://www.ncbi.nlm.nih.gov/), respectively. ```combine``` can be run before ```prepare```.
 Try ```java -jar combine.jar --help``` to see the full options.
 
-* ```trim.jar (NetworkTrimmer.java)```, which actually removes interactions and interactors marked with *removed by Struct-NA* from a network. Run:
+####trim.jar (NetworkTrimmer.java)####
+Actually removes interactions and interactors marked with *removed by Struct-NA* from a network. Run:
+
 ```java -jar trim.jar result_network.mif25 trimmed_network.mif25```
+
 This is useful if you are only interested in the most simplified form of a network for your research. It can also be useful for visualization.
 
 ###Using the results###
@@ -115,11 +125,11 @@ Scoring parameters for individual databases and alignment methods are stored in 
 ###How do I change the process used to identify homologs?###
 This requires a source checkout.
 The recommended way is to implement *WeightManager*, then:
-```
-PipelineManager manager = new PipelineManager();
-manager.setWeightManager(new MyWeightManager()); // use your WeightManager here
-manager.run(myInputFile, myOutputFile);
-```
+
+```PipelineManager manager = new PipelineManager();```
+```manager.setWeightManager(new MyWeightManager()); // use your WeightManager here```
+```manager.run(myInputFile, myOutputFile);```
+
 That should be it! The other major steps of Struct-NA, merging and crossing both are similarly easy to alter by implementing *MergeManager* and *CrossingManager*, respectively.
 
 ###It’s outputting too many log records!###
@@ -133,14 +143,13 @@ Here are three methods to obtain a checkout and build it with Maven:
 
 First, you can try:
 Run
-```mvn scm:checkout -DconnectionUrl=https://github.com/dmyersturnbull/network_merge.git -DcheckoutDirectory=./StructNA```
+```mvn scm:checkout -DconnectionUrl=https://github.com/dmyersturnbull```
+```/network_merge.git -DcheckoutDirectory=./StructNA```
 
 Otherwise, you can use Git and then Maven:
-```
-git clone https://github.com/dmyersturnbull/network_merge.git
-cd network_merge
-mvn install
-```
+```git clone https://github.com/dmyersturnbull/network_merge.git```
+```cd network_merge```
+```mvn install```
 
 If you use [Eclipse](http://eclipse.org), you can install [m2eclipse](http://m2eclipse.codehaus.org/) with a Git m2eclipse discovery backend. Fro there, you can simply navigate to *create new → Checkout Maven projects from SCM* and input *https://github.com/dmyersturnbull/network_merge.git*.
 
@@ -148,14 +157,12 @@ If you use [Eclipse](http://eclipse.org), you can install [m2eclipse](http://m2e
 Other information
 ---------------
 
+
 ###How does it work?###
 There is [additional documentation](https://github.com/dmyersturnbull/network_merge/blob/master/doc/description.pdf) available. Like the code, this documentation is a work in progress. Unlike the code, it is not distributed under the Apache License (which is only applicable to software anyway).
 
-###How did it get started?###
-[Douglas Myers-Turnbull](https://github.com/dmyersturnbull) wrote it for a bioinformatics class at the [University of California, San Diego](http://ucsd.edu).
-
 ###How well is it working?###
-[![Build Status](https://travis-ci.org/dmyersturnbull/network_merge.png)](https://travis-ci.org/dmyersturnbull/network_merge)
+<img src="https://travis-ci.org/dmyersturnbull/network_merge.png)" />(https://travis-ci.org/dmyersturnbull/network_merge)
 
 Please [report bugs](https://github.com/dmyersturnbull/network_merge/issues), because the developer will try to fix them.
 

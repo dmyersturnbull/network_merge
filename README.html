@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"><head> 
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type" /> 
+    <title>InstantMark - Generated HTML</title>
+<link rel="stylesheet" type="text/css" href="preview.css" /></head>
+<body><h1>Struct-NA</h1>
+
+<p>Struct-NA is a method to improve noisy protein–protein interaction (PPI) networks by identifying interactions that are conserved among homologs.
+The primary objective is to assign a confidence to each interaction based on its conservation among any homologs of its participants. The secondary objective is to merge analogous interactions to simplify the description of the network. The idea is that these networks will be more useful in research.
+Homologs are identified in a species-independent way using structural rather than sequence information whenever it is available. Specifically, it uses the <a href="http://scop.berkeley.edu/">Structural Classification of Proteins</a> and structural alignment algorithms.</p>
+
+<p>The underlying method is comparable to a network alignment algorithm but offers three advantages:</p>
+
+<ul>
+<li>It does not require that homology is one-to-one.</li>
+<li>It can identify homology relationships within the same species.</li>
+<li>It is based on structural information rather than sequence information.</li>
+</ul>
+
+<p>Struct-NA is semi-stable but is nonetheless a work in progress currently not suitable for outside use.
+It is distributed under the terms of the Apache License version 2.</p>
+
+<h2>Who might use it?</h2>
+
+<p>There are two expected use cases:</p>
+
+<ul>
+<li>Distributors of high-throughput PPI networks who want a reliable computational method to estimate the confidence of each interaction.</li>
+<li>Researchers who are relying on PPI networks and who need estimates for interaction confidences. This includes researchers who have developed algorithms that accept PPIs as input (there are many).</li>
+</ul>
+
+<h2>How do I use it?</h2>
+
+<p>Struct-NA reads a <a href="http://www.psidev.info/node/60">Molecular Interaction XML Format</a> version 2.5 (MIF25) file (typically .mif25 or .mif) and outputs an output file in the same format.
+This section assumes familiarity with this specification.</p>
+
+<h3>Standard pipeline</h3>
+
+<p>There are two critical components general users will need. Both are distributed as Java ARchive (JAR) files:</p>
+
+<h4>prepare.jar (NetworkPreparer.java)</h4>
+
+<p>Is used to prepare a network for use by <code>structna</code>. First, it removes unimolecular and multimolecular interactions, which Struct-NA doesn’t understand. It also assigns initial confidences to interactions. To use <code>prepare</code>:
+<code>java -jar prepare.jar input_network.mif25 prepared_network.mif25</code>
+This will create a new file <em>prepared_network.mif25</em>.</p>
+
+<h4>structna.jar (CLI.java)</h4>
+
+<p>Runs Struct-NA on a prepared MIF25 file. To use it:
+<code>java -jar structna.jar -report -input prepared_network.mif25 -output ./output.mif25</code>
+Interactions in the output MIF25 will be assigned a confidence, unless Struct-NA has marked them as degenerate; interactions and interactors are marked as degenerate with an annotation instead.
+The <em>-report</em> switch is optional but recommended for new users. It creates a file at <em>(the location of output.mif25)/current-date-report/report.html</em> that details the results.
+Run <code>java -jar structna.jar --help</code> to see the full options.</p>
+
+<h3>Utilities</h3>
+
+<p>Two useful but nonessential utilities are provided:</p>
+
+<h4>combine.jar (NetworkCombiner.java)</h4>
+
+<p>Is used to mix and match networks, or to subsample a network or combination of networks. For example:</p>
+
+<p><code>java -jar combine.jar -output combined_network.mif25 -probability 1 -require_pdb</code> <code>-require_scop -require_fasta INPUT FILES</code></p>
+
+<p>The <code>-probability</code> parameter gives the probability that each interactor will be included. Interactions are then included only if all of their participants exist. The <code>-require_pdb</code>, <code>-require_scop</code>, and <code>-require_fasta</code> switches remove all interactors that do not have <a href="http://pdb.org/">Protein Data Bank</a> structures, SCOP domains, and FASTA sequences at <a href="http://www.ncbi.nlm.nih.gov/">NCBI</a>, respectively. <code>combine</code> can be run before <code>prepare</code>.
+Try <code>java -jar combine.jar --help</code> to see the full options.</p>
+
+<h4>trim.jar (NetworkTrimmer.java)</h4>
+
+<p>Actually removes interactions and interactors marked with <em>removed by Struct-NA</em> from a network. Run:</p>
+
+<p><code>java -jar trim.jar result_network.mif25 trimmed_network.mif25</code></p>
+
+<p>This is useful if you are only interested in the most simplified form of a network for your research. It can also be useful for visualization.</p>
+
+<h3>Using the results</h3>
+
+<p>Running <code>structna</code> outputs a new MIF25 XML file that is identical to the first except for three new features:</p>
+
+<ol>
+<li><p>A new “struct-NA confidence” <a href="http://psidev.sourceforge.net/molecular_interactions//rel25/doc/#element_confidence_Link03B1CBD8">confidence</a> is included for most interactions. This is a floating-point number ranging from 0 to 1 that is Struct-NA’s estimate for the probability of that interaction.</p></li>
+<li><p>A new annotation “removed by Struct-NA” has been added to some <a href="http://psidev.sourceforge.net/molecular_interactions//rel25/doc/#element_interactionList_Link03B121D0">interactions</a> and <a href="http://psidev.sourceforge.net/molecular_interactions//rel25/doc/#element_interactorList_Link03B11D10">interactors</a>. It is present for every interactor belonging to a <em>degenerate set</em> that is not <em>representative</em>. For precise definitions of these terms, please refer to <a href="https://github.com/dmyersturnbull/network_merge/blob/master/doc/description.pdf?raw=true">the paper</a>. The value of this annotation is the representative interactor for that degenerate set. The annotation was also added to interactions for whom one or more participant is a non-representative member of degenerate set.</p></li>
+<li><p>New interactions have been added to representative members of non-trivial degenerate sets. Specifically, one interaction was added for each interaction labeled for that degenerate set according to feature (2). These new interactions are those interactions that have been moved from non-representative interactors to representative interactors. </p></li>
+</ol>
+
+<h3>What general-use datasets can I run on?</h3>
+
+<p>Here’s the current breakdown:</p>
+
+<ul>
+<li><p><a href="http://www.ebi.ac.uk/intact/">IntAct</a> seems to work very well! Please <a href="https://github.com/dmyersturnbull/network_merge/issues/new">report</a> any issues.</p></li>
+<li><p><a href="http://dip.doe-mbi.ucla.edu/">DIP</a> does not correctly follow the MI25 specification, so parsing is problematic but may work. Please see <a href="https://github.com/dmyersturnbull/network_merge/issues/7">issue #7</a>.</p></li>
+<li><p><a href="http://thebiogrid.org/">BIOGRID</a> does not correctly follow the MI25 specification, and parsing doesn’t work at all. Please see <a href="https://github.com/dmyersturnbull/network_merge/issues/8">issue #8</a>.</p></li>
+</ul>
+
+<p>More information will follow.</p>
+
+<h3>How can I import the data into Cytoscape?</h3>
+
+<p><a href="http://www.cytoscape.org/">Cytoscape</a> can import MIF25 files. In Cytoscape 3, just go to <code>File → Import → Network → File</code>, and select the .mif25 file. You can use this to compare an input file with its StructNA‐generated output.
+Note that Cytoscape won’t be able to read the GraphML files generated by the <code>-write_steps</code> option.</p>
+
+<h2>Understanding report files</h2>
+
+<p>This section assumes the reader has read <a href="https://github.com/dmyersturnbull/network_merge/blob/master/doc/description.pdf?raw=true">the paper</a>.
+The report.html file <code>structna -report</code> generates details the three steps major steps of the algorithm: “weighting”, “merging”, and “crossing”. Graphs are displayed for each. In these graphs, interactors are shown as vertices whose labels are the MIF25 interactor identifiers. Solid black lines denote interactions, and dashed red lines denote homology. The thickness of edges depends on their probabilities: the thicker an edge, the more likely it is.</p>
+
+<h3>Weighted</h3>
+
+<p>The first section simply shows the graph after homology edges have been added, with some basic information on the left. This is done after applying the threshold τ to the homology graph.</p>
+
+<h3>Crossed</h3>
+
+<p>The graph displayed is after probabilities of interactions have been updated. 
+There are a couple confusing properties:
+* <em>N edges updated</em>: the number of interactions whose probabilities were increased
+* <em>N updates</em>: the number of interactions that were used to increase the probabilities of other interactions
+The table that follows is a list of interactions that have been updated. Each row gives the MIF25 interaction Id that was updated, the initial probability as determined by <code>prepare</code>, the probability that <code>structna</code> decided, and information about the interaction participants.</p>
+
+<h3>Merged</h3>
+
+<p>The graph displayed is after probabilities of interactions have been updated. This is done after applying the threshold ζ to the homology graph, which is why there are probably fewer dashed red edges in the graph..</p>
+
+<p>To understand this section, you need a vague understanding of how this process works.
+The term <em>degenerate set</em> is defined in the <a href="https://github.com/dmyersturnbull/network_merge/blob/master/doc/description.pdf">paper</a>. It is simply a set of vertices that form a clique and that all have precisely the same interactions. Non-trivial degeneracy (degeneracy involving more than one interaction) is the relation Struct-NA requires to merge multiple vertices into one. A single vertex is designated the <em>representative</em> of the degenerate set, and every other vertex is called <em>non-representative</em>. Each non-representative degenerate vertex is moved into its representative, and every interaction and homology edge incident to that vertex is likewise moved from to from the non-representative to the representative. (Strictly speaking, the original edges aren’t moved; they’re just copied. You can actually remove those edges using <code>trim</code>.)</p>
+
+<p>The table shows the exact degenerate sets and their representatives. Representatives are denoted “V0”.</p>
+
+<h2>Configuring</h2>
+
+<h3>How do I change the initial scoring?</h3>
+
+<p>Struct-NA uses a properties file at <em>src/main/resources/experiments.properties</em> that maps experiment names to initial scores (probabilities).
+Simply modify this file and re-run <em>prepare</em>.</p>
+
+<h3>How do I use a different database?</h3>
+
+<p>Database access information is stored in <em>src/main/resources/databases.properties</em>. You can modify this file to switch SCOP versions or use a different database URL.</p>
+
+<h3>How do I change alignment scoring?</h3>
+
+<p>This section concerns scoring of alignment methods and databases uses to identify homologous pairs.
+Scoring parameters for individual databases and alignment methods are stored in properties files in <em>src/main/resources/weights/</em>. You can modify files here to make Needleman–Wunsch use a PAM matrix, SCOP superfamilies to be scored higher, or apply a harsh gap open penalty for Combinatorial Extension.</p>
+
+<h3>How do I change the process used to identify homologs?</h3>
+
+<p>This requires a source checkout.
+The recommended way is to implement <em>WeightManager</em>, then:</p>
+
+<p><code>PipelineManager manager = new PipelineManager();</code>
+<code>manager.setWeightManager(new MyWeightManager()); // use your WeightManager here</code>
+<code>manager.run(myInputFile, myOutputFile);</code></p>
+
+<p>That should be it! The other major steps of Struct-NA, merging and crossing both are similarly easy to alter by implementing <em>MergeManager</em> and <em>CrossingManager</em>, respectively.</p>
+
+<h3>It’s outputting too many log records!</h3>
+
+<p>Struct-NA uses <a href="http://logging.apache.org/log4j/">Log4J</a> version 2. Modify the file <em>src/main/resources/log4j2.xml</em> and change the attribute <em>level</em> from <em>trace</em> to <em>debug</em>, <em>info</em>, or <em>warn</em>. If you have a source checkout, you will want to modify both <em>src/main/resources/log4j2.xml</em> and <em>src/main/resources/log4j2-test.xml</em>.</p>
+
+<p>The PSI-MI XML parser uses Log4J version 1 and is configured by default to show only warnings and errors. In general, these warnings should not be ignored. However, you can modify the file <em>src/main/resources/log4j.xml</em> to disable them.</p>
+
+<h3>How do I obtain a checkout?</h3>
+
+<p>The project is most easily built using <a href="http://maven.apache.org/">Maven</a>.
+Here are three methods to obtain a checkout and build it with Maven:</p>
+
+<p>First, you can try:
+Run
+<code>mvn scm:checkout -DconnectionUrl=https://github.com/dmyersturnbull</code>
+<code>/network_merge.git -DcheckoutDirectory=./StructNA</code></p>
+
+<p>Otherwise, you can use Git and then Maven:
+<code>git clone https://github.com/dmyersturnbull/network_merge.git</code>
+<code>cd network_merge</code>
+<code>mvn install</code></p>
+
+<p>If you use <a href="http://eclipse.org">Eclipse</a>, you can install <a href="http://m2eclipse.codehaus.org/">m2eclipse</a> with a Git m2eclipse discovery backend. Fro there, you can simply navigate to <em>create new → Checkout Maven projects from SCM</em> and input <em>https://github.com/dmyersturnbull/network_merge.git</em>.</p>
+
+<h2>Other information</h2>
+
+<h3>How does it work?</h3>
+
+<p>There is <a href="https://github.com/dmyersturnbull/network_merge/blob/master/doc/description.pdf">additional documentation</a> available. Like the code, this documentation is a work in progress. Unlike the code, it is not distributed under the Apache License (which is only applicable to software anyway).</p>
+
+<h3>How well is it working?</h3>
+
+<p><img src="https://travis-ci.org/dmyersturnbull/network_merge.png%29" />(https://travis-ci.org/dmyersturnbull/network_merge)</p>
+
+<p>Please <a href="https://github.com/dmyersturnbull/network_merge/issues">report bugs</a>, because the developer will try to fix them.</p>
+
+<p>Note that the software is probably not complete or stable enough for general use yet.</p>
+
+<h3>How is it licensed?</h3>
+
+<p>The software is distributed under the terms of the Apache License, version 2. The documentation, including this ReadMe and all files under the <em>/doc</em> directory are provided only as a service to users, and may not be re-distributed modified or unmodified without express written permission from the author.</p>
+</body></html>
