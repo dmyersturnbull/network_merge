@@ -100,17 +100,23 @@ public class PipelineManager {
 	}
 
 	private String phi;
-	
+
 	/**
 	 * Initializes a new PipelineManager using the default parameters. Once this has been performed, setting of variables will have no effect.
 	 */
 	private void init() {
-		if (xi == null) xi = XI;
-		SmarterWeightManager weightManager = new SmarterWeightManager(new SimpleWeightCreator(), nCores);
-		phi = weightManager.getCreator().getClass().getSimpleName();
-		this.weightManager = weightManager;
-		crossingManager = new SimpleCrossingManager(nCores, xi);
-		mergeManager = new ConcurrentBronKerboschMergeManager(nCores);
+		if (weightManager == null) {
+			if (xi == null) xi = XI;
+			SmarterWeightManager weightManager = new SmarterWeightManager(new SimpleWeightCreator(), nCores);
+			phi = weightManager.getCreator().getClass().getSimpleName();
+			this.weightManager = weightManager;
+		}
+		if (crossingManager == null) {
+			crossingManager = new SimpleCrossingManager(nCores, xi);
+		}
+		if (mergeManager == null) {
+			mergeManager = new ConcurrentBronKerboschMergeManager(nCores);
+		}
 	}
 
 	public boolean isReport() {
@@ -127,7 +133,7 @@ public class PipelineManager {
 	public void run(File input, File output) {
 
 		int startTime = (int) (System.currentTimeMillis() / 1000L);
-		
+
 		init();
 
 		// handle reporting
@@ -153,7 +159,7 @@ public class PipelineManager {
 			}
 		};
 		EdgeTrimmer<Integer, HomologyEdge> trimmer = new EdgeTrimmer<>(weighter);
-		
+
 		CleverGraph graph;
 		{
 			// build the graph
@@ -166,7 +172,7 @@ public class PipelineManager {
 			weightManager.assignWeights(graph, uniProtIds);
 		}
 		System.gc();
-		
+
 		// trim with tau
 		trimmer.trim(graph.getHomology(), tau);
 
@@ -177,13 +183,13 @@ public class PipelineManager {
 			GraphMLAdaptor.writeHomologyGraph(graph.getHomology(), new File(path + "hom_weighted.graphml.xml"));
 			GraphMLAdaptor.writeInteractionGraph(graph.getInteraction(), new File(path + "int_weighted.graphml.xml"));
 		}
-		
-		
+
+
 		// cross
 		if (!noCross) {
 			crossingManager.cross(graph);
 		}
-		
+
 		// trim with zeta
 		trimmer.trim(graph.getHomology(), zeta);
 
@@ -195,13 +201,13 @@ public class PipelineManager {
 		if (report) {
 			ReportGenerator.getInstance().saveCrossed(graph);
 		}
-		
+
 		// merge
 		List<MergeUpdate> merges = null;
 		if (!noMerge) {
 			merges = mergeManager.merge(graph);
 		}
-		
+
 		// report progress
 		if (writeSteps) {
 			GraphMLAdaptor.writeHomologyGraph(graph.getHomology(), new File(path + "hom_merged.graphml.xml"));
@@ -238,14 +244,14 @@ public class PipelineManager {
 			ReportGenerator.getInstance().put("time_taken", (endTime - startTime));
 			ReportGenerator.getInstance().write();
 		}
-		
+
 		int count = Thread.activeCount()-1;
 		if (count > 0) {
 			logger.warn("There are " + count + " lingering threads. Exiting anyway.");
 			System.exit(0);
 		}
 	}
-	
+
 	private void putMerges(List<MergeUpdate> merges, EntrySet entrySet) {
 		Map<Integer,String> uniProtIds = NetworkUtils.getUniProtIds(entrySet);
 		final IdentifierMapping mapping = IdentifierMappingFactory.getMapping();
