@@ -50,9 +50,14 @@ public class SimpleWeightCreator implements WeightCreator {
 		if (n == 2) {
 			weight = init(new NeedlemanWunschWeight(), a, b, uniProtIdA, uniProtIdB);
 		}
+		
+		// try pre-calculated FATCAT
+		if (n == 3) {
+			weight = init(new PrecalculatedFatcatWeight(), a, b, uniProtIdA, uniProtIdB);
+		}
 
 		// try CE
-		if (n == 3) {
+		if (n == 4) {
 			weight = init(new CeWeight(), a, b, uniProtIdA, uniProtIdB);
 		}
 		
