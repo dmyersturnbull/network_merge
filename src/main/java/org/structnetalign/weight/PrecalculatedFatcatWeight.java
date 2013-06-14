@@ -144,7 +144,7 @@ public class PrecalculatedFatcatWeight implements AlignmentWeight {
 
 	}
 
-	private AFPChain load(String id1, String id2, Atom[] ca1, Atom[] ca2) throws IOException, StructureException {
+	private AFPChain load(String id1, String id2, Atom[] ca1, Atom[] ca2) throws IOException, StructureException, WeightException {
 		URL url = new URL(BASE_URL + "&" + PARAM + "=" + id1 + "&" + PARAM + "=" + id2);
 		URLConnection conn = url.openConnection();
 		conn.setReadTimeout(TIMEOUT);
@@ -154,6 +154,8 @@ public class PrecalculatedFatcatWeight implements AlignmentWeight {
 			string = IOUtils.toString(is, "UTF-8"); // thanks Apache Commons!
 		}
 		AFPChain afpChain = AFPChainXMLParser.fromXML(string, ca1, ca2);
+		if (afpChain == null) throw new WeightException("Got null AFPChain for " + uniProtId2, v1, v2,
+				uniProtId1, uniProtId2, true, true);
 		// now we need to rotate to make the structure match the alignment
 		double tmScore = AFPChainScorer.getTMScore(afpChain, ca1, ca2);
 		afpChain.setTMScore(tmScore);
