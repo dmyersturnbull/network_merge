@@ -94,10 +94,20 @@ public class SmarterWeightManager implements WeightManager {
 					logger.trace("Weighting " + uniProtIdA + " against " + uniProtIdB + " (" + a + ", " + b + ")");
 
 					List<Weight> weights = creator.initialWeights(a, b, uniProtIdA, uniProtIdB);
-					for (Weight weight : weights) {
-						Future<WeightResult> future = completion.submit(weight);
-						futures.add(future);
-						logger.debug("Running relation " + weight.getClass().getSimpleName() + " for " + uniProtIdA
+					if (weights != null) {
+						for (Weight weight : weights) {
+							if (weight != null) {
+								Future<WeightResult> future = completion.submit(weight);
+								futures.add(future);
+								logger.debug("Running weight " + weight.getClass().getSimpleName() + " for " + uniProtIdA
+										+ " against " + uniProtIdB + " (" + a + ", " + b + ")");
+							} else { // this means the WeightCreator is behaving strangely
+								logger.warn("Null weight included for " + uniProtIdA
+										+ " against " + uniProtIdB + " (" + a + ", " + b + ")");
+							}
+						}
+					} else { // the WeightCreator doesn't want to run any weights
+						logger.debug("No weights selected for " + uniProtIdA
 								+ " against " + uniProtIdB + " (" + a + ", " + b + ")");
 					}
 
@@ -195,7 +205,7 @@ public class SmarterWeightManager implements WeightManager {
 					existing.setWeight(existing.getWeight() + prob - existing.getWeight() * prob);
 					logger.debug("["
 							+ PipelineProperties.getInstance().getOutputFormatter()
-									.format((float) createdIndex / (float) (futures.size() + createdIndex) * 100.0)
+							.format((float) createdIndex / (float) (futures.size() + createdIndex) * 100.0)
 							+ "%] Updated homology edge (" + a + ", " + b + ", "
 							+ PipelineProperties.getInstance().getOutputFormatter().format(existing.getWeight())
 							+ ") with weight " + PipelineProperties.getInstance().getOutputFormatter().format(prob));
