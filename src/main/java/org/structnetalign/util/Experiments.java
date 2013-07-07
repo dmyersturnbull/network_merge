@@ -26,7 +26,6 @@ import java.util.TreeMap;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.structnetalign.weight.NeedlemanWunschWeight;
 
 import psidev.psi.mi.xml.model.Entry;
 import psidev.psi.mi.xml.model.EntrySet;
@@ -55,7 +54,7 @@ import psidev.psi.mi.xml.model.Names;
  */
 public class Experiments {
 
-	private static final Logger logger = LogManager.getLogger(NeedlemanWunschWeight.class.getName());
+	private static final Logger logger = LogManager.getLogger(Experiments.class.getName());
 
 	private static Experiments instance;
 
