@@ -143,11 +143,11 @@ In the first step, we identify homologs in the network. These are understood sim
 
 A typical input network consists of a list interactions occurring between two polypeptide chains, where the chains are described by identifiers for UniProt \cite{uniprot}. In cases where the Protein Data Bank \cite{pdb} contains at least one structure for that chain, a PDB Id and is found for that UniProt Id. From that, a SCOP \cite{scop} domain corresponding to the PDB Id and chain are found. This selection process is problematic for multi-chain domains, for which we associate the chain with a domain arbitrarily.
 
-We rely on both alignment and information from third-party databases to establish homology. Structural information is preferred over sequence information where it is available. First, scores are assigned using SCOP by using the most specific SCOP relationship found. The particular scoring system was not chosen in a rigourous way but is listed below:
+We rely on both alignment and information from third-party databases to establish homology. Structural information is preferred over sequence information where it is available. First, scores are assigned using SCOP by using the most specific SCOP relationship found. The particular scoring system was not chosen in a rigourous way but reflects the frequency of relationships in SCOP 1.75B. It is listed below:
 
-\begin{tabular}{lllll}
-class & fold & superfamily & family & domain \\
-$0.0$ & $0.1$ & $0.4$ & $0.8$ & $1.0$ \\
+\begin{tabular}{lllllll}
+class & fold & superfamily & family & protein & species & domain \\
+$0.0$ & $0.0045$ & $0.010$ & $0.029$ & $0.23$ & $0.75$ & $1.0$\\
 \end{tabular}
 
 In the case where a protein is not associated with a SCOP domain, the Pfam database is used instead.
@@ -251,16 +251,17 @@ Interactions in the resulting network were compared against interactions in the 
 
 We define a correspondence score $B$ for each step as:
 
-$B = \displaystyle \frac{1}{N} \sum_I B(I)$, where $N$ is the number of interactions in the network,
+$B = \displaystyle \frac{1}{N} \sum_I B(I)$, where
 
 $B(I) = exp(Prob(I)) \cdot \left\{
 \begin{array}{ll}
 1 & \text{if in benchmark set and known by structure}\\
 0.5 & \text{if in benchmark set and known by model}\\
 -0.2 & \text{if not in benchmark set}
-\end{array} \right.$,
-and $N$ is a normalization constant defined by
+\end{array} \right.$
 
+$N$ is a normalization constant defined by
+ 
 $N = \displaystyle \sum_I exp(Prob(I))$
  
 We expect this score to increase after each step in the process, to reflect greater correspondence with Interactome3D.
@@ -271,7 +272,7 @@ The parameters used were $\tau = \zeta = 1$, $\xi=2$, and $\Phi$ defined exclusi
 
 \begin{tabular}{lll}
 $B_{input}$ & $B_{init}$ & $B_{output}$ \\
-$0.0195$ & $0.0249$ & $0.0284$
+$0.0195$ & $0.0249$ & $0.0285$
 \end{tabular}
 
 The results indicate that running StructNA increases the correspondence between the network and the high-quality benchmark set from Interactome3D. Similar results were found for several other IntAct PPI networks.
