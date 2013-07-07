@@ -23,6 +23,7 @@ import org.apache.logging.log4j.Logger;
 import org.biojava.bio.structure.scop.BerkeleyScopInstallation;
 import org.biojava.bio.structure.scop.RemoteScopInstallation;
 import org.biojava.bio.structure.scop.ScopDatabase;
+import org.biojava.bio.structure.scop.ScopFactory;
 import org.biojava.bio.structure.scop.ScopInstallation;
 
 /**
@@ -48,34 +49,9 @@ public class BasicScop {
 		} catch (IOException e) {
 			throw new RuntimeException("Couldn't open databases property file", e);
 		}
-		String scopSource = props.getProperty("scop_source");
 		String scopVersion = props.getProperty("scop_version");
-		String scopUrl = props.getProperty("scop_url");
-		String scopCache = props.getProperty("scop_cache");
-		logger.info("Setting SCOP to " + scopSource + " " + scopUrl + " " + scopVersion);
-		if (scopSource.equals("cambridge")) {
-			ScopInstallation a = new ScopInstallation();
-			a.setScopVersion(scopVersion);
-			a.setScopDownloadURL(scopUrl);
-			if (scopCache != null) {
-				a.setCacheLocation(scopCache);
-			}
-			scop = a;
-		} else if (scopSource.equals("berkeley")) {
-			BerkeleyScopInstallation a = new BerkeleyScopInstallation();
-			a.setScopVersion(scopVersion);
-			a.setScopDownloadURL(scopUrl);
-			if (scopCache != null) {
-				a.setCacheLocation(scopCache);
-			}
-			scop = a;
-		} else if (scopSource.equals("remote")) {
-			RemoteScopInstallation a = new RemoteScopInstallation();
-			a.setServer(scopUrl);
-			scop = a;
-		} else {
-			throw new IllegalArgumentException("Didn't understand scop_source " + scopSource);
-		}
+		logger.info("Setting SCOP to " + scopVersion);
+		ScopFactory.setScopDatabase(scopVersion);
 	}
 
 	public static ScopDatabase getScop() {
