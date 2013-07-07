@@ -59,11 +59,13 @@ public class ScopWeight implements RelationWeight {
 		} catch (IOException e) {
 			throw new RuntimeException("Couldn't open SCOP weights property file", e);
 		}
-		DEFAULT_WEIGHTS.put(ScopCategory.Class, Double.parseDouble(props.getProperty("class")));
-		DEFAULT_WEIGHTS.put(ScopCategory.Fold, Double.parseDouble(props.getProperty("fold")));
-		DEFAULT_WEIGHTS.put(ScopCategory.Superfamily, Double.parseDouble(props.getProperty("superfamily")));
-		DEFAULT_WEIGHTS.put(ScopCategory.Family, Double.parseDouble(props.getProperty("family")));
-		DEFAULT_WEIGHTS.put(ScopCategory.Px, Double.parseDouble(props.getProperty("species")));
+		DEFAULT_WEIGHTS.put(ScopCategory.Class, Double.parseDouble(props.getProperty("cl")));
+		DEFAULT_WEIGHTS.put(ScopCategory.Fold, Double.parseDouble(props.getProperty("cf")));
+		DEFAULT_WEIGHTS.put(ScopCategory.Superfamily, Double.parseDouble(props.getProperty("sf")));
+		DEFAULT_WEIGHTS.put(ScopCategory.Family, Double.parseDouble(props.getProperty("fa")));
+		DEFAULT_WEIGHTS.put(ScopCategory.Px, Double.parseDouble(props.getProperty("px")));
+		DEFAULT_WEIGHTS.put(ScopCategory.Species, Double.parseDouble(props.getProperty("sp")));
+		DEFAULT_WEIGHTS.put(ScopCategory.Domain, Double.parseDouble(props.getProperty("dm")));
 	}
 
 	/**
