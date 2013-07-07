@@ -15,6 +15,7 @@ package org.structnetalign.weight;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.biojava.bio.structure.scop.ScopCategory;
@@ -45,7 +46,12 @@ public class ScopWeightTest {
 
 	@Test(expected=WeightException.class)
 	public void testBadUniprotId() throws Exception {
-		ScopWeight weighter = new ScopWeight();
+		Map<ScopCategory, Double> weights = new HashMap<>();
+		weights.put(ScopCategory.Fold, 0.1);
+		weights.put(ScopCategory.Superfamily, 0.4);
+		weights.put(ScopCategory.Family, 0.8);
+		weights.put(ScopCategory.Domain, 1.0);
+		ScopWeight weighter = new ScopWeight(weights);
 		weighter.assignWeight(0, 1, "asdfasdfasdf", "sdgoyhljhsadf");
 	}
 	

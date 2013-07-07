@@ -16,6 +16,10 @@ package org.structnetalign.weight;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.biojava.bio.structure.scop.ScopCategory;
 import org.junit.Test;
 import org.structnetalign.HomologyEdge;
 
@@ -31,7 +35,13 @@ public class SimpleWeightManagerTest {
 	public void test() {
 		SimpleWeightManager manager = new SimpleWeightManager();
 		manager.add(new CeWeight(), 1);
-		manager.add(new ScopWeight(), 1);
+		Map<ScopCategory, Double> weights = new HashMap<>();
+		weights.put(ScopCategory.Fold, 0.1);
+		weights.put(ScopCategory.Superfamily, 0.4);
+		weights.put(ScopCategory.Family, 0.8);
+		weights.put(ScopCategory.Domain, 1.0);
+		ScopWeight scop = new ScopWeight(weights);
+		manager.add(scop, 1);
 //		manager.add(new NeedlemanWunschWeight(), 1);
 		UndirectedGraph<Integer,HomologyEdge> hom = WeightManagerTest.testSimple(manager);
 		assertEquals("Wrong number of homology edges", 15, hom.getEdgeCount());

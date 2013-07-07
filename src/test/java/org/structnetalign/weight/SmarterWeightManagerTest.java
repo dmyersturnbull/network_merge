@@ -18,11 +18,13 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.biojava.bio.structure.scop.ScopCategory;
 import org.junit.Test;
 import org.structnetalign.HomologyEdge;
 
@@ -41,7 +43,12 @@ public class SmarterWeightManagerTest {
 			@Override
 			public Weight nextWeight(int a, int b, String uniProtIdA, String uniProtIdB, int n, boolean isFail, Class<? extends Weight> failed) {
 				if (n > 0) return null;
-				Weight weight = new ScopWeight();
+				Map<ScopCategory, Double> ws = new HashMap<>();
+				ws.put(ScopCategory.Fold, 0.1);
+				ws.put(ScopCategory.Superfamily, 0.4);
+				ws.put(ScopCategory.Family, 0.8);
+				ws.put(ScopCategory.Domain, 1.0);
+				ScopWeight weight = new ScopWeight(ws);
 				try {
 					weight.setIds(a, b, uniProtIdA, uniProtIdB);
 				} catch (WeightException e) {
@@ -75,7 +82,12 @@ public class SmarterWeightManagerTest {
 			@Override
 			public List<Weight> initialWeights(int a, int b, String uniProtIdA, String uniProtIdB) {
 				List<Weight> weights = new ArrayList<Weight>(2);
-				Weight scop = new ScopWeight();
+				Map<ScopCategory, Double> ws = new HashMap<>();
+				ws.put(ScopCategory.Fold, 0.1);
+				ws.put(ScopCategory.Superfamily, 0.4);
+				ws.put(ScopCategory.Family, 0.8);
+				ws.put(ScopCategory.Domain, 1.0);
+				ScopWeight scop = new ScopWeight(ws);
 				try {
 					scop.setIds(a, b, uniProtIdA, uniProtIdB);
 				} catch (WeightException e) {
