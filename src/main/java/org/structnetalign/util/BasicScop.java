@@ -20,11 +20,8 @@ import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.biojava.bio.structure.scop.BerkeleyScopInstallation;
-import org.biojava.bio.structure.scop.RemoteScopInstallation;
 import org.biojava.bio.structure.scop.ScopDatabase;
 import org.biojava.bio.structure.scop.ScopFactory;
-import org.biojava.bio.structure.scop.ScopInstallation;
 
 /**
  * A collection of static utilities to handle interaction with databases of the <a
@@ -37,8 +34,6 @@ import org.biojava.bio.structure.scop.ScopInstallation;
 public class BasicScop {
 
 	private static final Logger logger = LogManager.getLogger("org.structnetalign");
-
-	private static ScopDatabase scop;
 
 	static {
 		Properties props = new Properties();
@@ -55,7 +50,7 @@ public class BasicScop {
 	}
 
 	public static ScopDatabase getScop() {
-		return scop;
+		return ScopFactory.getSCOP();
 	}
 
 }
