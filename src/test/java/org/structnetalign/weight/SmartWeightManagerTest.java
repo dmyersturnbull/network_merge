@@ -29,13 +29,14 @@ public class SmartWeightManagerTest {
 	
 	@Test
 	public void test() {
+		@SuppressWarnings("deprecation")
 		SmartWeightManager manager = new SmartWeightManager(2);
 		UndirectedGraph<Integer,HomologyEdge> hom = WeightManagerTest.testSimple(manager);
 		assertEquals("Wrong number of homology edges", 15, hom.getEdgeCount());
 		
 		// gets an alignment score of 0.507 and a SCOP score of 0.4
 		// note that we don't know the Id in a multithreaded environment
-		assertEquals(0.6309827640820483, hom.findEdge(4, 5).getWeight(), PRECISION);
+		assertEquals(0.3911215607353799, hom.findEdge(4, 5).getWeight(), PRECISION);
 	}
 	
 }
