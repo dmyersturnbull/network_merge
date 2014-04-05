@@ -1,0 +1,3306 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Struct-NA 0.1 report 2013-06-05 11:05:29</title>
+		<link rel="stylesheet" href="main.css" />
+	</head>
+	<body>
+		<div id="content">
+			<header>
+				<h1>Struct-NA 0.1 report</h1>
+				<h2>2013-06-05 11:05:29 (265 seconds taken)</h2>
+			</header>
+			<section id="main">
+				<div id="centerer">
+					<p class="top">Run with:</p>
+        			<ul>
+    					<li>nCores = 3</li>
+    					<li>β = ∞</li>
+    					<li>τ = 0.5</li>
+    					<li>ζ = 0.7</li>
+    					<li>ξ = 2</li>
+        			</ul>
+    				<p>
+    					See the <a href="https://github.com/dmyersturnbull/network_merge/blob/master/README.md">readme</a> or <a href="https://github.com/dmyersturnbull/network_merge/blob/master/description.pdf?raw=true">paper</a> for more details.
+    				</p>
+				</div>
+			</section>
+			<section class="weighted">
+				<h2>Weighted graph</h2>
+				<div class="left">
+    				<table>
+    					<thead>
+    						<tr>
+    							<th>property name</th>
+    							<th>property value</th>
+    						</tr>
+    					</thead>
+    					<tbody>
+    						<tr>
+    							<td>Manager</td>
+    							<td>SmartWeightManager</td>
+    						</tr>
+    						<tr>
+    							<td>N vertices</td>
+    							<td>1279</td>
+    						</tr>
+    						<tr>
+    							<td>N interactions</td>
+    							<td>1045</td>
+    						</tr>
+    						<tr>
+    							<td>N homology edges</td>
+    							<td>14170</td>
+    						</tr>
+    						<tr>
+    							<td>Maximum interaction degree</td>
+    							<td>38</td>
+    						</tr>
+    						<tr>
+    							<td>Maximum homology degree</td>
+    							<td>90</td>
+    						</tr>
+    						<tr>
+    							<td>N homology relations</td>
+    							<td>14170</td>
+    						</tr>
+    					</tbody>
+    				</table>
+				</div>
+    			<div class="right">
+    				<figure>
+    					<a href="weighted.png">
+    						<img src="weighted.png" alt="weighted network" />
+    					</a>
+    					<figcaption>The graph after homology edges (dashed red lines) have been added.</figcaption>
+    				</figure>
+				</div>
+			</section>
+			<section class="crossed">
+				<h2>Crossed graph</h2>
+				<div class="left">
+    				<table>
+    					<thead>
+    						<tr>
+    							<th>property name</th>
+    							<th>property value</th>
+    						</tr>
+    					</thead>
+    					<tbody>
+    						<tr>
+    							<td>Manager</td>
+    							<td>SimpleCrossingManager</td>
+    						</tr>
+    						<tr>
+    							<td>N vertices</td>
+    							<td>1279</td>
+    						</tr>
+    						<tr>
+    							<td>N interactions</td>
+    							<td>1045</td>
+    						</tr>
+    						<tr>
+    							<td>N homology edges</td>
+    							<td>6059</td>
+    						</tr>
+    						<tr>
+    							<td>N edges updated</td>
+    							<td>174</td>
+    						</tr>
+    						<tr>
+    							<td>N updates</td>
+    							<td>229</td>
+    						</tr>
+    					</tbody>
+    				</table>
+					<h3>Updated interactions</h3>
+					<table>
+    					<thead>
+    						<tr>
+    							<th>Interaction Id</th>
+    							<th>initial</th>
+    							<th>updated</th>
+    							<th>Ids</th>
+    							<th>UniProt Ids</th>
+    							<th>PDB Ids</th>
+    							<th>SCOP Ids</th>
+    						</tr>
+    					</thead>
+    					<tbody>
+							<tr class="low">
+								<td>1044813</td>
+								<td>0.65</td>
+								<td>0.779</td>
+								<td>
+									1044797<br/>
+									1044800
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P01137">P01137</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q90999">Q90999</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1kla">1kla</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1ks6">1ks6</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1klaa_">d1klaa_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1ks6a_">d1ks6a_</a>
+								</td>
+							</tr>
+							<tr class="low">
+								<td>564220</td>
+								<td>0.8</td>
+								<td>0.902</td>
+								<td>
+									564205<br/>
+									564208
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P45983">P45983</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P05412">P05412</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1ukh">1ukh</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1a02">1a02</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1ukha_">d1ukha_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1a02j_">d1a02j_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>761964</td>
+								<td>0.9</td>
+								<td>0.991</td>
+								<td>
+									489630<br/>
+									761937
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P07174">P07174</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q13114">Q13114</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1ngr">1ngr</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1flk">1flk</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1ngra_">d1ngra_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1flka1">d1flka1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>875770</td>
+								<td>0.9</td>
+								<td>0.963</td>
+								<td>
+									875027<br/>
+									875028
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q9UBU9">Q9UBU9</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q9Y5S9">Q9Y5S9</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1fo1">1fo1</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1p27">1p27</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1fo1a1">d1fo1a1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1p27b_">d1p27b_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>964337</td>
+								<td>0.9</td>
+								<td>0.935</td>
+								<td>
+									964327<br/>
+									964344
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P03372">P03372</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q09472">Q09472</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1a52">1a52</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1l3e">1l3e</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1a52a_">d1a52a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1l3eb_">d1l3eb_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>874156</td>
+								<td>0.99</td>
+								<td>0.995</td>
+								<td>
+									875026<br/>
+									875740
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q9HAU5">Q9HAU5</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q9BZI7">Q9BZI7</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1uw4">1uw4</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1uw4">1uw4</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1uw4b_">d1uw4b_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1uw4a_">d1uw4a_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>361610</td>
+								<td>0.9</td>
+								<td>0.985</td>
+								<td>
+									361608<br/>
+									361609
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P16410">P16410</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P42081">P42081</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1ah1">1ah1</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1i85">1i85</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1ah1a_">d1ah1a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1i85a_">d1i85a_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>361584</td>
+								<td>0.9</td>
+								<td>0.991</td>
+								<td>
+									361582<br/>
+									361583
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P98170">P98170</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P55210">P55210</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1c9q">1c9q</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1f1j">1f1j</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1c9qa_">d1c9qa_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1f1ja_">d1f1ja_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>185762</td>
+								<td>0.91</td>
+								<td>0.979</td>
+								<td>
+									185757<br/>
+									361583
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q13490">Q13490</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P55210">P55210</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1qbh">1qbh</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1f1j">1f1j</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1qbha_">d1qbha_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1f1ja_">d1f1ja_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>185768</td>
+								<td>0.9</td>
+								<td>0.972</td>
+								<td>
+									185757<br/>
+									185759
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q13490">Q13490</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P55211">P55211</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1qbh">1qbh</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jxq">1jxq</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1qbha_">d1qbha_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jxqa_">d1jxqa_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>185775</td>
+								<td>0.99</td>
+								<td>0.999</td>
+								<td>
+									185759<br/>
+									185760
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q96CA5">Q96CA5</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P55211">P55211</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1oxn">1oxn</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jxq">1jxq</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1oxna_">d1oxna_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jxqa_">d1jxqa_</a>
+								</td>
+							</tr>
+							<tr class="mediumlow">
+								<td>185787</td>
+								<td>0.8</td>
+								<td>0.954</td>
+								<td>
+									185757<br/>
+									185761
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P42574">P42574</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q13490">Q13490</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1cp3">1cp3</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1qbh">1qbh</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1cp3a_">d1cp3a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1qbha_">d1qbha_</a>
+								</td>
+							</tr>
+							<tr class="mediumlow">
+								<td>185792</td>
+								<td>0.8</td>
+								<td>0.991</td>
+								<td>
+									185760<br/>
+									185761
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q96CA5">Q96CA5</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P42574">P42574</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1oxn">1oxn</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1cp3">1cp3</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1oxna_">d1oxna_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1cp3a_">d1cp3a_</a>
+								</td>
+							</tr>
+							<tr class="veryhigh">
+								<td>588968</td>
+								<td>0.55</td>
+								<td>0.987</td>
+								<td>
+									588963<br/>
+									588963
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P15531">P15531</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P15531">P15531</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jxv">1jxv</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jxv">1jxv</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jxva_">d1jxva_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jxva_">d1jxva_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>361340</td>
+								<td>0.99</td>
+								<td>0.998</td>
+								<td>
+									361338<br/>
+									361339
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P21802">P21802</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P05230">P05230</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1djs">1djs</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1axm">1axm</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1djsa1">d1djsa1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1axma_">d1axma_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>184864</td>
+								<td>0.9</td>
+								<td>0.972</td>
+								<td>
+									184859<br/>
+									185759
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P55211">P55211</a><br/>
+									<a href="http://www.uniprot.org/uniprot/O15392">O15392</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jxq">1jxq</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1e31">1e31</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jxqa_">d1jxqa_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1e31a_">d1e31a_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>361455</td>
+								<td>0.9</td>
+								<td>0.972</td>
+								<td>
+									361454<br/>
+									361477
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P63000">P63000</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q51451">Q51451</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1e96">1e96</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1he1">1he1</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1e96a_">d1e96a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1he1a_">d1he1a_</a>
+								</td>
+							</tr>
+							<tr class="mediumlow">
+								<td>391540</td>
+								<td>0.798</td>
+								<td>0.958</td>
+								<td>
+									97161<br/>
+									391538
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P03372">P03372</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q00987">Q00987</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1a52">1a52</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1rv1">1rv1</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1a52a_">d1a52a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1rv1a_">d1rv1a_</a>
+								</td>
+							</tr>
+							<tr class="veryhigh">
+								<td>391550</td>
+								<td>0.55</td>
+								<td>0.996</td>
+								<td>
+									229694<br/>
+									391538
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q00987">Q00987</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P04637">P04637</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1rv1">1rv1</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1a1u">1a1u</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1rv1a_">d1rv1a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1a1ua_">d1a1ua_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>361057</td>
+								<td>0.9</td>
+								<td>0.958</td>
+								<td>
+									361055<br/>
+									361056
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P12643">P12643</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P36894">P36894</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1es7">1es7</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1es7">1es7</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1es7a_">d1es7a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1es7b_">d1es7b_</a>
+								</td>
+							</tr>
+							<tr class="veryhigh">
+								<td>338325</td>
+								<td>0.55</td>
+								<td>0.909</td>
+								<td>
+									338312<br/>
+									338312
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P54253">P54253</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P54253">P54253</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1oa8">1oa8</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1oa8">1oa8</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1oa8a_">d1oa8a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1oa8a_">d1oa8a_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>97136</td>
+								<td>0.909</td>
+								<td>0.947</td>
+								<td>
+									97133<br/>
+									97134
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P41743">P41743</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q9NPB6">Q9NPB6</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1vd2">1vd2</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1wmh">1wmh</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1vd2a_">d1vd2a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1wmhb_">d1wmhb_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>183971</td>
+								<td>0.9</td>
+								<td>0.98</td>
+								<td>
+									229139<br/>
+									229140
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P13010">P13010</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P12956">P12956</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jeq">1jeq</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jeq">1jeq</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jeqb1">d1jeqb1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jeqa1">d1jeqa1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>361721</td>
+								<td>0.99</td>
+								<td>0.998</td>
+								<td>
+									361304<br/>
+									361338
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P09038">P09038</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P21802">P21802</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1bas">1bas</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1djs">1djs</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1basa_">d1basa_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1djsa1">d1djsa1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>184444</td>
+								<td>0.9</td>
+								<td>0.964</td>
+								<td>
+									184431<br/>
+									185757
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q9NR28">Q9NR28</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q13490">Q13490</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1few">1few</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1qbh">1qbh</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1fewa_">d1fewa_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1qbha_">d1qbha_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>360808</td>
+								<td>0.9</td>
+								<td>0.944</td>
+								<td>
+									360806<br/>
+									360807
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P15927">P15927</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P35244">P35244</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1dpu">1dpu</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1l1o">1l1o</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1dpua_">d1dpua_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1l1oa_">d1l1oa_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>361020</td>
+								<td>0.9</td>
+								<td>0.975</td>
+								<td>
+									361018<br/>
+									361019
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P21953">P21953</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P12694">P12694</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1dtw">1dtw</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1dtw">1dtw</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1dtwb1">d1dtwb1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1dtwa_">d1dtwa_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>745043</td>
+								<td>0.992</td>
+								<td>0.997</td>
+								<td>
+									745040<br/>
+									745041
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P61823">P61823</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P13489">P13489</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1a2w">1a2w</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1a4y">1a4y</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1a2wa_">d1a2wa_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1a4ya_">d1a4ya_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>98824</td>
+								<td>0.955</td>
+								<td>1.0</td>
+								<td>
+									17557<br/>
+									98822
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q06609">Q06609</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P51587">P51587</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1b22">1b22</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1n0w">1n0w</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1b22a_">d1b22a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1n0wb_">d1n0wb_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>953735</td>
+								<td>0.9</td>
+								<td>0.964</td>
+								<td>
+									185757<br/>
+									953658
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/O43464">O43464</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q13490">Q13490</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1lcy">1lcy</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1qbh">1qbh</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1lcya1">d1lcya1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1qbha_">d1qbha_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>1034759</td>
+								<td>0.97</td>
+								<td>0.993</td>
+								<td>
+									1034743<br/>
+									1034747
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P25815">P25815</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q9CXW3">Q9CXW3</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1j55">1j55</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1ysm">1ysm</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1j55a_">d1j55a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1ysma1">d1ysma1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>1007330</td>
+								<td>0.9</td>
+								<td>0.996</td>
+								<td>
+									1007326<br/>
+									1007326
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q9UQB8">Q9UQB8</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q9UQB8">Q9UQB8</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1wdz">1wdz</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1wdz">1wdz</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1wdza1">d1wdza1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1wdza1">d1wdza1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>362672</td>
+								<td>0.9</td>
+								<td>0.979</td>
+								<td>
+									362670<br/>
+									362671
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P00533">P00533</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P01135">P01135</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1ivo">1ivo</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1gk5">1gk5</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1ivoa1">d1ivoa1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1gk5a_">d1gk5a_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>185486</td>
+								<td>0.991</td>
+								<td>0.997</td>
+								<td>
+									185481<br/>
+									185482
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P55211">P55211</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q96CA5">Q96CA5</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jxq">1jxq</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1oxn">1oxn</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jxqa_">d1jxqa_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1oxna_">d1oxna_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>185500</td>
+								<td>0.91</td>
+								<td>0.975</td>
+								<td>
+									185482<br/>
+									185484
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/O43464">O43464</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q96CA5">Q96CA5</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1lcy">1lcy</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1oxn">1oxn</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1lcya1">d1lcya1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1oxna_">d1oxna_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>362444</td>
+								<td>0.999</td>
+								<td>1.0</td>
+								<td>
+									362442<br/>
+									362443
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P49356">P49356</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P49354">P49354</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jcq">1jcq</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jcq">1jcq</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jcqb_">d1jcqb_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jcqa_">d1jcqa_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>286678</td>
+								<td>0.991</td>
+								<td>0.997</td>
+								<td>
+									286655<br/>
+									286657
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q13133">Q13133</a><br/>
+									<a href="http://www.uniprot.org/uniprot/O60869">O60869</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1uhl">1uhl</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1x57">1x57</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1uhlb_">d1uhlb_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1x57a1">d1x57a1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>228056</td>
+								<td>0.94</td>
+								<td>1.0</td>
+								<td>
+									228054<br/>
+									228054
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P08514">P08514</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P08514">P08514</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1dpk">1dpk</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1dpk">1dpk</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1dpka_">d1dpka_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1dpka_">d1dpka_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>228061</td>
+								<td>0.94</td>
+								<td>0.995</td>
+								<td>
+									362997<br/>
+									362997
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P05106">P05106</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P05106">P05106</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jv2">1jv2</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jv2">1jv2</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jv2b1">d1jv2b1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jv2b1">d1jv2b1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>363245</td>
+								<td>0.9</td>
+								<td>0.935</td>
+								<td>
+									363243<br/>
+									363244
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q9UJY5">Q9UJY5</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q8BSL7">Q8BSL7</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1j2j">1j2j</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1j2j">1j2j</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1j2jb_">d1j2jb_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1j2ja_">d1j2ja_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>362503</td>
+								<td>0.99</td>
+								<td>0.998</td>
+								<td>
+									362501<br/>
+									362502
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P29016">P29016</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P61769">P61769</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1gzp">1gzp</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1a1m">1a1m</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1gzpa1">d1gzpa1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1a1mb_">d1a1mb_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>362730</td>
+								<td>0.9</td>
+								<td>0.971</td>
+								<td>
+									362728<br/>
+									362729
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q13952">Q13952</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P25208">P25208</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1n1j">1n1j</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1n1j">1n1j</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1n1jb_">d1n1jb_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1n1ja_">d1n1ja_</a>
+								</td>
+							</tr>
+							<tr class="mediumlow">
+								<td>159641</td>
+								<td>0.55</td>
+								<td>0.748</td>
+								<td>
+									159625<br/>
+									159628
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/O18973">O18973</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q9NZ52">Q9NZ52</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=2fid">2fid</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jpl">1jpl</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d2fidb1">d2fidb1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jpla_">d1jpla_</a>
+								</td>
+							</tr>
+							<tr class="mediumlow">
+								<td>159645</td>
+								<td>0.55</td>
+								<td>0.748</td>
+								<td>
+									159625<br/>
+									159629
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/O18973">O18973</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q9UJY4">Q9UJY4</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=2fid">2fid</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1mhq">1mhq</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d2fidb1">d2fidb1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1mhqa_">d1mhqa_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>362014</td>
+								<td>0.9</td>
+								<td>0.944</td>
+								<td>
+									362012<br/>
+									363134
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P28829">P28829</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P01112">P01112</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1i35">1i35</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=121p">121p</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1i35a_">d1i35a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d121pa_">d121pa_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>362304</td>
+								<td>0.9</td>
+								<td>0.951</td>
+								<td>
+									99420<br/>
+									362997
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P06756">P06756</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P05106">P05106</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jv2">1jv2</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jv2">1jv2</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jv2a1">d1jv2a1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jv2b1">d1jv2b1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>362263</td>
+								<td>0.9</td>
+								<td>0.937</td>
+								<td>
+									362261<br/>
+									362262
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P37173">P37173</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P10600">P10600</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1ktz">1ktz</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1ktz">1ktz</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1ktzb_">d1ktzb_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1ktza_">d1ktza_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>177950</td>
+								<td>0.99</td>
+								<td>0.998</td>
+								<td>
+									177908<br/>
+									177910
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q86VP6">Q86VP6</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q13619">Q13619</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1u6g">1u6g</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=2hye">2hye</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1u6gc_">d1u6gc_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d2hyec1">d2hyec1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>189816</td>
+								<td>0.909</td>
+								<td>0.949</td>
+								<td>
+									363134<br/>
+									413408
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P01112">P01112</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P04049">P04049</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=121p">121p</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1c1y">1c1y</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d121pa_">d121pa_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1c1yb_">d1c1yb_</a>
+								</td>
+							</tr>
+							<tr class="high">
+								<td>189955</td>
+								<td>0.55</td>
+								<td>0.877</td>
+								<td>
+									189707<br/>
+									413408
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P62070">P62070</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P04049">P04049</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=2ery">2ery</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1c1y">1c1y</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d2erya1">d2erya1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1c1yb_">d1c1yb_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>362807</td>
+								<td>0.9</td>
+								<td>0.971</td>
+								<td>
+									362805<br/>
+									362806
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P01848">P01848</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P01850">P01850</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1j8h">1j8h</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1fyt">1fyt</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1j8hd1">d1j8hd1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1fyte1">d1fyte1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>362035</td>
+								<td>0.99</td>
+								<td>1.0</td>
+								<td>
+									362034<br/>
+									362736
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P35222">P35222</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q9NQB0">Q9NQB0</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1g3j">1g3j</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jdh">1jdh</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1g3ja_">d1g3ja_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jdhb_">d1jdhb_</a>
+								</td>
+							</tr>
+							<tr class="mediumlow">
+								<td>658184</td>
+								<td>0.8</td>
+								<td>0.952</td>
+								<td>
+									658171<br/>
+									658172
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P08572">P08572</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P02462">P02462</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1li1">1li1</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1li1">1li1</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1li1c1">d1li1c1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1li1a1">d1li1a1</a>
+								</td>
+							</tr>
+							<tr class="mediumhigh">
+								<td>130544</td>
+								<td>0.55</td>
+								<td>0.837</td>
+								<td>
+									130524<br/>
+									130525
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q9NQT5">Q9NQT5</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q9NQT4">Q9NQT4</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=2nn6">2nn6</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=2nn6">2nn6</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d2nn6g1">d2nn6g1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d2nn6d1">d2nn6d1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>130553</td>
+								<td>0.798</td>
+								<td>0.887</td>
+								<td>
+									130525<br/>
+									130526
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q9NQT4">Q9NQT4</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q9Y3B2">Q9Y3B2</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=2nn6">2nn6</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=2nn6">2nn6</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d2nn6d1">d2nn6d1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d2nn6i1">d2nn6i1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>230815</td>
+								<td>0.9</td>
+								<td>0.98</td>
+								<td>
+									230814<br/>
+									230814
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P16118">P16118</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P16118">P16118</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1k6m">1k6m</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1k6m">1k6m</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1k6ma1">d1k6ma1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1k6ma1">d1k6ma1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>480850</td>
+								<td>0.9</td>
+								<td>0.965</td>
+								<td>
+									480801<br/>
+									480801
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q15628">Q15628</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q15628">Q15628</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1f2h">1f2h</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1f2h">1f2h</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1f2ha_">d1f2ha_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1f2ha_">d1f2ha_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>363158</td>
+								<td>0.9</td>
+								<td>0.985</td>
+								<td>
+									363156<br/>
+									363157
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P08559">P08559</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P11177">P11177</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1ni4">1ni4</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1ni4">1ni4</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1ni4a_">d1ni4a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1ni4b1">d1ni4b1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>362069</td>
+								<td>0.99</td>
+								<td>0.999</td>
+								<td>
+									362067<br/>
+									491196
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P68871">P68871</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P69905">P69905</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1a00">1a00</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1a00">1a00</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1a00b_">d1a00b_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1a00a_">d1a00a_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>100608</td>
+								<td>0.99</td>
+								<td>0.994</td>
+								<td>
+									100377<br/>
+									100381
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q9NPB6">Q9NPB6</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P41743">P41743</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1wmh">1wmh</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1vd2">1vd2</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1wmhb_">d1wmhb_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1vd2a_">d1vd2a_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>100613</td>
+								<td>0.99</td>
+								<td>0.996</td>
+								<td>
+									100381<br/>
+									100410
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q9NPB6">Q9NPB6</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P60953">P60953</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1wmh">1wmh</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1a4r">1a4r</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1wmhb_">d1wmhb_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1a4ra_">d1a4ra_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>100723</td>
+								<td>0.99</td>
+								<td>0.996</td>
+								<td>
+									100377<br/>
+									100410
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P41743">P41743</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P60953">P60953</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1vd2">1vd2</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1a4r">1a4r</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1vd2a_">d1vd2a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1a4ra_">d1a4ra_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>100838</td>
+								<td>0.9</td>
+								<td>0.952</td>
+								<td>
+									100377<br/>
+									100418
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P41743">P41743</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P63104">P63104</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1vd2">1vd2</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1ib1">1ib1</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1vd2a_">d1vd2a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1ib1a_">d1ib1a_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>949940</td>
+								<td>0.9</td>
+								<td>0.978</td>
+								<td>
+									949927<br/>
+									949929
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P62937">P62937</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q9Z0X1">Q9Z0X1</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1ak4">1ak4</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1gv4">1gv4</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1ak4a_">d1ak4a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1gv4a1">d1gv4a1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>288398</td>
+								<td>0.9</td>
+								<td>0.999</td>
+								<td>
+									288371<br/>
+									426561
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q00987">Q00987</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P04637">P04637</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1rv1">1rv1</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1a1u">1a1u</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1rv1a_">d1rv1a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1a1ua_">d1a1ua_</a>
+								</td>
+							</tr>
+							<tr class="low">
+								<td>646254</td>
+								<td>0.8</td>
+								<td>0.928</td>
+								<td>
+									646200<br/>
+									646207
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P02462">P02462</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q92876">Q92876</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1li1">1li1</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1gvl">1gvl</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1li1a1">d1li1a1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1gvla_">d1gvla_</a>
+								</td>
+							</tr>
+							<tr class="low">
+								<td>646259</td>
+								<td>0.8</td>
+								<td>0.928</td>
+								<td>
+									646200<br/>
+									646208
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q92876">Q92876</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P08572">P08572</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1gvl">1gvl</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1li1">1li1</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1gvla_">d1gvla_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1li1c1">d1li1c1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>500426</td>
+								<td>0.9</td>
+								<td>0.99</td>
+								<td>
+									363420<br/>
+									500404
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P63208">P63208</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q13616">Q13616</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1fqv">1fqv</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1ldj">1ldj</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1fqvb1">d1fqvb1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1ldja1">d1ldja1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>160232</td>
+								<td>0.9</td>
+								<td>0.979</td>
+								<td>
+									160230<br/>
+									160231
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P84077">P84077</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P47102">P47102</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1hur">1hur</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1re0">1re0</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1hura_">d1hura_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1re0b_">d1re0b_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>363463</td>
+								<td>0.9</td>
+								<td>0.982</td>
+								<td>
+									363461<br/>
+									363462
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P06126">P06126</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P61769">P61769</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1onq">1onq</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1a1m">1a1m</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1onqa1">d1onqa1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1a1mb_">d1a1mb_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>363596</td>
+								<td>0.9</td>
+								<td>0.958</td>
+								<td>
+									363594<br/>
+									363595
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P40189">P40189</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P15018">P15018</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1bj8">1bj8</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1emr">1emr</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1bj8a_">d1bj8a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1emra_">d1emra_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>228099</td>
+								<td>0.96</td>
+								<td>0.992</td>
+								<td>
+									228080<br/>
+									228080
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P02724">P02724</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P02724">P02724</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1afo">1afo</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1afo">1afo</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1afoa_">d1afoa_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1afoa_">d1afoa_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>228106</td>
+								<td>0.96</td>
+								<td>1.0</td>
+								<td>
+									228081<br/>
+									228081
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P08514">P08514</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P08514">P08514</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1dpk">1dpk</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1dpk">1dpk</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1dpka_">d1dpka_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1dpka_">d1dpka_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>228125</td>
+								<td>0.96</td>
+								<td>0.995</td>
+								<td>
+									228084<br/>
+									228084
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P05106">P05106</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P05106">P05106</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jv2">1jv2</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jv2">1jv2</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jv2b1">d1jv2b1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jv2b1">d1jv2b1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>363444</td>
+								<td>0.9</td>
+								<td>1.0</td>
+								<td>
+									363442<br/>
+									363443
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P49354">P49354</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P49356">P49356</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jcq">1jcq</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jcq">1jcq</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jcqa_">d1jcqa_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jcqb_">d1jcqb_</a>
+								</td>
+							</tr>
+							<tr class="mediumlow">
+								<td>283974</td>
+								<td>0.8</td>
+								<td>0.98</td>
+								<td>
+									282408<br/>
+									282408
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P16118">P16118</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P16118">P16118</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1k6m">1k6m</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1k6m">1k6m</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1k6ma1">d1k6ma1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1k6ma1">d1k6ma1</a>
+								</td>
+							</tr>
+							<tr class="mediumlow">
+								<td>284297</td>
+								<td>0.8</td>
+								<td>0.954</td>
+								<td>
+									228084<br/>
+									282547
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P05106">P05106</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P06756">P06756</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jv2">1jv2</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jv2">1jv2</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jv2b1">d1jv2b1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jv2a1">d1jv2a1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>363503</td>
+								<td>0.999</td>
+								<td>1.0</td>
+								<td>
+									363501<br/>
+									363502
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P12694">P12694</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P21953">P21953</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1dtw">1dtw</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1dtw">1dtw</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1dtwa_">d1dtwa_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1dtwb1">d1dtwb1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>1005386</td>
+								<td>0.965</td>
+								<td>0.996</td>
+								<td>
+									1005384<br/>
+									1005384
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q9UQB8">Q9UQB8</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q9UQB8">Q9UQB8</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1wdz">1wdz</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1wdz">1wdz</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1wdza1">d1wdza1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1wdza1">d1wdza1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>363969</td>
+								<td>0.9</td>
+								<td>0.958</td>
+								<td>
+									363967<br/>
+									363968
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P07359">P07359</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P04275">P04275</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1gwb">1gwb</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1ao3">1ao3</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1gwba_">d1gwba_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1ao3a_">d1ao3a_</a>
+								</td>
+							</tr>
+							<tr class="medium">
+								<td>122432</td>
+								<td>0.65</td>
+								<td>0.9</td>
+								<td>
+									119950<br/>
+									159148
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q9Y2U5">Q9Y2U5</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q99759">Q99759</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=2cu1">2cu1</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=2c60">2c60</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d2cu1a1">d2cu1a1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d2c60a1">d2c60a1</a>
+								</td>
+							</tr>
+							<tr class="mediumhigh">
+								<td>122440</td>
+								<td>0.65</td>
+								<td>0.915</td>
+								<td>
+									159148<br/>
+									159148
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q99759">Q99759</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q99759">Q99759</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=2c60">2c60</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=2c60">2c60</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d2c60a1">d2c60a1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d2c60a1">d2c60a1</a>
+								</td>
+							</tr>
+							<tr class="mediumhigh">
+								<td>122928</td>
+								<td>0.65</td>
+								<td>0.93</td>
+								<td>
+									119685<br/>
+									119789
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P23396">P23396</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q00653">Q00653</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1wh9">1wh9</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1a3q">1a3q</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1wh9a_">d1wh9a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1a3qa1">d1a3qa1</a>
+								</td>
+							</tr>
+							<tr class="high">
+								<td>125736</td>
+								<td>0.65</td>
+								<td>0.965</td>
+								<td>
+									120130<br/>
+									120130
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q15628">Q15628</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q15628">Q15628</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1f2h">1f2h</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1f2h">1f2h</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1f2ha_">d1f2ha_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1f2ha_">d1f2ha_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>363844</td>
+								<td>0.9</td>
+								<td>0.982</td>
+								<td>
+									363843<br/>
+									363976
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P61769">P61769</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P29016">P29016</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1a1m">1a1m</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1gzp">1gzp</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1a1mb_">d1a1mb_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1gzpa1">d1gzpa1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>477126</td>
+								<td>0.9</td>
+								<td>0.972</td>
+								<td>
+									363872<br/>
+									477123
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P00533">P00533</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P62158">P62158</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1ivo">1ivo</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1cdl">1cdl</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1ivoa1">d1ivoa1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1cdla_">d1cdla_</a>
+								</td>
+							</tr>
+							<tr class="mediumlow">
+								<td>228000</td>
+								<td>0.8</td>
+								<td>0.992</td>
+								<td>
+									227998<br/>
+									227998
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P02724">P02724</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P02724">P02724</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1afo">1afo</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1afo">1afo</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1afoa_">d1afoa_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1afoa_">d1afoa_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>228011</td>
+								<td>0.988</td>
+								<td>1.0</td>
+								<td>
+									227999<br/>
+									227999
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P08514">P08514</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P08514">P08514</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1dpk">1dpk</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1dpk">1dpk</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1dpka_">d1dpka_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1dpka_">d1dpka_</a>
+								</td>
+							</tr>
+							<tr class="mediumlow">
+								<td>184483</td>
+								<td>0.55</td>
+								<td>0.748</td>
+								<td>
+									184456<br/>
+									184460
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P23727">P23727</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P08069">P08069</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1bfi">1bfi</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1igr">1igr</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1bfia_">d1bfia_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1igra1">d1igra1</a>
+								</td>
+							</tr>
+							<tr class="mediumlow">
+								<td>184486</td>
+								<td>0.55</td>
+								<td>0.748</td>
+								<td>
+									184457<br/>
+									184460
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P23727">P23727</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P06213">P06213</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1bfi">1bfi</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1gag">1gag</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1bfia_">d1bfia_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1gaga_">d1gaga_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>364313</td>
+								<td>0.99</td>
+								<td>1.0</td>
+								<td>
+									364309<br/>
+									364310
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P49356">P49356</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P49354">P49354</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jcq">1jcq</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jcq">1jcq</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jcqb_">d1jcqb_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jcqa_">d1jcqa_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>364405</td>
+								<td>0.9</td>
+								<td>0.958</td>
+								<td>
+									364403<br/>
+									364404
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P63165">P63165</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q9HC62">Q9HC62</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1a5r">1a5r</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1tgz">1tgz</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1a5ra_">d1a5ra_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1tgza_">d1tgza_</a>
+								</td>
+							</tr>
+							<tr class="mediumhigh">
+								<td>159498</td>
+								<td>0.55</td>
+								<td>0.809</td>
+								<td>
+									159491<br/>
+									159492
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P84077">P84077</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q9UJY5">Q9UJY5</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1hur">1hur</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1j2j">1j2j</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1hura_">d1hura_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1j2jb_">d1j2jb_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>178830</td>
+								<td>0.9</td>
+								<td>0.928</td>
+								<td>
+									178809<br/>
+									178812
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/O43432">O43432</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q09161">Q09161</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1hu3">1hu3</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1h2t">1h2t</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1hu3a_">d1hu3a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1h2tc1">d1h2tc1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>364912</td>
+								<td>0.9</td>
+								<td>0.958</td>
+								<td>
+									364910<br/>
+									364911
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q96LD8">Q96LD8</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q15843">Q15843</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1xt9">1xt9</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1ndd">1ndd</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1xt9a_">d1xt9a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1ndda_">d1ndda_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>364029</td>
+								<td>0.9</td>
+								<td>0.958</td>
+								<td>
+									364027<br/>
+									364028
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P36894">P36894</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P12643">P12643</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1es7">1es7</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1es7">1es7</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1es7b_">d1es7b_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1es7a_">d1es7a_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>364220</td>
+								<td>0.9</td>
+								<td>0.958</td>
+								<td>
+									364214<br/>
+									364311
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q04631">Q04631</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q02293">Q02293</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1d8d">1d8d</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1d8d">1d8d</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1d8da_">d1d8da_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1d8db_">d1d8db_</a>
+								</td>
+							</tr>
+							<tr class="high">
+								<td>129022</td>
+								<td>0.55</td>
+								<td>0.869</td>
+								<td>
+									178815<br/>
+									178815
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q9HAU5">Q9HAU5</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q9HAU5">Q9HAU5</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1uw4">1uw4</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1uw4">1uw4</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1uw4b_">d1uw4b_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1uw4b_">d1uw4b_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>364702</td>
+								<td>0.9</td>
+								<td>0.965</td>
+								<td>
+									364694<br/>
+									364695
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/O14836">O14836</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q9D777">Q9D777</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1xu1">1xu1</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1u5x">1u5x</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1xu1r_">d1xu1r_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1u5xa_">d1u5xa_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>364953</td>
+								<td>0.9</td>
+								<td>0.942</td>
+								<td>
+									364952<br/>
+									606635
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P41743">P41743</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q9NPB6">Q9NPB6</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1vd2">1vd2</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1wmh">1wmh</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1vd2a_">d1vd2a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1wmhb_">d1wmhb_</a>
+								</td>
+							</tr>
+							<tr class="low">
+								<td>1005929</td>
+								<td>0.8</td>
+								<td>0.902</td>
+								<td>
+									1005923<br/>
+									1005924
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P45983">P45983</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P05412">P05412</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1ukh">1ukh</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1a02">1a02</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1ukha_">d1ukha_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1a02j_">d1a02j_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>352014</td>
+								<td>0.99</td>
+								<td>0.999</td>
+								<td>
+									352005<br/>
+									352006
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q13490">Q13490</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q9NR28">Q9NR28</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1qbh">1qbh</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1few">1few</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1qbha_">d1qbha_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1fewa_">d1fewa_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>352019</td>
+								<td>0.9</td>
+								<td>0.972</td>
+								<td>
+									352006<br/>
+									352007
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P98170">P98170</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q9NR28">Q9NR28</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1c9q">1c9q</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1few">1few</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1c9qa_">d1c9qa_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1fewa_">d1fewa_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>354613</td>
+								<td>0.999</td>
+								<td>1.0</td>
+								<td>
+									354611<br/>
+									354612
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q06609">Q06609</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P51587">P51587</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1b22">1b22</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1n0w">1n0w</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1b22a_">d1b22a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1n0wb_">d1n0wb_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>354451</td>
+								<td>0.97</td>
+								<td>0.984</td>
+								<td>
+									354447<br/>
+									354448
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P00772">P00772</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P01009">P01009</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1b0e">1b0e</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1atu">1atu</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1b0ea_">d1b0ea_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1atua_">d1atua_</a>
+								</td>
+							</tr>
+							<tr class="mediumlow">
+								<td>229005</td>
+								<td>0.55</td>
+								<td>0.748</td>
+								<td>
+									228992<br/>
+									228994
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P27694">P27694</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P15927">P15927</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1ewi">1ewi</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1dpu">1dpu</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1ewia_">d1ewia_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1dpua_">d1dpua_</a>
+								</td>
+							</tr>
+							<tr class="mediumlow">
+								<td>229009</td>
+								<td>0.55</td>
+								<td>0.748</td>
+								<td>
+									228994<br/>
+									228995
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P15927">P15927</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P35244">P35244</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1dpu">1dpu</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1l1o">1l1o</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1dpua_">d1dpua_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1l1oa_">d1l1oa_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>365266</td>
+								<td>0.9</td>
+								<td>0.987</td>
+								<td>
+									365264<br/>
+									365265
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P68871">P68871</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P69905">P69905</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1a00">1a00</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1a00">1a00</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1a00b_">d1a00b_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1a00a_">d1a00a_</a>
+								</td>
+							</tr>
+							<tr class="mediumhigh">
+								<td>479355</td>
+								<td>0.7</td>
+								<td>0.999</td>
+								<td>
+									479337<br/>
+									479339
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P68431">P68431</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q8WTS6">Q8WTS6</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1cs9">1cs9</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1h3i">1h3i</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1cs9a_">d1cs9a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1h3ia1">d1h3ia1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>493563</td>
+								<td>0.99</td>
+								<td>0.997</td>
+								<td>
+									493555<br/>
+									493555
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P25963">P25963</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P25963">P25963</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1ikn">1ikn</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1ikn">1ikn</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1iknd_">d1iknd_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1iknd_">d1iknd_</a>
+								</td>
+							</tr>
+							<tr class="low">
+								<td>344727</td>
+								<td>0.798</td>
+								<td>0.909</td>
+								<td>
+									342276<br/>
+									342276
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P54253">P54253</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P54253">P54253</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1oa8">1oa8</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1oa8">1oa8</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1oa8a_">d1oa8a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1oa8a_">d1oa8a_</a>
+								</td>
+							</tr>
+							<tr class="mediumlow">
+								<td>345179</td>
+								<td>0.55</td>
+								<td>0.748</td>
+								<td>
+									342276<br/>
+									342391
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q15654">Q15654</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P54253">P54253</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1x61">1x61</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1oa8">1oa8</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1x61a1">d1x61a1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1oa8a_">d1oa8a_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>418535</td>
+								<td>0.99</td>
+								<td>0.997</td>
+								<td>
+									418521<br/>
+									418522
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P01106">P01106</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q13309">Q13309</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1a93">1a93</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1fqv">1fqv</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1a93a_">d1a93a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1fqva1">d1fqva1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>745201</td>
+								<td>0.98</td>
+								<td>0.995</td>
+								<td>
+									745198<br/>
+									745199
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P07998">P07998</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P13489">P13489</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1dza">1dza</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1a4y">1a4y</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1dzaa_">d1dzaa_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1a4ya_">d1a4ya_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>967082</td>
+								<td>0.99</td>
+								<td>0.999</td>
+								<td>
+									434404<br/>
+									966838
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P10415">P10415</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q07812">Q07812</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1g5m">1g5m</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1f16">1f16</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1g5ma_">d1g5ma_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1f16a_">d1f16a_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>589053</td>
+								<td>0.91</td>
+								<td>0.987</td>
+								<td>
+									589034<br/>
+									589034
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P15531">P15531</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P15531">P15531</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jxv">1jxv</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jxv">1jxv</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jxva_">d1jxva_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jxva_">d1jxva_</a>
+								</td>
+							</tr>
+							<tr class="veryhigh">
+								<td>589058</td>
+								<td>0.55</td>
+								<td>0.931</td>
+								<td>
+									589034<br/>
+									589036
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P15531">P15531</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P22392">P22392</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jxv">1jxv</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1nsk">1nsk</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jxva_">d1jxva_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1nskl_">d1nskl_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>477258</td>
+								<td>0.9</td>
+								<td>0.98</td>
+								<td>
+									477244<br/>
+									477357
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q12888">Q12888</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P38398">P38398</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1gzh">1gzh</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jm7">1jm7</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1gzhb1">d1gzhb1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jm7a_">d1jm7a_</a>
+								</td>
+							</tr>
+							<tr class="low">
+								<td>507213</td>
+								<td>0.8</td>
+								<td>0.928</td>
+								<td>
+									483422<br/>
+									506729
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P00519">P00519</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q8NFP9">Q8NFP9</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1ab2">1ab2</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1mi1">1mi1</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1ab2a_">d1ab2a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1mi1a1">d1mi1a1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>507332</td>
+								<td>0.96</td>
+								<td>0.986</td>
+								<td>
+									483422<br/>
+									506745
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P00519">P00519</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q14315">Q14315</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1ab2">1ab2</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1v05">1v05</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1ab2a_">d1ab2a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1v05a_">d1v05a_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>508172</td>
+								<td>0.96</td>
+								<td>0.991</td>
+								<td>
+									506745<br/>
+									506851
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P46108">P46108</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q14315">Q14315</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1ju5">1ju5</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1v05">1v05</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1ju5a_">d1ju5a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1v05a_">d1v05a_</a>
+								</td>
+							</tr>
+							<tr class="mediumlow">
+								<td>508851</td>
+								<td>0.8</td>
+								<td>0.982</td>
+								<td>
+									506851<br/>
+									506891
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P46108">P46108</a><br/>
+									<a href="http://www.uniprot.org/uniprot/O75369">O75369</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1ju5">1ju5</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=2di8">2di8</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1ju5a_">d1ju5a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d2di8a1">d2di8a1</a>
+								</td>
+							</tr>
+							<tr class="low">
+								<td>509649</td>
+								<td>0.8</td>
+								<td>0.928</td>
+								<td>
+									483425<br/>
+									506729
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q8NFP9">Q8NFP9</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P06241">P06241</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1mi1">1mi1</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1a0n">1a0n</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1mi1a1">d1mi1a1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1a0nb_">d1a0nb_</a>
+								</td>
+							</tr>
+							<tr class="low">
+								<td>509838</td>
+								<td>0.8</td>
+								<td>0.928</td>
+								<td>
+									483425<br/>
+									506745
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P06241">P06241</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q14315">Q14315</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1a0n">1a0n</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1v05">1v05</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1a0nb_">d1a0nb_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1v05a_">d1v05a_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>510699</td>
+								<td>0.96</td>
+								<td>0.986</td>
+								<td>
+									483493<br/>
+									506745
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q14315">Q14315</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P62993">P62993</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1v05">1v05</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1aze">1aze</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1v05a_">d1v05a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1azea_">d1azea_</a>
+								</td>
+							</tr>
+							<tr class="mediumlow">
+								<td>510867</td>
+								<td>0.8</td>
+								<td>0.972</td>
+								<td>
+									483493<br/>
+									506891
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P62993">P62993</a><br/>
+									<a href="http://www.uniprot.org/uniprot/O75369">O75369</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1aze">1aze</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=2di8">2di8</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1azea_">d1azea_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d2di8a1">d2di8a1</a>
+								</td>
+							</tr>
+							<tr class="mediumlow">
+								<td>511343</td>
+								<td>0.8</td>
+								<td>0.954</td>
+								<td>
+									483493<br/>
+									544120
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q05193">Q05193</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P62993">P62993</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1dyn">1dyn</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1aze">1aze</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1dyna_">d1dyna_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1azea_">d1azea_</a>
+								</td>
+							</tr>
+							<tr class="mediumlow">
+								<td>515032</td>
+								<td>0.8</td>
+								<td>0.965</td>
+								<td>
+									506712<br/>
+									506891
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P19174">P19174</a><br/>
+									<a href="http://www.uniprot.org/uniprot/O75369">O75369</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1hsq">1hsq</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=2di8">2di8</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1hsqa_">d1hsqa_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d2di8a1">d2di8a1</a>
+								</td>
+							</tr>
+							<tr class="low">
+								<td>515256</td>
+								<td>0.8</td>
+								<td>0.928</td>
+								<td>
+									506712<br/>
+									506745
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P19174">P19174</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q14315">Q14315</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1hsq">1hsq</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1v05">1v05</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1hsqa_">d1hsqa_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1v05a_">d1v05a_</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>999017</td>
+								<td>0.9</td>
+								<td>0.979</td>
+								<td>
+									998946<br/>
+									998963
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P11940">P11940</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q9UBU9">Q9UBU9</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1cvj">1cvj</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1fo1">1fo1</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1cvja1">d1cvja1</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1fo1a1">d1fo1a1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>504338</td>
+								<td>0.9</td>
+								<td>0.966</td>
+								<td>
+									504232<br/>
+									504235
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P55211">P55211</a><br/>
+									<a href="http://www.uniprot.org/uniprot/P98170">P98170</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jxq">1jxq</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1c9q">1c9q</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jxqa_">d1jxqa_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1c9qa_">d1c9qa_</a>
+								</td>
+							</tr>
+							<tr class="low">
+								<td>505041</td>
+								<td>0.8</td>
+								<td>0.915</td>
+								<td>
+									505002<br/>
+									505006
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P38398">P38398</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q12888">Q12888</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1jm7">1jm7</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1gzh">1gzh</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1jm7a_">d1jm7a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1gzhb1">d1gzhb1</a>
+								</td>
+							</tr>
+							<tr class="verylow">
+								<td>500552</td>
+								<td>0.9</td>
+								<td>1.0</td>
+								<td>
+									494249<br/>
+									500543
+								</td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q93009">Q93009</a><br/>
+									<a href="http://www.uniprot.org/uniprot/Q00987">Q00987</a>
+								</td>
+								<td>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1nb8">1nb8</a><br/>
+									<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1rv1">1rv1</a>
+								</td>
+								<td>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1nb8a_">d1nb8a_</a><br/>
+									<a href="http://scop.berkeley.edu/search/?ver=1.75B&amp;key=d1rv1a_">d1rv1a_</a>
+								</td>
+							</tr>
+    					</tbody>
+					</table>
+				</div>
+    			<div class="right">
+    				<figure>
+    					<a href="crossed.png">
+    						<img src="crossed.png" alt="crossed network" />
+    					</a>
+    					<figcaption>The graph after interactions that are conserved between homologus vertices have been updated in probability.</figcaption>
+    				</figure>
+				</div>
+			</section>
+			<section class="merged">
+				<h2>Merged graph</h2>
+				<div class="left">
+    				<table>
+    					<thead>
+    						<tr>
+    							<th>property name</th>
+    							<th>property value</th>
+    						</tr>
+    					</thead>
+    					<tbody>
+    						<tr>
+    							<td>Manager</td>
+    							<td>ConcurrentBronKerboschMergeManager</td>
+    						</tr>
+    						<tr>
+    							<td>N vertices</td>
+    							<td>1222</td>
+    						</tr>
+    						<tr>
+    							<td>N interactions</td>
+    							<td>981</td>
+    						</tr>
+    						<tr>
+    							<td>N homology edges</td>
+    							<td>5132</td>
+    						</tr>
+    						<tr>
+    							<td>N connected components</td>
+    							<td>26</td>
+    						</tr>
+    						<tr>
+    							<td>N nontrivial degenerate sets</td>
+    							<td>42</td>
+    						</tr>
+    					</tbody>
+    				</table>
+					<h3>Degenerate sets</h3>
+					<table>
+    					<thead>
+    						<tr>
+    							<th>V0 Id</th>
+    							<th>V0 UniProt Id</th>
+    							<th>Vertices removed</th>
+    						</tr>
+    					</thead>
+    					<tbody>
+							<tr>
+								<td>1002987</td>
+								<td><a href="http://www.uniprot.org/uniprot/P15153">P15153</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P17081">P17081</a>,
+									<a href="http://www.uniprot.org/uniprot/P60763">P60763</a>,
+									<a href="http://www.uniprot.org/uniprot/P08134">P08134</a>,
+									<a href="http://www.uniprot.org/uniprot/P62745">P62745</a>,
+									<a href="http://www.uniprot.org/uniprot/P61586">P61586</a>
+								</td>
+							</tr>
+							<tr>
+								<td>557573</td>
+								<td><a href="http://www.uniprot.org/uniprot/P20339">P20339</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P36017">P36017</a>,
+									<a href="http://www.uniprot.org/uniprot/P07560">P07560</a>,
+									<a href="http://www.uniprot.org/uniprot/P01123">P01123</a>,
+									<a href="http://www.uniprot.org/uniprot/P32939">P32939</a>
+								</td>
+							</tr>
+							<tr>
+								<td>735033</td>
+								<td><a href="http://www.uniprot.org/uniprot/P62158">P62158</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P62204">P62204</a>,
+									<a href="http://www.uniprot.org/uniprot/P62158">P62158</a>
+								</td>
+							</tr>
+							<tr>
+								<td>581583</td>
+								<td><a href="http://www.uniprot.org/uniprot/Q13148">Q13148</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P55795">P55795</a>,
+									<a href="http://www.uniprot.org/uniprot/P22626">P22626</a>
+								</td>
+							</tr>
+							<tr>
+								<td>489630</td>
+								<td><a href="http://www.uniprot.org/uniprot/Q13114">Q13114</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q12933">Q12933</a>,
+									<a href="http://www.uniprot.org/uniprot/Q9Y4K3">Q9Y4K3</a>
+								</td>
+							</tr>
+							<tr>
+								<td>434404</td>
+								<td><a href="http://www.uniprot.org/uniprot/P10415">P10415</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q92843">Q92843</a>,
+									<a href="http://www.uniprot.org/uniprot/P97287">P97287</a>
+								</td>
+							</tr>
+							<tr>
+								<td>354447</td>
+								<td><a href="http://www.uniprot.org/uniprot/P00772">P00772</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P00760">P00760</a>,
+									<a href="http://www.uniprot.org/uniprot/P08246">P08246</a>
+								</td>
+							</tr>
+							<tr>
+								<td>342342</td>
+								<td><a href="http://www.uniprot.org/uniprot/P61978">P61978</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q15366">Q15366</a>,
+									<a href="http://www.uniprot.org/uniprot/P51513">P51513</a>
+								</td>
+							</tr>
+							<tr>
+								<td>282565</td>
+								<td><a href="http://www.uniprot.org/uniprot/P20701">P20701</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P11215">P11215</a>,
+									<a href="http://www.uniprot.org/uniprot/P20702">P20702</a>
+								</td>
+							</tr>
+							<tr>
+								<td>241951</td>
+								<td><a href="http://www.uniprot.org/uniprot/P62993">P62993</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P06241">P06241</a>,
+									<a href="http://www.uniprot.org/uniprot/P08631">P08631</a>
+								</td>
+							</tr>
+							<tr>
+								<td>1034747</td>
+								<td><a href="http://www.uniprot.org/uniprot/P25815">P25815</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P02638">P02638</a>
+								</td>
+							</tr>
+							<tr>
+								<td>999459</td>
+								<td><a href="http://www.uniprot.org/uniprot/O08816">O08816</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P50552">P50552</a>
+								</td>
+							</tr>
+							<tr>
+								<td>980815</td>
+								<td><a href="http://www.uniprot.org/uniprot/P05106">P05106</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P05106">P05106</a>
+								</td>
+							</tr>
+							<tr>
+								<td>949927</td>
+								<td><a href="http://www.uniprot.org/uniprot/Q9Z0X1">Q9Z0X1</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/O95831">O95831</a>
+								</td>
+							</tr>
+							<tr>
+								<td>761803</td>
+								<td><a href="http://www.uniprot.org/uniprot/Q9NQT4">Q9NQT4</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q15024">Q15024</a>
+								</td>
+							</tr>
+							<tr>
+								<td>745040</td>
+								<td><a href="http://www.uniprot.org/uniprot/P61823">P61823</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P03950">P03950</a>
+								</td>
+							</tr>
+							<tr>
+								<td>553494</td>
+								<td><a href="http://www.uniprot.org/uniprot/Q92731">Q92731</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P03372">P03372</a>
+								</td>
+							</tr>
+							<tr>
+								<td>506784</td>
+								<td><a href="http://www.uniprot.org/uniprot/Q86UR5">Q86UR5</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P29074">P29074</a>
+								</td>
+							</tr>
+							<tr>
+								<td>506750</td>
+								<td><a href="http://www.uniprot.org/uniprot/Q15427">Q15427</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/O15056">O15056</a>
+								</td>
+							</tr>
+							<tr>
+								<td>506745</td>
+								<td><a href="http://www.uniprot.org/uniprot/Q14315">Q14315</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P21333">P21333</a>
+								</td>
+							</tr>
+							<tr>
+								<td>506729</td>
+								<td><a href="http://www.uniprot.org/uniprot/Q8NFP9">Q8NFP9</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P50851">P50851</a>
+								</td>
+							</tr>
+							<tr>
+								<td>478340</td>
+								<td><a href="http://www.uniprot.org/uniprot/P17706">P17706</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P18031">P18031</a>
+								</td>
+							</tr>
+							<tr>
+								<td>477148</td>
+								<td><a href="http://www.uniprot.org/uniprot/P62157">P62157</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P62161">P62161</a>
+								</td>
+							</tr>
+							<tr>
+								<td>418522</td>
+								<td><a href="http://www.uniprot.org/uniprot/Q13309">Q13309</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q969H0">Q969H0</a>
+								</td>
+							</tr>
+							<tr>
+								<td>364694</td>
+								<td><a href="http://www.uniprot.org/uniprot/O14836">O14836</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q02223">Q02223</a>
+								</td>
+							</tr>
+							<tr>
+								<td>364214</td>
+								<td><a href="http://www.uniprot.org/uniprot/Q02293">Q02293</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P53610">P53610</a>
+								</td>
+							</tr>
+							<tr>
+								<td>363843</td>
+								<td><a href="http://www.uniprot.org/uniprot/P29016">P29016</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q31206">Q31206</a>
+								</td>
+							</tr>
+							<tr>
+								<td>362671</td>
+								<td><a href="http://www.uniprot.org/uniprot/P01135">P01135</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P01133">P01133</a>
+								</td>
+							</tr>
+							<tr>
+								<td>361609</td>
+								<td><a href="http://www.uniprot.org/uniprot/P42081">P42081</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P33681">P33681</a>
+								</td>
+							</tr>
+							<tr>
+								<td>361454</td>
+								<td><a href="http://www.uniprot.org/uniprot/Q51451">Q51451</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P74873">P74873</a>
+								</td>
+							</tr>
+							<tr>
+								<td>347452</td>
+								<td><a href="http://www.uniprot.org/uniprot/P04271">P04271</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P06703">P06703</a>
+								</td>
+							</tr>
+							<tr>
+								<td>342391</td>
+								<td><a href="http://www.uniprot.org/uniprot/Q15654">Q15654</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q14192">Q14192</a>
+								</td>
+							</tr>
+							<tr>
+								<td>342344</td>
+								<td><a href="http://www.uniprot.org/uniprot/P26599">P26599</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q9UKM9">Q9UKM9</a>
+								</td>
+							</tr>
+							<tr>
+								<td>282429</td>
+								<td><a href="http://www.uniprot.org/uniprot/P24864">P24864</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P20248">P20248</a>
+								</td>
+							</tr>
+							<tr>
+								<td>228601</td>
+								<td><a href="http://www.uniprot.org/uniprot/P08631">P08631</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P62993">P62993</a>
+								</td>
+							</tr>
+							<tr>
+								<td>197009</td>
+								<td><a href="http://www.uniprot.org/uniprot/Q16539">Q16539</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P53778">P53778</a>
+								</td>
+							</tr>
+							<tr>
+								<td>185482</td>
+								<td><a href="http://www.uniprot.org/uniprot/Q96CA5">Q96CA5</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P98170">P98170</a>
+								</td>
+							</tr>
+							<tr>
+								<td>185026</td>
+								<td><a href="http://www.uniprot.org/uniprot/O14836">O14836</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q02223">Q02223</a>
+								</td>
+							</tr>
+							<tr>
+								<td>160231</td>
+								<td><a href="http://www.uniprot.org/uniprot/P47102">P47102</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q99418">Q99418</a>
+								</td>
+							</tr>
+							<tr>
+								<td>119950</td>
+								<td><a href="http://www.uniprot.org/uniprot/Q9Y2U5">Q9Y2U5</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q13163">Q13163</a>
+								</td>
+							</tr>
+							<tr>
+								<td>119944</td>
+								<td><a href="http://www.uniprot.org/uniprot/Q14160">Q14160</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/Q12959">Q12959</a>
+								</td>
+							</tr>
+							<tr>
+								<td>119717</td>
+								<td><a href="http://www.uniprot.org/uniprot/P05109">P05109</a></td>
+								<td>
+									<a href="http://www.uniprot.org/uniprot/P31151">P31151</a>
+								</td>
+							</tr>
+    					</tbody>
+					</table>
+				</div>
+    			<div class="right">
+    				<figure>
+    					<a href="merged.png">
+    						<img src="merged.png" alt="merged network" />
+    					</a>
+    					<figcaption>The graph after fully degenerate vertex sets have been contracted. A degenerate vertex set is a maximal clique whose members share interactions exactly.</figcaption>
+    				</figure>
+				</div>
+			</section>
+		</div>
+	</body>
+</html>
