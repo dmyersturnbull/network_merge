@@ -1,26 +1,21 @@
 Struct-NA
 =========
 
-Struct-NA is a method to improve noisy protein–protein interaction (PPI) networks by identifying interactions that are conserved among homologs.
-The primary objective is to assign a confidence to each interaction based on its conservation among any homologs of its participants. The secondary objective is to merge analogous interactions to simplify the description of the network. The idea is that these networks will be more useful in research.
-Homologs are identified in a species-independent way using structural rather than sequence information whenever it is available. Specifically, it uses the [Structural Classification of Proteins](http://scop.berkeley.edu/) and structural alignment algorithms.
+Struct-NA is a simple, finished software tool to identify interactions in protein–protein interaction (PPI) networks that are conserved among homologs.
 
-The underlying method is comparable to a network alignment algorithm but offers three advantages:
+It does two things:
+  1. Assigns a confidence to each interaction based on its conservation among any homologs of its participants.
+  2. Merges homologous interactions to simplify the network structure, specifically by performing edge contraction on cliques of similar vertices whose members share precisely the same interaction (in other words, cliques of interologs).
 
-* It does not require that homology is one-to-one.
-* It can identify homology relationships within the same species.
-* It is based on structural information rather than sequence information.
+Homologs are identified in a species-independent way using structural rather than sequence information whenever it is available. Specifically, it uses the [Structural Classification of Proteins](http://scop.berkeley.edu/) and a Java implementation of the the structural alignment algorithm [Combinatorial Extension](http://source.rcsb.org/jfatcatserver/ceHome.jsp).
 
-Struct-NA is semi-stable but is nonetheless a work in progress currently not suitable for outside use.
+Struct-NA is a mature project that does what it was intended to do and nothing more. Further changes will only tweak parameters and fix bugs; please [report bugs](https://github.com/dmyersturnbull/network_merge/issues), including in documentation.
 It is distributed under the terms of the Apache License version 2.
 
 Who might use it?
 -----------------------
 
-There are two expected use cases:
-
-* Distributors of high-throughput PPI networks who want a reliable computational method to estimate the confidence of each interaction.
-* Researchers who are relying on PPI networks and who need estimates for interaction confidences. This includes researchers who have developed algorithms that accept PPIs as input (there are many).
+The use cases are highly specific. The intended audience members are researchers who rely on PPI networks and who want a) to visualize homologous cliques of interologs, or b) to annotate the degree of conservation of an interaction among homologs. It is important to note that global structural homology is not a reliable predictor of functional homology, even at high thresholds for similarity. Consequently, this project is _**not** a general-purpose method to estimate interaction confidence_.
 
 How do I use it?
 ----------------------
@@ -115,7 +110,7 @@ Configuring
 Struct-NA uses a properties file at *src/main/resources/experiments.properties* that maps experiment names to initial scores (probabilities).
 Simply modify this file and re-run *prepare*.
 
-###How do I use a different database? ###
+###How do I use a different database?###
 Database access information is stored in *src/main/resources/databases.properties*. You can modify this file to switch SCOP versions or use a different database URL.
 
 ###How do I change alignment scoring?###
@@ -162,11 +157,11 @@ Other information
 There is [additional documentation](https://github.com/dmyersturnbull/network_merge/blob/master/doc/description.pdf) available. Like the code, this documentation is a work in progress. Unlike the code, it is not distributed under the Apache License (which is only applicable to software anyway).
 
 ###How well is it working?###
+Test coverage is high, and the project should build without issue.
+
 [![Build Status](https://travis-ci.org/dmyersturnbull/network_merge.png)](https://travis-ci.org/dmyersturnbull/network_merge)
 
 Please [report bugs](https://github.com/dmyersturnbull/network_merge/issues), because the developer will try to fix them.
-
-Note that the software is probably not complete or stable enough for general use yet.
 
 ###How is it licensed?###
 The software is distributed under the terms of the Apache License, version 2. The documentation, including this ReadMe and all files under the */doc* directory are provided only as a service to users, and may not be re-distributed modified or unmodified without express written permission from the author.
